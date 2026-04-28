@@ -58,9 +58,12 @@ nav{
 .btn-o{background:transparent;color:#2D5A4E;padding:.95rem 2rem;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(45,90,78,.35);cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;border-radius:2px;}
 .btn-o:hover{background:#2D5A4E;color:white;}
 
-.hero-right{background:#2D5A4E;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.hero-right{background:#2D5A4E;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;}
 .hero-right-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(155,191,183,.15) 0%,transparent 60%);}
-.hero-visual{position:relative;z-index:2;padding:3.5rem;display:flex;flex-direction:column;gap:1.1rem;}
+.hero-visual{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;gap:0;}
+.hero-photo{width:100%;height:75%;object-fit:cover;object-position:center top;display:block;mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);}
+.hero-cards-row{display:flex;flex-direction:row;gap:.6rem;padding:1rem 1.2rem 1.4rem;background:transparent;margin-top:-40px;}
+.h-card-row{flex:1;background:rgba(240,237,230,.1);backdrop-filter:blur(10px);border:1px solid rgba(240,237,230,.15);border-radius:8px;padding:.9rem 1rem;}
 .h-card{background:rgba(240,237,230,.1);backdrop-filter:blur(10px);border:1px solid rgba(240,237,230,.15);border-radius:8px;padding:1.3rem 1.6rem;animation:hFloat 6s ease-in-out infinite;}
 .h-card:nth-child(2){animation-delay:2s;margin-left:1.5rem;}
 .h-card:nth-child(3){animation-delay:4s;}
@@ -291,28 +294,31 @@ footer{padding:2.5rem 5rem;background:#1a1a1a;display:flex;justify-content:space
       <a href="#contato" class="btn-o">Agendar uma conversa</a>
     </div>
   </div>
-  <div class="hero-right">
-    <div class="hero-right-bg"></div>
-    <div class="orb hero-orb orb1"></div>
-    <div class="orb hero-orb orb2"></div>
-    <div class="hero-visual">
-      <div class="h-card">
+<div class="hero-right">
+  <div class="hero-right-bg"></div>
+  <div class="orb hero-orb orb1"></div>
+  <div class="orb hero-orb orb2"></div>
+  <div class="hero-visual">
+    <img src="thlxi.jpg" alt="Pessoa usando o app Ranne Care" class="hero-photo">
+    <div class="hero-cards-row">
+      <div class="h-card-row">
         <div class="hc-lbl">Burnout no Brasil</div>
-        <div class="hc-val">30%</div>
-        <div class="hc-desc">dos trabalhadores afetados · Fonte: ANAMT</div>
+        <div class="hc-val" style="font-size:1.8rem">30%</div>
+        <div class="hc-desc">trabalhadores afetados · ANAMT</div>
       </div>
-      <div class="h-card">
-        <div class="hc-lbl">Custo de substituir um colaborador</div>
-        <div class="hc-val">2× salário</div>
+      <div class="h-card-row">
+        <div class="hc-lbl">Custo de substituição</div>
+        <div class="hc-val" style="font-size:1.8rem">2× salário</div>
         <div class="hc-desc">anual · Fonte: SHRM</div>
       </div>
-      <div class="h-card">
-        <div class="hc-lbl">Perda estimada sem ação</div>
-        <div class="hc-val" id="hero-roi">R$74k</div>
-        <div class="hc-desc">por ano · calcule abaixo para sua empresa</div>
+      <div class="h-card-row">
+        <div class="hc-lbl">Perda estimada</div>
+        <div class="hc-val" style="font-size:1.8rem" id="hero-roi">R$74k</div>
+        <div class="hc-desc">por ano · calcule abaixo</div>
       </div>
     </div>
   </div>
+</div>
 </section>
 
 <!-- AUTORIDADE BAR -->
