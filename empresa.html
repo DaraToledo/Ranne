@@ -1074,7 +1074,6 @@ body {
 /* ══════ UTILITÁRIOS ══════ */
 .card-base { background:var(--white); border-radius:16px; padding:20px; border:1px solid var(--border); box-shadow:0 1px 6px rgba(0,0,0,.04); margin-bottom:12px; }
 
-</style>
 /* ══ COLABORADOR APP ══ */
 
 /* ══════ RESET & VARS ══════ */
@@ -3295,9 +3294,7 @@ function getWeekNumber() {
 /* ─────────────────────────────────────
    PWA — SERVICE WORKER + INSTALL
    ───────────────────────────────────── */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {});
-}
+/* PWA desativado temporariamente */
 
 // Captura evento de instalação
 window.addEventListener('beforeinstallprompt', (e) => {
