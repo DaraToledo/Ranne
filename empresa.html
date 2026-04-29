@@ -692,10 +692,12 @@ body.dark .skel { background:linear-gradient(90deg,#1E3344 25%,#243d52 50%,#1E33
   .onboard-left{display:none!important;}
   .onboard-right{width:100%!important;padding:24px 16px!important;background:transparent!important;border:none!important;}
   .auth-box{border-radius:20px!important;padding:28px 24px!important;}
-  .lib-grid{grid-template-columns:1fr 1fr!important;}
+  .lib-grid{grid-template-columns:1fr!important;}
+  .lib-feat{flex-direction:column;}
   .plans-row{grid-template-columns:1fr!important;}
   .res-grid{grid-template-columns:1fr 1fr!important;}
   .fi-row{grid-template-columns:1fr!important;}
+  #mob-fab { display:flex!important; }
   .diag-item{flex-direction:column;align-items:flex-start;}
   .diag-stats{width:100%;justify-content:flex-start;flex-wrap:wrap;gap:10px;}
 }
@@ -1702,22 +1704,23 @@ body {
         <input class="field-input" type="password" id="cad-senha-field" placeholder="Mínimo 8 caracteres">
         <div id="setup-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
         <button class="btn-cta" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
+      <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px;line-height:1.6">
+        Já tem acesso? <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s2')">Fazer login →</span>
+      </p>
       </div>
 
-        <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px;line-height:1.6">
-         Já tem acesso? <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s2')">Fazer login →</span>
-        </p>
-        
       <div class="step" id="s3-colaborador">
-          <div class="step-indicator"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div></div>
-          <div class="welcome-collab">
-            <div class="wc-check-ring">✓</div>
-            <div class="wc-anon">🔒 Resposta 100% anônima</div>
-            <h3>Tudo pronto!</h3>
-            <p>Você vai responder o diagnóstico da sua empresa. Leva menos de 5 minutos.</p>
-            <button class="btn-cta" onclick="enterApp('colaborador')">Responder agora →</button>
-          </div>
-        </div>
+  <div class="step-indicator"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div></div>
+  <h2>Acesso do Colaborador</h2>
+  <p class="auth-sub">Entre com seu e-mail e senha fornecidos pela sua empresa.</p>
+  <label class="field-label">E-mail</label>
+  <input class="field-input" type="email" id="collab-email" placeholder="seu@empresa.com.br">
+  <label class="field-label">Senha</label>
+  <input class="field-input" type="password" id="collab-senha" placeholder="••••••••">
+  <div id="collab-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
+  <button class="btn-cta" id="btn-collab-login" onclick="doLoginColaborador()">Entrar →</button>
+  <div class="wc-anon" style="margin-top:16px;justify-content:center">🔒 Resposta 100% anônima</div>
+</div>
       </div>
     </div>
   </div>
@@ -2436,38 +2439,6 @@ body {
 
 
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- SHEET DE DICAS -->
-<div class="tip-expanded" id="tip-sheet" onclick="closeTip(event)">
-  <div class="tip-sheet">
-    <div class="ts-handle"></div>
-    <div id="ts-icon" style="font-size:36px;margin-bottom:14px"></div>
-    <div class="ts-title" id="ts-title"></div>
-    <div class="ts-sub" id="ts-sub"></div>
-    <div id="ts-steps"></div>
-    <button class="btn-close-sheet" onclick="closeTipBtn()">Entendido ✓</button>
-  </div>
-</div>
-
-
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- SHEET DE DICAS -->
-<div class="tip-expanded" id="tip-sheet" onclick="closeTip(event)">
-  <div class="tip-sheet">
-    <div class="ts-handle"></div>
-    <div id="ts-icon" style="font-size:36px;margin-bottom:14px"></div>
-    <div class="ts-title" id="ts-title"></div>
-    <div class="ts-sub" id="ts-sub"></div>
-    <div id="ts-steps"></div>
-    <button class="btn-close-sheet" onclick="closeTipBtn()">Entendido ✓</button>
-  </div>
-</div>
-
 
 <script>
 /* ══════ RANNE UNIFIED APP ══════ */
@@ -2617,6 +2588,26 @@ async function setupEmpresa() {
     showEmpresa();
     toast('🎉 Bem-vindo à Ranne! (modo demo)');
   } finally { btn.disabled = false; btn.textContent = 'Entrar na plataforma →'; }
+}
+
+
+async function doLoginColaborador() {
+  const email = document.getElementById('collab-email').value.trim();
+  const senha = document.getElementById('collab-senha').value;
+  const errEl = document.getElementById('collab-error');
+  const btn = document.getElementById('btn-collab-login');
+  if (!email || !senha) { showAuthErr(errEl,'Preencha e-mail e senha.'); return; }
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  errEl.style.display = 'none';
+  try {
+    const { data, error } = await db.auth.signInWithPassword({ email, password: senha });
+    if (error) throw error;
+    currentUser = data.user;
+    document.getElementById('onboarding').style.display = 'none';
+    showColaborador(data.user.user_metadata?.nome || email.split('@')[0]);
+  } catch {
+    showAuthErr(errEl,'E-mail ou senha incorretos.');
+  } finally { btn.disabled = false; btn.textContent = 'Entrar →'; }
 }
 
 function showAuthErr(el, msg) { if(el){el.textContent=msg;el.style.display='block';} }
@@ -3413,5 +3404,8 @@ window.addEventListener('DOMContentLoaded', () => {
 })();
 
 </script>
+
+<!-- BOTÃO MENU MOBILE FIXO -->
+<button id="mob-fab" onclick="toggleSidebar()" style="display:none;position:fixed;top:16px;left:16px;z-index:300;width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--white);font-size:18px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.12)">☰</button>
 </body>
 </html>
