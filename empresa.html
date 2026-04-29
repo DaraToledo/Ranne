@@ -2504,12 +2504,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 /* ── ROTEAMENTO POR PERFIL ── */
 async function rotearUsuario() {
   try {
-    const { data: emp } = await db.from('empresas').select('*').eq('user_id', currentUser.id).single();
-    if (emp) { currentEmpresa = emp; currentRole = 'empresa'; showEmpresa(); return; }
-    const { data: col } = await db.from('colaboradores').select('*, empresas(nome)').eq('user_id', currentUser.id).single();
-    if (col) { currentRole = 'colaborador'; showColaborador(col.nome); return; }
-    showOnboarding(); goS(3);
-  } catch { showDemo(); }
+    const { data: emp, error: empErr } = await db.from('empresas').select('*').eq('user_id', currentUser.id).single();
+    if (emp && !empErr) { currentEmpresa = emp; currentRole = 'empresa'; showEmpresa(); return; }
+  } catch {}
+  try {
+    const { data: col, error: colErr } = await db.from('colaboradores').select('*, empresas(nome)').eq('user_id', currentUser.id).single();
+    if (col && !colErr) { currentRole = 'colaborador'; showColaborador(col.nome); return; }
+  } catch {}
+  showOnboarding();
+  goS(1);
 }
 
 function showDemo() {
