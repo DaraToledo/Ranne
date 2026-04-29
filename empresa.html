@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0B1F2B">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ranne">
@@ -1075,6 +1074,7 @@ body {
 /* ══════ UTILITÁRIOS ══════ */
 .card-base { background:var(--white); border-radius:16px; padding:20px; border:1px solid var(--border); box-shadow:0 1px 6px rgba(0,0,0,.04); margin-bottom:12px; }
 
+</style>
 /* ══ COLABORADOR APP ══ */
 
 /* ══════ RESET & VARS ══════ */
@@ -1649,7 +1649,6 @@ body {
             </div>
           </div>
           <button class="btn-cta" onclick="goS(2)">Continuar →</button>
-          <div class="ob-divider"><hr><span>acesso gratuito · sem senha</span><hr></div>
           <p class="ob-fine">LGPD compliant · dados criptografados</p>
         </div>
 
@@ -2078,15 +2077,7 @@ body {
           </div>
           <button class="btn btn-primary btn-sm" onclick="salvarConfig()">Salvar Alterações</button>
         </div>
-        <div class="card">
-          <div class="card-hdr"><span class="card-title">Plano e Cobrança</span><span class="chip chip-amber">Free — 1 de 1 diagnóstico</span></div>
-          <div class="bar-track" style="margin-bottom:20px"><div class="bar-fill fill-amber" style="width:100%"></div></div>
-          <div class="plans-row">
-            <div class="plan-card"><div class="plan-name">Free</div><div class="plan-price">R$ 0<span>/mês</span></div><ul class="plan-features"><li>1 diagnóstico</li><li>Até 10 usuários</li><li>Dashboard básico</li><li>Biblioteca</li></ul><span class="chip chip-gray">Plano atual</span></div>
-            <div class="plan-card best"><div class="plan-best-badge">Recomendado</div><div class="plan-name">Starter</div><div class="plan-price">R$ 297<span>/mês</span></div><ul class="plan-features"><li>3 diagnósticos</li><li>Até 50 colaboradores</li><li>Plano de ação completo</li><li>Relatório mensal PDF</li></ul><button class="btn btn-primary btn-sm" style="width:100%;margin-top:8px" onclick="toast('💳 Redirecionando para pagamento...')">Fazer Upgrade</button></div>
-            <div class="plan-card"><div class="plan-name">Growth</div><div class="plan-price">R$ 597<span>/mês</span></div><ul class="plan-features"><li>Diagnósticos ilimitados</li><li>Colaboradores ilimitados</li><li>Benchmark do setor</li><li>API + integrações</li></ul><button class="btn btn-outline btn-sm" style="width:100%;margin-top:8px" onclick="toast('💳 Redirecionando para pagamento...')">Fazer Upgrade</button></div>
-          </div>
-        </div>
+
       </div>
 
     </main>
