@@ -1495,8 +1495,12 @@ body {
 <!-- MODAL CONVIDAR MEMBRO -->
 <div class="overlay" id="modal-invite">
   <div class="modal">
-    <h3>📧 Convidar membro</h3>
-    <p>O convite será enviado por e-mail. O usuário precisará confirmar o acesso.</p>
+    <h3>👤 Adicionar colaborador</h3>
+    <p>Cadastre o e-mail do colaborador e gere um código de acesso para ele entrar na plataforma.</p>
+    <div class="fi-group">
+      <label class="fi-label">Nome</label>
+      <input class="fi-input" type="text" id="invite-nome" placeholder="Nome do colaborador">
+    </div>
     <div class="fi-group">
       <label class="fi-label">E-mail</label>
       <input class="fi-input" type="email" id="invite-email" placeholder="colaborador@empresa.com.br">
@@ -1508,9 +1512,18 @@ body {
         <option value="admin">Admin</option>
       </select>
     </div>
+    <!-- Código gerado -->
+    <div id="codigo-gerado-wrap" style="display:none;margin-bottom:14px">
+      <label class="fi-label">Código de acesso gerado</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div id="codigo-gerado" style="flex:1;padding:10px 14px;background:#F0EDE6;border:1.5px solid rgba(45,106,79,.3);border-radius:10px;font-size:15px;font-weight:800;color:#2D5A4E;letter-spacing:2px;font-family:monospace"></div>
+        <button class="btn btn-outline btn-sm" onclick="copiarCodigo()">📋 Copiar</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px">Compartilhe este código com o colaborador para ele criar a conta.</p>
+    </div>
     <div class="modal-btns">
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-invite').classList.remove('open')">Cancelar</button>
-      <button class="btn btn-primary btn-sm" onclick="sendInvite()">Enviar convite</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-invite').classList.remove('open');resetModalInvite()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" id="btn-invite" onclick="sendInvite()">Gerar código →</button>
     </div>
   </div>
 </div>
@@ -1604,7 +1617,7 @@ body {
   <!-- DIREITA -->
   <div class="onboard-right">
     <div class="auth-box">
-      <!-- Preview do produto dentro do card -->
+      <!-- Preview do produto -->
       <div class="auth-preview">
         <div class="auth-preview-label">Prévia do dashboard</div>
         <div class="auth-score-row">
@@ -1631,11 +1644,17 @@ body {
 
       <!-- Form -->
       <div class="auth-form">
+
+        <!-- ── STEP 1: Escolha o perfil ── -->
         <div class="step active" id="s1">
-          <div class="step-indicator"><div class="step-dot done"></div><div class="step-dot"></div><div class="step-dot"></div></div>
-          <div class="auth-eyebrow">Entrar na plataforma</div>
-          <h2>Bem-vindo à Ranne</h2>
-          <p class="auth-sub">Como você vai usar a plataforma?</p>
+          <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="auth-eyebrow">Bem-vindo à Ranne</div>
+          <h2>Como vai usar a plataforma?</h2>
+          <p class="auth-sub">Escolha o seu perfil para começar.</p>
           <div class="role-cards">
             <div class="role-card active" onclick="selRole('empresa',this)">
               <div class="rc-tick">✓</div>
@@ -1643,89 +1662,128 @@ body {
               <strong>Empresa</strong>
               <span>Gestor · RH · CEO</span>
             </div>
-            <div class="role-card" onclick="selRole('colaborador',this)">
+            <div class="role-card" onclick="selRole('pessoa',this)">
               <div class="rc-tick">✓</div>
               <span class="rc-icon">👤</span>
-              <strong>Colaborador</strong>
-              <span>Responder diagnóstico</span>
+              <strong>Pessoa Física</strong>
+              <span>Uso individual</span>
             </div>
           </div>
           <button class="btn-cta" onclick="goS(2)">Continuar →</button>
-          <p class="ob-fine">LGPD compliant · dados criptografados</p>
+          <div class="ob-divider" style="margin:10px 0"><hr><span>ou</span><hr></div>
+          <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);line-height:1.6">
+            Já tem conta? <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s-login')">Fazer login →</span>
+          </p>
+          <p class="ob-fine" style="margin-top:8px">LGPD compliant · dados criptografados</p>
         </div>
 
+        <!-- ── STEP LOGIN: Já tem conta ── -->
+        <div class="step" id="s-login">
+          <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <div class="auth-eyebrow">Acesso à plataforma</div>
+          <h2>Bem-vindo de volta</h2>
+          <p class="auth-sub">Entre com seu e-mail e senha.</p>
+          <label class="field-label">E-mail</label>
+          <input class="field-input" type="email" id="login-email" placeholder="seu@email.com.br">
+          <label class="field-label">Senha</label>
+          <input class="field-input" type="password" id="login-senha-field" placeholder="••••••••">
+          <div id="auth-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
+          <button class="btn-cta" id="btn-login-senha" onclick="doLoginSenha()">Entrar →</button>
+          <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:14px;line-height:1.6">
+            Não tem conta? <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s1')">Criar conta →</span>
+          </p>
+        </div>
+
+        <!-- ── STEP 2: E-mail e senha ── -->
         <div class="step" id="s2">
-        <div class="step-indicator"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot"></div></div>
-        <h2>Acesso seguro</h2>
-        <p class="auth-sub">Entre com seu e-mail e senha.</p>
-        <label class="field-label">E-mail profissional</label>
-        <input class="field-input" type="email" id="login-email" placeholder="seu@empresa.com.br">
-        <label class="field-label">Senha</label>
-        <input class="field-input" type="password" id="login-senha-field" placeholder="••••••••">
-        <div id="auth-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
-        <button class="btn-cta" id="btn-login-senha" onclick="doLoginSenha()">Entrar →</button>
-        <div class="ob-divider" style="margin:11px 0"><hr><span style="font-size:10px;color:var(--muted)">ou</span><hr></div>
-        <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);line-height:1.6">
-          Não tem conta? <span style="color:var(--green);font-weight:600;cursor:pointer" onclick="goS(3)">Criar conta →</span>
-        </p>
-      </div>
-
-      <div class="step" id="s2-sent">
-          <div class="magic-sent">
-            <div class="ms-ring">📬</div>
-            <h3>Verifique seu e-mail!</h3>
-            <p>Enviamos um link para<span class="ms-email" id="sent-email-display"></span></p>
-            <p style="margin-top:12px;font-size:11px;color:rgba(0,0,0,.3)">Não encontrou? Verifique o spam.</p>
-            <button class="btn-cta" style="margin-top:24px" onclick="goS(2)">← Usar outro e-mail</button>
+          <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot done"></div>
+            <div class="step-dot"></div>
           </div>
+          <div class="auth-eyebrow">Criar conta</div>
+          <h2>Seus dados de acesso</h2>
+          <p class="auth-sub">E-mail e senha que você vai usar para entrar.</p>
+          <label class="field-label">E-mail</label>
+          <input class="field-input" type="email" id="cad-email" placeholder="seu@email.com.br">
+          <label class="field-label">Senha</label>
+          <input class="field-input" type="password" id="cad-senha" placeholder="Mínimo 8 caracteres">
+          <label class="field-label">Confirmar senha</label>
+          <input class="field-input" type="password" id="cad-senha-conf" placeholder="Repita a senha">
+          <div id="s2-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
+          <button class="btn-cta" onclick="goS2Next()">Continuar →</button>
+          <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px">
+            <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s1')">← Voltar</span>
+          </p>
         </div>
 
+        <!-- ── STEP 3 EMPRESA: Dados da empresa ── -->
         <div class="step" id="s3-empresa">
-        <div class="step-indicator"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div></div>
-        <h2>Configure sua empresa</h2>
-        <p class="auth-sub">Preencha os dados da sua empresa.</p>
-        <label class="field-label">Nome da empresa</label>
-        <input class="field-input" type="text" id="empresa-nome" placeholder="Ex: Ranne Tecnologia">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div>
-            <label class="field-label" style="display:block;margin-bottom:6px">CNPJ</label>
-            <input class="field-input" id="empresa-cnpj" placeholder="00.000.000/0001-00">
+          <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot done"></div>
+            <div class="step-dot done"></div>
           </div>
-          <div>
-            <label class="field-label" style="display:block;margin-bottom:6px">Nº colaboradores</label>
-            <input class="field-input" type="number" id="empresa-size" placeholder="Ex: 25">
+          <div class="auth-eyebrow">Dados da empresa</div>
+          <h2>Configure sua empresa</h2>
+          <p class="auth-sub">Preencha os dados para ativar o painel.</p>
+          <label class="field-label">Nome da empresa</label>
+          <input class="field-input" type="text" id="empresa-nome" placeholder="Ex: Ranne Tecnologia">
+          <label class="field-label">CNPJ</label>
+          <input class="field-input" id="empresa-cnpj" placeholder="00.000.000/0001-00" oninput="mascaraCNPJ(this)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div>
+              <label class="field-label" style="display:block;margin-bottom:6px">Nº colaboradores</label>
+              <input class="field-input" type="number" id="empresa-size" placeholder="Ex: 25">
+            </div>
+            <div>
+              <label class="field-label" style="display:block;margin-bottom:6px">Setor</label>
+              <select class="field-input field-select" id="empresa-setor">
+                <option value="">Setor...</option>
+                <option>Tecnologia</option><option>Serviços</option><option>Indústria</option>
+                <option>Comercial</option><option>Saúde</option><option>Educação</option>
+              </select>
+            </div>
           </div>
+          <div id="setup-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
+          <button class="btn-cta" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
+          <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px">
+            <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s2')">← Voltar</span>
+          </p>
         </div>
-        <label class="field-label">Setor</label>
-        <select class="field-input field-select" id="empresa-setor">
-          <option value="">Selecione...</option>
-          <option>Tecnologia</option><option>Serviços</option><option>Indústria</option><option>Comercial</option><option>Saúde</option><option>Educação</option>
-        </select>
-        <label class="field-label">Senha de acesso</label>
-        <input class="field-input" type="password" id="cad-senha-field" placeholder="Mínimo 8 caracteres">
-        <div id="setup-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
-        <button class="btn-cta" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
-      <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px;line-height:1.6">
-        Já tem acesso? <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s2')">Fazer login →</span>
-      </p>
-      </div>
 
-      <div class="step" id="s3-colaborador">
-  <div class="step-indicator"><div class="step-dot done"></div><div class="step-dot done"></div><div class="step-dot done"></div></div>
-  <h2>Acesso do Colaborador</h2>
-  <p class="auth-sub">Entre com seu e-mail e senha fornecidos pela sua empresa.</p>
-  <label class="field-label">E-mail</label>
-  <input class="field-input" type="email" id="collab-email" placeholder="seu@empresa.com.br">
-  <label class="field-label">Senha</label>
-  <input class="field-input" type="password" id="collab-senha" placeholder="••••••••">
-  <div id="collab-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
-  <button class="btn-cta" id="btn-collab-login" onclick="doLoginColaborador()">Entrar →</button>
-  <div class="wc-anon" style="margin-top:16px;justify-content:center">🔒 Resposta 100% anônima</div>
-</div>
+        <!-- ── STEP 3 PESSOA: Dados pessoais ── -->
+        <div class="step" id="s3-pessoa">
+          <div class="step-indicator">
+            <div class="step-dot done"></div>
+            <div class="step-dot done"></div>
+            <div class="step-dot done"></div>
+          </div>
+          <div class="auth-eyebrow">Dados pessoais</div>
+          <h2>Quase lá!</h2>
+          <p class="auth-sub">Preencha seus dados para ativar a conta.</p>
+          <label class="field-label">Nome completo</label>
+          <input class="field-input" type="text" id="pessoa-nome" placeholder="Seu nome completo">
+          <label class="field-label">CPF</label>
+          <input class="field-input" id="pessoa-cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)">
+          <label class="field-label">Código da empresa <span style="font-weight:300;text-transform:none;letter-spacing:0;color:rgba(26,46,32,.35)">(opcional — se você é colaborador)</span></label>
+          <input class="field-input" id="pessoa-codigo" placeholder="Ex: RANNE-4829" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+          <div id="pessoa-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
+          <button class="btn-cta" id="pessoa-btn" onclick="setupPessoa()">Entrar na plataforma →</button>
+          <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px">
+            <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s2')">← Voltar</span>
+          </p>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
+
 <!-- ══════════ APP EMPRESA ══════════ -->
 <div id="app-empresa" class="app">
   <div class="layout">
@@ -2923,21 +2981,43 @@ async function salvarConfig() {
    ENVIAR CONVITE
    ───────────────────────────────────── */
 async function sendInvite() {
+  const nome  = document.getElementById('invite-nome').value.trim();
   const email = document.getElementById('invite-email').value.trim();
-  const role = document.getElementById('invite-role').value;
+  const role  = document.getElementById('invite-role').value;
+  const btn   = document.getElementById('btn-invite');
 
   if (!email) { toast('⚠️ Informe um e-mail'); return; }
+
+  // Se já gerou código, fecha o modal
+  const codigoWrap = document.getElementById('codigo-gerado-wrap');
+  if (codigoWrap.style.display !== 'none') {
+    document.getElementById('modal-invite').classList.remove('open');
+    resetModalInvite();
+    await loadMembros();
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Gerando...';
+
+  const codigo = gerarCodigo();
 
   try {
     await db.from('membros_empresa').insert({
       empresa_id: currentEmpresa.id,
-      email, role, nome: email.split('@')[0], status: 'pendente'
+      email, role,
+      nome: nome || email.split('@')[0],
+      codigo_acesso: codigo,
+      status: 'pendente'
     });
-    await loadMembros();
+    // Atualiza código da empresa se não tiver
+    await db.from('empresas').update({ codigo_acesso: codigo }).eq('id', currentEmpresa.id).is('codigo_acesso', null);
   } catch {}
 
-  document.getElementById('modal-invite').classList.remove('open');
-  toast('📧 Convite enviado com sucesso!');
+  document.getElementById('codigo-gerado').textContent = codigo;
+  codigoWrap.style.display = 'block';
+  btn.disabled = false;
+  btn.textContent = 'Concluir →';
+  toast('✅ Código gerado! Compartilhe com o colaborador.');
 }
 
 /* ─────────────────────────────────────
@@ -3337,6 +3417,146 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => showOnboarding(), 100);
   }
 });
+
+
+/* ── NOVO ONBOARDING ── */
+
+function goS2Next() {
+  const email = document.getElementById('cad-email').value.trim();
+  const senha = document.getElementById('cad-senha').value;
+  const conf  = document.getElementById('cad-senha-conf').value;
+  const errEl = document.getElementById('s2-error');
+  errEl.style.display = 'none';
+
+  if (!email || !email.includes('@')) { showAuthErr(errEl,'Informe um e-mail válido.'); return; }
+  if (senha.length < 8) { showAuthErr(errEl,'A senha deve ter no mínimo 8 caracteres.'); return; }
+  if (senha !== conf) { showAuthErr(errEl,'As senhas não coincidem.'); return; }
+
+  // Salva temporariamente
+  window._cadEmail = email;
+  window._cadSenha = senha;
+
+  // Vai para o step correto conforme o perfil
+  goSStep('s3-' + (currentRole === 'empresa' ? 'empresa' : 'pessoa'));
+}
+
+function mascaraCPF(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,11);
+  if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/,'$1.$2.$3-$4');
+  else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{0,3})/,'$1.$2.$3');
+  else if (v.length > 3) v = v.replace(/(\d{3})(\d{0,3})/,'$1.$2');
+  input.value = v;
+}
+
+function mascaraCNPJ(input) {
+  let v = input.value.replace(/\D/g,'').slice(0,14);
+  if (v.length > 12) v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/,'$1.$2.$3/$4-$5');
+  else if (v.length > 8) v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{0,4})/,'$1.$2.$3/$4');
+  else if (v.length > 5) v = v.replace(/(\d{2})(\d{3})(\d{0,3})/,'$1.$2.$3');
+  else if (v.length > 2) v = v.replace(/(\d{2})(\d{0,3})/,'$1.$2');
+  input.value = v;
+}
+
+async function setupPessoa() {
+  const nome   = document.getElementById('pessoa-nome').value.trim();
+  const cpf    = document.getElementById('pessoa-cpf').value.trim();
+  const codigo = document.getElementById('pessoa-codigo').value.trim();
+  const errEl  = document.getElementById('pessoa-error');
+  const btn    = document.getElementById('pessoa-btn');
+
+  errEl.style.display = 'none';
+  if (!nome) { showAuthErr(errEl,'Informe seu nome completo.'); return; }
+  if (cpf.replace(/\D/g,'').length !== 11) { showAuthErr(errEl,'CPF inválido.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Criando conta...';
+
+  try {
+    const email = window._cadEmail;
+    const senha = window._cadSenha;
+
+    // Cria usuário no Supabase Auth
+    const { data: authData, error: authErr } = await db.auth.signUp({ email, password: senha });
+    if (authErr && !authErr.message?.includes('already')) throw authErr;
+
+    const userId = authData?.user?.id;
+    currentUser = authData?.user || { id: userId, email };
+
+    // Verifica se tem código de empresa
+    let empresaId = null;
+    if (codigo) {
+      const { data: emp } = await db.from('empresas').select('id').eq('codigo_acesso', codigo).single();
+      if (emp) {
+        empresaId = emp.id;
+        // Insere como colaborador
+        await db.from('colaboradores').insert({
+          user_id: userId, empresa_id: empresaId, nome, email, cpf
+        }).onConflict('user_id').ignore();
+        currentRole = 'colaborador';
+        showColaborador(nome);
+        toast('✅ Conta criada! Vinculado à empresa.');
+        return;
+      } else {
+        showAuthErr(errEl,'Código de empresa não encontrado. Verifique e tente novamente.');
+        btn.disabled = false; btn.textContent = 'Entrar na plataforma →';
+        return;
+      }
+    }
+
+    // Pessoa física sem empresa
+    await db.from('colaboradores').insert({
+      user_id: userId, nome, email, cpf, tipo: 'pessoa_fisica'
+    }).onConflict('user_id').ignore();
+
+    currentRole = 'pessoa';
+    showColaborador(nome);
+    toast('✅ Conta criada com sucesso!');
+
+  } catch(e) {
+    // Demo
+    showColaborador(document.getElementById('pessoa-nome').value || 'Usuário');
+    toast('✅ Bem-vindo à Ranne!');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Entrar na plataforma →';
+  }
+}
+
+/* Sobrescreve selRole para incluir 'pessoa' */
+function selRole(r, el) {
+  currentRole = r;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* goS atualizado */
+function goS(n) {
+  if (n === 2) { goSStep('s2'); return; }
+  if (n === 1) { goSStep('s1'); return; }
+  goSStep('s3-' + (currentRole === 'empresa' ? 'empresa' : 'pessoa'));
+}
+
+
+
+/* ── CÓDIGO DE ACESSO COLABORADOR ── */
+function gerarCodigo() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = 'RANNE-';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function copiarCodigo() {
+  const codigo = document.getElementById('codigo-gerado').textContent;
+  navigator.clipboard.writeText(codigo).catch(()=>{});
+  toast('📋 Código copiado!');
+}
+
+function resetModalInvite() {
+  document.getElementById('codigo-gerado-wrap').style.display = 'none';
+  document.getElementById('btn-invite').textContent = 'Gerar código →';
+  document.getElementById('invite-nome').value = '';
+  document.getElementById('invite-email').value = '';
+}
+
 
 /* ── CANVAS PARTÍCULAS ── */
 (function() {
