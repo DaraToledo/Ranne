@@ -1805,7 +1805,7 @@ body {
       <!-- DIAGNÓSTICOS -->
       <div id="p-diagnosticos" style="display:none">
         <div class="topbar">
-          <div><div class="page-title">Diagnósticos</div><div class="page-sub">Crie, acompanhe e encerre diagnósticos de clima</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Diagnósticos</div><div class="page-sub">Crie, acompanhe e encerre diagnósticos de clima</div></div>
           <button class="btn btn-primary" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
         </div>
         <div id="diagnosticos-lista">
@@ -1817,7 +1817,7 @@ body {
       <!-- NOVO DIAGNÓSTICO -->
       <div id="p-novo-diagnostico" style="display:none">
         <div class="topbar">
-          <div><div class="page-title">Novo Diagnóstico</div><div class="page-sub">Configure e envie para a sua equipe</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Novo Diagnóstico</div><div class="page-sub">Configure e envie para a sua equipe</div></div>
           <button class="btn btn-ghost btn-sm" onclick="pg('diagnosticos',null)">← Voltar</button>
         </div>
         <div class="card" style="max-width:520px">
@@ -1856,7 +1856,7 @@ body {
       <!-- RESULTADOS -->
       <div id="p-resultados" style="display:none">
         <div class="topbar">
-          <div><div class="page-title" id="res-titulo">Resultados</div><div class="page-sub" id="res-sub">—</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title" id="res-titulo">Resultados</div><div class="page-sub" id="res-sub">—</div></div>
           <div style="display:flex;gap:8px">
             <button class="btn btn-ghost btn-sm" onclick="pg('diagnosticos',null)">← Voltar</button>
             <button class="btn btn-outline btn-sm" onclick="toast('📄 Relatório enviado por e-mail!')">Exportar Relatório</button>
@@ -1887,7 +1887,7 @@ body {
 
       <!-- PLANO DE AÇÃO -->
       <div id="p-plano" style="display:none">
-        <div class="topbar"><div><div class="page-title">Plano de Ação</div><div class="page-sub">Gerado a partir do último diagnóstico</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Plano de Ação</div><div class="page-sub">Gerado a partir do último diagnóstico</div></div></div>
         <div class="card" id="plano-card">
           <div class="progress-bar-row"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:43%"></div></div><span class="prog-pct" id="plano-progresso-txt">3 de 7 — 43%</span></div>
           <div class="tabs"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
@@ -1929,7 +1929,7 @@ body {
 
       <!-- PROGRESSO -->
       <div id="p-progresso" style="display:none">
-        <div class="topbar"><div><div class="page-title">Progresso Histórico</div><div class="page-sub">Evolução dos scores por diagnóstico</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Progresso Histórico</div><div class="page-sub">Evolução dos scores por diagnóstico</div></div></div>
         <div class="chart-real" style="margin-bottom:20px">
           <div class="chart-real-title">Score geral por diagnóstico</div>
           <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible">
@@ -1979,7 +1979,7 @@ body {
 
       <!-- BIBLIOTECA -->
       <div id="p-biblioteca" style="display:none">
-        <div class="topbar"><div><div class="page-title">Biblioteca</div><div class="page-sub">Conteúdo curatorial para saúde organizacional</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Biblioteca</div><div class="page-sub">Conteúdo curatorial para saúde organizacional</div></div></div>
         <div class="search-wrap"><input placeholder="Buscar conteúdo..." oninput="searchBiblioteca(this.value)"></div>
         <div class="tabs">
           <div class="tab active" onclick="filterBib('todos',this)">Todos</div>
@@ -2010,7 +2010,7 @@ body {
 
       <!-- CHECK-IN -->
       <div id="p-checkin" style="display:none">
-        <div class="topbar"><div><div class="page-title">Check-in Semanal</div><div class="page-sub">Como sua equipe está chegando nessa semana?</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Check-in Semanal</div><div class="page-sub">Como sua equipe está chegando nessa semana?</div></div></div>
         <div style="max-width:560px">
           <div class="ci-dark">
             <h3>Como está seu humor hoje?</h3>
@@ -2048,7 +2048,7 @@ body {
       <!-- EQUIPE -->
       <div id="p-equipe" style="display:none">
         <div class="topbar">
-          <div><div class="page-title">Equipe</div><div class="page-sub">Gerencie os membros da plataforma</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Equipe</div><div class="page-sub">Gerencie os membros da plataforma</div></div>
           <button class="btn btn-primary btn-sm" onclick="document.getElementById('modal-invite').classList.add('open')">+ Convidar Membro</button>
         </div>
         <div class="card" style="margin-bottom:16px">
@@ -2072,7 +2072,7 @@ body {
 
       <!-- CONFIG -->
       <div id="p-config" style="display:none">
-        <div class="topbar"><div><div class="page-title">Configurações</div><div class="page-sub">Perfil da empresa, plano e cobrança</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Configurações</div><div class="page-sub">Perfil da empresa, plano e cobrança</div></div></div>
         <div class="card" style="max-width:480px;margin-bottom:20px">
           <div class="card-hdr"><span class="card-title">Perfil da Empresa</span></div>
           <div class="fi-group"><label class="fi-label">Nome da empresa</label><input class="fi-input" id="cfg-nome"></div>
@@ -3403,7 +3403,6 @@ window.addEventListener('DOMContentLoaded', () => {
 })();
 
 </script>
-
 
 </body>
 </html>
