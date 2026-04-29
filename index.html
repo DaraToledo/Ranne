@@ -220,13 +220,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;heigh
 .cta-buttons{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;}
 
 /* FOOTER */
-footer{padding:2.5rem 5rem;background:#2D5A4E;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(111,158,147,.08);}
+footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(111,158,147,.08);}
 .footer-brand{display:flex;align-items:center;gap:.5rem;}
 .footer-brand img{width:28px;height:28px;object-fit:contain;filter:brightness(0) invert(1) opacity(.6);}
-.footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:rgba(255,255,255,.85);letter-spacing:.08em;}
-.footer-brand-care{font-family:'Jost',sans-serif;font-size:.45rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(201,168,76,.6);}
-.footer-tag{font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.85);}
-.footer-copy{font-family:'Jost',sans-serif;font-size:.7rem;font-weight:200;color:rgba(255,255,255,.75);}
+.footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:#2D5A4E;letter-spacing:.08em;}
+.footer-brand-care{font-family:'Jost',sans-serif;font-size:.45rem;letter-spacing:.25em;text-transform:uppercase;color:var(--dourado);}
+.footer-tag{font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cinza);}
+.footer-copy{font-family:'Jost',sans-serif;font-size:.7rem;font-weight:200;color:var(--cinza);}
 
 /* FADE */
 .fade{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
@@ -290,8 +290,7 @@ footer{padding:2.5rem 5rem;background:#2D5A4E;display:flex;justify-content:space
       Não como benefício. Como <strong>gestão baseada em dados.</strong>
     </p>
     <div class="hero-buttons fade fd3">
-      <a href="#plataforma" class="btn-p">Conhecer a plataforma</a>
-      <a href="https://wa.me/5511941918177" target="_blank" class="btn-o">Agendar uma conversa</a>
+          <a href="https://wa.me/5511941918177" target="_blank" class="btn-o">Agendar uma conversa</a>
     </div>
   </div>
 <div class="hero-right">
@@ -688,16 +687,36 @@ footer{padding:2.5rem 5rem;background:#2D5A4E;display:flex;justify-content:space
 </section>
 
 <!-- LEI -->
-<section style="padding:4.5rem 5rem;background:var(--offwhite);border-top:1px solid rgba(111,158,147,.12)">
-  <div class="lei-inner fade">
-    <div class="lei-badge">
-      <div class="lei-badge-num">Lei<br>14.831<br>/2024</div>
-      <div class="lei-badge-lbl">Contexto regulatório</div>
-    </div>
-    <div>
-      <div class="stag stag-v" style="margin-bottom:.5rem">No radar do mercado</div>
-      <div class="lei-title">Um ambiente regulatório favorável.</div>
-      <p class="lei-desc">A Lei 14.831/2024 reforça a saúde mental como prioridade nas empresas — criando um ambiente regulatório favorável para organizações que estruturam o cuidado de forma estratégica.</p>
+<section style="padding:5rem 5rem;background:var(--creme);border-top:1px solid rgba(111,158,147,.12);border-bottom:1px solid rgba(111,158,147,.12)">
+  <div style="max-width:960px;margin:0 auto">
+    <div class="fade" style="display:grid;grid-template-columns:auto 1fr;gap:4rem;align-items:center">
+      
+      <!-- Badge lei -->
+      <div style="background:#2D5A4E;padding:2rem 2.4rem;border-radius:4px;text-align:center;min-width:160px;flex-shrink:0">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem">Lei Federal</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:white;line-height:1.1">14.831<span style="font-size:1rem;color:var(--verde-nevoa)">/2024</span></div>
+        <div style="width:32px;height:1px;background:var(--dourado);margin:.8rem auto;opacity:.6"></div>
+        <div style="font-family:'Jost',sans-serif;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dourado)">Saúde Mental</div>
+      </div>
+
+      <!-- Conteúdo -->
+      <div>
+        <div class="stag stag-v" style="margin-bottom:.8rem">No radar do mercado</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:#2D5A4E;margin-bottom:1rem;line-height:1.3">Um ambiente regulatório favorável<br>para quem age agora.</h3>
+        <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:.88rem;color:var(--cinza);line-height:1.8;margin-bottom:1.4rem">A Lei 14.831/2024 institui o Certificado Empresa Promotora da Saúde Mental — reforçando a saúde mental como prioridade estratégica nas organizações. Empresas que estruturam o cuidado hoje saem na frente.</p>
+        <div style="display:flex;gap:2rem;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:.5rem;font-family:'Jost',sans-serif;font-size:.75rem;font-weight:300;color:#2D5A4E">
+            <span style="color:var(--dourado)">✦</span> Certificação nacional
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-family:'Jost',sans-serif;font-size:.75rem;font-weight:300;color:#2D5A4E">
+            <span style="color:var(--dourado)">✦</span> Diferencial competitivo ESG
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-family:'Jost',sans-serif;font-size:.75rem;font-weight:300;color:#2D5A4E">
+            <span style="color:var(--dourado)">✦</span> Conformidade regulatória
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -709,7 +728,6 @@ footer{padding:2.5rem 5rem;background:#2D5A4E;display:flex;justify-content:space
   <h2 class="cta-title fade fd1">Pronto para transformar saúde mental em <em>crescimento?</em></h2>
   <p class="cta-sub fade fd2">Agende uma conversa e veja a plataforma em ação, sem compromisso.</p>
  <div class="cta-buttons fade fd3">
-  <a href="#plataforma" class="btn-p">Conhecer a plataforma</a>
   <a href="mailto:rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">Agendar uma conversa</a>
   <a href="https://wa.me/5511941918177" target="_blank" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">📲 WhatsApp</a>
 </div>
