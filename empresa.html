@@ -813,6 +813,12 @@ body {
   font-size:16px; cursor:pointer; transition:all .2s;
 }
 .tb-notif:hover { background:var(--green-light); }
+.tb-logout {
+  width:36px; height:36px; border-radius:50%; background:var(--white);
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:15px; cursor:pointer; transition:all .2s; color:var(--muted);
+}
+.tb-logout:hover { background:#FEE2E2; border-color:#FECACA; color:#DC2626; }
 
 /* ══════ PÁGINAS ══════ */
 .col-page { display:none; padding:20px; }
@@ -2164,6 +2170,7 @@ body {
     <div class="tb-right">
       <span class="tb-user" id="tb-user-name">Olá!</span>
       <div class="tb-notif" onclick="toast('🔔 Sem novas notificações')">🔔</div>
+      <button class="tb-logout" onclick="doLogout()" title="Sair da conta">↩</button>
     </div>
   </div>
 
