@@ -3503,38 +3503,52 @@ async function setupPessoa() {
     const email = window._cadEmail;
     const senha = window._cadSenha;
 
+    if (!email || !senha) {
+      showAuthErr(errEl, 'Sessão expirada. Volte e preencha e-mail e senha novamente.');
+      btn.disabled = false; btn.textContent = 'Entrar na plataforma →';
+      return;
+    }
+
     // Cria usuário no Supabase Auth
     const { data: authData, error: authErr } = await db.auth.signUp({ email, password: senha });
-    if (authErr && !authErr.message?.includes('already')) throw authErr;
 
-    const userId = authData?.user?.id;
-    currentUser = authData?.user || { id: userId, email };
+    let userId = authData?.user?.id;
+
+    // Se o e-mail já existe, tenta fazer login para obter o userId
+    if (authErr?.message?.includes('already registered') || authErr?.message?.includes('already')) {
+      const { data: loginData, error: loginErr } = await db.auth.signInWithPassword({ email, password: senha });
+      if (loginErr) throw loginErr;
+      userId = loginData?.user?.id;
+      currentUser = loginData?.user;
+    } else {
+      if (authErr) throw authErr;
+      currentUser = authData?.user || { id: userId, email };
+    }
+
+    if (!userId) throw new Error('Não foi possível obter o ID do usuário.');
 
     // Verifica se tem código de empresa
-    let empresaId = null;
     if (codigo) {
-      const { data: emp } = await db.from('empresas').select('id').eq('codigo_acesso', codigo).single();
-      if (emp) {
-        empresaId = emp.id;
-        // Insere como colaborador
-        await db.from('colaboradores').insert({
-          user_id: userId, empresa_id: empresaId, nome, email, cpf
-        }).onConflict('user_id').ignore();
-        currentRole = 'colaborador';
-        showColaborador(nome);
-        toast('✅ Conta criada! Vinculado à empresa.');
-        return;
-      } else {
+      const { data: emp, error: empErr } = await db.from('empresas').select('id').eq('codigo_acesso', codigo).single();
+      if (empErr || !emp) {
         showAuthErr(errEl,'Código de empresa não encontrado. Verifique e tente novamente.');
         btn.disabled = false; btn.textContent = 'Entrar na plataforma →';
         return;
       }
+      // Upsert como colaborador (evita duplicata)
+      await db.from('colaboradores').upsert({
+        user_id: userId, empresa_id: emp.id, nome, email, cpf
+      }, { onConflict: 'user_id' });
+      currentRole = 'colaborador';
+      showColaborador(nome);
+      toast('✅ Conta criada! Vinculado à empresa.');
+      return;
     }
 
     // Pessoa física sem empresa
-    await db.from('colaboradores').insert({
+    await db.from('colaboradores').upsert({
       user_id: userId, nome, email, cpf, tipo: 'pessoa_fisica'
-    }).onConflict('user_id').ignore();
+    }, { onConflict: 'user_id' });
 
     currentRole = 'pessoa';
     showColaborador(nome);
