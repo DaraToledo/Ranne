@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ranne-v1';
+const CACHE_NAME = 'ranne-v2';
 const ASSETS = [
   '/empresa.html',
   '/logo.png',
