@@ -74,7 +74,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 
 /* ══════════ LOADING SCREEN ══════════ */
 #loading-screen {
-  position:fixed; inset:0; background:#0B1F2B; display:flex;
+  position:fixed; inset:0; background:#2D5A4E; display:flex;
   flex-direction:column; align-items:center; justify-content:center; z-index:9999;
 }
 #loading-screen .ls-brand { color:var(--mint); font-size:32px; font-weight:800; margin-bottom:32px; }
@@ -85,6 +85,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 }
 #loading-screen .ls-dot:nth-child(2) { animation-delay:0.2s; }
 #loading-screen .ls-dot:nth-child(3) { animation-delay:0.4s; }
+@keyframes fadeIn { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
 @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
 /* ══════════════════════════════════════
@@ -1459,7 +1460,7 @@ body {
 
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <div class="ls-brand">Ranne</div>
+  <img src="/logo.png" alt="Ranne" style="width:120px;height:120px;object-fit:contain;margin-bottom:32px;animation:fadeIn .5s ease both">
   <div class="ls-dots">
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
