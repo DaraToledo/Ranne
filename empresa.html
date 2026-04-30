@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link rel="manifest" href="/manifest.json">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0B1F2B">
@@ -6847,13 +6850,39 @@ function closeTip(e) {
   }
 }
 
-// REGISTRO DO SERVICE WORKER (PWA)
-// ─────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// SERVICE WORKER — Limpa cache antigo e registra novo
+// ══════════════════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('[PWA] Service Worker registrado:', reg.scope))
-      .catch(err => console.log('[PWA] Erro ao registrar SW:', err));
+  window.addEventListener('load', async () => {
+    try {
+      // 1. Limpar TODOS os caches — garante que nada antigo sobrevive
+      const cacheKeys = await caches.keys();
+      if (cacheKeys.length > 0) {
+        await Promise.all(cacheKeys.map(key => {
+          console.log('[PWA] Apagando cache antigo:', key);
+          return caches.delete(key);
+        }));
+        console.log('[PWA] Cache limpo com sucesso.');
+      }
+
+      // 2. Desregistrar qualquer SW antigo que possa estar cacheando HTML
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const reg of registrations) {
+        await reg.unregister();
+        console.log('[PWA] SW antigo desregistrado.');
+      }
+
+      // 3. Registrar o novo SW com updateViaCache: 'none'
+      //    (nunca usa cache para buscar o próprio sw.js)
+      const reg = await navigator.serviceWorker.register('/sw.js', {
+        updateViaCache: 'none'
+      });
+      console.log('[PWA] Novo SW registrado:', reg.scope);
+
+    } catch(err) {
+      console.log('[PWA] Erro SW:', err);
+    }
   });
 }
 
