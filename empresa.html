@@ -354,81 +354,147 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 /* ══════════ APP LAYOUT ══════════ */
 .app { display:none; min-height:100vh; }
 .layout { display:flex; min-height:100vh; }
+
+/* ── SIDEBAR PREMIUM ── */
 .sidebar {
-  width:var(--sidebar-w); background:#0B1F2B; display:flex; flex-direction:column;
+  width:var(--sidebar-w); background:#061318; display:flex; flex-direction:column;
   position:fixed; top:0; left:0; height:100vh; z-index:50;
-  border-right:1px solid rgba(255,255,255,0.05);
+  border-right:1px solid rgba(78,203,160,0.07);
   padding-top:var(--safe-top);
+  background-image: linear-gradient(180deg, #071A22 0%, #061318 60%, #040F14 100%);
 }
-.sb-header { padding:24px 20px 20px; border-bottom:1px solid rgba(255,255,255,0.06); }
-.sb-brand { color:var(--mint); font-size:20px; font-weight:800; letter-spacing:-0.5px; }
-.sb-tagline { color:rgba(255,255,255,0.3); font-size:10px; margin-top:2px; font-weight:500; letter-spacing:0.3px; }
-.sb-nav { flex:1; padding:16px 12px; overflow-y:auto; position:relative; }
-#nav-indicator { position:absolute; left:12px; right:12px; height:36px; background:rgba(78,203,160,0.1); border-radius:10px; transition:top 0.2s ease; pointer-events:none; z-index:0; }
-.sb-section { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:rgba(255,255,255,0.25); padding:4px 10px 6px; margin-top:10px; position:relative; z-index:1; }
+.sb-header {
+  padding:22px 18px 18px;
+  border-bottom:1px solid rgba(78,203,160,0.07);
+  display:flex; flex-direction:column; gap:4px;
+}
+.sb-logo-row { display:flex; align-items:center; gap:10px; }
+.sb-logo-mark {
+  width:30px; height:30px; border-radius:8px;
+  background:linear-gradient(135deg,#2D6A4F,#4ECBA0);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces',serif; font-size:14px; color:#fff; font-style:italic; font-weight:400;
+}
+.sb-brand { color:#fff; font-size:15px; font-weight:700; letter-spacing:-.3px; }
+.sb-tagline { color:rgba(255,255,255,0.22); font-size:9.5px; font-weight:500; letter-spacing:.4px; text-transform:uppercase; margin-left:40px; }
+.sb-plan-badge {
+  display:inline-flex; align-items:center; gap:5px; margin-top:8px;
+  background:rgba(78,203,160,.08); border:1px solid rgba(78,203,160,.18);
+  border-radius:99px; padding:3px 10px; width:fit-content;
+}
+.sb-plan-dot { width:5px; height:5px; border-radius:50%; }
+.sb-plan-dot.free { background:#94a3b8; }
+.sb-plan-dot.pro  { background:#4ECBA0; box-shadow:0 0 6px rgba(78,203,160,.6); }
+.sb-plan-text { font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
+.sb-plan-text.free { color:#94a3b8; }
+.sb-plan-text.pro  { color:#4ECBA0; }
+
+.sb-nav { flex:1; padding:12px 10px; overflow-y:auto; position:relative; }
+#nav-indicator {
+  position:absolute; left:10px; right:10px; height:36px;
+  background:linear-gradient(90deg,rgba(78,203,160,.12),rgba(78,203,160,.04));
+  border-left:2px solid rgba(78,203,160,.5);
+  border-radius:0 10px 10px 0; transition:top 0.25s cubic-bezier(.16,1,.3,1);
+  pointer-events:none; z-index:0;
+}
+.sb-section { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.4px; color:rgba(255,255,255,0.18); padding:4px 10px 6px; margin-top:12px; position:relative; z-index:1; }
 .sb-item {
-  display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px;
-  color:rgba(255,255,255,0.5); cursor:pointer; font-size:13px; font-weight:500;
-  transition:all 0.15s; margin-bottom:2px; position:relative; z-index:1;
+  display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px;
+  color:rgba(255,255,255,0.4); cursor:pointer; font-size:12.5px; font-weight:500;
+  transition:all 0.15s; margin-bottom:1px; position:relative; z-index:1;
 }
-.sb-item:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.85); }
-.sb-item.active { color:var(--mint); font-weight:600; }
-.sb-item .ic { width:18px; text-align:center; font-size:15px; flex-shrink:0; }
+.sb-item:hover { background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.8); }
+.sb-item.active { color:#4ECBA0; font-weight:600; }
+.sb-item .ic { width:18px; text-align:center; font-size:14px; flex-shrink:0; }
 .sb-badge { margin-left:auto; background:var(--red); color:#fff; font-size:9px; font-weight:700; padding:2px 6px; border-radius:99px; }
-.sb-footer { padding:16px; border-top:1px solid rgba(255,255,255,0.06); padding-bottom:calc(16px + var(--safe-bottom)); }
+.sb-footer {
+  padding:14px 16px; border-top:1px solid rgba(78,203,160,.07);
+  padding-bottom:calc(14px + var(--safe-bottom));
+}
 .sb-user { display:flex; align-items:center; gap:10px; }
-.sb-avatar { width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--mint),#2DAB80); display:flex; align-items:center; justify-content:center; color:#0B1F2B; font-weight:800; font-size:12px; flex-shrink:0; }
-.sb-uname { color:#fff; font-size:12px; font-weight:600; }
-.sb-urole { color:rgba(255,255,255,0.35); font-size:10px; }
-.sb-logout { margin-left:auto; color:rgba(255,255,255,0.3); cursor:pointer; font-size:16px; transition:color 0.2s; background:none; border:none; }
-.sb-logout:hover { color:var(--red); }
-.main { margin-left:var(--sidebar-w); flex:1; padding:32px 36px; min-height:100vh; }
+.sb-avatar {
+  width:32px; height:32px; border-radius:9px;
+  background:linear-gradient(135deg,#2D6A4F,#4ECBA0);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:800; font-size:11px; flex-shrink:0;
+}
+.sb-uname { color:rgba(255,255,255,.8); font-size:11.5px; font-weight:600; }
+.sb-urole { color:rgba(255,255,255,.28); font-size:9.5px; }
+.sb-logout { margin-left:auto; color:rgba(255,255,255,0.25); cursor:pointer; font-size:16px; transition:all 0.2s; background:none; border:none; padding:4px; border-radius:6px; }
+.sb-logout:hover { color:#EF4444; background:rgba(239,68,68,.1); }
+.main { margin-left:var(--sidebar-w); flex:1; padding:28px 32px; min-height:100vh; background:var(--bg); }
 
 /* ══════════ TOP BAR ══════════ */
-.topbar { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px; gap:16px; }
-.page-title { font-size:20px; font-weight:800; color:var(--text); letter-spacing:-0.3px; }
-.page-sub { color:var(--muted); font-size:13px; margin-top:3px; font-weight:400; }
-.dark-toggle { background:none; border:1.5px solid var(--border); border-radius:8px; padding:7px 10px; cursor:pointer; font-size:15px; color:var(--muted); transition:all 0.2s; }
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; gap:16px; }
+.page-title { font-size:19px; font-weight:800; color:var(--text); letter-spacing:-0.4px; }
+.page-sub { color:var(--muted); font-size:12.5px; margin-top:3px; font-weight:400; }
+.dark-toggle {
+  background:none; border:1px solid var(--border); border-radius:8px;
+  padding:7px 10px; cursor:pointer; font-size:14px; color:var(--muted); transition:all 0.2s;
+}
 .dark-toggle:hover { border-color:var(--mint); }
 
 /* ══════════ BUTTONS ══════════ */
-.btn { padding:9px 18px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; border:none; transition:all 0.15s; font-family:'Inter',sans-serif; }
-.btn-primary { background:var(--mint); color:#0B1F2B; }
-.btn-primary:hover { background:#3DB88E; box-shadow:0 4px 16px rgba(78,203,160,0.25); }
-.btn-primary:disabled { opacity:0.6; cursor:not-allowed; }
+.btn { padding:9px 18px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; border:none; transition:all 0.15s; font-family:'Inter',sans-serif; white-space:nowrap; }
+.btn-primary {
+  background:linear-gradient(135deg,#4ECBA0,#2DAB80);
+  color:#071A22;
+  box-shadow:0 2px 8px rgba(78,203,160,.25);
+}
+.btn-primary:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(78,203,160,.35); }
+.btn-primary:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
 .btn-outline { background:transparent; border:1.5px solid var(--mint); color:var(--mint); }
-.btn-outline:hover { background:var(--mint-light); }
-.btn-ghost { background:transparent; border:1.5px solid var(--border); color:var(--muted); }
-.btn-ghost:hover { background:#fff; color:var(--text); }
+.btn-outline:hover { background:rgba(78,203,160,.06); }
+.btn-ghost { background:transparent; border:1px solid var(--border); color:var(--muted); }
+.btn-ghost:hover { background:var(--white); color:var(--text); border-color:rgba(0,0,0,.12); }
 .btn-danger { background:#FEF2F2; border:1.5px solid #FECACA; color:var(--red); }
+.btn-pro {
+  background:linear-gradient(135deg,#C9A84C,#E8C97A);
+  color:#3D2800; font-weight:700;
+  box-shadow:0 2px 8px rgba(201,168,76,.3);
+}
+.btn-pro:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(201,168,76,.4); }
 .btn-sm { padding:6px 12px; font-size:12px; }
 .btn-lg { padding:13px 24px; font-size:14px; }
 
 /* ══════════ CARDS ══════════ */
-.card { background:var(--white); border-radius:16px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04); border:1px solid var(--border); }
-.card-sm { padding:18px; border-radius:14px; }
-.card-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-.card-title { font-size:14px; font-weight:700; color:var(--text); }
-.card-link { font-size:12px; color:var(--mint); font-weight:600; cursor:pointer; text-decoration:none; }
+.card {
+  background:var(--white); border-radius:16px; padding:22px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 20px rgba(0,0,0,.05);
+  border:1px solid var(--border);
+}
+.card-sm { padding:16px; border-radius:13px; }
+.card-hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+.card-title { font-size:13.5px; font-weight:700; color:var(--text); letter-spacing:-.1px; }
+.card-link { font-size:11.5px; color:var(--mint); font-weight:600; cursor:pointer; text-decoration:none; }
 .card-link:hover { text-decoration:underline; }
 
-/* ══════════ METRICS ══════════ */
+/* ══════════ METRICS PREMIUM ══════════ */
 .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
-.metric { background:var(--white); border-radius:14px; padding:20px; border:1px solid var(--border); box-shadow:0 1px 3px rgba(0,0,0,0.05); position:relative; overflow:hidden; }
-.metric::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
-.metric.m-green::before { background:var(--mint); }
-.metric.m-amber::before { background:var(--amber); }
-.metric.m-red::before { background:var(--red); }
-.metric.m-blue::before { background:#6366F1; }
-.metric-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); }
-.metric-value { font-size:30px; font-weight:800; margin:8px 0 4px; letter-spacing:-1px; line-height:1; }
+.metric {
+  background:var(--white); border-radius:16px; padding:20px;
+  border:1px solid var(--border);
+  box-shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04);
+  position:relative; overflow:hidden; transition:transform .2s, box-shadow .2s;
+}
+.metric:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.08); }
+.metric::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.metric.m-green::before { background:linear-gradient(90deg,#4ECBA0,#2DAB80); }
+.metric.m-amber::before { background:linear-gradient(90deg,#F59E0B,#D97706); }
+.metric.m-red::before { background:linear-gradient(90deg,#EF4444,#DC2626); }
+.metric.m-blue::before { background:linear-gradient(90deg,#818CF8,#6366F1); }
+.metric.m-purple::before { background:linear-gradient(90deg,#A78BFA,#7C3AED); }
+.metric-icon { font-size:18px; margin-bottom:10px; }
+.metric-label { font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); }
+.metric-value { font-size:30px; font-weight:800; margin:6px 0 4px; letter-spacing:-1.5px; line-height:1; }
 .metric-sub { font-size:11px; color:var(--muted); }
-.chip { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700; padding:3px 8px; border-radius:99px; margin-top:8px; }
+.chip { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700; padding:3px 9px; border-radius:99px; margin-top:8px; }
 .chip-green { background:#ECFDF5; color:#059669; }
 .chip-amber { background:#FFFBEB; color:#D97706; }
 .chip-red { background:#FEF2F2; color:#DC2626; }
 .chip-gray { background:#F1F5F9; color:#64748B; }
 .chip-purple { background:#F5F3FF; color:#7C3AED; }
+.chip-pro { background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(232,201,122,.12)); color:#9A7A30; border:1px solid rgba(201,168,76,.25); }
 .v-green { color:#059669; } .v-amber { color:#D97706; } .v-red { color:#DC2626; }
 
 /* SKELETON */
@@ -441,27 +507,94 @@ body.dark .skel { background:linear-gradient(90deg,#1E3344 25%,#243d52 50%,#1E33
 .skel-big { height:38px; margin:14px 0; }
 
 /* SCORES */
-.score-item { margin-bottom:18px; }
-.score-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.score-name { font-size:13px; font-weight:500; color:var(--text); display:flex; align-items:center; gap:6px; }
-.score-num { font-size:14px; font-weight:800; }
-.bar-track { background:#F1F5F9; border-radius:99px; height:7px; overflow:hidden; }
-.bar-fill { height:7px; border-radius:99px; transition:width 0.8s ease; }
+.score-item { margin-bottom:16px; }
+.score-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; }
+.score-name { font-size:12.5px; font-weight:500; color:var(--text); display:flex; align-items:center; gap:6px; }
+.score-num { font-size:13px; font-weight:800; }
+.bar-track { background:#F1F5F9; border-radius:99px; height:6px; overflow:hidden; }
+.bar-fill { height:6px; border-radius:99px; transition:width 1s cubic-bezier(.16,1,.3,1); }
 .fill-green { background:linear-gradient(90deg,#4ECBA0,#2DAB80); }
 .fill-amber { background:linear-gradient(90deg,#F59E0B,#D97706); }
 .fill-red { background:linear-gradient(90deg,#EF4444,#DC2626); }
 
 /* ALERTS */
-.alert { display:flex; gap:12px; padding:14px; border-radius:12px; margin-bottom:10px; }
+.alert { display:flex; gap:12px; padding:14px 16px; border-radius:12px; margin-bottom:10px; align-items:flex-start; }
 .alert-crit { background:#FEF2F2; border:1px solid #FECACA; }
 .alert-warn { background:#FFFBEB; border:1px solid #FDE68A; }
 .alert-info { background:#EFF6FF; border:1px solid #BFDBFE; }
-.alert-icon { font-size:18px; flex-shrink:0; }
+.alert-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
 .alert-body strong { display:block; font-size:13px; font-weight:700; margin-bottom:2px; }
-.alert-body span { font-size:12px; color:var(--muted); }
+.alert-body span { font-size:11.5px; color:var(--muted); }
+.alert-action { display:flex; gap:6px; margin-top:8px; }
+.alert-btn { font-size:11px; font-weight:700; padding:4px 10px; border-radius:6px; cursor:pointer; border:none; font-family:'Inter',sans-serif; transition:all .15s; }
+.alert-btn-pri { background:#EF4444; color:#fff; }
+.alert-btn-sec { background:transparent; border:1px solid #FECACA; color:#DC2626; }
 
 /* DASHBOARD GRID */
-.dash-grid { display:grid; grid-template-columns:1fr 320px; gap:18px; margin-bottom:24px; }
+.dash-grid { display:grid; grid-template-columns:1fr 300px; gap:16px; margin-bottom:20px; }
+
+/* ══ PRO GATE (blur/lock) ══ */
+.pro-gate {
+  position:relative; border-radius:16px; overflow:hidden;
+}
+.pro-gate-overlay {
+  position:absolute; inset:0; z-index:10;
+  background:rgba(255,255,255,.65);
+  backdrop-filter:blur(6px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; border-radius:16px; border:1px solid rgba(201,168,76,.2);
+}
+body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
+.pro-gate-icon { font-size:28px; }
+.pro-gate-title { font-size:14px; font-weight:800; color:var(--text); text-align:center; }
+.pro-gate-sub { font-size:11.5px; color:var(--muted); text-align:center; max-width:200px; }
+
+/* ══ ISA (Índice de Saúde) ══ */
+.isa-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:16px; }
+.isa-card {
+  background:var(--white); border-radius:12px; padding:14px 10px; text-align:center;
+  border:1px solid var(--border); box-shadow:0 1px 6px rgba(0,0,0,.04); transition:transform .2s;
+}
+.isa-card:hover { transform:translateY(-2px); }
+.isa-card-icon { font-size:20px; margin-bottom:6px; }
+.isa-card-val { font-size:20px; font-weight:900; letter-spacing:-1px; margin-bottom:2px; }
+.isa-card-lbl { font-size:9px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+
+/* ══ STATUS TIME ══ */
+.status-team { display:flex; flex-direction:column; gap:8px; }
+.st-row {
+  display:flex; align-items:center; gap:12px; padding:12px 14px;
+  background:var(--white); border-radius:12px; border:1px solid var(--border);
+  transition:all .2s;
+}
+.st-row:hover { border-color:rgba(78,203,160,.25); box-shadow:0 2px 10px rgba(0,0,0,.05); }
+.st-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.st-dot.green { background:#10B981; box-shadow:0 0 0 3px rgba(16,185,129,.15); }
+.st-dot.amber { background:#F59E0B; box-shadow:0 0 0 3px rgba(245,158,11,.15); }
+.st-dot.red   { background:#EF4444; box-shadow:0 0 0 3px rgba(239,68,68,.15); }
+.st-setor { flex:1; font-size:12.5px; font-weight:600; color:var(--text); }
+.st-status { font-size:11px; color:var(--muted); }
+.st-score { font-size:12px; font-weight:800; }
+
+/* ══ ACOMPANHAMENTO ══ */
+.acomp-row {
+  display:flex; align-items:center; gap:12px; padding:12px 0;
+  border-bottom:1px solid var(--border);
+}
+.acomp-row:last-child { border-bottom:none; }
+.acomp-avatar {
+  width:32px; height:32px; border-radius:9px; font-size:11px; font-weight:800;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#fff;
+}
+.acomp-name { font-size:12.5px; font-weight:600; color:var(--text); }
+.acomp-sub { font-size:11px; color:var(--muted); }
+.acomp-pill {
+  margin-left:auto; font-size:10px; font-weight:700; padding:4px 10px;
+  border-radius:99px; white-space:nowrap; flex-shrink:0;
+}
+.acomp-ativo { background:#FFFBEB; color:#D97706; }
+.acomp-alto  { background:#FEF2F2; color:#DC2626; }
+.acomp-ok    { background:#ECFDF5; color:#059669; }
 
 /* DIAGNÓSTICOS */
 .diag-item {
@@ -682,6 +815,44 @@ body.dark .skel { background:linear-gradient(90deg,#1E3344 25%,#243d52 50%,#1E33
 #install-banner .ib-btn { background:var(--mint); color:#0B1F2B; border:none; padding:10px 18px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
 #install-banner .ib-close { color:rgba(255,255,255,0.3); background:none; border:none; font-size:20px; cursor:pointer; padding:0 4px; }
 
+
+/* BADGES CIENTÍFICOS NO APP */
+.sci-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  background:rgba(78,203,160,.06); border:1px solid rgba(78,203,160,.14);
+  border-radius:4px; padding:3px 9px;
+  font-size:9.5px; font-weight:600; letter-spacing:.3px; color:var(--mint);
+  cursor:default; transition:all .2s;
+}
+.sci-badge:hover { background:rgba(78,203,160,.1); }
+.sci-badge::before { content:'⬡'; font-size:8px; opacity:.6; }
+
+.sci-strip {
+  display:flex; gap:6px; flex-wrap:wrap; padding:10px 0 14px;
+  border-bottom:1px solid var(--border); margin-bottom:20px;
+}
+
+/* Rodapé científico */
+.sci-footer {
+  background:linear-gradient(135deg,#040F14,#071A22);
+  border-radius:14px; padding:18px 20px; margin-top:24px;
+  border:1px solid rgba(78,203,160,.08);
+}
+.sci-footer-title {
+  font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px;
+  color:rgba(78,203,160,.5); margin-bottom:12px;
+}
+.sci-refs { display:flex; flex-direction:column; gap:6px; }
+.sci-ref {
+  display:flex; gap:10px; align-items:flex-start;
+  padding:8px 10px; border-radius:8px;
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.05);
+}
+.sci-ref-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.sci-ref-body {}
+.sci-ref-fonte { font-size:9.5px; font-weight:700; color:rgba(78,203,160,.7); letter-spacing:.3px; }
+.sci-ref-desc { font-size:11px; color:rgba(255,255,255,.35); line-height:1.5; margin-top:2px; }
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .page-sub { display:none; }
@@ -813,12 +984,6 @@ body {
   font-size:16px; cursor:pointer; transition:all .2s;
 }
 .tb-notif:hover { background:var(--green-light); }
-.tb-logout {
-  width:36px; height:36px; border-radius:50%; background:var(--white);
-  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
-  font-size:15px; cursor:pointer; transition:all .2s; color:var(--muted);
-}
-.tb-logout:hover { background:#FEE2E2; border-color:#FECACA; color:#DC2626; }
 
 /* ══════ PÁGINAS ══════ */
 .col-page { display:none; padding:20px; }
@@ -1277,6 +1442,399 @@ body {
 .fc-text { font-size:13px; color:var(--text); line-height:1.6; }
 .fc-tag { display:inline-block; margin-top:8px; background:var(--green-light); color:var(--green); font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; }
 
+/* ══════════════════════════════════════
+   TELA DE BOAS-VINDAS
+   ══════════════════════════════════════ */
+#boas-vindas {
+  display:none;
+  position:fixed; inset:0; z-index:9000;
+  background:#040E14;
+  align-items:center; justify-content:center;
+  flex-direction:column;
+  overflow:hidden;
+}
+#boas-vindas.show { display:flex; }
+#bv-canvas {
+  position:absolute; inset:0; pointer-events:none;
+}
+.bv-orb {
+  position:absolute; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(45,106,79,.35) 0%, transparent 65%);
+}
+.bv-orb1 { width:420px; height:420px; top:-80px; right:-60px; }
+.bv-orb2 { width:300px; height:300px; bottom:-60px; left:-40px;
+  background:radial-gradient(circle,rgba(78,203,160,.12) 0%,transparent 65%); }
+
+.bv-inner {
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center;
+  text-align:center; padding:0 36px; gap:0;
+}
+.bv-mark {
+  width:56px; height:56px; border-radius:16px;
+  background:linear-gradient(135deg,#2D6A4F,#4ECBA0);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:28px;
+  opacity:0; transform:scale(.7);
+  animation:bvPop .6s .2s cubic-bezier(.16,1,.3,1) forwards;
+  box-shadow:0 8px 32px rgba(78,203,160,.3);
+}
+.bv-mark svg { width:26px; height:26px; }
+@keyframes bvPop { to{opacity:1;transform:scale(1)} }
+
+.bv-hi {
+  font-size:13px; font-weight:500; letter-spacing:.1em;
+  color:rgba(78,203,160,.7); text-transform:uppercase;
+  margin-bottom:10px;
+  opacity:0; transform:translateY(14px);
+  animation:bvUp .6s .45s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes bvUp { to{opacity:1;transform:translateY(0)} }
+
+.bv-nome {
+  font-family:'Fraunces',serif; font-size:42px; font-weight:400;
+  color:#fff; font-style:italic; line-height:1.05; letter-spacing:-1px;
+  margin-bottom:14px;
+  opacity:0; transform:translateY(18px);
+  animation:bvUp .65s .6s cubic-bezier(.16,1,.3,1) forwards;
+}
+.bv-tagline {
+  font-size:14px; font-weight:300; color:rgba(255,255,255,.38);
+  letter-spacing:.04em; line-height:1.6; max-width:240px;
+  margin-bottom:40px;
+  opacity:0; transform:translateY(14px);
+  animation:bvUp .65s .75s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+/* Slides de features */
+.bv-features {
+  display:flex; flex-direction:column; gap:10px; width:100%; max-width:300px;
+  margin-bottom:44px;
+}
+.bv-feat {
+  display:flex; align-items:center; gap:14px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
+  border-radius:14px; padding:14px 16px;
+  opacity:0; transform:translateX(-16px);
+}
+.bv-feat:nth-child(1) { animation:bvSlide .55s .9s cubic-bezier(.16,1,.3,1) forwards; }
+.bv-feat:nth-child(2) { animation:bvSlide .55s 1.05s cubic-bezier(.16,1,.3,1) forwards; }
+.bv-feat:nth-child(3) { animation:bvSlide .55s 1.2s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes bvSlide { to{opacity:1;transform:translateX(0)} }
+
+.bv-feat-icon {
+  width:38px; height:38px; border-radius:10px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:18px;
+}
+.bv-feat-body strong { display:block; font-size:13px; font-weight:700; color:#fff; margin-bottom:2px; }
+.bv-feat-body span { font-size:11px; color:rgba(255,255,255,.35); }
+
+.bv-btn {
+  width:100%; max-width:300px; padding:16px;
+  border-radius:14px; border:none;
+  background:linear-gradient(135deg,#2D6A4F,#4ECBA0);
+  color:#fff; font-size:15px; font-weight:700;
+  font-family:'Inter',sans-serif; cursor:pointer;
+  transition:all .2s;
+  box-shadow:0 4px 24px rgba(78,203,160,.25);
+  opacity:0; transform:translateY(12px);
+  animation:bvUp .55s 1.45s cubic-bezier(.16,1,.3,1) forwards;
+}
+.bv-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(78,203,160,.4); }
+
+.bv-skip {
+  font-size:11px; color:rgba(255,255,255,.22); cursor:pointer;
+  margin-top:16px; letter-spacing:.05em;
+  opacity:0; animation:bvUp .4s 1.6s ease forwards;
+  background:none; border:none; font-family:'Inter',sans-serif;
+}
+.bv-skip:hover { color:rgba(255,255,255,.5); }
+
+/* Barra de loading no fundo */
+.bv-loader-bar {
+  position:absolute; bottom:0; left:0; right:0; height:2px;
+  background:rgba(255,255,255,.05);
+}
+.bv-loader-fill {
+  height:2px; background:linear-gradient(90deg,#2D6A4F,#4ECBA0);
+  width:0%; transition:width .1s linear;
+}
+
+/* Transição de saída */
+#boas-vindas.leaving {
+  animation:bvFadeOut .55s cubic-bezier(.4,0,1,1) forwards;
+}
+@keyframes bvFadeOut {
+  to { opacity:0; transform:scale(1.04); }
+}
+
+/* ══════════════════════════════════════
+   INÍCIO REDESENHADO — COLABORADOR
+   ══════════════════════════════════════ */
+
+/* Topbar premium do colaborador */
+.col-topbar {
+  position:sticky; top:0; z-index:50;
+  background:rgba(242,237,230,.92); backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(26,46,32,.07);
+  padding:calc(14px + var(--safe-top)) 20px 14px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.tb-logo {
+  font-family:'Fraunces',serif; font-size:22px;
+  color:var(--green); font-style:italic; letter-spacing:-.3px;
+}
+.tb-right { display:flex; align-items:center; gap:8px; }
+.tb-user { font-size:12px; color:var(--muted); font-weight:500; }
+.tb-notif {
+  width:36px; height:36px; border-radius:50%; background:var(--white);
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:15px; cursor:pointer; transition:all .2s;
+}
+.tb-notif:hover { background:var(--green-light); }
+.tb-logout {
+  width:36px; height:36px; border-radius:50%; background:var(--white);
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:14px; cursor:pointer; transition:all .2s; color:var(--muted);
+}
+.tb-logout:hover { background:#FEE2E2; border-color:#FECACA; color:#DC2626; }
+
+/* ── Hero inicio ── */
+.inicio-hero {
+  margin:-0px -20px 0; /* flush com as bordas */
+  padding:28px 22px 32px;
+  background:linear-gradient(160deg,#071A22 0%,#0D2B1E 55%,#112920 100%);
+  position:relative; overflow:hidden;
+}
+.inicio-hero::before {
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 85% 20%,rgba(78,203,160,.14) 0%,transparent 55%),
+    radial-gradient(ellipse at 10% 90%,rgba(45,106,79,.12) 0%,transparent 50%);
+}
+.inicio-hero::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:20px 20px;
+}
+.ih-top {
+  position:relative; z-index:1;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:24px;
+}
+.ih-greeting-hi {
+  font-size:11px; font-weight:600; letter-spacing:.1em;
+  color:rgba(78,203,160,.65); text-transform:uppercase; margin-bottom:4px;
+}
+.ih-greeting-name {
+  font-family:'Fraunces',serif; font-size:28px; color:#fff;
+  font-style:italic; letter-spacing:-.5px; line-height:1.1;
+}
+.ih-greeting-day {
+  font-size:12px; color:rgba(255,255,255,.35); margin-top:4px; font-weight:400;
+}
+.ih-streak {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  border-radius:12px; padding:10px 14px; flex-shrink:0;
+}
+.ih-streak-num { font-size:20px; font-weight:900; color:#F59E0B; letter-spacing:-1px; }
+.ih-streak-lbl { font-size:8px; font-weight:700; color:rgba(255,255,255,.3); text-transform:uppercase; letter-spacing:.5px; }
+
+/* Score ring hero */
+.ih-score-wrap {
+  position:relative; z-index:1;
+  display:flex; align-items:center; gap:20px;
+}
+.ih-ring { position:relative; width:96px; height:96px; flex-shrink:0; }
+.ih-ring svg { width:96px; height:96px; transform:rotate(-90deg); }
+.ih-ring-track { fill:none; stroke:rgba(255,255,255,.08); stroke-width:7; }
+.ih-ring-fill {
+  fill:none; stroke:#52B788; stroke-width:7; stroke-linecap:round;
+  stroke-dasharray:263; stroke-dashoffset:263;
+  animation:ihFill 1.4s .4s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes ihFill { to { stroke-dashoffset: var(--ih-offset, 66); } }
+.ih-ring-inner {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.ih-score-num {
+  font-size:26px; font-weight:900; color:#fff; letter-spacing:-1.5px; line-height:1;
+}
+.ih-score-lbl {
+  font-size:8px; font-weight:700; color:rgba(255,255,255,.35);
+  text-transform:uppercase; letter-spacing:.6px; margin-top:2px;
+}
+.ih-score-info { flex:1; }
+.ih-score-title {
+  font-size:15px; font-weight:700; color:#fff; margin-bottom:5px; line-height:1.3;
+}
+.ih-score-sub { font-size:12px; color:rgba(255,255,255,.4); margin-bottom:10px; }
+.ih-score-chip {
+  display:inline-flex; align-items:center; gap:5px;
+  border-radius:99px; padding:5px 12px; font-size:11px; font-weight:700;
+}
+.ih-chip-good { background:rgba(82,183,136,.18); border:1px solid rgba(82,183,136,.3); color:#52B788; }
+.ih-chip-warn { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.3); color:#F59E0B; }
+.ih-chip-bad  { background:rgba(239,68,68,.15);  border:1px solid rgba(239,68,68,.3);  color:#EF4444; }
+
+/* Mini dimensões hero */
+.ih-dims {
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:1fr 1fr 1fr 1fr;
+  gap:8px; margin-top:20px;
+}
+.ih-dim {
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.09);
+  border-radius:12px; padding:12px 8px; text-align:center;
+  backdrop-filter:blur(8px);
+}
+.ih-dim-name { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:rgba(255,255,255,.35); margin-bottom:6px; }
+.ih-dim-val  { font-size:20px; font-weight:900; letter-spacing:-1px; line-height:1; margin-bottom:4px; }
+.ih-dim-bar  { height:3px; border-radius:99px; background:rgba(255,255,255,.1); overflow:hidden; }
+.ih-dim-fill { height:3px; border-radius:99px; animation:growW 1s ease both; }
+.ihv-green { color:#52B788; } .ihv-amber { color:#F59E0B; } .ihv-red { color:#EF4444; }
+.ihf-green { background:#52B788; } .ihf-amber { background:#F59E0B; } .ihf-red { background:#EF4444; }
+
+/* Ações rápidas (body da página) */
+.inicio-body { padding:20px; }
+
+.acoes-title {
+  font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px;
+  color:var(--muted); margin-bottom:12px; margin-top:4px;
+}
+
+/* Action cards 2x1 */
+.acao-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.acao-card {
+  border-radius:16px; padding:18px 16px; border:1px solid transparent;
+  cursor:pointer; transition:all .2s; position:relative; overflow:hidden;
+}
+.acao-card:hover { transform:translateY(-2px); }
+.acao-card:active { transform:scale(.97); }
+.acao-card-icon { font-size:24px; margin-bottom:10px; display:block; }
+.acao-card-title { font-size:13px; font-weight:700; line-height:1.3; margin-bottom:3px; }
+.acao-card-sub { font-size:11px; line-height:1.4; opacity:.65; }
+.acao-card-arr { position:absolute; bottom:14px; right:14px; font-size:16px; opacity:.4; }
+
+.acao-qusp {
+  background:linear-gradient(135deg,#071A22,#0D2B1E);
+  border-color:rgba(78,203,160,.2);
+}
+.acao-qusp .acao-card-title { color:#fff; }
+.acao-qusp .acao-card-sub { color:rgba(255,255,255,.55); }
+.acao-qusp .acao-card-arr { color:#4ECBA0; opacity:.6; }
+
+.acao-checkin {
+  background:linear-gradient(135deg,#1A4A35,#245C43);
+  border-color:rgba(82,183,136,.2);
+}
+.acao-checkin .acao-card-title { color:#fff; }
+.acao-checkin .acao-card-sub { color:rgba(255,255,255,.55); }
+.acao-checkin .acao-card-arr { color:#52B788; opacity:.6; }
+
+/* Seção insights */
+.insight-section { margin-bottom:16px; }
+.ins-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.ins-title { font-size:13.5px; font-weight:700; color:var(--text); }
+.ins-link { font-size:11px; font-weight:600; color:var(--green); cursor:pointer; }
+
+.ins-card {
+  background:var(--white); border-radius:14px; padding:16px;
+  border:1px solid var(--border); margin-bottom:10px;
+  box-shadow:0 1px 6px rgba(0,0,0,.04);
+  display:flex; gap:12px; align-items:flex-start;
+  animation:pgIn .4s ease both;
+}
+.ins-icon {
+  width:38px; height:38px; border-radius:10px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:17px;
+}
+.ins-body { flex:1; }
+.ins-from { font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.ins-when { font-size:10px; color:var(--muted); margin-bottom:6px; }
+.ins-text { font-size:12.5px; color:var(--text); line-height:1.55; }
+.ins-pill {
+  display:inline-block; margin-top:8px;
+  border-radius:99px; padding:3px 10px; font-size:10px; font-weight:700;
+}
+
+/* Pausa card */
+.pausa-card {
+  background:linear-gradient(135deg,#F0E6D3,#E8D9C4);
+  border-radius:16px; padding:18px 20px; border:1px solid rgba(180,140,100,.2);
+  display:flex; align-items:center; gap:14px; margin-bottom:16px;
+  cursor:pointer; transition:all .2s;
+}
+.pausa-card:hover { transform:translateX(3px); }
+.pausa-card-icon { font-size:28px; flex-shrink:0; }
+.pausa-card-body strong { display:block; font-size:13px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.pausa-card-body span { font-size:11px; color:var(--muted); }
+.pausa-card-arr { margin-left:auto; font-size:18px; color:rgba(180,140,100,.5); }
+/* ══════ QUSP — QUESTIONÁRIO ══════ */
+.qusp-hero {
+  background:linear-gradient(135deg,#071A22 0%,#0D2B1E 100%);
+  border-radius:20px; padding:26px 22px; text-align:center; margin-bottom:20px;
+  position:relative; overflow:hidden;
+}
+.qusp-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% -20%,rgba(78,203,160,.1),transparent 60%); }
+.qusp-eyebrow { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(78,203,160,.6); margin-bottom:8px; position:relative; }
+.qusp-title { font-family:'Fraunces',serif; font-size:20px; color:#fff; font-style:italic; margin-bottom:6px; line-height:1.3; position:relative; }
+.qusp-sub { font-size:12px; color:rgba(255,255,255,.45); position:relative; margin-bottom:16px; }
+.qusp-anon { display:inline-flex; align-items:center; gap:6px; position:relative; background:rgba(78,203,160,.08); border:1px solid rgba(78,203,160,.2); border-radius:99px; padding:5px 14px; font-size:11px; color:rgba(78,203,160,.9); font-weight:600; }
+.qusp-progress-wrap { margin-bottom:16px; }
+.qusp-progress-info { display:flex; justify-content:space-between; margin-bottom:6px; }
+.qusp-progress-lbl { font-size:11px; font-weight:700; color:var(--muted); }
+.qusp-progress-pct { font-size:11px; font-weight:700; color:var(--green); }
+.qusp-progress-track { height:6px; background:var(--border); border-radius:99px; overflow:hidden; }
+.qusp-progress-fill { height:6px; border-radius:99px; background:linear-gradient(90deg,#2D6A4F,#52B788); transition:width .5s cubic-bezier(.16,1,.3,1); }
+.qusp-block-label { display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; background:rgba(45,106,79,.08); border:1px solid rgba(45,106,79,.15); border-radius:99px; padding:4px 12px; font-size:10px; font-weight:700; color:var(--green); }
+.qusp-question { font-size:15px; font-weight:700; color:var(--text); margin-bottom:16px; line-height:1.5; }
+.qusp-scale { display:flex; flex-direction:column; gap:8px; }
+.qusp-opt { display:flex; align-items:center; gap:12px; padding:13px 16px; background:#F7F4EF; border-radius:12px; border:1.5px solid transparent; cursor:pointer; transition:all .18s; font-size:13px; color:var(--text); font-weight:500; }
+.qusp-opt:hover { background:var(--green-light); border-color:rgba(45,106,79,.2); }
+.qusp-opt.sel { background:var(--green-light); border-color:var(--green); color:var(--green); font-weight:700; }
+.qusp-opt-dot { width:18px; height:18px; border-radius:50%; border:2px solid rgba(45,106,79,.3); flex-shrink:0; transition:all .18s; display:flex; align-items:center; justify-content:center; }
+.qusp-opt.sel .qusp-opt-dot { background:var(--green); border-color:var(--green); }
+.qusp-opt.sel .qusp-opt-dot::after { content:'\2713'; font-size:9px; font-weight:900; color:#fff; }
+.qusp-opt-val { font-size:10px; color:var(--muted); margin-left:auto; flex-shrink:0; }
+.qusp-opt.sel .qusp-opt-val { color:var(--green); }
+.qusp-nav { display:flex; gap:10px; margin-top:20px; }
+.btn-qusp-back { flex:0; padding:13px 18px; border-radius:12px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .18s; }
+.btn-qusp-back:hover { background:var(--white); color:var(--text); }
+.btn-qusp-next { flex:1; padding:13px; border-radius:12px; border:none; background:var(--green); color:#fff; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .18s; box-shadow:0 4px 14px rgba(45,106,79,.3); }
+.btn-qusp-next:hover { background:#245C43; transform:translateY(-1px); }
+.btn-qusp-next:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+.qusp-result-hero { background:linear-gradient(135deg,#071A22 0%,#0D2B1E 100%); border-radius:20px; padding:28px 22px; text-align:center; margin-bottom:16px; position:relative; overflow:hidden; }
+.qusp-result-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% -20%,rgba(78,203,160,.12),transparent 60%); }
+.qr-eye { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(78,203,160,.55); margin-bottom:10px; position:relative; }
+.qr-name { font-family:'Fraunces',serif; font-size:22px; color:#fff; font-style:italic; margin-bottom:4px; position:relative; }
+.qr-perfil { font-size:13px; color:rgba(255,255,255,.55); position:relative; margin-bottom:20px; }
+.qr-ring-wrap { position:relative; width:100px; height:100px; margin:0 auto 16px; }
+.qr-ring-wrap svg { width:100px; height:100px; transform:rotate(-90deg); }
+.qr-track { fill:none; stroke:rgba(255,255,255,.08); stroke-width:8; }
+.qr-fill { fill:none; stroke-width:8; stroke-linecap:round; stroke-dasharray:251; transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1); }
+.qr-inner { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.qr-score { font-size:28px; font-weight:900; letter-spacing:-2px; line-height:1; }
+.qr-score-lbl { font-size:9px; color:rgba(255,255,255,.4); margin-top:2px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
+.qr-risk-badge { display:inline-flex; align-items:center; gap:6px; position:relative; border-radius:99px; padding:6px 16px; font-size:12px; font-weight:700; }
+.qr-risk-baixo { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.3); color:#52B788; }
+.qr-risk-medio { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.3); color:#F59E0B; }
+.qr-risk-alto  { background:rgba(239,68,68,.15); border:1px solid rgba(239,68,68,.3); color:#EF4444; }
+.qr-bloco { background:var(--white); border-radius:14px; padding:16px; border:1px solid var(--border); margin-bottom:10px; box-shadow:0 1px 6px rgba(0,0,0,.04); }
+.qr-bloco-hdr { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.qr-bloco-icon { font-size:18px; flex-shrink:0; }
+.qr-bloco-name { font-size:12.5px; font-weight:700; color:var(--text); }
+.qr-bloco-score { margin-left:auto; font-size:16px; font-weight:900; }
+.qr-bloco-bar { height:5px; border-radius:99px; background:var(--border); overflow:hidden; margin-bottom:8px; }
+.qr-bloco-fill { height:5px; border-radius:99px; transition:width 1s cubic-bezier(.16,1,.3,1); }
+.qr-bloco-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+.qr-bloco-insight { font-size:12px; color:var(--text); line-height:1.55; font-style:italic; margin-top:8px; padding:10px 12px; background:#F7F4EF; border-radius:8px; border-left:3px solid var(--green); }
+.qr-pro-card { background:linear-gradient(135deg,#3D2800,#4A3500); border:1px solid rgba(201,168,76,.3); border-radius:14px; padding:18px; margin-bottom:10px; }
+.qr-pro-title { font-size:13.5px; font-weight:700; color:#E8C97A; margin-bottom:6px; }
+.qr-pro-sub { font-size:12px; color:rgba(232,201,122,.55); line-height:1.5; margin-bottom:14px; }
 /* ══════ CHECK-IN ══════ */
 .checkin-hero {
   background:linear-gradient(135deg,var(--green) 0%,#1A4A35 100%);
@@ -1802,8 +2360,15 @@ body {
     <div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
     <aside class="sidebar" id="mainSidebar">
       <div class="sb-header">
-        <div class="sb-brand">Ranne</div>
+        <div class="sb-logo-row">
+          <div class="sb-logo-mark">R</div>
+          <div class="sb-brand">Ranne</div>
+        </div>
         <div class="sb-tagline">Saúde Mental Corporativa</div>
+        <div class="sb-plan-badge" id="sb-plan-badge">
+          <div class="sb-plan-dot free" id="sb-plan-dot"></div>
+          <span class="sb-plan-text free" id="sb-plan-text">Plano Free</span>
+        </div>
       </div>
       <nav class="sb-nav" id="sbNav">
         <div id="nav-indicator"></div>
@@ -1834,44 +2399,286 @@ body {
         <div class="topbar">
           <div style="display:flex;align-items:center;gap:12px;">
             <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
-            <div><div class="page-title" id="dash-greeting">Olá 👋</div><div class="page-sub" id="dash-sub">Carregando dados...</div></div>
+            <div>
+              <div class="page-title" id="dash-greeting">Olá 👋</div>
+              <div class="page-sub" id="dash-sub">Carregando dados...</div>
+            </div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <button class="dark-toggle" id="darkBtn" onclick="toggleDark()">🌙</button>
-            <button class="btn btn-primary" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
+            <button class="btn btn-primary btn-sm" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
           </div>
         </div>
-        <!-- Skeleton -->
-        <div id="skelWrap" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+
+        <!-- SKELETON -->
+        <div id="skelWrap" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
         </div>
+
         <div id="realMetrics" style="display:none;">
-          <div class="metrics">
-            <div class="metric m-amber"><div class="metric-label">Score Geral</div><div class="metric-value v-amber"><span class="count-up" data-target="68">0</span></div><div class="metric-sub">de 100 pontos</div><span class="chip chip-amber">⚠ Atenção</span></div>
-            <div class="metric m-blue"><div class="metric-label">Último Diagnóstico</div><div class="metric-value" style="font-size:17px;margin-top:10px" id="last-diag-date">—</div><span class="chip chip-gray" id="last-diag-status">Nenhum</span></div>
-            <div class="metric m-green"><div class="metric-label">Taxa de Resposta</div><div class="metric-value v-green"><span class="count-up" data-target="84" data-suffix="%">0%</span></div><div class="metric-sub" id="taxa-sub">— colaboradores</div></div>
-            <div class="metric m-amber"><div class="metric-label">Plano de Ação</div><div class="metric-value" style="font-size:18px;margin-top:8px"><span id="acoes-progresso">0 / 0</span></div><div class="metric-sub">ações concluídas</div><span class="chip chip-amber" id="acoes-pct">0%</span></div>
+
+
+          <!-- Badges científicos -->
+          <div class="sci-strip">
+            <span class="sci-badge">CID-11 · OMS</span>
+            <span class="sci-badge">MBI · Maslach</span>
+            <span class="sci-badge">Tecnoestresse · Tarafdar</span>
+            <span class="sci-badge">Segurança Psicológica · Harvard</span>
+            <span class="sci-badge">Lei 14.831/2024</span>
+            <span class="sci-badge">Neurociência do Sono · Walker</span>
           </div>
-        </div>
-        <div class="dash-grid">
-          <div class="card">
-            <div class="card-hdr"><span class="card-title">Score por Dimensão</span><a class="card-link" onclick="pg('progresso',null)">Ver histórico →</a></div>
-            <div class="score-item"><div class="score-row"><span class="score-name">🏛️ Cultura Organizacional</span><span class="score-num v-green">76</span></div><div class="bar-track"><div class="bar-fill fill-green" style="width:76%"></div></div></div>
-            <div class="score-item"><div class="score-row"><span class="score-name">👤 Liderança e Gestão</span><span class="score-num v-amber">62</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:62%"></div></div></div>
-            <div class="score-item"><div class="score-row"><span class="score-name">⚡ Carga de Trabalho</span><span class="score-num v-red">54</span></div><div class="bar-track"><div class="bar-fill fill-red" style="width:54%"></div></div></div>
-            <div class="score-item"><div class="score-row"><span class="score-name">🌡️ Clima e Relacionamentos</span><span class="score-num v-amber">71</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:71%"></div></div></div>
-            <div style="margin-top:18px"><button class="btn btn-primary btn-sm" onclick="pg('plano',null)">Ver Plano de Ação →</button></div>
+
+          <!-- ══ ALERTA INTELIGENTE (sempre visível) ══ -->
+          <div class="alert alert-crit" style="margin-bottom:16px;border-radius:14px;padding:16px 18px;">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-body" style="flex:1">
+              <strong>Alerta: aumento de sinais de estresse na equipe Comercial nos últimos 7 dias.</strong>
+              <span>Colaboradores com alta pontuação em Burnout têm 60% mais chance de pedir demissão em 90 dias.</span>
+              <div class="alert-action">
+                <button class="alert-btn alert-btn-pri" onclick="toast('📋 Abrindo detalhes do alerta...')">Ver detalhes</button>
+                <button class="alert-btn alert-btn-sec" onclick="toast('🎯 Sugestão de ação gerada!')">Sugerir ação</button>
+              </div>
+            </div>
+            <span class="chip chip-red" style="align-self:flex-start;margin-top:0">Alta Prioridade</span>
           </div>
-          <div class="card">
-            <div class="card-hdr"><span class="card-title">🔔 Alertas Prioritários</span></div>
-            <div class="alert alert-crit"><div class="alert-icon">🔴</div><div class="alert-body"><strong>Carga de Trabalho crítica — 54</strong><span>Risco elevado de burnout no time</span></div></div>
-            <div class="alert alert-warn"><div class="alert-icon">🟡</div><div class="alert-body"><strong>Liderança abaixo da meta — 62</strong><span>Feedback e 1:1s precisam de atenção</span></div></div>
-            <div class="alert alert-warn"><div class="alert-icon">🟡</div><div class="alert-body"><strong>Clima em queda (−5 pts)</strong><span>Comparado ao diagnóstico anterior</span></div></div>
+
+          <!-- ══ MÉTRICAS PRINCIPAIS (Free) ══ -->
+          <div style="margin-bottom:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Visão Geral — Plano Free</div>
+          <div class="metrics" style="margin-bottom:20px;">
+            <div class="metric m-amber">
+              <div class="metric-icon">🧠</div>
+              <div class="metric-label">Score Geral</div>
+              <div class="metric-value v-amber"><span class="count-up" data-target="68">0</span></div>
+              <div class="metric-sub">de 100 pontos</div>
+              <span class="chip chip-amber">⚠ Atenção</span>
+            </div>
+            <div class="metric m-blue">
+              <div class="metric-icon">👥</div>
+              <div class="metric-label">Colaboradores Ativos</div>
+              <div class="metric-value"><span class="count-up" data-target="48">0</span></div>
+              <div class="metric-sub" id="taxa-sub">responderam ao QUSP</div>
+            </div>
+            <div class="metric m-red">
+              <div class="metric-icon">🔴</div>
+              <div class="metric-label">Em Risco Elevado</div>
+              <div class="metric-value v-red"><span class="count-up" data-target="3">0</span></div>
+              <div class="metric-sub">intervenção imediata</div>
+              <span class="chip chip-red">Crítico</span>
+            </div>
+            <div class="metric m-green">
+              <div class="metric-icon">📈</div>
+              <div class="metric-label">Taxa de Resposta</div>
+              <div class="metric-value v-green"><span class="count-up" data-target="84" data-suffix="%">0%</span></div>
+              <div class="metric-sub">equipe engajada</div>
+            </div>
           </div>
-        </div>
+
+          <!-- ══ ISA — ÍNDICE DE SAÚDE ORGANIZACIONAL ══ -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div>
+              <div style="font-size:13.5px;font-weight:700;color:var(--text)">Índice de Saúde Organizacional</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">Baseado no QUSP — última atualização: hoje</div>
+            </div>
+          </div>
+          <div class="isa-grid" style="margin-bottom:20px;">
+            <div class="isa-card">
+              <div class="isa-card-icon">🔥</div>
+              <div class="isa-card-val v-red">54</div>
+              <div class="isa-card-lbl">Burnout</div>
+            </div>
+            <div class="isa-card">
+              <div class="isa-card-icon">⚡</div>
+              <div class="isa-card-val v-amber">62</div>
+              <div class="isa-card-lbl">Estresse</div>
+            </div>
+            <div class="isa-card">
+              <div class="isa-card-icon">🌙</div>
+              <div class="isa-card-val v-amber">58</div>
+              <div class="isa-card-lbl">Sono</div>
+            </div>
+            <div class="isa-card">
+              <div class="isa-card-icon">🤝</div>
+              <div class="isa-card-val v-green">74</div>
+              <div class="isa-card-lbl">Social</div>
+            </div>
+            <div class="isa-card" style="border:1.5px solid rgba(78,203,160,.25);background:linear-gradient(135deg,rgba(78,203,160,.04),rgba(45,106,79,.03))">
+              <div class="isa-card-icon">🏥</div>
+              <div class="isa-card-val" style="font-size:16px;font-weight:900;color:#2D5A4E">62</div>
+              <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
+            </div>
+          </div>
+
+          <!-- ══ GRID PRINCIPAL ══ -->
+          <div class="dash-grid">
+
+            <!-- Score por Dimensão + Scores -->
+            <div class="card">
+              <div class="card-hdr">
+                <span class="card-title">📊 Score por Dimensão (QUSP)</span>
+                <a class="card-link" onclick="pg('progresso',null)">Histórico →</a>
+              </div>
+              <div class="score-item"><div class="score-row"><span class="score-name">🔥 Burnout</span><span class="score-num v-red">54</span></div><div class="bar-track"><div class="bar-fill fill-red" style="width:54%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">⚡ Estresse Físico</span><span class="score-num v-amber">62</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:62%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">🌙 Sono & Fadiga Digital</span><span class="score-num v-amber">58</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:58%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">🤝 Ansiedade Social</span><span class="score-num v-green">74</span></div><div class="bar-track"><div class="bar-fill fill-green" style="width:74%"></div></div></div>
+              <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+                <button class="btn btn-primary btn-sm" onclick="pg('plano',null)">Ver Plano de Ação →</button>
+              </div>
+            </div>
+
+            <!-- Painel Direito -->
+            <div style="display:flex;flex-direction:column;gap:14px;">
+
+              <!-- Status por setor (Free) -->
+              <div class="card card-sm">
+                <div class="card-hdr" style="margin-bottom:12px;">
+                  <span class="card-title">Como está o time</span>
+                </div>
+                <div class="status-team">
+                  <div class="st-row"><div class="st-dot amber"></div><span class="st-setor">Comercial</span><span class="st-status">Atenção</span><span class="st-score v-amber">61</span></div>
+                  <div class="st-row"><div class="st-dot green"></div><span class="st-setor">Financeiro</span><span class="st-status">Estável</span><span class="st-score v-green">78</span></div>
+                  <div class="st-row"><div class="st-dot red"></div><span class="st-setor">Operacional</span><span class="st-status">Crítico</span><span class="st-score v-red">47</span></div>
+                </div>
+              </div>
+
+              <!-- Acompanhamento -->
+              <div class="card card-sm">
+                <div class="card-hdr" style="margin-bottom:10px;">
+                  <span class="card-title">Acompanhamento</span>
+                  <a class="card-link" onclick="toast('👥 Abrindo lista completa...')">Ver todos</a>
+                </div>
+                <div class="acomp-row">
+                  <div class="acomp-avatar" style="background:#F59E0B">AS</div>
+                  <div><div class="acomp-name">Ana Souza</div><div class="acomp-sub">Burnout alto · Comercial</div></div>
+                  <span class="acomp-pill acomp-ativo">🟡 Ativo</span>
+                </div>
+                <div class="acomp-row">
+                  <div class="acomp-avatar" style="background:#EF4444">JL</div>
+                  <div><div class="acomp-name">João Lima</div><div class="acomp-sub">Estresse crítico · Ops</div></div>
+                  <span class="acomp-pill acomp-alto">🔴 Alta Prio.</span>
+                </div>
+                <div class="acomp-row">
+                  <div class="acomp-avatar" style="background:#10B981">CM</div>
+                  <div><div class="acomp-name">Carla Mendes</div><div class="acomp-sub">Recuperação positiva</div></div>
+                  <span class="acomp-pill acomp-ok">🟢 Finalizado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ SEÇÃO PRO — HEATMAP + PREVISÃO TURNOVER ══ -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+
+            <!-- Heatmap por Setor (PRO GATE) -->
+            <div class="pro-gate">
+              <div class="card" style="min-height:200px;">
+                <div class="card-hdr"><span class="card-title">🗺️ Heatmap por Setor</span><span class="chip chip-pro">✦ Pro</span></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;opacity:.4">
+                  <div style="background:#FEF2F2;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#DC2626">TI</div><div style="font-size:18px;font-weight:900;color:#DC2626">80%</div><div style="font-size:9px;color:var(--muted)">Fadiga Digital</div></div>
+                  <div style="background:#FFFBEB;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#D97706">Comercial</div><div style="font-size:18px;font-weight:900;color:#D97706">70%</div><div style="font-size:9px;color:var(--muted)">Ansiedade Social</div></div>
+                  <div style="background:#ECFDF5;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#059669">RH</div><div style="font-size:18px;font-weight:900;color:#059669">82%</div><div style="font-size:9px;color:var(--muted)">Score Saudável</div></div>
+                  <div style="background:#FEF2F2;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#DC2626">Ops</div><div style="font-size:18px;font-weight:900;color:#DC2626">47%</div><div style="font-size:9px;color:var(--muted)">Burnout Alto</div></div>
+                </div>
+              </div>
+              <div class="pro-gate-overlay">
+                <div class="pro-gate-icon">🔒</div>
+                <div class="pro-gate-title">Heatmap por Setor</div>
+                <div class="pro-gate-sub">Veja qual setor está em risco agora</div>
+                <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade para Pro — em breve!')">Fazer upgrade</button>
+              </div>
+            </div>
+
+            <!-- Previsão de Turnover (PRO GATE) -->
+            <div class="pro-gate">
+              <div class="card" style="min-height:200px;">
+                <div class="card-hdr"><span class="card-title">📉 Previsão de Turnover</span><span class="chip chip-pro">✦ Pro</span></div>
+                <div style="opacity:.4">
+                  <div style="background:#FEF2F2;border-radius:12px;padding:14px;margin-bottom:10px">
+                    <div style="font-size:11px;font-weight:700;color:#DC2626;margin-bottom:4px">⚠ Risco Alto — próx. 90 dias</div>
+                    <div style="font-size:12px;color:var(--muted)">Colaboradores com cinismo elevado (Bloco 1) têm <strong style="color:var(--text)">60%</strong> mais chance de pedir demissão</div>
+                  </div>
+                  <div style="font-size:12px;color:var(--muted)">Colaboradores em risco identificados: <strong style="color:#DC2626">4</strong></div>
+                </div>
+              </div>
+              <div class="pro-gate-overlay">
+                <div class="pro-gate-icon">🔒</div>
+                <div class="pro-gate-title">Previsão de Turnover IA</div>
+                <div class="pro-gate-sub">Antecipe demissões com 90 dias de antecedência</div>
+                <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade para Pro — em breve!')">Fazer upgrade</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ══ RELATÓRIO RH ══ -->
+          <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,#0B1F2B,#112230);">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div>
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:6px">📋 Relatório Mensal para RH</div>
+                <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Relatório de Abril 2026 disponível</div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Engajamento: <strong style="color:#4ECBA0">78%</strong></span>
+                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Evolução: <strong style="color:#4ECBA0">positiva</strong></span>
+                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Atenção: <strong style="color:#F59E0B">equipe comercial</strong></span>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-sm" style="background:rgba(78,203,160,.15);color:#4ECBA0;border:1px solid rgba(78,203,160,.25)" onclick="toast('📥 Baixando relatório...')">⬇ Baixar</button>
+                <button class="btn btn-sm" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)" onclick="toast('📤 Compartilhando com liderança...')">↗ Compartilhar</button>
+              </div>
+            </div>
+            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:rgba(255,255,255,.3);font-style:italic">
+              "A Ranne Care transforma dados emocionais em decisões estratégicas para o RH."
+            </div>
+          </div>
+
+
+          <!-- ══ BASE CIENTÍFICA ══ -->
+          <div class="sci-footer">
+            <div class="sci-footer-title">📚 Fundamentação Científica — Ranne Care</div>
+            <div class="sci-refs">
+              <div class="sci-ref">
+                <div class="sci-ref-icon">🧪</div>
+                <div class="sci-ref-body">
+                  <div class="sci-ref-fonte">OMS · CID-11 · código QD85</div>
+                  <div class="sci-ref-desc">Burnout classificado como fenômeno ocupacional pela OMS. Nossas avaliações seguem os critérios da CID-11 para identificação de riscos ocupacionais.</div>
+                </div>
+              </div>
+              <div class="sci-ref">
+                <div class="sci-ref-icon">📊</div>
+                <div class="sci-ref-body">
+                  <div class="sci-ref-fonte">Maslach & Jackson (1981) · MBI</div>
+                  <div class="sci-ref-desc">O QUSP é baseado no Inventário de Maslach — padrão-ouro mundial para medição de esgotamento profissional em três dimensões.</div>
+                </div>
+              </div>
+              <div class="sci-ref">
+                <div class="sci-ref-icon">💻</div>
+                <div class="sci-ref-body">
+                  <div class="sci-ref-fonte">Tarafdar et al. (2007) · JMIS</div>
+                  <div class="sci-ref-desc">Módulo de Fadiga Digital fundamentado em pesquisa de tecnoestresse: impacto da transformação digital na saúde mental ocupacional.</div>
+                </div>
+              </div>
+              <div class="sci-ref">
+                <div class="sci-ref-icon">🔬</div>
+                <div class="sci-ref-body">
+                  <div class="sci-ref-fonte">Edmondson, Harvard (1999) · Projeto Aristóteles, Google</div>
+                  <div class="sci-ref-desc">Intervenções de RH baseadas em segurança psicológica — o fator número 1 para equipes de alta performance, segundo Harvard e Google.</div>
+                </div>
+              </div>
+              <div class="sci-ref">
+                <div class="sci-ref-icon">💰</div>
+                <div class="sci-ref-body">
+                  <div class="sci-ref-fonte">Deloitte UK (2020) · ROI em Saúde Mental</div>
+                  <div class="sci-ref-desc">Para cada £1 investido em saúde mental dos funcionários, retorno médio de £5. Harvard Business Review: US$125–190bi/ano em custos de burnout nos EUA.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /realMetrics -->
       </div>
 
       <!-- DIAGNÓSTICOS -->
@@ -2161,11 +2968,60 @@ body {
   </div>
 </div>
 
+
+<!-- ══════════ BOAS-VINDAS ══════════ -->
+<div id="boas-vindas">
+  <canvas id="bv-canvas"></canvas>
+  <div class="bv-orb bv-orb1"></div>
+  <div class="bv-orb bv-orb2"></div>
+  <div class="bv-loader-bar"><div class="bv-loader-fill" id="bv-loader"></div></div>
+
+  <div class="bv-inner">
+    <div class="bv-mark">
+      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 20V8C6 6.9 6.9 6 8 6H13C15.8 6 18 8.2 18 11C18 13.8 15.8 16 13 16H10" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M10 16L14 20" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="bv-hi">Bem-vindo(a) ao Ranne</div>
+    <div class="bv-nome" id="bv-nome">Colaborador</div>
+    <div class="bv-tagline">Seu espaço de cuidado e autoconhecimento no trabalho.</div>
+
+    <div class="bv-features">
+      <div class="bv-feat">
+        <div class="bv-feat-icon" style="background:rgba(78,203,160,.12)">🧠</div>
+        <div class="bv-feat-body">
+          <strong>QUSP — Diagnóstico Pessoal</strong>
+          <span>Entenda seu nível de bem-estar em 5 minutos</span>
+        </div>
+      </div>
+      <div class="bv-feat">
+        <div class="bv-feat-icon" style="background:rgba(82,183,136,.1)">✅</div>
+        <div class="bv-feat-body">
+          <strong>Check-in Semanal</strong>
+          <span>Acompanhe seu humor, energia e foco</span>
+        </div>
+      </div>
+      <div class="bv-feat">
+        <div class="bv-feat-icon" style="background:rgba(240,230,211,.1)">🌿</div>
+        <div class="bv-feat-body">
+          <strong>Descompressão Guiada</strong>
+          <span>Respiração e pausas para resetar a mente</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="bv-btn" onclick="fecharBoasVindas()">Entrar no app →</button>
+    <button class="bv-skip" onclick="fecharBoasVindas()">Pular introdução</button>
+  </div>
+</div>
+
 <!-- ══════════ APP COLABORADOR ══════════ -->
 <div id="app-colaborador" style="display:none">
 
   <!-- TOPO -->
-  <div class="topbar">
+  <div class="col-topbar">
     <div class="tb-logo">Ranne</div>
     <div class="tb-right">
       <span class="tb-user" id="tb-user-name">Olá!</span>
@@ -2177,90 +3033,123 @@ body {
   <!-- ── INÍCIO ── -->
   <div class="col-page active" id="cp-inicio">
 
-    <div class="greeting" style="margin-top:4px">
-      <div class="greeting-hi">Bom dia,</div>
-      <div class="greeting-name" id="greeting-name">Colaborador</div>
-    </div>
-
-    <!-- Score individual -->
-    <div class="score-hero">
-      <div class="score-ring-container">
-        <svg viewBox="0 0 140 140">
-          <circle class="sr-track" cx="70" cy="70" r="60"/>
-          <circle class="sr-fill" id="score-ring" cx="70" cy="70" r="60" stroke="#52B788" style="--offset:94"/>
-        </svg>
-        <div class="sr-text">
-          <div class="sr-num" id="score-num">76</div>
-          <div class="sr-lbl">Score</div>
-        </div>
-      </div>
-      <div class="score-title">Seu bem-estar esta semana</div>
-      <div class="score-sub">Baseado nos seus últimos check-ins</div>
-      <div class="score-chip chip-good" id="score-chip">✨ Você está bem!</div>
-    </div>
-
-    <!-- Mini dimensões -->
-    <div class="mini-dims">
-      <div class="mini-dim">
-        <div class="md-name">Humor</div>
-        <div class="md-val cv-green">82</div>
-        <div class="md-bar"><div class="md-fill cf-green" style="width:82%"></div></div>
-      </div>
-      <div class="mini-dim">
-        <div class="md-name">Energia</div>
-        <div class="md-val cv-amber">64</div>
-        <div class="md-bar"><div class="md-fill cf-amber" style="width:64%;animation-delay:.2s"></div></div>
-      </div>
-      <div class="mini-dim">
-        <div class="md-name">Carga</div>
-        <div class="md-val cv-amber">58</div>
-        <div class="md-bar"><div class="md-fill cf-amber" style="width:58%;animation-delay:.4s"></div></div>
-      </div>
-      <div class="mini-dim">
-        <div class="md-name">Foco</div>
-        <div class="md-val cv-green">79</div>
-        <div class="md-bar"><div class="md-fill cf-green" style="width:79%;animation-delay:.6s"></div></div>
-      </div>
-    </div>
-
-    <!-- Feedbacks recebidos -->
-    <div class="sec-row">
-      <div class="sec-title">Feedbacks para você</div>
-      <span class="sec-link" onclick="toast('Em breve — todos os feedbacks')">Ver todos</span>
-    </div>
-    <div class="feedback-card">
-      <div class="fc-meta">
-        <div class="fc-icon" style="background:#E8F2EC">💬</div>
+    <!-- Hero escuro com score integrado -->
+    <div class="inicio-hero">
+      <div class="ih-top">
         <div>
-          <div class="fc-from">Plataforma Ranne</div>
-          <div class="fc-when">Hoje, 09:00</div>
+          <div class="ih-greeting-hi" id="ih-periodo">Bom dia</div>
+          <div class="ih-greeting-name" id="ih-nome">Colaborador</div>
+          <div class="ih-greeting-day" id="ih-data">Carregando...</div>
+        </div>
+        <div class="ih-streak">
+          <div class="ih-streak-num">4</div>
+          <div class="ih-streak-lbl">semanas</div>
         </div>
       </div>
-      <div class="fc-text">Seu engajamento com os check-ins tem sido ótimo! Isso ajuda muito o seu time a entender como está o clima geral.</div>
-      <span class="fc-tag">Reconhecimento</span>
-    </div>
-    <div class="feedback-card">
-      <div class="fc-meta">
-        <div class="fc-icon" style="background:#FEF3C7">🎯</div>
-        <div>
-          <div class="fc-from">Dica personalizada</div>
-          <div class="fc-when">Ontem</div>
+
+      <div class="ih-score-wrap">
+        <div class="ih-ring">
+          <svg viewBox="0 0 96 96">
+            <circle class="ih-ring-track" cx="48" cy="48" r="42"/>
+            <circle class="ih-ring-fill" id="ih-ring-fill" cx="48" cy="48" r="42" style="--ih-offset:66"/>
+          </svg>
+          <div class="ih-ring-inner">
+            <div class="ih-score-num" id="ih-score-num">76</div>
+            <div class="ih-score-lbl">score</div>
+          </div>
+        </div>
+        <div class="ih-score-info">
+          <div class="ih-score-title">Seu bem-estar<br>esta semana</div>
+          <div class="ih-score-sub">Baseado nos seus check-ins</div>
+          <div class="ih-score-chip ih-chip-good" id="ih-chip">✨ Você está bem</div>
         </div>
       </div>
-      <div class="fc-text">Você indicou carga alta na semana passada. Que tal experimentar a respiração 4-7-8 hoje? Leva só 2 minutos.</div>
-      <span class="fc-tag" style="background:#FEF3C7;color:#92400E">Sugestão</span>
+
+      <div class="ih-dims">
+        <div class="ih-dim">
+          <div class="ih-dim-name">Humor</div>
+          <div class="ih-dim-val ihv-green">82</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-green" style="width:82%"></div></div>
+        </div>
+        <div class="ih-dim">
+          <div class="ih-dim-name">Energia</div>
+          <div class="ih-dim-val ihv-amber">64</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-amber" style="width:64%;animation-delay:.15s"></div></div>
+        </div>
+        <div class="ih-dim">
+          <div class="ih-dim-name">Carga</div>
+          <div class="ih-dim-val ihv-amber">58</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-amber" style="width:58%;animation-delay:.3s"></div></div>
+        </div>
+        <div class="ih-dim">
+          <div class="ih-dim-name">Foco</div>
+          <div class="ih-dim-val ihv-green">79</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-green" style="width:79%;animation-delay:.45s"></div></div>
+        </div>
+      </div>
     </div>
 
-    <!-- CTA check-in -->
-    <div class="card-base" style="background:linear-gradient(135deg,#E8F2EC,#D4EDDF);border-color:rgba(45,106,79,.15);text-align:center;padding:22px">
-      <div style="font-size:28px;margin-bottom:10px">😊</div>
-      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px">Fazer check-in desta semana</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Leva menos de 2 minutos</div>
-      <button onclick="cpg('checkin')" style="background:var(--green);color:#fff;border:none;padding:11px 24px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">Fazer agora →</button>
+    <!-- Body da página -->
+    <div class="inicio-body">
+
+      <div class="acoes-title">Ações rápidas</div>
+      <div class="acao-grid">
+        <div class="acao-card acao-qusp" onclick="cpg('qusp')">
+          <span class="acao-card-icon">🧠</span>
+          <div class="acao-card-title">Fazer QUSP</div>
+          <div class="acao-card-sub">20 perguntas · 5 min</div>
+          <span class="acao-card-arr">→</span>
+        </div>
+        <div class="acao-card acao-checkin" onclick="cpg('checkin')">
+          <span class="acao-card-icon">✅</span>
+          <div class="acao-card-title">Check-in semanal</div>
+          <div class="acao-card-sub">Rápido · 2 min</div>
+          <span class="acao-card-arr">→</span>
+        </div>
+      </div>
+
+      <!-- Pausa -->
+      <div class="pausa-card" onclick="cpg('decomp')">
+        <div class="pausa-card-icon">🌿</div>
+        <div class="pausa-card-body">
+          <strong>Momento de pausa</strong>
+          <span>Respiração guiada · 2 min para resetar</span>
+        </div>
+        <div class="pausa-card-arr">›</div>
+      </div>
+
+      <!-- Insights / Feedbacks -->
+      <div class="insight-section">
+        <div class="ins-header">
+          <div class="ins-title">Para você</div>
+          <span class="ins-link" onclick="toast('Em breve — todos os insights')">Ver todos</span>
+        </div>
+
+        <div class="ins-card">
+          <div class="ins-icon" style="background:#E8F2EC">💬</div>
+          <div class="ins-body">
+            <div class="ins-from">Plataforma Ranne</div>
+            <div class="ins-when">Hoje, 09:00</div>
+            <div class="ins-text">Seu engajamento com os check-ins tem sido ótimo! Isso ajuda muito o seu time a entender o clima geral.</div>
+            <span class="ins-pill" style="background:#E8F2EC;color:#2D6A4F">Reconhecimento</span>
+          </div>
+        </div>
+
+        <div class="ins-card" style="animation-delay:.1s">
+          <div class="ins-icon" style="background:#FEF3C7">🎯</div>
+          <div class="ins-body">
+            <div class="ins-from">Dica personalizada</div>
+            <div class="ins-when">Ontem</div>
+            <div class="ins-text">Você indicou carga alta na semana passada. Que tal experimentar a respiração 4-7-8 hoje? Leva só 2 minutos.</div>
+            <span class="ins-pill" style="background:#FEF3C7;color:#92400E">Sugestão</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- ── CHECK-IN ── -->
+    <!-- ── CHECK-IN ── -->
   <div class="col-page" id="cp-checkin">
 
     <div class="checkin-hero">
@@ -2472,11 +3361,85 @@ body {
     </div>
   </div>
 
+
+  <!-- ── QUSP ── -->
+  <div class="col-page" id="cp-qusp">
+    <div class="qusp-hero">
+      <div class="qusp-eyebrow">QUSP — Questionário Unificado de Saúde</div>
+      <div class="qusp-title">Como você está, de verdade?</div>
+      <div class="qusp-sub">Responda considerando como você se sentiu na última semana.</div>
+      <div class="qusp-anon">🔒 Seus dados individuais são protegidos</div>
+    </div>
+
+    <!-- Progresso -->
+    <div class="qusp-progress-wrap">
+      <div class="qusp-progress-info">
+        <span class="qusp-progress-lbl" id="qusp-prog-lbl">Pergunta 1 de 20</span>
+        <span class="qusp-progress-pct" id="qusp-prog-pct">5%</span>
+      </div>
+      <div class="qusp-progress-track"><div class="qusp-progress-fill" id="qusp-prog-fill" style="width:5%"></div></div>
+    </div>
+
+    <!-- Pergunta atual -->
+    <div class="card-base" style="background:var(--white);border-radius:18px;padding:22px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:12px;">
+      <div class="qusp-block-label" id="qusp-bloco-label">🔥 Burnout & Exaustão</div>
+      <div class="qusp-question" id="qusp-question-text">Sinto que minhas baterias estão "zeradas" antes mesmo de começar o dia de trabalho.</div>
+      <div class="qusp-scale" id="qusp-scale">
+        <div class="qusp-opt" onclick="qusp_select(this,0)"><div class="qusp-opt-dot"></div><span>Nunca</span><span class="qusp-opt-val">0 pts</span></div>
+        <div class="qusp-opt" onclick="qusp_select(this,1)"><div class="qusp-opt-dot"></div><span>Raramente</span><span class="qusp-opt-val">1 pt</span></div>
+        <div class="qusp-opt" onclick="qusp_select(this,2)"><div class="qusp-opt-dot"></div><span>Às vezes</span><span class="qusp-opt-val">2 pts</span></div>
+        <div class="qusp-opt" onclick="qusp_select(this,3)"><div class="qusp-opt-dot"></div><span>Frequentemente</span><span class="qusp-opt-val">3 pts</span></div>
+        <div class="qusp-opt" onclick="qusp_select(this,4)"><div class="qusp-opt-dot"></div><span>Sempre / Diariamente</span><span class="qusp-opt-val">4 pts</span></div>
+      </div>
+    </div>
+
+    <div class="qusp-nav">
+      <button class="btn-qusp-back" id="qusp-btn-back" onclick="qusp_prev()" style="display:none">← Voltar</button>
+      <button class="btn-qusp-next" id="qusp-btn-next" onclick="qusp_next()" disabled>Próxima →</button>
+    </div>
+  </div>
+
+  <!-- ── RESULTADO QUSP ── -->
+  <div class="col-page" id="cp-qusp-resultado">
+    <div class="qusp-result-hero">
+      <div class="qr-eye" id="qr-eye">QUSP — Seu Resultado Personalizado</div>
+      <div class="qr-name" id="qr-name">Seu Perfil foi analisado</div>
+      <div class="qr-perfil" id="qr-perfil">Baseado em protocolos clínicos validados</div>
+      <div class="qr-ring-wrap">
+        <svg viewBox="0 0 100 100">
+          <circle class="qr-track" cx="50" cy="50" r="40"/>
+          <circle class="qr-fill" id="qr-ring-fill" cx="50" cy="50" r="40" stroke="#52B788"/>
+        </svg>
+        <div class="qr-inner">
+          <div class="qr-score" id="qr-score-val" style="color:#52B788">—</div>
+          <div class="qr-score-lbl">/ 80</div>
+        </div>
+      </div>
+      <div class="qr-risk-badge" id="qr-risk-badge" style="display:none"></div>
+    </div>
+
+    <!-- Blocos de resultado -->
+    <div id="qr-blocos"></div>
+
+    <!-- Pro Gate — Relatório Completo -->
+    <div class="qr-pro-card">
+      <div class="qr-pro-title">✦ Relatório Pro — Análise Clínica Completa</div>
+      <div class="qr-pro-sub">O que o psicólogo diria sobre seus resultados, plano de ação personalizado e PDF para compartilhar com seu médico/terapeuta.</div>
+      <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade Pro — em breve!')">Desbloquear relatório completo</button>
+    </div>
+
+    <button onclick="cpg('inicio')" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;">Voltar ao início</button>
+  </div>
+
   <!-- NAV INFERIOR -->
   <nav class="col-nav">
     <div class="cn-item active" id="cn-inicio" onclick="cpg('inicio')">
       <span class="cn-icon">🏠</span>
       <span class="cn-label">Início</span>
+    </div>
+    <div class="cn-item" id="cn-qusp" onclick="cpg('qusp')">
+      <span class="cn-icon">🧠</span>
+      <span class="cn-label">QUSP</span>
     </div>
     <div class="cn-item" id="cn-checkin" onclick="cpg('checkin')">
       <span class="cn-icon">✅</span>
@@ -2610,6 +3573,10 @@ function showColaborador(nome) {
   document.getElementById('app-colaborador').style.display = 'block';
   const nameEl = document.getElementById('collab-user-name');
   if (nameEl) nameEl.textContent = nome;
+  // Atualiza tela inicial
+  atualizarInicioColaborador(nome);
+  // Mostra boas-vindas (só na 1ª vez do dia)
+  setTimeout(() => mostrarBoasVindas(nome), 400);
 }
 
 /* ── EMPRESA FUNCTIONS ── */
@@ -3618,6 +4585,14 @@ function cpg(id) {
   document.querySelectorAll('.cn-item').forEach(i => i.classList.remove('active'));
   const navItem = document.getElementById('cn-' + id);
   if (navItem) navItem.classList.add('active');
+
+  // Inicializa QUSP do zero quando abre
+  if (id === 'qusp') {
+    qusp_atual = 0;
+    qusp_resps = new Array(20).fill(null);
+    qusp_selecionado = null;
+    qusp_render();
+  }
 }
 
 /* ── CANVAS PARTÍCULAS ── */
@@ -3688,6 +4663,303 @@ function cpg(id) {
 
 
 // ─────────────────────────────────────
+
+/* ══════════════════════════════════════
+   QUSP — QUESTIONÁRIO UNIFICADO SAÚDE
+   ══════════════════════════════════════ */
+
+const QUSP_PERGUNTAS = [
+  // Bloco 1: Burnout
+  { bloco: '🔥 Burnout & Exaustão', q: 'Sinto que minhas baterias estão "zeradas" antes mesmo de começar o dia de trabalho.' },
+  { bloco: '🔥 Burnout & Exaustão', q: 'Tenho dificuldade em me importar com o que acontece com meus colegas de trabalho.' },
+  { bloco: '🔥 Burnout & Exaustão', q: 'Sinto que meu trabalho não tem o impacto ou o valor que costumava ter.' },
+  { bloco: '🔥 Burnout & Exaustão', q: 'Sinto que estou trabalhando "no automático", sem entusiasmo ou criatividade.' },
+  { bloco: '🔥 Burnout & Exaustão', q: 'Fico irritado ou impaciente com facilidade por questões pequenas no trabalho.' },
+  // Bloco 2: Estresse
+  { bloco: '⚡ Estresse & Reações Físicas', q: 'Sinto tensões musculares constantes (costas, ombros ou pescoço) durante o expediente.' },
+  { bloco: '⚡ Estresse & Reações Físicas', q: 'Tenho episódios de dor de cabeça ou desconforto gástrico relacionados à pressão do trabalho.' },
+  { bloco: '⚡ Estresse & Reações Físicas', q: 'Sinto que meu coração acelera ou minha respiração fica curta em momentos de cobrança.' },
+  { bloco: '⚡ Estresse & Reações Físicas', q: 'Tenho dificuldade em me desligar do trabalho, mesmo estando em casa ou no lazer.' },
+  { bloco: '⚡ Estresse & Reações Físicas', q: 'Sinto que qualquer tarefa nova, por menor que seja, parece um peso impossível de carregar.' },
+  // Bloco 3: Sono
+  { bloco: '🌙 Sono & Fadiga Digital', q: 'Sinto a necessidade compulsiva de checar notificações de trabalho fora do horário comercial.' },
+  { bloco: '🌙 Sono & Fadiga Digital', q: 'Demoro mais de 30 minutos para conseguir dormir porque minha mente continua revisando pendências.' },
+  { bloco: '🌙 Sono & Fadiga Digital', q: 'Sinto meus olhos secos, cansados ou com visão turva após o uso prolongado de telas.' },
+  { bloco: '🌙 Sono & Fadiga Digital', q: 'Acordo diversas vezes durante a noite ou tenho um sono muito leve e agitado.' },
+  { bloco: '🌙 Sono & Fadiga Digital', q: 'Sinto que minha memória e concentração estão falhando mais do que o normal.' },
+  // Bloco 4: Ansiedade Social
+  { bloco: '🤝 Ansiedade Social & Clima', q: 'Sinto um frio na barriga ou ansiedade excessiva antes de entrar em reuniões (presenciais ou online).' },
+  { bloco: '🤝 Ansiedade Social & Clima', q: 'Evito dar minha opinião em discussões de grupo por medo de ser julgado ou mal interpretado.' },
+  { bloco: '🤝 Ansiedade Social & Clima', q: 'Sinto que preciso "pisar em ovos" com meu gestor ou com certas pessoas da equipe.' },
+  { bloco: '🤝 Ansiedade Social & Clima', q: 'Sinto-me isolado ou sinto que ninguém entende a carga de trabalho que carrego.' },
+  { bloco: '🤝 Ansiedade Social & Clima', q: 'Tenho a sensação de que, não importa o quanto eu faça, nunca é o suficiente para a empresa.' },
+];
+
+let qusp_atual = 0;
+let qusp_resps = new Array(20).fill(null);
+let qusp_selecionado = null;
+
+function qusp_select(el, val) {
+  document.querySelectorAll('#qusp-scale .qusp-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  qusp_selecionado = val;
+  document.getElementById('qusp-btn-next').disabled = false;
+}
+
+function qusp_prev() {
+  if (qusp_atual > 0) { qusp_atual--; qusp_render(); }
+}
+
+function qusp_next() {
+  if (qusp_selecionado === null) return;
+  qusp_resps[qusp_atual] = qusp_selecionado;
+  qusp_selecionado = null;
+  if (qusp_atual < 19) {
+    qusp_atual++;
+    qusp_render();
+  } else {
+    qusp_mostrarResultado();
+  }
+}
+
+function qusp_render() {
+  const p = QUSP_PERGUNTAS[qusp_atual];
+  const pct = Math.round(((qusp_atual + 1) / 20) * 100);
+  document.getElementById('qusp-prog-lbl').textContent = `Pergunta ${qusp_atual + 1} de 20`;
+  document.getElementById('qusp-prog-pct').textContent = pct + '%';
+  document.getElementById('qusp-prog-fill').style.width = pct + '%';
+  document.getElementById('qusp-bloco-label').textContent = p.bloco;
+  document.getElementById('qusp-question-text').textContent = p.q;
+  // Reset opções
+  document.querySelectorAll('#qusp-scale .qusp-opt').forEach((o, i) => {
+    o.classList.remove('sel');
+    if (qusp_resps[qusp_atual] !== null && i === qusp_resps[qusp_atual]) o.classList.add('sel');
+  });
+  qusp_selecionado = qusp_resps[qusp_atual];
+  document.getElementById('qusp-btn-next').disabled = qusp_selecionado === null;
+  document.getElementById('qusp-btn-next').textContent = qusp_atual === 19 ? 'Ver meu resultado ✓' : 'Próxima →';
+  document.getElementById('qusp-btn-back').style.display = qusp_atual > 0 ? 'block' : 'none';
+}
+
+function qusp_mostrarResultado() {
+  // Calcular scores por bloco
+  const b1 = qusp_resps.slice(0,5).reduce((a,v) => a + (v||0), 0);
+  const b2 = qusp_resps.slice(5,10).reduce((a,v) => a + (v||0), 0);
+  const b3 = qusp_resps.slice(10,15).reduce((a,v) => a + (v||0), 0);
+  const b4 = qusp_resps.slice(15,20).reduce((a,v) => a + (v||0), 0);
+  const total = b1 + b2 + b3 + b4; // max 80
+
+  // Determinar risco
+  let risco, riskClass, riskIcon, perfil, perfilDesc, cor;
+  if (total <= 30) {
+    risco = 'BAIXO — Manutenção e Prevenção';
+    riskClass = 'qr-risk-baixo'; riskIcon = '✅'; cor = '#52B788';
+    perfil = 'Equilíbrio Ativo';
+    perfilDesc = 'Seus indicadores estão dentro da normalidade. Foco em prevenção primária.';
+  } else if (total <= 55) {
+    risco = 'MÉDIO — Atenção e Ajuste';
+    riskClass = 'qr-risk-medio'; riskIcon = '⚠️'; cor = '#F59E0B';
+    perfil = 'Sobrecarga de Adaptação';
+    perfilDesc = 'Você ainda não está em Burnout, mas seu corpo está gastando energia extra para manter a produtividade.';
+  } else {
+    risco = 'ALTO — Intervenção Imediata';
+    riskClass = 'qr-risk-alto'; riskIcon = '🆘'; cor = '#EF4444';
+    perfil = 'Esgotamento Acumulado';
+    perfilDesc = 'Seus índices de exaustão indicam provável Burnout ou Ansiedade aguda. Recomendamos apoio especializado.';
+  }
+
+  // Score normalizado 0-100 para o anel
+  const scorePct = Math.round((total / 80) * 100);
+  const offset = 251 - (251 * scorePct / 100);
+
+  const nome = document.getElementById('greeting-name')?.textContent || 'Colaborador';
+  document.getElementById('qr-eye').textContent = 'Resultado — ' + nome;
+  document.getElementById('qr-name').textContent = 'Perfil: ' + perfil;
+  document.getElementById('qr-perfil').textContent = perfilDesc;
+  document.getElementById('qr-score-val').textContent = total;
+  document.getElementById('qr-score-val').style.color = cor;
+  const ring = document.getElementById('qr-ring-fill');
+  ring.style.stroke = cor;
+  ring.style.strokeDashoffset = offset;
+
+  const badge = document.getElementById('qr-risk-badge');
+  badge.className = 'qr-risk-badge ' + riskClass;
+  badge.innerHTML = riskIcon + ' ' + risco;
+  badge.style.display = 'inline-flex';
+
+  // Blocos
+  const blocos = [
+    { nome: 'Burnout & Exaustão', icon: '🔥', score: b1, max: 20, insight: _qusp_insight('burnout', b1) },
+    { nome: 'Estresse Físico', icon: '⚡', score: b2, max: 20, insight: _qusp_insight('estresse', b2) },
+    { nome: 'Sono & Fadiga Digital', icon: '🌙', score: b3, max: 20, insight: _qusp_insight('sono', b3) },
+    { nome: 'Ansiedade Social', icon: '🤝', score: b4, max: 20, insight: _qusp_insight('social', b4) },
+  ];
+
+  const container = document.getElementById('qr-blocos');
+  container.innerHTML = blocos.map(b => {
+    const pct = Math.round((b.score / b.max) * 100);
+    const cor2 = pct >= 60 ? '#EF4444' : pct >= 40 ? '#F59E0B' : '#52B788';
+    const vClass = pct >= 60 ? 'v-red' : pct >= 40 ? 'v-amber' : 'v-green';
+    return `<div class="qr-bloco">
+      <div class="qr-bloco-hdr">
+        <div class="qr-bloco-icon">${b.icon}</div>
+        <div class="qr-bloco-name">${b.nome}</div>
+        <div class="qr-bloco-score ${vClass}">${b.score}<span style="font-size:10px;font-weight:500;opacity:.6">/20</span></div>
+      </div>
+      <div class="qr-bloco-bar"><div class="qr-bloco-fill" style="width:${pct}%;background:${cor2}"></div></div>
+      <div class="qr-bloco-insight">${b.insight}</div>
+    </div>`;
+  }).join('');
+
+  cpg('qusp-resultado');
+}
+
+function _qusp_insight(tipo, score) {
+  const insights = {
+    burnout: [
+      'Ótimo! Seus níveis de energia e motivação estão saudáveis. Continue com os hábitos de autocuidado.',
+      'Atenção. Sinais de fadiga acumulada. Revise seus limites e pratique micro-pausas ao longo do dia.',
+      'Escore elevado de exaustão. Seu entusiasmo está comprometido. Considere conversar com um profissional.'
+    ],
+    estresse: [
+      'Seu corpo está respondendo bem à pressão. Mantenha práticas de relaxamento físico regulares.',
+      'Sinais físicos de estresse presentes. A técnica de respiração 4-7-8 pode ajudar na regulação imediata.',
+      'Estresse somatizado (virou dor física). Prioridade: reduzir estímulos externos e buscar suporte clínico.'
+    ],
+    sono: [
+      'Seu padrão de sono e uso de telas está equilibrado. Excelente para a recuperação cognitiva.',
+      'Fadiga digital elevada. Ative o modo "Não Perturbe" após o expediente e crie um ritual de desconexão.',
+      'O excesso de luz azul e estado de alerta estão impedindo seu sono profundo. Protocolo: 45 min sem telas antes de dormir.'
+    ],
+    social: [
+      'Bom nível de segurança psicológica. Você se sente à vontade para se expressar no ambiente de trabalho.',
+      'Sinais de ansiedade social moderada. Identifique as situações que mais geram desconforto.',
+      'Alta ansiedade social. Provável baixa segurança psicológica na equipe. Apoio psicológico é recomendado.'
+    ]
+  };
+  const idx = score <= 7 ? 0 : score <= 14 ? 1 : 2;
+  return '"' + insights[tipo][idx] + '"';
+}
+
+/* ── Atualizar badge do plano na sidebar ── */
+function atualizarBadgePlano(isPro) {
+  const dot = document.getElementById('sb-plan-dot');
+  const txt = document.getElementById('sb-plan-text');
+  if (!dot || !txt) return;
+  if (isPro) {
+    dot.className = 'sb-plan-dot pro';
+    txt.className = 'sb-plan-text pro';
+    txt.textContent = 'Plano Pro';
+  } else {
+    dot.className = 'sb-plan-dot free';
+    txt.className = 'sb-plan-text free';
+    txt.textContent = 'Plano Free';
+  }
+}
+
+
+/* ══════════════════════════════════════
+   BOAS-VINDAS — LÓGICA
+   ══════════════════════════════════════ */
+
+function mostrarBoasVindas(nome) {
+  const bv = document.getElementById('boas-vindas');
+  if (!bv) return;
+  // Se já viu hoje, pula
+  const hoje = new Date().toDateString();
+  if (localStorage.getItem('ranne-bv-' + nome) === hoje) return;
+
+  document.getElementById('bv-nome').textContent = nome;
+  bv.classList.add('show');
+
+  // Anima barra de loading
+  let pct = 0;
+  const bar = document.getElementById('bv-loader');
+  const interval = setInterval(() => {
+    pct += .8;
+    if (bar) bar.style.width = Math.min(pct, 100) + '%';
+    if (pct >= 100) clearInterval(interval);
+  }, 80);
+
+  // Canvas partículas leves
+  _bvCanvas();
+}
+
+function fecharBoasVindas() {
+  const bv = document.getElementById('boas-vindas');
+  if (!bv) return;
+  const nome = document.getElementById('bv-nome').textContent;
+  localStorage.setItem('ranne-bv-' + nome, new Date().toDateString());
+  bv.classList.add('leaving');
+  setTimeout(() => {
+    bv.classList.remove('show', 'leaving');
+  }, 550);
+}
+
+function _bvCanvas() {
+  const canvas = document.getElementById('bv-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, pts = [], raf;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  function mkPt() {
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22,
+      r: Math.random()*1.2+.3, a: Math.random()*.25+.05
+    };
+  }
+  function frame() {
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<110){
+          ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle='rgba(78,203,160,'+(1-d/110)*.07+')'; ctx.lineWidth=.6; ctx.stroke();
+        }
+      }
+      const p=pts[i];
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28);
+      ctx.fillStyle='rgba(78,203,160,'+p.a+')'; ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  resize();
+  pts=Array.from({length:50},mkPt);
+  frame();
+  window.addEventListener('resize', ()=>{cancelAnimationFrame(raf);resize();pts=Array.from({length:50},mkPt);frame();});
+}
+
+/* Atualiza dados da tela inicial */
+function atualizarInicioColaborador(nome) {
+  // Período do dia
+  const h = new Date().getHours();
+  const periodo = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+  const dias = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const hoje = new Date();
+  const dataStr = dias[hoje.getDay()] + ', ' + hoje.getDate() + ' de ' + meses[hoje.getMonth()];
+
+  const elPeriodo = document.getElementById('ih-periodo');
+  const elNome    = document.getElementById('ih-nome');
+  const elData    = document.getElementById('ih-data');
+  const elTbUser  = document.getElementById('tb-user-name');
+
+  if (elPeriodo) elPeriodo.textContent = periodo;
+  if (elNome)    elNome.textContent = nome.split(' ')[0]; // só primeiro nome
+  if (elData)    elData.textContent = dataStr;
+  if (elTbUser)  elTbUser.textContent = 'Olá, ' + nome.split(' ')[0] + '!';
+}
+
 // REGISTRO DO SERVICE WORKER (PWA)
 // ─────────────────────────────────────
 if ('serviceWorker' in navigator) {
