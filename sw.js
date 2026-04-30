@@ -1,8 +1,9 @@
-const CACHE_NAME = 'ranne-v2';
+const CACHE_NAME = 'ranne-v3';
 const ASSETS = [
   '/empresa.html',
   '/logo.png',
-  '/manifest.json'
+  '/manifest.json',
+  '/icons/launchericon-192x192.png'
 ];
 
 self.addEventListener('install', e => {
@@ -22,6 +23,12 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Supabase API calls: nunca cachear, sempre rede
+  if (e.request.url.includes('supabase.co')) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request))
   );
