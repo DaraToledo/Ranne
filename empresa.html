@@ -3558,6 +3558,19 @@ function resetModalInvite() {
 }
 
 
+
+/* ── NAVEGAÇÃO COLABORADOR ── */
+function cpg(id) {
+  document.querySelectorAll('.col-page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('cp-' + id);
+  if (page) page.classList.add('active');
+
+  // Atualiza nav inferior
+  document.querySelectorAll('.cn-item').forEach(i => i.classList.remove('active'));
+  const navItem = document.getElementById('cn-' + id);
+  if (navItem) navItem.classList.add('active');
+}
+
 /* ── CANVAS PARTÍCULAS ── */
 (function() {
   const canvas = document.getElementById('ob-canvas');
