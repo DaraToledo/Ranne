@@ -2533,7 +2533,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       showOnboarding();
     }
   } catch { showDemo(); }
-  hideLoading();
+  document.getElementById('loading-screen').style.display = 'none';
   initPlano();
 });
 
@@ -2573,7 +2573,7 @@ function showDemo() {
 }
 
 function showOnboarding() {
-  hideLoading();
+  document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'flex';
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'none';
@@ -2653,13 +2653,16 @@ async function setupEmpresa() {
   try {
     let userId = currentUser?.id;
     if (!userId || userId === 'demo') {
-      const { data: authData, error } = await db.auth.signUp({ email: email||'demo@ranne.app', password: senha||'ranne2026' });
+      if (!email || !senha) { showAuthErr(errEl,'Erro: e-mail ou senha não encontrados. Tente cadastrar novamente.'); btn.disabled=false; btn.textContent='Entrar na plataforma →'; return; }
+      const { data: authData, error } = await db.auth.signUp({ email, password: senha });
       if (error && !error.message?.includes('already')) throw error;
-      userId = authData?.user?.id || 'demo';
+      userId = authData?.user?.id;
+      if (!userId) { showAuthErr(errEl,'Não foi possível criar sua conta. Verifique seu e-mail e senha.'); btn.disabled=false; btn.textContent='Entrar na plataforma →'; return; }
       currentUser = authData?.user || { id: userId, email };
     }
-    const { data: emp } = await db.from('empresas').insert({ user_id: userId, nome, cnpj, size, setor, plan:'free' }).select().single();
-    currentEmpresa = emp || { id:'demo', nome, cnpj, size, setor, plan:'free' };
+    const codigoEmpresa = gerarCodigo();
+    const { data: emp } = await db.from('empresas').insert({ user_id: userId, nome, cnpj, size, setor, plan:'free', codigo_acesso: codigoEmpresa }).select().single();
+    currentEmpresa = emp || { id:'demo', nome, cnpj, size, setor, plan:'free', codigo_acesso: codigoEmpresa };
     showEmpresa();
     toast('🎉 Bem-vindo à Ranne!');
   } catch {
@@ -3019,7 +3022,15 @@ async function sendInvite() {
 
   btn.disabled = true; btn.textContent = 'Gerando...';
 
-  const codigo = gerarCodigo();
+  // Reutiliza o código da empresa; gera um novo só se não existir
+  let codigo = currentEmpresa?.codigo_acesso;
+  if (!codigo) {
+    codigo = gerarCodigo();
+    try {
+      await db.from('empresas').update({ codigo_acesso: codigo }).eq('id', currentEmpresa.id);
+      currentEmpresa.codigo_acesso = codigo;
+    } catch {}
+  }
 
   try {
     await db.from('membros_empresa').insert({
@@ -3029,8 +3040,6 @@ async function sendInvite() {
       codigo_acesso: codigo,
       status: 'pendente'
     });
-    // Atualiza código da empresa se não tiver
-    await db.from('empresas').update({ codigo_acesso: codigo }).eq('id', currentEmpresa.id).is('codigo_acesso', null);
   } catch {}
 
   document.getElementById('codigo-gerado').textContent = codigo;
@@ -3247,7 +3256,7 @@ function moveIndicator(el) {
    ONBOARDING
    ───────────────────────────────────── */
 function showOnboarding() {
-  hideLoading();
+  document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'flex';
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'none';
@@ -3282,7 +3291,7 @@ function selRole(r, el) {
 
 function enterApp(r) {
   document.getElementById('onboarding').style.display = 'none';
-  hideLoading();
+  document.getElementById('loading-screen').style.display = 'none';
   if (r === 'colaborador') {
     document.getElementById('app-colaborador').style.display = 'block';
     // Verifica se tem diagId na URL
@@ -3428,7 +3437,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Link de colaborador — entra direto sem login
     if (!currentUser) {
       setTimeout(() => {
-        hideLoading();
+        document.getElementById('loading-screen').style.display = 'none';
         enterApp('colaborador');
       }, 100);
     }
@@ -3588,22 +3597,6 @@ function cpg(id) {
   document.querySelectorAll('.cn-item').forEach(i => i.classList.remove('active'));
   const navItem = document.getElementById('cn-' + id);
   if (navItem) navItem.classList.add('active');
-}
-
-
-/* ── LOADING SCREEN ── */
-const _loadStart = Date.now();
-function hideLoading() {
-  const elapsed = Date.now() - _loadStart;
-  const minTime = 1800; // mínimo 1.8s visível
-  const delay = Math.max(0, minTime - elapsed);
-  setTimeout(() => {
-    const ls = document.getElementById('loading-screen');
-    if (!ls) return;
-    ls.style.transition = 'opacity .4s ease';
-    ls.style.opacity = '0';
-    setTimeout(() => ls.style.display = 'none', 400);
-  }, delay);
 }
 
 /* ── CANVAS PARTÍCULAS ── */
