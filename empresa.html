@@ -580,6 +580,7 @@ body.dark .skel { background:linear-gradient(90deg,#1E3344 25%,#243d52 50%,#1E33
 .r-tag { font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; }
 .r-admin { background:#EFF6FF; color:#1D4ED8; }
 .r-lider { background:#F5F3FF; color:#6D28D9; }
+.r-colab { background:#ECFDF5; color:#065F46; }
 
 /* FORMULÁRIOS */
 .fi-group { margin-bottom:16px; }
@@ -1508,6 +1509,7 @@ body {
     <div class="fi-group">
       <label class="fi-label">Perfil</label>
       <select class="fi-input fi-select" id="invite-role">
+        <option value="colaborador">Colaborador</option>
         <option value="lider">Líder</option>
         <option value="admin">Admin</option>
       </select>
@@ -2120,12 +2122,12 @@ body {
         <div class="card">
           <div class="card-hdr"><span class="card-title">Permissões por perfil</span></div>
           <table class="perm-table">
-            <tr><th>Funcionalidade</th><th>Admin</th><th>Líder</th></tr>
-            <tr><td>Criar diagnóstico</td><td>✅</td><td>❌</td></tr>
-            <tr><td>Ver resultados</td><td>✅</td><td>✅</td></tr>
-            <tr><td>Editar plano de ação</td><td>✅</td><td>✅</td></tr>
-            <tr><td>Configurações da empresa</td><td>✅</td><td>❌</td></tr>
-            <tr><td>Biblioteca e check-in</td><td>✅</td><td>✅</td></tr>
+            <tr><th>Funcionalidade</th><th>Admin</th><th>Líder</th><th>Colaborador</th></tr>
+            <tr><td>Criar diagnóstico</td><td>✅</td><td>❌</td><td>❌</td></tr>
+            <tr><td>Ver resultados</td><td>✅</td><td>✅</td><td>❌</td></tr>
+            <tr><td>Editar plano de ação</td><td>✅</td><td>✅</td><td>❌</td></tr>
+            <tr><td>Configurações da empresa</td><td>✅</td><td>❌</td><td>❌</td></tr>
+            <tr><td>Biblioteca e check-in</td><td>✅</td><td>✅</td><td>✅</td></tr>
           </table>
         </div>
       </div>
@@ -2802,7 +2804,7 @@ async function loadMembros() {
       return `<div class="member-row">
         <div class="m-avatar" style="background:${cores[i%cores.length]};color:${i===0?'#0B1F2B':'#fff'}">${initials}</div>
         <div style="flex:1"><div class="m-name">${m.nome}</div><div class="m-email">${m.email}</div></div>
-        <span class="r-tag ${m.role === 'admin' ? 'r-admin' : 'r-lider'}">${m.role === 'admin' ? 'Admin' : 'Líder'}</span>
+        <span class="r-tag ${m.role === 'admin' ? 'r-admin' : m.role === 'lider' ? 'r-lider' : 'r-colab'}">${m.role === 'admin' ? 'Admin' : m.role === 'lider' ? 'Líder' : 'Colaborador'}</span>
         <button class="btn btn-ghost btn-sm" style="margin-left:8px">···</button>
       </div>`;
     }).join('');
