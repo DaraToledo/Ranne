@@ -251,11 +251,36 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   footer{flex-direction:column;gap:1rem;text-align:center;}
   .cta-section{padding:6rem 1.5rem;}
 }
+
+/* LOADING */
+#site-loading {
+  position:fixed; inset:0; background:#2D5A4E; display:flex;
+  flex-direction:column; align-items:center; justify-content:center;
+  z-index:9999; transition:opacity .5s ease;
+}
+#site-loading img { width:130px; height:130px; object-fit:contain; margin-bottom:28px; animation:ldFadeIn .6s ease both; }
+#site-loading .ld-dots { display:flex; gap:8px; }
+#site-loading .ld-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.5); animation:ldPulse 1.2s ease-in-out infinite; }
+#site-loading .ld-dot:nth-child(2){animation-delay:.2s}
+#site-loading .ld-dot:nth-child(3){animation-delay:.4s}
+@keyframes ldPulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes ldFadeIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
+<!-- LOADING -->
+<div id="site-loading">
+  <img src="logo.png" alt="Ranne">
+  <div class="ld-dots">
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+  </div>
+</div>
+
 <nav id="nav">
   <a href="#" class="nav-brand">
   <img src="logo.png" alt="Ranne Care">
@@ -794,6 +819,18 @@ function calcular() {
   document.getElementById('hero-roi').textContent = fmt(eco);
 }
 calcular();
+
+// LOADING SCREEN
+window.addEventListener('load', () => {
+  const loader = document.getElementById('site-loading');
+  if (loader) {
+    setTimeout(() => {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.style.display = 'none', 500);
+    }, 800);
+  }
+});
+
 </script>
 </body>
 </html>
