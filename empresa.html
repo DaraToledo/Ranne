@@ -12,10 +12,10 @@
 <title>Ranne — Saúde Organizacional</title>
 
 <!-- Apple Touch Icons -->
-<link rel="apple-touch-icon" href="/icons/launchericon-192x192.png">
-<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="192x192" href="/icons/launchericon-192x192.png">
+<!-- Favicon embutido — funciona sem depender do servidor -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMyRDZBNEYiLz4KICA8cGF0aCBkPSJNMTggNDhWMjBDMTggMTcuOCAxOS44IDE2IDIyIDE2SDMxQzM3LjYgMTYgNDMgMjEuNCA0MyAyOEM0MyAzNC42IDM3LjYgNDAgMzEgNDBIMjYiIAogICAgICAgIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iNC41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiLz4KICA8cGF0aCBkPSJNMjYgNDBMMzQgNDgiIAogICAgICAgIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iNC41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiLz4KPC9zdmc+">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/launchericon-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/icons/launchericon-512x512.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
 
 <!-- Supabase SDK -->
@@ -1135,6 +1135,18 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .trilha-card.t5::before { background:#D97706; opacity:.8; }
 .trilha-card.t5:hover { border-color:rgba(217,119,6,.25); }
 .trilha-card.t5 .tc-prog-fill { background:#D97706; }
+/* Trilha 6: Autocuidado — esmeralda */
+.trilha-card.t6::before { background:#059669; opacity:.8; }
+.trilha-card.t6:hover { border-color:rgba(5,150,105,.25); }
+.trilha-card.t6 .tc-prog-fill { background:#059669; }
+/* Trilha 7: Propósito — índigo */
+.trilha-card.t7::before { background:#6366F1; opacity:.8; }
+.trilha-card.t7:hover { border-color:rgba(99,102,241,.25); }
+.trilha-card.t7 .tc-prog-fill { background:#6366F1; }
+/* Trilha 8: Saúde Física — vermelho */
+.trilha-card.t8::before { background:#DC2626; opacity:.8; }
+.trilha-card.t8:hover { border-color:rgba(220,38,38,.25); }
+.trilha-card.t8 .tc-prog-fill { background:#DC2626; }
 
 /* ── Lista de aulas dentro de uma trilha ── */
 .trilha-detalhe-hero {
@@ -3710,9 +3722,9 @@ body {
       <div class="th-title">Trilhas de<br>Bem-estar</div>
       <div class="th-sub">Conteúdo desenvolvido com base clínica e revisado por psicóloga especializada em saúde mental ocupacional.</div>
       <div class="th-stats">
-        <div class="th-stat"><div class="th-stat-dot"></div>5 trilhas</div>
-        <div class="th-stat"><div class="th-stat-dot"></div>26 aulas</div>
-        <div class="th-stat"><div class="th-stat-dot"></div>~2h de conteúdo</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>8 trilhas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>41 aulas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>~3h30 de conteúdo</div>
       </div>
     </div>
 
@@ -3820,6 +3832,66 @@ body {
         <div class="tc-progress">
           <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t5-pct">0%</span></div>
           <div class="tc-prog-track"><div class="tc-prog-fill" id="t5-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 6 -->
+    <div class="trilha-card t6" onclick="abrirTrilha(6)">
+      <div class="tc-emoji">🌱</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 6</div>
+        <div class="tc-titulo">Autocuidado no Trabalho</div>
+        <div class="tc-desc">Pequenas práticas diárias que protegem sua saúde mental antes que ela precise de cuidado.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~24 min</span>
+          <span class="tc-pill">Neff · 2011</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t6-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t6-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 7 -->
+    <div class="trilha-card t7" onclick="abrirTrilha(7)">
+      <div class="tc-emoji">🧩</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 7</div>
+        <div class="tc-titulo">Identidade e Propósito Profissional</div>
+        <div class="tc-desc">Reconecte-se com o que dá sentido ao seu trabalho e construa uma carreira alinhada a quem você é.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~28 min</span>
+          <span class="tc-pill">Frankl · Deci & Ryan</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t7-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t7-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 8 -->
+    <div class="trilha-card t8" onclick="abrirTrilha(8)">
+      <div class="tc-emoji">💪</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 8</div>
+        <div class="tc-titulo">Saúde Física & Mental: a conexão</div>
+        <div class="tc-desc">Entenda como corpo e mente se afetam mutuamente — e use isso a seu favor no trabalho.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~23 min</span>
+          <span class="tc-pill">Ratey · Kabat-Zinn</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t8-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t8-fill" style="width:0%"></div></div>
         </div>
       </div>
       <div class="tc-arr">›</div>
@@ -4178,6 +4250,7 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let currentEmpresa = null;
+window.ciState = {}; // Estado do check-in do colaborador
 let currentRole = 'empresa';
 let currentDiagId = null;
 let acoesState = {};
@@ -5974,6 +6047,18 @@ function clin_prev() {
 function clin_next() {
   if (clinSel === null) return;
   const total = clinAtual.perguntas ? clinAtual.perguntas.length : clinAtual.perguntas_custom.length;
+
+  // AUDIT-C: se Q1 = 0 (Nunca bebe), preenche resto como 0 e vai pro resultado
+  if (clinAtual.id === 'auditc' && clinQAtual === 0) {
+    const pts = clinAtual.perguntas_custom[0].pts[clinResps[0]];
+    if (pts === 0) {
+      // Preenche todas as respostas como 0 e vai direto ao resultado
+      clinResps = new Array(total).fill(0);
+      clin_calcular();
+      return;
+    }
+  }
+
   if (clinQAtual < total - 1) {
     clinQAtual++;
     clinSel = null;
@@ -6406,6 +6491,127 @@ const TRILHAS = [
   }
 ];
 
+const TRILHAS_EXTRAS = [
+  // ── CONTEÚDO EXTRA (expandindo trilhas existentes com mais aulas) ──────────
+
+  {
+    id:6, emoji:'🌱', cor:'#059669',
+    titulo:'Autocuidado no Trabalho',
+    desc:'Pequenas práticas diárias que protegem sua saúde mental antes que ela precise de cuidado.',
+    ref:'Neff, K. (2011). Self-Compassion: The Proven Power of Being Kind to Yourself. · WHO (2022). World Mental Health Report.',
+    aulas:[
+      {num:1, titulo:'O que é autocuidado de verdade', tipo:'Leitura', tempo:'4 min', corpo:[
+        {t:'p', c:'Autocuidado não é bolha de banho nem dia de spa (embora possam fazer parte). É qualquer prática intencional que preserva ou restaura sua capacidade de funcionar bem — fisicamente, mentalmente e emocionalmente.'},
+        {t:'p', c:'A pesquisadora Kristin Neff, da Universidade do Texas, identificou que a <strong>autocompaixão</strong> — tratar a si mesmo com a mesma gentileza que você teria com um amigo — é um dos preditores mais poderosos de bem-estar psicológico e resiliência ao estresse.'},
+        {t:'q', c:'"Você não pode cuidar de ninguém de um copo vazio. Autocuidado não é egoísmo — é a condição para que você continue contribuindo."'},
+        {t:'caixa', titulo:'Os 4 pilares do autocuidado ocupacional:', items:['Físico: sono, movimento, alimentação, pausas regulares.','Emocional: processar sentimentos em vez de suprimi-los.','Mental: períodos de descanso cognitivo, aprendizado prazeroso.','Social: conexões genuínas, pedir e oferecer ajuda.']},
+        {t:'levar', c:'Autocuidado é estratégia, não luxo. Comece com o mínimo: uma prática pequena, consistente, toda semana.'}
+      ]},
+      {num:2, titulo:'A ciência da autocompaixão no trabalho', tipo:'Leitura + Prática', tempo:'5 min', corpo:[
+        {t:'p', c:'Pesquisas mostram que pessoas com alta autocompaixão lidam melhor com fracassos profissionais, têm menos medo de errar e, paradoxalmente, são mais motivadas a melhorar — não por autocrítica, mas por genuíno desejo de cuidado consigo mesmas.'},
+        {t:'p', c:'A autocrítica crônica ativa o sistema de ameaça do cérebro (amígdala), gerando ansiedade e bloqueio criativo. A autocompaixão ativa o sistema de segurança — o mesmo que se ativa quando você consola um amigo — permitindo aprender com erros sem se destruir.'},
+        {t:'caixa', titulo:'Exercício: A carta do amigo:', items:['Pense em uma situação recente que te fez se sentir inadequado(a) no trabalho.','Escreva sobre ela como se estivesse consolando um amigo querido que passou pelo mesmo.','Use as mesmas palavras gentis e encorajadoras que você usaria com ele/ela.','Leia o que escreveu em voz alta — para você mesmo(a).']},
+        {t:'levar', c:'Você merece a mesma gentileza que oferece aos outros. Isso não é fraqueza — é a base da resiliência.'}
+      ]},
+      {num:3, titulo:'Microhábitos que transformam o dia', tipo:'Prática', tempo:'4 min', corpo:[
+        {t:'p', c:'Grandes mudanças de estilo de vida raramente acontecem de uma vez. O que funciona são <strong>microhábitos</strong> — ações tão pequenas que resistência quase não existe, mas que acumulam impacto enorme ao longo do tempo.'},
+        {t:'q', c:'"Um hábito de 2 minutos feito todos os dias vale mais do que uma rotina perfeita feita uma vez na semana." — James Clear, Hábitos Atômicos'},
+        {t:'caixa', titulo:'5 microhábitos de autocuidado para o trabalho:', items:['☀️ Manhã: 2 minutos de respiração antes de abrir o celular.','🕛 Meio-dia: sair para comer longe da tela (mesmo que por 10 min).','⏰ A cada hora: 1 minuto de alongamento ou olhar para longe.','🌙 Final do expediente: escrever 1 coisa que foi bem hoje.','🚶 No trajeto: caminhar pelo menos parte do percurso sem fone/celular.']},
+        {t:'levar', c:'Escolha apenas 1 desses hábitos para esta semana. Só 1. Consistência supera perfeição.'}
+      ]},
+      {num:4, titulo:'Dizer não como ato de autocuidado', tipo:'Leitura + Scripts', tempo:'5 min', corpo:[
+        {t:'p', c:'A incapacidade de dizer não é uma das principais causas de esgotamento profissional. Mas dizer não não é sobre ser difícil ou pouco colaborativo — é sobre saber o que você pode oferecer com qualidade sem comprometer sua saúde.'},
+        {t:'p', c:'Pesquisas em neurociência mostram que toda vez que dizemos sim quando queremos dizer não, ativamos uma pequena resposta de estresse. Acumulada ao longo do tempo, essa resposta se transforma em ressentimento, exaustão e queda de performance.'},
+        {t:'caixa', titulo:'Scripts para dizer não com respeito e firmeza:', items:['"Agradeço pela confiança, mas minha capacidade está no limite. Posso ajudar com X — mas não com tudo isso agora."','"Preciso de um tempo para avaliar minha agenda antes de confirmar. Posso te responder até amanhã?"','"Prefiro ser honesto(a) agora do que entregar algo abaixo do que você merece. Não consigo fazer isso bem neste prazo."']},
+        {t:'levar', c:'Cada não que você diz ao que é demais é um sim para o que realmente importa — sua saúde e seu melhor trabalho.'}
+      ]},
+      {num:5, titulo:'Construindo sua rotina de autocuidado', tipo:'Plano prático', tempo:'6 min', corpo:[
+        {t:'p', c:'Autocuidado sem planejamento vira intenção. Intenção sem ação vira culpa. A solução é criar uma rotina mínima viável — simples o suficiente para ser sustentável, consistente o suficiente para gerar resultado.'},
+        {t:'caixa', titulo:'Template: Sua semana de autocuidado:', items:['Segunda: Defina 3 prioridades absolutas (não mais) para a semana.','Terça/Quinta: Pratique uma técnica de regulação emocional por 5 min.','Quarta: Conecte-se com alguém que te energiza (mesmo que por mensagem).','Sexta: Revise a semana — o que funcionou? O que me custou energia?','Fim de semana: 1 atividade que você faz puramente pelo prazer, sem produtividade.']},
+        {t:'levar', c:'Parabéns por concluir a Trilha de Autocuidado! Cuidar de si é o ato mais profissional que existe.'}
+      ]}
+    ]
+  },
+
+  {
+    id:7, emoji:'🧩', cor:'#6366F1',
+    titulo:'Identidade e Propósito Profissional',
+    desc:'Reconecte-se com o que dá sentido ao seu trabalho e construa uma carreira alinhada a quem você é.',
+    ref:'Frankl, V. (1946). Em Busca de Sentido. · Deci, E.L. & Ryan, R.M. (2000). Self-Determination Theory.',
+    aulas:[
+      {num:1, titulo:'Por que o propósito protege sua saúde mental', tipo:'Leitura', tempo:'5 min', corpo:[
+        {t:'p', c:'Viktor Frankl, psiquiatra sobrevivente do Holocausto, observou que as pessoas que mantinham um senso de propósito sobreviviam melhor às piores condições. Décadas depois, a ciência confirmou: <strong>trabalho com propósito protege contra burnout</strong>, depressão e adoecimento.'},
+        {t:'p', c:'A Teoria da Autodeterminação (Deci & Ryan, 2000) identificou 3 necessidades psicológicas básicas no trabalho: <strong>autonomia</strong> (sentir que suas escolhas importam), <strong>competência</strong> (sentir que você é capaz) e <strong>pertencimento</strong> (sentir que você conecta com algo maior). Quando as 3 estão presentes, o engajamento é natural. Quando faltam, o esgotamento é previsível.'},
+        {t:'caixa', titulo:'Reflexão: O que dá sentido ao seu trabalho?', items:['Há momentos em que você sente que o que faz realmente importa? Quando?','O que você faria no seu trabalho mesmo que não fosse pago?','Qual impacto você gostaria de deixar no seu campo de atuação?','Quando foi a última vez que saiu do trabalho sentindo que valeu a pena?']},
+        {t:'levar', c:'Propósito não é um destino — é uma direção. Pequenos alinhamentos diários constroem uma carreira com sentido.'}
+      ]},
+      {num:2, titulo:'Quem você é além do seu cargo', tipo:'Reflexão', tempo:'5 min', corpo:[
+        {t:'p', c:'Uma das causas mais silenciosas de burnout é a <strong>fusão de identidade com o trabalho</strong>: quando "o que você faz" se torna "quem você é". Nesse estado, qualquer crítica ao seu trabalho é vivida como ataque à sua pessoa. Qualquer falha profissional se torna fracasso existencial.'},
+        {t:'q', c:'"Você é um ser humano que trabalha — não um trabalhador que acidentalmente existe. Essa distinção muda tudo."'},
+        {t:'caixa', titulo:'Exercício: Quem sou eu além do trabalho?', items:['Liste 5 adjetivos que descrevem você fora do trabalho.','Que papéis você valoriza além do profissional? (amigo, familiar, criativo, curioso...)','O que você amava fazer antes de ser absorvido pela rotina de trabalho?','Se sua carreira desaparecesse amanhã, quem você ainda seria?']},
+        {t:'levar', c:'Diversificar as fontes de identidade é uma forma concreta de proteção contra burnout. Você é mais do que seu cargo.'}
+      ]},
+      {num:3, titulo:'Encontrando significado no trabalho atual', tipo:'Leitura + Prática', tempo:'5 min', corpo:[
+        {t:'p', c:'Nem sempre é possível (ou necessário) trocar de emprego para encontrar propósito. A pesquisadora Amy Wrzesniewski, de Yale, descobriu que pessoas que praticam <strong>job crafting</strong> — moldagem ativa do trabalho — encontram mais significado e engajamento sem mudar de função.'},
+        {t:'caixa', titulo:'3 formas de fazer job crafting:', items:['Tarefa: ajuste o que você faz. Foque mais no que te energiza, delegue ou minimize o que te drena.','Relação: mude com quem você interage. Busque colegas que te inspiram, construa pontes em vez de ilhas.','Percepção: reframe como você enxerga seu trabalho. Um médico que vê "procedimentos" vs um que vê "vidas salvas" faz o mesmo trabalho — mas vivencia de forma completamente diferente.']},
+        {t:'levar', c:'Você tem mais agência sobre o significado do seu trabalho do que imagina. Comece pequeno — um ajuste de cada vez.'}
+      ]},
+      {num:4, titulo:'Quando é hora de mudar', tipo:'Reflexão + Bússola', tempo:'5 min', corpo:[
+        {t:'p', c:'Nem sempre job crafting é suficiente. Há momentos em que o desalinhamento entre quem você é e onde você está é profundo demais para ser ajustado por dentro. Reconhecer esses momentos — sem catastrofizar nem fugir da realidade — é inteligência emocional aplicada à carreira.'},
+        {t:'caixa', titulo:'Sinais de desalinhamento profundo:', items:['Você sente aversão genuína — não cansaço, mas repulsa — ao pensar em ir trabalhar.','Seus valores centrais entram em conflito frequente com as práticas da empresa.','Você está ficando doente com frequência maior que o usual.','O trabalho está destruindo relações que você valoriza.','Você se imagina nesse lugar daqui a 5 anos e sente pavor genuíno.']},
+        {t:'p', c:'Se você marcou 3 ou mais: não é frescura — é um sinal a ser levado a sério. Buscar apoio de um coach, mentor ou psicólogo pode ajudar a tomar essa decisão com clareza.'},
+        {t:'levar', c:'Mudar não é falhar. Permanecer onde você adoece também não é lealdade — é automutilação.'}
+      ]},
+      {num:5, titulo:'Construindo sua bússola de carreira', tipo:'Atividade', tempo:'8 min', corpo:[
+        {t:'p', c:'Uma bússola de carreira não é um plano rígido de 5 anos. É um conjunto de valores e critérios que guiam suas decisões — de qual projeto aceitar à qual empresa entrar.'},
+        {t:'caixa', titulo:'Monte sua bússola em 4 perguntas:', items:['Meus 3 valores inegociáveis no trabalho: (ex: autonomia, impacto, aprendizado, honestidade...)', 'O ambiente que me permite prosperar: (ex: colaborativo, independente, com propósito claro, com flexibilidade...)', 'O que nunca mais estou disposto(a) a aceitar em um ambiente de trabalho.', 'O legado que quero deixar ao final da minha vida profissional — em uma frase.']},
+        {t:'levar', c:'Parabéns por concluir a Trilha de Identidade e Propósito! Você tem uma bússola agora. Consulte-a nas decisões importantes.'}
+      ]}
+    ]
+  },
+
+  {
+    id:8, emoji:'💪', cor:'#DC2626',
+    titulo:'Saúde Física & Mental: a conexão',
+    desc:'Entenda como corpo e mente se afetam mutuamente — e use isso a seu favor no trabalho.',
+    ref:'Ratey, J. (2008). Spark: The Revolutionary New Science of Exercise and the Brain. · Kabat-Zinn, J. (1990). Full Catastrophe Living.',
+    aulas:[
+      {num:1, titulo:'Seu corpo é o hardware da sua mente', tipo:'Leitura', tempo:'5 min', corpo:[
+        {t:'p', c:'Tudo que acontece na sua mente — emoções, memória, criatividade, foco — acontece em um órgão físico que precisa de cuidado. Ignorar o corpo no cuidado com a saúde mental é como tentar rodar um software exigente em um computador sem bateria.'},
+        {t:'p', c:'Pesquisas do Harvard Medical School mostram que exercício físico tem eficácia comparável a antidepressivos em casos de depressão leve a moderada — com zero efeitos colaterais negativos. O neurocientista John Ratey chamou o exercício de "Miracle-Gro para o cérebro".'},
+        {t:'caixa', titulo:'Como o corpo impacta a saúde mental:', items:['Exercício: libera BDNF (fator neurotrófico) que cria novas conexões neurais e melhora humor.','Sono: consolida memória, regula cortisol e "lava" toxinas cerebrais pelo sistema glinfático.','Alimentação: o intestino produz 90% da serotonina do corpo — sua dieta afeta diretamente seu humor.','Postura: estudos mostram que postura ereta aumenta confiança e reduz cortisol imediatamente.']},
+        {t:'levar', c:'Cuidar do corpo não é vaidade — é neurociência. É a base sobre a qual toda saúde mental se apoia.'}
+      ]},
+      {num:2, titulo:'Movimento como remédio', tipo:'Prática', tempo:'4 min', corpo:[
+        {t:'p', c:'Você não precisa de academia, hora marcada ou roupa de treino para se mover de forma protetora. <strong>Qualquer movimento conta</strong> — e os benefícios para saúde mental aparecem em semanas.'},
+        {t:'p', c:'Um estudo publicado no JAMA Psychiatry (2019) mostrou que 1 hora de exercício por semana — independente da intensidade — reduzia 12% dos casos de depressão. Não é sobre performance. É sobre movimento.'},
+        {t:'caixa', titulo:'Movimento no trabalho (sem academia):', items:['Reuniões 1:1 em movimento: caminhe em vez de sentar.','Escada em vez de elevador: cada lance conta.','2 minutos de movimento a cada hora: levante, alongue, agache.','Pausa do almoço ativa: 10 minutos de caminhada antes de comer.','Calls de áudio: caminhe enquanto ouve — sem necessidade de câmera.']},
+        {t:'levar', c:'O menor movimento feito agora vale mais do que o treino perfeito que você vai fazer "quando tiver tempo".'}
+      ]},
+      {num:3, titulo:'Mindfulness — o que a ciência realmente diz', tipo:'Leitura + Prática', tempo:'5 min', corpo:[
+        {t:'p', c:'Mindfulness (atenção plena) é a prática de observar o momento presente com curiosidade e sem julgamento. Desenvolvida por Jon Kabat-Zinn na Universidade de Massachusetts em 1979, é hoje uma das intervenções psicológicas mais pesquisadas do mundo.'},
+        {t:'p', c:'Mais de 6.000 estudos publicados demonstram benefícios: redução de ansiedade, melhora no foco, regulação emocional aprimorada, e até mudanças estruturais no cérebro (espessamento do córtex pré-frontal após 8 semanas de prática consistente).'},
+        {t:'caixa', titulo:'Prática de 3 minutos (agora mesmo):', items:['Sente-se confortavelmente e feche os olhos.','Minuto 1: observe sua respiração sem tentar mudá-la. Apenas note — inspira, expira.','Minuto 2: expanda a atenção para sensações do corpo — peso, temperatura, tensão.','Minuto 3: expanda ainda mais para sons ao redor — sem julgamento, apenas observando.','Abra os olhos. Isso é mindfulness.']},
+        {t:'levar', c:'Mindfulness não é esvaziar a mente — é observá-la. 3 minutos por dia já geram benefícios mensuráveis em 8 semanas.'}
+      ]},
+      {num:4, titulo:'Alimentação, intestino e humor', tipo:'Leitura', tempo:'4 min', corpo:[
+        {t:'p', c:'O campo da psiquiatria nutricional é novo mas robusto: o que você come afeta diretamente seu humor, energia e cognição. O intestino é frequentemente chamado de "segundo cérebro" — ele produz 90% da serotonina do corpo e se comunica diretamente com o cérebro via nervo vago.'},
+        {t:'caixa', titulo:'O que a ciência diz sobre alimentação e saúde mental:', items:['Dieta mediterrânea (azeite, leguminosas, vegetais, peixes) está associada a menor risco de depressão em múltiplos estudos.','Açúcar em excesso causa inflamação sistêmica — ligada a piora de ansiedade e depressão.','Ômega-3 (peixes gordurosos, linhaça) tem evidência para melhora de humor.','Pular refeições aumenta cortisol e reatividade emocional.','Hidratação: desidratação leve (1-2%) já prejudica foco e aumenta irritabilidade.']},
+        {t:'levar', c:'Você não precisa de dieta perfeita. Uma mudança pequena e sustentável vale mais do que uma radical e temporária.'}
+      ]},
+      {num:5, titulo:'Seu protocolo pessoal de bem-estar físico-mental', tipo:'Plano', tempo:'5 min', corpo:[
+        {t:'p', c:'Integrar cuidado físico e mental não exige uma revolução — exige um sistema simples que você realmente consiga manter.'},
+        {t:'caixa', titulo:'Protocolo mínimo viável (por semana):', items:['Movimento: 3x por semana, qualquer tipo, mínimo 20 minutos.','Sono: horário consistente de dormir e acordar (mesmo no fim de semana).','Mindfulness: 3 minutos por dia — pode ser ao acordar ou antes de dormir.','Alimentação: uma refeição por dia com vegetais e sem tela.','Hidratação: 2 litros de água por dia (coloque uma garrafa na mesa).','Conexão: uma conversa genuína por semana — não sobre trabalho.']},
+        {t:'levar', c:'Parabéns por concluir a Trilha de Saúde Física & Mental! Você agora sabe que cuidar do corpo é cuidar da mente. Comece pelo que parecer mais fácil — e vá construindo.'}
+      ]}
+    ]
+  }
+];
+
+// Adicionar as novas trilhas ao array principal
+TRILHAS.push(...TRILHAS_EXTRAS);
+
+
 /* ── Estado das trilhas (salvo em localStorage) ── */
 function getTrilhaProgress() {
   try { return JSON.parse(localStorage.getItem('ranne-trilhas') || '{}'); } catch { return {}; }
@@ -6547,6 +6753,106 @@ function toggleConcluir() {
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(atualizarProgressosTrilhas, 500);
 });
+
+
+/* ══════════════════════════════════════
+   FUNÇÕES FALTANTES — Check-in & Dicas
+   ══════════════════════════════════════ */
+
+// selCI — seleciona opção no check-in do colaborador
+function selCI(el, group) {
+  // Remove seleção anterior do mesmo grupo
+  el.closest('.ci-emojis').querySelectorAll('.ci-em').forEach(e => e.classList.remove('sel'));
+  el.classList.add('sel');
+  // Guarda no estado global do check-in
+  if (!window.ciState) window.ciState = {};
+  window.ciState[group] = el.querySelector('.cl')?.textContent || el.querySelector('.ce')?.textContent;
+  // Habilita botão de enviar se todos preenchidos
+  checkCIReady();
+}
+
+function checkCIReady() {
+  const grupos = ['humor','energia','carga','foco'];
+  const todos = grupos.every(g => window.ciState?.[g]);
+  const btn = document.getElementById('btn-submit-ci');
+  if (btn) btn.disabled = !todos;
+}
+
+// openTip — abre sheet de dica de descompressão
+function openTip(idx) {
+  const tips = [
+    {
+      titulo:'Pausa de 5 minutos',
+      sub:'Saia da mesa e respire o ar fresco',
+      steps:[
+        'Levante da cadeira e vá até uma janela ou área externa.',
+        'Respire fundo 5 vezes — inspire pelo nariz, expire pela boca.',
+        'Observe algo ao redor sem pensar no trabalho por 2 minutos.',
+        'Beba um copo de água antes de voltar.'
+      ]
+    },
+    {
+      titulo:'Respiração 4-7-8',
+      sub:'Ativa o modo calma em 2 minutos',
+      steps:[
+        'Sente-se confortavelmente com a coluna ereta.',
+        'Inspire pelo nariz contando até 4.',
+        'Segure o ar contando até 7.',
+        'Expire pela boca contando até 8.',
+        'Repita 4 vezes. Isso ativa o sistema parassimpático.'
+      ]
+    },
+    {
+      titulo:'Aterramento 5-4-3-2-1',
+      sub:'Sai da ansiedade e volta ao presente',
+      steps:[
+        '5 coisas que você consegue VER ao redor agora.',
+        '4 coisas que você pode TOCAR (mesa, cadeira, roupa...).',
+        '3 sons que você OUVE neste momento.',
+        '2 aromas que você consegue SENTIR.',
+        '1 coisa que você pode SABOREAR.'
+      ]
+    },
+    {
+      titulo:'Movimento suave',
+      sub:'Destrava o corpo preso na cadeira',
+      steps:[
+        'Levante e dê 10 passos pelo ambiente.',
+        'Gire os ombros 5x para frente e 5x para trás.',
+        'Incline o pescoço suavemente para cada lado.',
+        'Faça 5 agachamentos leves.',
+        'Volte ao lugar sentindo o corpo mais leve.'
+      ]
+    }
+  ];
+  const tip = tips[idx] || tips[0];
+  const sheet = document.getElementById('tip-sheet');
+  const expanded = document.getElementById('tip-sheet')?.closest('.tip-expanded');
+
+  // Preencher dinamicamente
+  if (sheet) {
+    sheet.querySelector('.ts-title').textContent = tip.titulo;
+    sheet.querySelector('.ts-sub').textContent = tip.sub;
+    // Limpar steps existentes
+    sheet.querySelectorAll('.ts-step').forEach(e => e.remove());
+    const btnClose = sheet.querySelector('.btn-close-sheet');
+    tip.steps.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'ts-step';
+      div.innerHTML = `<div class="ts-num">${i+1}</div><div class="ts-text">${s}</div>`;
+      sheet.insertBefore(div, btnClose);
+    });
+  }
+
+  const el = document.getElementById('tip-sheet')?.parentElement;
+  if (el) el.classList.add('open');
+}
+
+function closeTip(e) {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.classList.remove('open');
+  }
+}
 
 // REGISTRO DO SERVICE WORKER (PWA)
 // ─────────────────────────────────────
