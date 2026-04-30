@@ -69,6 +69,73 @@ nav{
 .btn-o{background:transparent;color:#2D5A4E;padding:.95rem 2rem;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(45,90,78,.35);cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;border-radius:2px;}
 .btn-o:hover{background:#2D5A4E;color:white;}
 
+/* BASE CIENTÍFICA */
+.ciencia-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin:3rem 0; }
+.ciencia-card {
+  border:1px solid rgba(111,158,147,.18); border-radius:6px; padding:1.8rem 1.6rem;
+  transition:all .3s; background:transparent; position:relative; overflow:hidden;
+}
+.ciencia-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,#2D5A4E,var(--verde-nevoa));
+  transform:scaleX(0); transform-origin:left; transition:transform .35s ease;
+}
+.ciencia-card:hover { border-color:rgba(45,90,78,.4); transform:translateY(-3px); box-shadow:0 8px 32px rgba(45,90,78,.1); }
+.ciencia-card:hover::before { transform:scaleX(1); }
+.ciencia-fonte {
+  font-family:'Jost',sans-serif; font-size:.6rem; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--dourado);
+  margin-bottom:.8rem;
+}
+.ciencia-titulo {
+  font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:400;
+  color:#2D5A4E; margin-bottom:.7rem; line-height:1.3;
+}
+.ciencia-desc {
+  font-family:'Jost',sans-serif; font-size:.78rem; font-weight:300;
+  color:var(--cinza); line-height:1.75; margin-bottom:.9rem;
+}
+.ciencia-citacao {
+  font-family:'Jost',sans-serif; font-size:.72rem; font-weight:300;
+  color:rgba(44,44,44,.45); font-style:italic; border-left:2px solid rgba(45,90,78,.2);
+  padding-left:.8rem; line-height:1.6;
+}
+
+/* TABELA ROI */
+.roi-table-wrap { overflow-x:auto; margin:2.5rem 0; }
+.roi-table {
+  width:100%; border-collapse:collapse;
+  font-family:'Jost',sans-serif;
+}
+.roi-table th {
+  font-size:.65rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--cinza); padding:.8rem 1.2rem; text-align:left;
+  border-bottom:1px solid rgba(111,158,147,.2);
+}
+.roi-table td {
+  font-size:.82rem; font-weight:300; color:var(--preto); padding:1rem 1.2rem;
+  border-bottom:1px solid rgba(111,158,147,.08); vertical-align:top; line-height:1.6;
+}
+.roi-table tr:last-child td { border-bottom:none; }
+.roi-table tr:hover td { background:rgba(45,90,78,.02); }
+.roi-table .td-fonte { color:#2D5A4E; font-weight:500; white-space:nowrap; }
+.roi-table .td-impact {
+  color:var(--preto); font-weight:400;
+}
+.roi-table .td-impact strong { color:#2D5A4E; font-weight:600; }
+
+/* BADGE METODOLOGIA */
+.metod-badges { display:flex; gap:1rem; flex-wrap:wrap; margin-top:2rem; }
+.metod-badge {
+  display:inline-flex; align-items:center; gap:.6rem;
+  background:rgba(45,90,78,.04); border:1px solid rgba(45,90,78,.15);
+  border-radius:3px; padding:.5rem 1rem;
+  font-family:'Jost',sans-serif; font-size:.7rem; font-weight:400;
+  color:#2D5A4E; letter-spacing:.05em;
+}
+.metod-badge::before { content:'✦'; color:var(--dourado); font-size:.55rem; }
+
+
 .hero-right{background:#2D5A4E;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;}
 .hero-right-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(155,191,183,.15) 0%,transparent 60%);}
 .hero-visual{position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;gap:0;}
@@ -787,6 +854,123 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   </div>
 </section>
 
+
+<!-- BASE CIENTÍFICA -->
+<section class="section section-creme" id="ciencia" style="padding:6rem 5rem;">
+  <div style="max-width:980px;margin:0 auto">
+
+    <div class="fade" style="max-width:560px;margin-bottom:3.5rem">
+      <div class="stag stag-v">Fundamentação Científica</div>
+      <h2 class="stitle stitle-p">Cada recomendação tem<br><em>uma fonte por trás.</em></h2>
+      <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:.92rem;color:var(--cinza);line-height:1.8;margin-top:1.2rem">
+        A Ranne Care não opera por achismo. Cada pilar da plataforma, do diagnóstico ao plano de ação, é ancorado em literatura científica peer-reviewed e organismos reguladores internacionais.
+      </p>
+    </div>
+
+    <div class="ciencia-grid fade fd1">
+
+      <div class="ciencia-card">
+        <div class="ciencia-fonte">OMS · CID-11 · 2019</div>
+        <div class="ciencia-titulo">Burnout como Fenômeno Ocupacional</div>
+        <div class="ciencia-desc">A Organização Mundial da Saúde classifica o Burnout no código QD85 da CID-11 como resultado direto de estresse crônico no ambiente de trabalho não gerenciado.</div>
+        <div class="ciencia-citacao">WHO, "Burn-out an occupational phenomenon: International Classification of Diseases", 2019.</div>
+      </div>
+
+      <div class="ciencia-card">
+        <div class="ciencia-fonte">Maslach & Jackson · 1981</div>
+        <div class="ciencia-titulo">Inventário de Maslach (MBI)</div>
+        <div class="ciencia-desc">Nosso QUSP é baseado no padrão-ouro mundial para medição de esgotamento: as três dimensões de Maslach — exaustão emocional, despersonalização e baixa realização pessoal.</div>
+        <div class="ciencia-citacao">Maslach, C. & Jackson, S.E. "The measurement of experienced burn-out". Journal of Organizational Behavior, 1981.</div>
+      </div>
+
+      <div class="ciencia-card">
+        <div class="ciencia-fonte">Tarafdar et al. · JMIS · 2007</div>
+        <div class="ciencia-titulo">Tecnoestresse & Fadiga Digital</div>
+        <div class="ciencia-desc">O módulo de Sono & Fadiga Digital do QUSP é fundamentado em estudos de ergonomia cognitiva que correlacionam o uso excessivo de telas com ansiedade, fadiga ocular e dependência de notificações.</div>
+        <div class="ciencia-citacao">Tarafdar, M. et al. "The Impact of Technostress on Role Stress and Productivity". JMIS, 2007.</div>
+      </div>
+
+      <div class="ciencia-card">
+        <div class="ciencia-fonte">Walker, M. · 2017</div>
+        <div class="ciencia-titulo">Neurociência do Sono</div>
+        <div class="ciencia-desc">A privação do sono compromete o córtex pré-frontal, responsável por tomada de decisão e controle emocional aumentando erros, acidentes e custos operacionais para a empresa.</div>
+        <div class="ciencia-citacao">Walker, M. "Why We Sleep: Unlocking the Power of Sleep and Dreams". Scribner, 2017.</div>
+      </div>
+
+      <div class="ciencia-card">
+        <div class="ciencia-fonte">Edmondson · Harvard · 1999</div>
+        <div class="ciencia-titulo">Segurança Psicológica</div>
+        <div class="ciencia-desc">As intervenções de RH da plataforma são baseadas no conceito que fundamentou o "Projeto Aristóteles" do Google: equipes de alta performance são construídas sobre segurança psicológica.</div>
+        <div class="ciencia-citacao">Edmondson, A. "Psychological Safety and Learning Behavior in Work Teams". Administrative Science Quarterly, 1999.</div>
+      </div>
+
+      <div class="ciencia-card">
+        <div class="ciencia-fonte">Lei Federal · Brasil · 2024</div>
+        <div class="ciencia-titulo">Conformidade Regulatória</div>
+        <div class="ciencia-desc">A Lei 14.831/2024 institui o Certificado Empresa Promotora da Saúde Mental. A Ranne Care estrutura o cuidado dentro da moldura regulatória brasileira, gerando diferencial ESG imediato.</div>
+        <div class="ciencia-citacao">Lei nº 14.831, de 27 de março de 2024. Diário Oficial da União, República Federativa do Brasil.</div>
+      </div>
+
+    </div>
+
+    <!-- Tabela ROI -->
+    <div class="fade fd2" style="margin-top:3.5rem">
+      <div class="stag stag-d">Evidências de ROI</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:#2D5A4E;margin-bottom:.6rem;line-height:1.3">O que a ciência diz sobre<br>o retorno do investimento.</h3>
+      <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:.85rem;color:var(--cinza);max-width:480px;line-height:1.75;margin-bottom:1.8rem">Para apresentar a qualquer diretor ou CEO que exija evidências antes de decidir.</p>
+      <div class="roi-table-wrap">
+        <table class="roi-table">
+          <thead>
+            <tr>
+              <th>Problema</th>
+              <th>Fonte de Evidência</th>
+              <th>Impacto Real</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500">Custo do Burnout</td>
+              <td class="td-fonte">Harvard Business Review</td>
+              <td class="td-impact">Custa <strong>US$ 125–190 bilhões/ano</strong> em gastos de saúde somente nos EUA. No Brasil, 472 mil afastamentos em 2024 (INSS).</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Presenteísmo</td>
+              <td class="td-fonte">Journal of Occupational &amp; Environmental Medicine</td>
+              <td class="td-impact">Colaboradores doentes que trabalham mas não rendem custam <strong>3× mais</strong> do que os afastamentos (absenteísmo).</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">ROI em Saúde Mental</td>
+              <td class="td-fonte">Deloitte UK, 2020</td>
+              <td class="td-impact">Para cada <strong>£1 investido</strong> em saúde mental dos funcionários, as empresas obtêm retorno médio de <strong>£5</strong>.</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Segurança Psicológica</td>
+              <td class="td-fonte">Google · Projeto Aristóteles</td>
+              <td class="td-impact">Times com alta segurança psicológica têm <strong>27% menos turnover</strong>, <strong>76% mais engajamento</strong> e <strong>50% mais produtividade</strong>.</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Sono & Cognição</td>
+              <td class="td-fonte">Matthew Walker · Why We Sleep</td>
+              <td class="td-impact">Profissionais que dormem menos de 6h cometem <strong>70% mais erros</strong> em tarefas de alta concentração.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Badges de metodologia -->
+    <div class="metod-badges fade fd3">
+      <div class="metod-badge">Critérios CID-11 da OMS</div>
+      <div class="metod-badge">Inventário de Maslach (MBI)</div>
+      <div class="metod-badge">Segurança Psicológica · Harvard</div>
+      <div class="metod-badge">Ergonomia Cognitiva · Tecnoestresse</div>
+      <div class="metod-badge">Lei 14.831/2024 · Brasil</div>
+      <div class="metod-badge">Neurociência do Sono · Walker</div>
+    </div>
+
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section" id="contato">
   <div class="cta-bg">Ranne Care</div>
@@ -794,7 +978,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   <h2 class="cta-title fade fd1">Pronto para transformar saúde mental em <em>crescimento?</em></h2>
   <p class="cta-sub fade fd2">Agende uma conversa e veja a plataforma em ação, sem compromisso.</p>
  <div class="cta-buttons fade fd3">
-  <a href="mailto:atendimento@rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">Agendar uma conversa</a>
+  <a href="mailto:rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">Agendar uma conversa</a>
   <a href="https://wa.me/5511941918177" target="_blank" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">📲 WhatsApp</a>
 </div>
 </section>
