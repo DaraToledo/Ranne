@@ -52,6 +52,17 @@ nav{
 .hero-title em{font-style:italic;color:#2D5A4E;}
 .hero-subtitle{font-family:'Jost',sans-serif;font-weight:300;font-size:1rem;line-height:1.75;color:var(--cinza);margin:1.6rem 0 2.2rem;max-width:450px;}
 .hero-subtitle strong{color:var(--preto);font-weight:400;}
+/* HERO PRODUTOS */
+.hero-produtos{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.hp-item{display:flex;align-items:center;gap:.35rem;font-family:'Jost',sans-serif;font-size:.75rem;font-weight:400;color:var(--preto);}
+.hp-icon{font-size:.9rem;}
+.hp-label{letter-spacing:.04em;}
+.hp-sep{color:var(--cinza);font-size:.8rem;opacity:.5;}
+.hp-link{font-family:'Jost',sans-serif;font-size:.72rem;font-weight:500;color:#2D5A4E;text-decoration:none;letter-spacing:.04em;border-bottom:1px solid rgba(45,90,78,.3);padding-bottom:1px;margin-left:.4rem;transition:border-color .2s,color .2s;}
+.hp-link:hover{border-color:#2D5A4E;color:#1a3830;}
+/* HERO DEGUSTAÇÃO */
+.hero-degust{font-family:'Jost',sans-serif;font-size:.72rem;font-weight:300;color:var(--cinza);margin-top:.8rem;line-height:1.6;}
+.hero-degust::before{content:'✓ ';color:#2D5A4E;font-weight:500;}
 .hero-buttons{display:flex;gap:.9rem;flex-wrap:wrap;}
 .btn-p{background:#2D5A4E;color:white;padding:.95rem 2rem;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;border-radius:2px;}
 .btn-p:hover{background:var(--verde);transform:translateY(-2px);box-shadow:0 4px 14px rgba(74,122,110,.25);}
@@ -314,9 +325,39 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
       o bem-estar dos colaboradores de forma contínua.
       Não como benefício. Como <strong>gestão baseada em dados.</strong>
     </p>
-    <div class="hero-buttons fade fd3">
-          <a href="https://wa.me/5511941918177" target="_blank" class="btn-o">Agendar uma conversa</a>
+
+    <!-- MINI PRODUTOS -->
+    <div class="hero-produtos fade fd3">
+      <div class="hp-item">
+        <span class="hp-icon">📋</span>
+        <span class="hp-label">Diagnóstico</span>
+      </div>
+      <span class="hp-sep">·</span>
+      <div class="hp-item">
+        <span class="hp-icon">📄</span>
+        <span class="hp-label">Laudo</span>
+      </div>
+      <span class="hp-sep">·</span>
+      <div class="hp-item">
+        <span class="hp-icon">📊</span>
+        <span class="hp-label">Dashboard</span>
+      </div>
+      <span class="hp-sep">·</span>
+      <div class="hp-item">
+        <span class="hp-icon">💰</span>
+        <span class="hp-label">ROI</span>
+      </div>
+      <a href="#produto" class="hp-link">Conheça nossos produtos →</a>
     </div>
+
+    <div class="hero-buttons fade fd4">
+      <a href="empresa.html" target="_blank" class="btn-p">🎁 Experimentar grátis</a>
+      <a href="https://wa.me/5511941918177" target="_blank" class="btn-o">Agendar uma conversa</a>
+    </div>
+
+    <!-- NOTA DEGUSTAÇÃO -->
+    <p class="hero-degust fade fd5">Acesso gratuito limitado, sem cartão de crédito. Veja a plataforma funcionando com dados reais da sua empresa.</p>
+
   </div>
 <div class="hero-right">
   <div class="hero-right-bg"></div>
@@ -384,7 +425,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
       </div>
       <div class="stat-item fade fd2">
         <div class="stat-num">472k</div>
-        <div class="stat-text">afastamentos por transtornos mentais em 2024 — recorde histórico</div>
+        <div class="stat-text">afastamentos por transtornos mentais em 2024, recorde histórico</div>
         <div class="stat-source">Fonte: INSS / Ministério da Previdência, 2024</div>
       </div>
       <div class="stat-item fade fd3">
@@ -663,7 +704,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
       <div class="comp-col">
         <div class="comp-lbl">Plataformas tradicionais</div>
         <div class="comp-item"><div class="comp-icon ci-x">✕</div>Foco no tratamento individual, não na causa estrutural</div>
-        <div class="comp-item"><div class="comp-icon ci-x">✕</div>Sem diagnóstico organizacional — só conteúdo e terapia</div>
+        <div class="comp-item"><div class="comp-icon ci-x">✕</div>Sem diagnóstico organizacional, só conteúdo e terapia</div>
         <div class="comp-item"><div class="comp-icon ci-x">✕</div>Projetadas para grandes empresas, inacessíveis para PMEs</div>
         <div class="comp-item"><div class="comp-icon ci-x">✕</div>Dados de bem-estar desconectados da gestão do RH</div>
         <div class="comp-item"><div class="comp-icon ci-x">✕</div>ROI invisível, difícil de justificar para o CEO</div>
@@ -675,7 +716,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
         <div class="comp-item"><div class="comp-icon ci-c">✓</div>Diagnóstico psicossocial com scores e laudo organizacional</div>
         <div class="comp-item"><div class="comp-icon ci-c">✓</div>Desenhada para startups e PMEs (3 a 50 colaboradores)</div>
         <div class="comp-item"><div class="comp-icon ci-c">✓</div>Dashboard integrado ao RH com indicadores reais de negócio</div>
-        <div class="comp-item"><div class="comp-icon ci-c">✓</div>ROI calculado e visível — relatório executivo para o CEO</div>
+        <div class="comp-item"><div class="comp-icon ci-c">✓</div>ROI calculado e visível, relatório executivo para o CEO</div>
       </div>
     </div>
   </div>
@@ -688,7 +729,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
     <div class="fade">
       <div class="stag stag-d">Oportunidade de Mercado</div>
       <h2 class="stitle stitle-w">O mercado certo.<br>O momento certo.</h2>
-      <p class="mercado-quote">"PMEs e startups são o segmento mais desassistido — e o que mais cresce no Brasil."</p>
+      <p class="mercado-quote">"PMEs e startups são o segmento mais desassistido, e o que mais cresce no Brasil."</p>
     </div>
     <div class="mercado-dados fade fd1">
       <div class="dado">
@@ -705,7 +746,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
       </div>
       <div class="dado">
         <div class="dado-num">472k</div>
-        <div><div class="dado-txt">Afastamentos por transtornos mentais em 2024 — recorde histórico</div><div class="dado-src">Fonte: INSS / Ministério da Previdência, 2024</div></div>
+        <div><div class="dado-txt">Afastamentos por transtornos mentais em 2024, recorde histórico</div><div class="dado-src">Fonte: INSS / Ministério da Previdência, 2024</div></div>
       </div>
     </div>
   </div>
@@ -728,7 +769,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
       <div>
         <div class="stag stag-v" style="margin-bottom:.8rem">No radar do mercado</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:#2D5A4E;margin-bottom:1rem;line-height:1.3">Um ambiente regulatório favorável<br>para quem age agora.</h3>
-        <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:.88rem;color:var(--cinza);line-height:1.8;margin-bottom:1.4rem">A Lei 14.831/2024 institui o Certificado Empresa Promotora da Saúde Mental — reforçando a saúde mental como prioridade estratégica nas organizações. Empresas que estruturam o cuidado hoje saem na frente.</p>
+        <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:.88rem;color:var(--cinza);line-height:1.8;margin-bottom:1.4rem">A Lei 14.831/2024 institui o Certificado Empresa Promotora da Saúde Mental, reforçando a saúde mental como prioridade estratégica nas organizações. Empresas que estruturam o cuidado hoje saem na frente.</p>
         <div style="display:flex;gap:2rem;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:.5rem;font-family:'Jost',sans-serif;font-size:.75rem;font-weight:300;color:#2D5A4E">
             <span style="color:var(--dourado)">✦</span> Certificação nacional
@@ -753,7 +794,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   <h2 class="cta-title fade fd1">Pronto para transformar saúde mental em <em>crescimento?</em></h2>
   <p class="cta-sub fade fd2">Agende uma conversa e veja a plataforma em ação, sem compromisso.</p>
  <div class="cta-buttons fade fd3">
-  <a href="mailto:rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">Agendar uma conversa</a>
+  <a href="mailto:atendimento@rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">Agendar uma conversa</a>
   <a href="https://wa.me/5511941918177" target="_blank" class="btn-o" style="color:white;border-color:rgba(255,255,255,.8)">📲 WhatsApp</a>
 </div>
 </section>
