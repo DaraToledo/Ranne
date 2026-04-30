@@ -77,16 +77,19 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
   position:fixed; inset:0; background:#2D5A4E; display:flex;
   flex-direction:column; align-items:center; justify-content:center; z-index:9999;
 }
-#loading-screen .ls-brand { color:var(--mint); font-size:32px; font-weight:800; margin-bottom:32px; }
+#loading-screen img {
+  width:140px; height:140px; object-fit:contain; margin-bottom:32px;
+  animation:lsFadeIn .6s ease both;
+}
 #loading-screen .ls-dots { display:flex; gap:8px; }
 #loading-screen .ls-dot {
-  width:8px; height:8px; border-radius:50%; background:var(--mint); opacity:0.3;
-  animation: pulse 1.2s ease-in-out infinite;
+  width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.7); opacity:0.3;
+  animation:lsPulse 1.2s ease-in-out infinite;
 }
 #loading-screen .ls-dot:nth-child(2) { animation-delay:0.2s; }
 #loading-screen .ls-dot:nth-child(3) { animation-delay:0.4s; }
-@keyframes fadeIn { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
-@keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+@keyframes lsFadeIn { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+@keyframes lsPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
 /* ══════════════════════════════════════
 /* ══════════════════════════════════════
@@ -1460,7 +1463,7 @@ body {
 
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <img src="/app.png" alt="Ranne" style="width:120px;height:120px;object-fit:contain;margin-bottom:32px;animation:fadeIn .5s ease both">
+  <img src="/app.png" alt="Ranne">
   <div class="ls-dots">
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
