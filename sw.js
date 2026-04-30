@@ -1,20 +1,29 @@
-const CACHE_NAME = 'ranne-v4';
-const ASSETS = [
-  '/empresa.html',
-  '/logo.png',
-  '/manifest.json',
-  '/icons/launchericon-192x192.png'
+/* ══════════════════════════════════════════════════════════
+   RANNE CARE — Service Worker
+   Estratégia: NUNCA cacheia HTML — sempre busca do servidor
+   Assets estáticos (imagens, ícones) são cacheados
+   ══════════════════════════════════════════════════════════ */
+
+const CACHE_NAME = 'ranne-assets-v1';
+
+const ASSETS_PARA_CACHEAR = [
+  '/icons/launchericon-192x192.png',
+  '/icons/launchericon-512x512.png',
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+// ── INSTALL ──────────────────────────────────────────────
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS_PARA_CACHEAR).catch(() => {});
+    })
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(
+// ── ACTIVATE ─────────────────────────────────────────────
+self.addEventListener('activate', event => {
+  event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
@@ -22,14 +31,52 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-self.addEventListener('fetch', e => {
-  // Supabase API calls: nunca cachear, sempre rede
-  if (e.request.url.includes('supabase.co')) {
-    e.respondWith(fetch(e.request));
+// ── FETCH ─────────────────────────────────────────────────
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // Ignorar requests externos (Supabase, Google Fonts, CDNs)
+  if (url.origin !== self.location.origin) return;
+
+  // Ignorar não-GET
+  if (event.request.method !== 'GET') return;
+
+  // HTML — NUNCA cacheia, sempre vai ao servidor
+  const isHTML = event.request.headers.get('accept')?.includes('text/html')
+    || url.pathname.endsWith('.html')
+    || url.pathname === '/';
+
+  if (isHTML) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
+    );
     return;
   }
 
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+  // JS — NUNCA cacheia, sempre vai ao servidor
+  if (url.pathname.endsWith('.js')) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Imagens e ícones — Cache First
+  if (url.pathname.startsWith('/icons/') || /\.(png|jpg|svg|webp|ico)$/.test(url.pathname)) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        return cached || fetch(event.request).then(res => {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
+          return res;
+        });
+      })
+    );
+    return;
+  }
+
+  // Resto — Network First
+  event.respondWith(
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
