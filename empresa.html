@@ -123,10 +123,10 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 }
 .ob-logo { display:flex; align-items:center; gap:10px; margin-bottom:48px; }
 .ob-logo-mark {
-  width:32px; height:32px; border-radius:8px; background:#2D6A4F;
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  width:36px; height:36px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
 }
-.ob-logo-mark svg { width:16px; height:16px; }
+.ob-logo-mark img { width:36px; height:36px; object-fit:contain; }
 .ob-logo-name { font-size:16px; font-weight:700; color:#1A2E20; letter-spacing:-.1px; }
 .ob-logo-sep { width:1px; height:12px; background:rgba(0,0,0,.15); margin:0 8px; }
 .ob-logo-tag { font-size:11px; color:rgba(0,0,0,.35); }
@@ -371,10 +371,10 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 }
 .sb-logo-row { display:flex; align-items:center; gap:10px; }
 .sb-logo-mark {
-  width:30px; height:30px; border-radius:8px;
-  background:linear-gradient(135deg,#2D6A4F,#4ECBA0);
-  display:flex; align-items:center; justify-content:center;
+  width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
+.sb-logo-mark img { width:32px; height:32px; object-fit:contain; }
 .sb-brand { color:#fff; font-size:15px; font-weight:700; letter-spacing:-.3px; }
 .sb-tagline { color:rgba(255,255,255,0.22); font-size:9.5px; font-weight:500; letter-spacing:.4px; text-transform:uppercase; margin-left:40px; }
 .sb-plan-badge {
@@ -1869,15 +1869,13 @@ body {
   text-align:center; padding:0 36px; gap:0;
 }
 .bv-mark {
-  width:56px; height:56px; border-radius:16px;
-  background:linear-gradient(135deg,#2D6A4F,#4ECBA0);
+  width:72px; height:72px;
   display:flex; align-items:center; justify-content:center;
   margin-bottom:28px;
   opacity:0; transform:scale(.7);
   animation:bvPop .6s .2s cubic-bezier(.16,1,.3,1) forwards;
-  box-shadow:0 8px 32px rgba(78,203,160,.3);
 }
-.bv-mark svg { width:26px; height:26px; }
+.bv-mark img { width:72px; height:72px; object-fit:contain; filter:drop-shadow(0 4px 16px rgba(201,168,76,.4)); }
 @keyframes bvPop { to{opacity:1;transform:scale(1)} }
 
 .bv-hi {
@@ -2425,8 +2423,8 @@ body {
 
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#2D6A4F,#4ECBA0);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 8px 32px rgba(78,203,160,.3);animation:lsFadeIn .6s ease both">
-    <svg width="36" height="36" viewBox="0 0 26 26" fill="none"><path d="M6 20V8C6 6.9 6.9 6 8 6H13C15.8 6 18 8.2 18 11C18 13.8 15.8 16 13 16H10" stroke="white" stroke-width="2.2" stroke-linecap="round"/><path d="M10 16L14 20" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+  <div style="width:80px;height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:lsFadeIn .6s ease both">
+    <img src="/icons/launchericon-192x192.png" alt="Ranne" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 4px 20px rgba(201,168,76,.35))">
   </div>
   <div style="font-family:'Fraunces',serif;font-size:26px;color:#fff;font-style:italic;margin-bottom:6px;animation:lsFadeIn .6s .1s ease both">Ranne</div>
   <div style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.05em;margin-bottom:32px;animation:lsFadeIn .6s .2s ease both">Saúde Mental Corporativa</div>
@@ -2511,10 +2509,7 @@ body {
   <div class="onboard-left">
     <div class="ob-logo">
       <div class="ob-logo-mark">
-        <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 20V8C6 6.9 6.9 6 8 6H13C15.8 6 18 8.2 18 11C18 13.8 15.8 16 13 16H10" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M10 16L14 20" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
+        <img src="/icons/launchericon-192x192.png" alt="Ranne">
       </div>
       <span class="ob-logo-name">Ranne</span>
       <div class="ob-logo-sep"></div>
@@ -2764,11 +2759,8 @@ body {
       <div class="sb-header">
         <div class="sb-logo-row">
           <div class="sb-logo-mark">
-          <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px">
-            <path d="M6 20V8C6 6.9 6.9 6 8 6H13C15.8 6 18 8.2 18 11C18 13.8 15.8 16 13 16H10" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M10 16L14 20" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
-          </svg>
-        </div>
+            <img src="/icons/launchericon-192x192.png" alt="Ranne">
+          </div>
           <div class="sb-brand">Ranne</div>
         </div>
         <div class="sb-tagline">Saúde Mental Corporativa</div>
@@ -3395,10 +3387,7 @@ body {
 
   <div class="bv-inner">
     <div class="bv-mark">
-      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 20V8C6 6.9 6.9 6 8 6H13C15.8 6 18 8.2 18 11C18 13.8 15.8 16 13 16H10" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M10 16L14 20" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-      </svg>
+      <img src="/icons/launchericon-192x192.png" alt="Ranne">
     </div>
 
     <div class="bv-hi">Bem-vindo(a) ao Ranne</div>
