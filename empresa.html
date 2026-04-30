@@ -3862,6 +3862,10 @@ body {
       <div class="qusp-sub">Responda considerando como você se sentiu na última semana.</div>
       <div class="qusp-anon">🔒 Seus dados individuais são protegidos</div>
     </div>
+    <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.18);border-radius:12px;padding:13px 15px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+      <p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin:0"><strong style="color:var(--text)">Este teste é uma ferramenta de autoconhecimento e reflexão, não substitui avaliação ou diagnóstico profissional.</strong> Se você se identificar com sinais de sofrimento intenso, converse com um psicólogo ou médico de confiança.</p>
+    </div>
 
     <!-- Progresso -->
     <div class="qusp-progress-wrap">
@@ -4047,6 +4051,13 @@ body {
 
   <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
   <div class="col-page" id="cp-clin-teste">
+
+
+    <!-- Aviso clínico obrigatório -->
+    <div style="background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.18);border-radius:12px;padding:13px 15px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:16px;flex-shrink:0">ℹ️</span>
+      <p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin:0"><strong style="color:var(--text)">Este teste é uma ferramenta de autoconhecimento e reflexão, não substitui avaliação ou diagnóstico profissional.</strong> Se você se identificar com sinais de sofrimento intenso, converse com um psicólogo ou médico de confiança.</p>
+    </div>
 
     <div class="clin-test-header">
       <div class="clin-test-nome" id="clin-nome-header">—</div>
@@ -6051,23 +6062,38 @@ function clin_calcular() {
 }
 
 function _enc_html(tipo, cor) {
-  const configs = {
-    baixo:   { cls:'enc-baixo',  icon:'✅', titulo:'Você está bem',        desc:'Seus resultados estão dentro do esperado. Continue com seus hábitos de autocuidado e monitore regularmente.', btns:'<button class="enc-btn enc-btn-sec enc-btn-sec-g" onclick="cpg('clinico')">Ver outros testes</button>' },
-    medio:   { cls:'enc-medio',  icon:'⚠️', titulo:'Atenção recomendada',  desc:'Seus resultados indicam que vale a pena conversar com um profissional ou revisar alguns hábitos.', btns:'<button class="enc-btn enc-btn-pri-a" onclick="toast('💬 Funcionalidade em breve!')">Agendar conversa</button><button class="enc-btn enc-btn-sec enc-btn-sec-a" onclick="cpg('biblioteca')">Ver recursos</button>' },
-    alto:    { cls:'enc-alto',   icon:'🆘', titulo:'Apoio profissional recomendado', desc:'Seus resultados indicam que você pode se beneficiar significativamente de suporte profissional. Buscar ajuda é um ato de coragem, não de fraqueza.', btns:'<button class="enc-btn enc-btn-pri" onclick="toast('📞 Recurso: CVV 188 — gratuito 24h')">CVV — 188 (gratuito)</button><button class="enc-btn enc-btn-sec enc-btn-sec-r" onclick="toast('💬 Funcionalidade em breve!')">Falar com RH</button>' },
-    critico: { cls:'enc-alto',   icon:'🚨', titulo:'Busque ajuda agora',   desc:'Seus resultados indicam necessidade de apoio imediato. Por favor, não enfrente isso sozinho(a).', btns:'<button class="enc-btn enc-btn-pri" onclick="toast('📞 CVV: ligue 188 agora — gratuito, 24h, confidencial')">CVV — Ligue 188 agora</button>' }
+  const B = {
+    baixo:   { cls:'enc-baixo',  icon:'✅', titulo:'Você está bem',
+      desc:'Seus resultados estão dentro do esperado. Continue com seus hábitos de autocuidado e monitore regularmente.',
+      btn1_cls:'enc-btn enc-btn-sec enc-btn-sec-g', btn1_fn:"cpg('clinico')", btn1_lbl:'Ver outros testes',
+      btn2_cls:'', btn2_fn:'', btn2_lbl:'' },
+    medio:   { cls:'enc-medio',  icon:'⚠️', titulo:'Atenção recomendada',
+      desc:'Seus resultados indicam que vale a pena conversar com um profissional ou revisar alguns hábitos.',
+      btn1_cls:'enc-btn enc-btn-pri-a', btn1_fn:"toast('💬 Em breve!')", btn1_lbl:'Agendar conversa',
+      btn2_cls:'enc-btn enc-btn-sec enc-btn-sec-a', btn2_fn:"cpg('biblioteca')", btn2_lbl:'Ver recursos' },
+    alto:    { cls:'enc-alto',   icon:'🆘', titulo:'Apoio profissional recomendado',
+      desc:'Seus resultados indicam que você pode se beneficiar significativamente de suporte profissional. Buscar ajuda é um ato de coragem, não de fraqueza.',
+      btn1_cls:'enc-btn enc-btn-pri', btn1_fn:"toast('📞 CVV 188 — gratuito 24h')", btn1_lbl:'CVV — 188 (gratuito)',
+      btn2_cls:'enc-btn enc-btn-sec enc-btn-sec-r', btn2_fn:"toast('💬 Em breve!')", btn2_lbl:'Falar com RH' },
+    critico: { cls:'enc-alto',   icon:'🚨', titulo:'Busque ajuda agora',
+      desc:'Seus resultados indicam necessidade de apoio imediato. Por favor, não enfrente isso sozinho(a).',
+      btn1_cls:'enc-btn enc-btn-pri', btn1_fn:"toast('📞 CVV: ligue 188 agora — gratuito, 24h, confidencial')", btn1_lbl:'CVV — Ligue 188 agora',
+      btn2_cls:'', btn2_fn:'', btn2_lbl:'' }
   };
-  const c = configs[tipo] || configs.medio;
+  const c = B[tipo] || B.medio;
+  const b2 = c.btn2_cls ? `<button class="${c.btn2_cls}" onclick="${c.btn2_fn}">${c.btn2_lbl}</button>` : '';
   return `<div class="encaminhamento ${c.cls}">
     <div class="enc-icon">${c.icon}</div>
     <div style="flex:1">
       <div class="enc-titulo">${c.titulo}</div>
       <div class="enc-desc">${c.desc}</div>
-      <div class="enc-acoes">${c.btns}</div>
+      <div class="enc-acoes">
+        <button class="${c.btn1_cls}" onclick="${c.btn1_fn}">${c.btn1_lbl}</button>
+        ${b2}
+      </div>
     </div>
   </div>`;
 }
-
 function _prof_html(id, tipo) {
   const textos = {
     phq9:  { baixo:'Seus indicadores de humor e interesse estão preservados. Foco em prevenção primária.', medio:'Estamos na fase de "estresse de resistência". Intervenção precoce evita evolução para quadro mais grave.', alto:'O sistema nervoso mostra sinais de sobrecarga. A tomada de decisão pode estar prejudicada neste momento.', critico:'Estado crítico. O risco de afastamento médico é iminente. Prioridade: conexão com suporte profissional imediato.' },
