@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0B1F2B">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Ranne Care">
+<meta name="apple-mobile-web-app-title" content="Ranne">
 <meta name="description" content="Plataforma de diagnóstico de saúde mental corporativa">
 <title>Ranne — Saúde Organizacional</title>
 
@@ -852,6 +852,392 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .sci-ref-body {}
 .sci-ref-fonte { font-size:9.5px; font-weight:700; color:rgba(78,203,160,.7); letter-spacing:.3px; }
 .sci-ref-desc { font-size:11px; color:rgba(255,255,255,.35); line-height:1.5; margin-top:2px; }
+
+
+/* ══════ CENTRO CLÍNICO ══════ */
+.clinic-hero {
+  background:linear-gradient(160deg,#071A22 0%,#0D2B1E 60%,#112920 100%);
+  border-radius:20px; padding:24px 20px; margin-bottom:16px;
+  position:relative; overflow:hidden;
+}
+.clinic-hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 80% 10%,rgba(78,203,160,.12),transparent 55%),
+             radial-gradient(ellipse at 10% 90%,rgba(45,106,79,.1),transparent 50%);
+}
+.clinic-hero::after {
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:18px 18px; pointer-events:none;
+}
+.ch-eye  { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(78,203,160,.55); margin-bottom:8px; position:relative; z-index:1; }
+.ch-title { font-family:'Fraunces',serif; font-size:22px; color:#fff; font-style:italic; margin-bottom:5px; position:relative; z-index:1; line-height:1.2; }
+.ch-sub  { font-size:12px; color:rgba(255,255,255,.4); position:relative; z-index:1; line-height:1.55; margin-bottom:14px; }
+.ch-tags { display:flex; gap:6px; flex-wrap:wrap; position:relative; z-index:1; }
+.ch-tag  {
+  display:inline-flex; align-items:center; gap:4px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  border-radius:99px; padding:4px 10px; font-size:10px; font-weight:600; color:rgba(255,255,255,.55);
+}
+
+/* Cards de seleção de teste */
+.test-card {
+  background:var(--white); border-radius:16px; padding:18px 16px;
+  border:1.5px solid var(--border); margin-bottom:10px;
+  cursor:pointer; transition:all .22s; position:relative; overflow:hidden;
+  display:flex; align-items:flex-start; gap:14px;
+}
+.test-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:transparent; transition:background .22s;
+}
+.test-card:hover { border-color:rgba(45,106,79,.3); transform:translateX(3px); box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.test-card:hover::before { background:var(--green); }
+.test-card-badge {
+  width:42px; height:42px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:20px;
+}
+.test-card-body { flex:1; }
+.test-card-title { font-size:13.5px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.test-card-fonte { font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--green); margin-bottom:5px; }
+.test-card-desc { font-size:11.5px; color:var(--muted); line-height:1.5; }
+.test-card-meta { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+.test-card-pill { font-size:9.5px; font-weight:600; padding:3px 9px; border-radius:99px; background:#F1F5F9; color:#64748B; }
+.test-card-arr { align-self:center; font-size:18px; color:rgba(45,106,79,.3); flex-shrink:0; }
+.test-card.done { border-color:rgba(16,185,129,.25); }
+.test-card.done::before { background:#10B981; }
+.test-done-chip { position:absolute; top:12px; right:12px; background:#ECFDF5; color:#059669; font-size:9px; font-weight:700; padding:3px 8px; border-radius:99px; }
+
+/* Aviso clínico */
+.clinic-aviso {
+  background:rgba(99,102,241,.06); border:1px solid rgba(99,102,241,.18);
+  border-radius:12px; padding:13px 15px; margin-bottom:16px;
+  display:flex; gap:10px; align-items:flex-start;
+}
+.clinic-aviso-icon { font-size:16px; flex-shrink:0; }
+.clinic-aviso-text { font-size:11.5px; color:var(--muted); line-height:1.55; }
+.clinic-aviso-text strong { color:var(--text); }
+
+/* Tela de teste clínico */
+.clin-test-header {
+  background:var(--white); border-radius:16px; padding:18px 16px;
+  border:1px solid var(--border); margin-bottom:14px;
+  box-shadow:0 1px 6px rgba(0,0,0,.04);
+}
+.clin-test-nome { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--green); margin-bottom:4px; }
+.clin-test-titulo { font-size:15px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.clin-test-instrucao { font-size:12px; color:var(--muted); line-height:1.5; }
+
+.clin-prog-wrap { margin-bottom:14px; }
+.clin-prog-row { display:flex; justify-content:space-between; margin-bottom:5px; }
+.clin-prog-lbl { font-size:10.5px; font-weight:700; color:var(--muted); }
+.clin-prog-pct { font-size:10.5px; font-weight:700; color:var(--green); }
+.clin-prog-track { height:5px; background:var(--border); border-radius:99px; overflow:hidden; }
+.clin-prog-fill { height:5px; border-radius:99px; background:linear-gradient(90deg,#2D6A4F,#52B788); transition:width .5s cubic-bezier(.16,1,.3,1); }
+
+.clin-question-card {
+  background:var(--white); border-radius:16px; padding:20px;
+  border:1px solid var(--border); margin-bottom:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+.clin-q-num  { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:8px; }
+.clin-q-text { font-size:14.5px; font-weight:600; color:var(--text); line-height:1.5; margin-bottom:16px; }
+.clin-opts   { display:flex; flex-direction:column; gap:7px; }
+.clin-opt {
+  display:flex; align-items:center; gap:12px; padding:12px 14px;
+  background:#F7F4EF; border-radius:11px; border:1.5px solid transparent;
+  cursor:pointer; transition:all .16s; font-size:13px; color:var(--text); font-weight:500;
+}
+.clin-opt:hover { background:var(--green-light); border-color:rgba(45,106,79,.2); }
+.clin-opt.sel  { background:var(--green-light); border-color:var(--green); color:var(--green); font-weight:700; }
+.clin-opt-dot  {
+  width:17px; height:17px; border-radius:50%; border:2px solid rgba(45,106,79,.3);
+  flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .16s;
+}
+.clin-opt.sel .clin-opt-dot { background:var(--green); border-color:var(--green); }
+.clin-opt.sel .clin-opt-dot::after { content:'\2713'; font-size:8px; font-weight:900; color:#fff; }
+.clin-opt-pts { font-size:10px; color:var(--muted); margin-left:auto; flex-shrink:0; }
+.clin-opt.sel .clin-opt-pts { color:var(--green); }
+
+.clin-nav { display:flex; gap:10px; margin-top:16px; }
+.btn-clin-back { flex:0; padding:13px 16px; border-radius:12px; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .16s; }
+.btn-clin-next { flex:1; padding:13px; border-radius:12px; border:none; background:var(--green); color:#fff; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .18s; box-shadow:0 4px 14px rgba(45,106,79,.28); }
+.btn-clin-next:hover { background:#245C43; transform:translateY(-1px); }
+.btn-clin-next:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+/* Resultado clínico */
+.clin-result-hero {
+  background:linear-gradient(135deg,#071A22,#0D2B1E);
+  border-radius:20px; padding:26px 22px; text-align:center; margin-bottom:14px;
+  position:relative; overflow:hidden;
+}
+.clin-result-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% -10%,rgba(78,203,160,.1),transparent 55%); }
+.crh-eye  { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(78,203,160,.5); margin-bottom:10px; position:relative; }
+.crh-score { font-size:52px; font-weight:900; letter-spacing:-3px; line-height:1; position:relative; margin-bottom:4px; }
+.crh-max   { font-size:14px; color:rgba(255,255,255,.3); font-weight:400; position:relative; }
+.crh-nivel { font-size:15px; font-weight:700; margin:14px 0 4px; position:relative; }
+.crh-desc  { font-size:12px; color:rgba(255,255,255,.45); max-width:260px; margin:0 auto; line-height:1.55; position:relative; }
+
+/* Prescrição por nível */
+.prescricao {
+  background:var(--white); border-radius:14px; padding:16px;
+  border:1px solid var(--border); margin-bottom:10px;
+  box-shadow:0 1px 6px rgba(0,0,0,.04);
+}
+.pres-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.pres-icon { font-size:18px; flex-shrink:0; }
+.pres-titulo { font-size:13px; font-weight:700; color:var(--text); }
+.pres-fonte { font-size:9.5px; color:var(--muted); margin-top:2px; }
+.pres-items { display:flex; flex-direction:column; gap:7px; }
+.pres-item {
+  display:flex; align-items:flex-start; gap:9px; font-size:12px;
+  color:var(--text); line-height:1.5;
+}
+.pres-item::before { content:'→'; color:var(--green); font-weight:700; flex-shrink:0; margin-top:1px; }
+
+/* Alerta de encaminhamento */
+.encaminhamento {
+  border-radius:14px; padding:16px; margin-bottom:10px;
+  display:flex; gap:12px; align-items:flex-start;
+}
+.enc-alto  { background:#FEF2F2; border:1px solid #FECACA; }
+.enc-medio { background:#FFFBEB; border:1px solid #FDE68A; }
+.enc-baixo { background:#ECFDF5; border:1px solid #A7F3D0; }
+.enc-icon  { font-size:20px; flex-shrink:0; }
+.enc-titulo { font-size:13px; font-weight:700; margin-bottom:4px; }
+.enc-alto  .enc-titulo { color:#DC2626; }
+.enc-medio .enc-titulo { color:#D97706; }
+.enc-baixo .enc-titulo { color:#059669; }
+.enc-desc  { font-size:12px; color:var(--muted); line-height:1.55; margin-bottom:10px; }
+.enc-acoes { display:flex; gap:7px; flex-wrap:wrap; }
+.enc-btn   { font-size:11px; font-weight:700; padding:6px 12px; border-radius:8px; cursor:pointer; border:none; font-family:'Inter',sans-serif; transition:all .15s; }
+.enc-btn-pri { background:#DC2626; color:#fff; }
+.enc-btn-pri-a { background:#D97706; color:#fff; }
+.enc-btn-sec { background:transparent; border:1px solid currentColor; }
+.enc-btn-sec-r { color:#DC2626; border-color:#FECACA; }
+.enc-btn-sec-a { color:#D97706; border-color:#FDE68A; }
+.enc-btn-sec-g { color:#059669; border-color:#A7F3D0; }
+
+/* Nota de privacidade */
+.priv-nota {
+  background:rgba(99,102,241,.04); border:1px solid rgba(99,102,241,.14);
+  border-radius:10px; padding:11px 14px; margin-bottom:10px;
+  font-size:11px; color:var(--muted); line-height:1.55;
+  display:flex; gap:8px; align-items:flex-start;
+}
+
+/* RH — Painel de Soluções */
+.rh-solucoes-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.rh-sol-card {
+  border-radius:14px; padding:16px; border:1px solid var(--border);
+  background:var(--white); box-shadow:0 1px 6px rgba(0,0,0,.04);
+  cursor:pointer; transition:all .2s; position:relative; overflow:hidden;
+}
+.rh-sol-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.rh-sol-card.nivel-baixo::before { background:#10B981; }
+.rh-sol-card.nivel-medio::before { background:#F59E0B; }
+.rh-sol-card.nivel-alto::before  { background:#EF4444; }
+.rh-sol-card.nivel-critico::before { background:linear-gradient(90deg,#EF4444,#7C3AED); }
+.rh-sol-card:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.08); }
+.rh-sol-nivel { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; margin-bottom:6px; }
+.rh-sol-titulo { font-size:13px; font-weight:700; color:var(--text); margin-bottom:5px; }
+.rh-sol-desc { font-size:11.5px; color:var(--muted); line-height:1.5; }
+.rh-sol-acoes { margin-top:10px; display:flex; flex-direction:column; gap:4px; }
+.rh-sol-acao { font-size:11px; color:var(--text); display:flex; align-items:flex-start; gap:6px; }
+.rh-sol-acao::before { content:'•'; color:var(--mint); font-weight:700; flex-shrink:0; }
+
+
+/* ══════ TRILHAS DE BEM-ESTAR ══════ */
+
+/* Crédito psicóloga */
+.crp-badge {
+  display:flex; align-items:center; gap:10px; padding:12px 14px;
+  background:rgba(45,106,79,.06); border:1px solid rgba(45,106,79,.15);
+  border-radius:12px; margin-bottom:16px;
+}
+.crp-avatar {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,#2D6A4F,#52B788);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:#fff;
+}
+.crp-info strong { display:block; font-size:12px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.crp-info span { font-size:11px; color:var(--muted); }
+
+/* Hero trilhas */
+.trilhas-hero {
+  background:linear-gradient(160deg,#071A22 0%,#0D2B1E 60%,#112920 100%);
+  border-radius:20px; padding:22px 20px; margin-bottom:16px;
+  position:relative; overflow:hidden;
+}
+.trilhas-hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 75% 10%,rgba(78,203,160,.12),transparent 55%),
+             radial-gradient(ellipse at 5% 90%,rgba(45,106,79,.1),transparent 50%);
+}
+.trilhas-hero::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:18px 18px;
+}
+.th-eye   { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(78,203,160,.55); margin-bottom:6px; position:relative; z-index:1; }
+.th-title { font-family:'Fraunces',serif; font-size:20px; color:#fff; font-style:italic; margin-bottom:4px; position:relative; z-index:1; line-height:1.25; }
+.th-sub   { font-size:11.5px; color:rgba(255,255,255,.4); position:relative; z-index:1; margin-bottom:12px; line-height:1.5; }
+.th-stats { display:flex; gap:16px; position:relative; z-index:1; }
+.th-stat  { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:rgba(255,255,255,.55); }
+.th-stat-dot { width:6px; height:6px; border-radius:50%; background:#4ECBA0; }
+
+/* Cards de trilha */
+.trilha-card {
+  background:var(--white); border-radius:16px; padding:18px 16px;
+  border:1.5px solid var(--border); margin-bottom:10px;
+  cursor:pointer; transition:all .22s; position:relative; overflow:hidden;
+  display:flex; align-items:flex-start; gap:14px;
+}
+.trilha-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
+  border-radius:4px 0 0 4px; transition:opacity .22s;
+}
+.trilha-card:hover { transform:translateX(4px); box-shadow:0 4px 18px rgba(0,0,0,.08); }
+.tc-emoji { font-size:28px; flex-shrink:0; line-height:1; }
+.tc-body  { flex:1; }
+.tc-num   { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); margin-bottom:3px; }
+.tc-titulo { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.tc-desc  { font-size:11.5px; color:var(--muted); line-height:1.45; margin-bottom:8px; }
+.tc-meta  { display:flex; gap:8px; flex-wrap:wrap; }
+.tc-pill  { font-size:9.5px; font-weight:600; padding:3px 9px; border-radius:99px; background:#F1F5F9; color:#64748B; }
+.tc-progress { margin-top:10px; }
+.tc-prog-row { display:flex; justify-content:space-between; margin-bottom:4px; }
+.tc-prog-lbl { font-size:10px; color:var(--muted); }
+.tc-prog-pct { font-size:10px; font-weight:700; color:var(--green); }
+.tc-prog-track { height:3px; background:#EEE9E2; border-radius:99px; overflow:hidden; }
+.tc-prog-fill { height:3px; border-radius:99px; transition:width .8s ease; }
+.tc-arr { align-self:center; font-size:18px; color:rgba(45,106,79,.25); flex-shrink:0; }
+
+/* Trilha 1: Burnout — vermelho */
+.trilha-card.t1::before { background:#EF4444; opacity:.8; }
+.trilha-card.t1:hover { border-color:rgba(239,68,68,.25); }
+.trilha-card.t1 .tc-prog-fill { background:#EF4444; }
+/* Trilha 2: Emocional — violeta */
+.trilha-card.t2::before { background:#7C3AED; opacity:.8; }
+.trilha-card.t2:hover { border-color:rgba(124,58,237,.25); }
+.trilha-card.t2 .tc-prog-fill { background:#7C3AED; }
+/* Trilha 3: Sono — azul */
+.trilha-card.t3::before { background:#6366F1; opacity:.8; }
+.trilha-card.t3:hover { border-color:rgba(99,102,241,.25); }
+.trilha-card.t3 .tc-prog-fill { background:#6366F1; }
+/* Trilha 4: Foco — verde */
+.trilha-card.t4::before { background:#2D6A4F; opacity:.9; }
+.trilha-card.t4:hover { border-color:rgba(45,106,79,.25); }
+.trilha-card.t4 .tc-prog-fill { background:#2D6A4F; }
+/* Trilha 5: Relações — âmbar */
+.trilha-card.t5::before { background:#D97706; opacity:.8; }
+.trilha-card.t5:hover { border-color:rgba(217,119,6,.25); }
+.trilha-card.t5 .tc-prog-fill { background:#D97706; }
+
+/* ── Lista de aulas dentro de uma trilha ── */
+.trilha-detalhe-hero {
+  background:linear-gradient(135deg,#071A22 0%,#0D2B1E 100%);
+  border-radius:20px; padding:22px 20px; margin-bottom:16px;
+  position:relative; overflow:hidden;
+}
+.trilha-detalhe-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 80% 10%,rgba(78,203,160,.1),transparent 55%); }
+.tdh-back { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:rgba(78,203,160,.7); cursor:pointer; margin-bottom:12px; position:relative; z-index:1; background:none; border:none; font-family:'Inter',sans-serif; }
+.tdh-emoji { font-size:36px; margin-bottom:8px; position:relative; z-index:1; display:block; }
+.tdh-titulo { font-family:'Fraunces',serif; font-size:20px; color:#fff; font-style:italic; margin-bottom:4px; position:relative; z-index:1; }
+.tdh-sub   { font-size:12px; color:rgba(255,255,255,.4); position:relative; z-index:1; line-height:1.55; margin-bottom:12px; }
+.tdh-prog-wrap { position:relative; z-index:1; }
+.tdh-prog-row { display:flex; justify-content:space-between; margin-bottom:5px; }
+.tdh-prog-lbl { font-size:10px; color:rgba(255,255,255,.35); font-weight:600; }
+.tdh-prog-pct { font-size:10px; color:#4ECBA0; font-weight:700; }
+.tdh-prog-track { height:4px; background:rgba(255,255,255,.08); border-radius:99px; overflow:hidden; }
+.tdh-prog-fill { height:4px; border-radius:99px; background:linear-gradient(90deg,#2D6A4F,#4ECBA0); transition:width .8s ease; }
+
+/* Aula card */
+.aula-card {
+  background:var(--white); border-radius:14px; padding:16px;
+  border:1px solid var(--border); margin-bottom:8px;
+  cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:14px;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.aula-card:hover { transform:translateX(3px); border-color:rgba(45,106,79,.2); box-shadow:0 3px 12px rgba(0,0,0,.07); }
+.aula-card.concluida { opacity:.7; }
+.aula-num {
+  width:30px; height:30px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:800; background:#F1F5F9; color:#64748B;
+  transition:all .2s;
+}
+.aula-card.concluida .aula-num { background:#ECFDF5; color:#059669; }
+.aula-card:hover .aula-num { background:var(--green-light); color:var(--green); }
+.aula-body { flex:1; }
+.aula-titulo { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; line-height:1.35; }
+.aula-card.concluida .aula-titulo { text-decoration:line-through; color:var(--muted); }
+.aula-meta { display:flex; gap:8px; flex-wrap:wrap; }
+.aula-tipo { font-size:10px; color:var(--muted); }
+.aula-tempo { font-size:10px; color:var(--muted); }
+.aula-arr { font-size:16px; color:rgba(45,106,79,.25); flex-shrink:0; }
+.aula-check { font-size:14px; flex-shrink:0; }
+
+/* ── Leitora de aula ── */
+.aula-reader {
+  background:var(--white); border-radius:16px; padding:22px 20px;
+  border:1px solid var(--border); margin-bottom:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+.ar-back { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--green); cursor:pointer; margin-bottom:14px; background:none; border:none; font-family:'Inter',sans-serif; }
+.ar-trilha-nome { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--muted); margin-bottom:4px; }
+.ar-titulo { font-size:18px; font-weight:800; color:var(--text); letter-spacing:-.3px; margin-bottom:4px; line-height:1.3; }
+.ar-tipo { font-size:11px; color:var(--muted); margin-bottom:16px; }
+.ar-divider { height:1px; background:var(--border); margin-bottom:18px; }
+
+/* Corpo da aula */
+.ar-body { font-size:14px; color:var(--text); line-height:1.75; }
+.ar-body p { margin-bottom:14px; }
+.ar-body strong { font-weight:700; color:var(--text); }
+.ar-body em { font-style:italic; color:var(--muted); }
+.ar-quote {
+  border-left:3px solid var(--green); padding:12px 16px; margin:16px 0;
+  background:#F7F4EF; border-radius:0 10px 10px 0;
+  font-style:italic; font-size:13.5px; color:var(--text); line-height:1.6;
+}
+.ar-caixa {
+  background:var(--green-light); border:1px solid rgba(45,106,79,.15);
+  border-radius:12px; padding:14px 16px; margin:14px 0;
+}
+.ar-caixa-titulo { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--green); margin-bottom:8px; }
+.ar-item { display:flex; gap:8px; margin-bottom:8px; font-size:13px; line-height:1.55; }
+.ar-item::before { content:'→'; color:var(--green); font-weight:700; flex-shrink:0; }
+.ar-para-levar {
+  background:linear-gradient(135deg,#071A22,#0D2B1E);
+  border-radius:12px; padding:16px; margin:16px 0;
+}
+.ar-para-levar-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:rgba(78,203,160,.55); margin-bottom:6px; }
+.ar-para-levar-txt { font-size:13px; color:rgba(255,255,255,.75); line-height:1.6; }
+
+/* Assinatura psicóloga na aula */
+.ar-crp {
+  display:flex; align-items:center; gap:10px; margin-top:20px; padding-top:16px;
+  border-top:1px solid var(--border);
+}
+.ar-crp-avatar {
+  width:32px; height:32px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,#2D6A4F,#52B788);
+  display:flex; align-items:center; justify-content:center; font-size:14px;
+}
+.ar-crp-nome { font-size:11px; font-weight:700; color:var(--text); }
+.ar-crp-crp  { font-size:10px; color:var(--muted); }
+
+/* Botão concluir aula */
+.btn-concluir-aula {
+  width:100%; padding:15px; border-radius:13px; border:none;
+  background:var(--green); color:#fff; font-size:14px; font-weight:700;
+  cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s;
+  box-shadow:0 4px 16px rgba(45,106,79,.3); margin-top:16px;
+}
+.btn-concluir-aula:hover { background:#245C43; transform:translateY(-1px); }
+.btn-concluir-aula.ja-feita { background:#ECFDF5; color:#059669; border:1.5px solid #A7F3D0; box-shadow:none; }
+.btn-concluir-aula.ja-feita:hover { transform:none; }
 
 /* RESPONSIVE */
 @media(max-width:768px){
@@ -2027,8 +2413,12 @@ body {
 
 <!-- LOADING SCREEN -->
 <div id="loading-screen">
-  <img src="/app.png" alt="Ranne">
-  <div class="ls-dots">
+  <div style="width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#2D6A4F,#4ECBA0);display:flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 8px 32px rgba(78,203,160,.3);animation:lsFadeIn .6s ease both">
+    <svg width="36" height="36" viewBox="0 0 26 26" fill="none"><path d="M6 20V8C6 6.9 6.9 6 8 6H13C15.8 6 18 8.2 18 11C18 13.8 15.8 16 13 16H10" stroke="white" stroke-width="2.2" stroke-linecap="round"/><path d="M10 16L14 20" stroke="white" stroke-width="2.2" stroke-linecap="round"/></svg>
+  </div>
+  <div style="font-family:'Fraunces',serif;font-size:26px;color:#fff;font-style:italic;margin-bottom:6px;animation:lsFadeIn .6s .1s ease both">Ranne</div>
+  <div style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.05em;margin-bottom:32px;animation:lsFadeIn .6s .2s ease both">Saúde Mental Corporativa</div>
+  <div class="ls-dots" style="animation:lsFadeIn .6s .3s ease both">
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
@@ -2131,8 +2521,8 @@ body {
     </div>
 
     <p class="ob-sub">
-      Diagnóstico de clima, plano de ação automático e evolução histórica,<br>
-      tudo transformado em dado de negócio<br>
+      Diagnóstico de clima, plano de ação automático e evolução<br>
+      histórica — tudo transformado em dado de negócio<br>
       para gestores que se importam.
     </p>
 
@@ -2142,7 +2532,7 @@ body {
         <div class="ob-p-icon">📊</div>
         <div class="ob-p-body">
           <strong>Diagnóstico baseado em dados</strong>
-          <span>Clima, Liderança, Carga e Cultura, score real, sem achismo</span>
+          <span>Clima, Liderança, Carga e Cultura — score real, sem achismo</span>
         </div>
         <span class="ob-p-arr">›</span>
       </div>
@@ -2340,7 +2730,7 @@ body {
           <input class="field-input" type="text" id="pessoa-nome" placeholder="Seu nome completo">
           <label class="field-label">CPF</label>
           <input class="field-input" id="pessoa-cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)">
-          <label class="field-label">Código da empresa <span style="font-weight:300;text-transform:none;letter-spacing:0;color:rgba(26,46,32,.35)">(opcional ➔ se você é colaborador)</span></label>
+          <label class="field-label">Código da empresa <span style="font-weight:300;text-transform:none;letter-spacing:0;color:rgba(26,46,32,.35)">(opcional — se você é colaborador)</span></label>
           <input class="field-input" id="pessoa-codigo" placeholder="Ex: RANNE-4829" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
           <div id="pessoa-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
           <button class="btn-cta" id="pessoa-btn" onclick="setupPessoa()">Entrar na plataforma →</button>
@@ -2636,6 +3026,16 @@ body {
           </div>
 
 
+
+          <!-- ══ PAINEL DE SOLUÇÕES RH ══ -->
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-hdr">
+              <span class="card-title">🏥 Soluções por Nível de Risco</span>
+              <span class="chip chip-green">Guia RH</span>
+            </div>
+            <div id="rh-solucoes"></div>
+          </div>
+
           <!-- ══ BASE CIENTÍFICA ══ -->
           <div class="sci-footer">
             <div class="sci-footer-title">📚 Fundamentação Científica — Ranne Care</div>
@@ -2893,7 +3293,7 @@ body {
         <div style="max-width:560px">
           <div class="ci-dark">
             <h3>Como está seu humor hoje?</h3>
-            <p>Resposta privada, só você vê o seu score individual</p>
+            <p>Resposta privada — só você vê o seu score individual</p>
             <div class="em-row" id="checkin-humor">
               <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
               <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
@@ -2992,8 +3392,8 @@ body {
       <div class="bv-feat">
         <div class="bv-feat-icon" style="background:rgba(78,203,160,.12)">🧠</div>
         <div class="bv-feat-body">
-          <strong>QUSP — Diagnóstico Pessoal</strong>
-          <span>Entenda seu nível de bem-estar em 5 minutos</span>
+          <strong>Centro Clínico — PHQ-9, GAD-7, PSS-10</strong>
+          <span>6 testes validados por psicólogos e psiquiatras</span>
         </div>
       </div>
       <div class="bv-feat">
@@ -3006,8 +3406,8 @@ body {
       <div class="bv-feat">
         <div class="bv-feat-icon" style="background:rgba(240,230,211,.1)">🌿</div>
         <div class="bv-feat-body">
-          <strong>Descompressão Guiada</strong>
-          <span>Respiração e pausas para resetar a mente</span>
+          <strong>5 Trilhas Clínicas de Bem-estar</strong>
+          <span>26 aulas revisadas por Psicóloga CRP 06/215926</span>
         </div>
       </div>
     </div>
@@ -3022,7 +3422,7 @@ body {
 
   <!-- TOPO -->
   <div class="col-topbar">
-    <div class="tb-logo">Ranne Care</div>
+    <div class="tb-logo">Ranne</div>
     <div class="tb-right">
       <span class="tb-user" id="tb-user-name">Olá!</span>
       <div class="tb-notif" onclick="toast('🔔 Sem novas notificações')">🔔</div>
@@ -3094,10 +3494,10 @@ body {
 
       <div class="acoes-title">Ações rápidas</div>
       <div class="acao-grid">
-        <div class="acao-card acao-qusp" onclick="cpg('qusp')">
-          <span class="acao-card-icon">🧠</span>
-          <div class="acao-card-title">Fazer QUSP</div>
-          <div class="acao-card-sub">20 perguntas · 5 min</div>
+        <div class="acao-card acao-qusp" onclick="cpg('clinico')">
+          <span class="acao-card-icon">🧪</span>
+          <div class="acao-card-title">Testes Clínicos</div>
+          <div class="acao-card-sub">PHQ-9 · GAD-7 · PSS-10</div>
           <span class="acao-card-arr">→</span>
         </div>
         <div class="acao-card acao-checkin" onclick="cpg('checkin')">
@@ -3300,66 +3700,158 @@ body {
     </div>
   </div>
 
-  <!-- ── BIBLIOTECA ── -->
+  <!-- ── TRILHAS DE BEM-ESTAR ── -->
   <div class="col-page" id="cp-biblioteca">
-    <div class="bib-search">
-      <input type="text" placeholder="Buscar conteúdo..." oninput="searchBib(this.value)">
-    </div>
-    <div class="bib-cats">
-      <div class="bib-cat active" onclick="filterBib('todos',this)">Todos</div>
-      <div class="bib-cat" onclick="filterBib('burnout',this)">Burnout</div>
-      <div class="bib-cat" onclick="filterBib('foco',this)">Foco</div>
-      <div class="bib-cat" onclick="filterBib('relacoes',this)">Relações</div>
-      <div class="bib-cat" onclick="filterBib('sono',this)">Sono</div>
-      <div class="bib-cat" onclick="filterBib('produtividade',this)">Produtividade</div>
+
+    <!-- Hero -->
+    <div class="trilhas-hero">
+      <div class="th-eye">Ranne Care · Conteúdo Clínico</div>
+      <div class="th-title">Trilhas de<br>Bem-estar</div>
+      <div class="th-sub">Conteúdo desenvolvido com base clínica e revisado por psicóloga especializada em saúde mental ocupacional.</div>
+      <div class="th-stats">
+        <div class="th-stat"><div class="th-stat-dot"></div>5 trilhas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>26 aulas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>~2h de conteúdo</div>
+      </div>
     </div>
 
-    <div class="bib-feat">
-      <div class="bf-eyebrow">⭐ Destaque da semana</div>
-      <div class="bf-title">Como recuperar a energia no meio da semana</div>
-      <div class="bf-sub">5 estratégias simples que funcionam mesmo quando você está exausto</div>
-      <button class="btn-bf" onclick="toast('📖 Abrindo artigo...')">Ler agora →</button>
+    <!-- Badge psicóloga -->
+    <div class="crp-badge">
+      <div class="crp-avatar">👩‍⚕️</div>
+      <div class="crp-info">
+        <strong>Conteúdo revisado por Viviani Alexandre Rufino</strong>
+        <span>Psicóloga Clínica — CRP 06/215926</span>
+      </div>
     </div>
 
-    <div class="bib-grid" id="bib-grid">
-      <div class="bib-card" data-cat="burnout">
-        <div class="bc-cat" style="color:#DC2626">Burnout</div>
-        <div class="bc-title">7 sinais de que você precisa descansar</div>
-        <div class="bc-sub">Reconheça os alertas antes de chegar no limite</div>
-        <div class="bc-foot"><span class="bc-time">⏱ 6 min</span><span style="font-size:10px;color:var(--muted)">Artigo</span></div>
+    <!-- Trilha 1 -->
+    <div class="trilha-card t1" onclick="abrirTrilha(1)">
+      <div class="tc-emoji">🔥</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 1</div>
+        <div class="tc-titulo">Prevenção ao Burnout</div>
+        <div class="tc-desc">Uma jornada para entender o esgotamento, reconhecer seus sinais e construir um estilo de vida mais sustentável.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">6 aulas</span>
+          <span class="tc-pill">~30 min</span>
+          <span class="tc-pill">CID-11 · OMS</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t1-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t1-fill" style="width:0%"></div></div>
+        </div>
       </div>
-      <div class="bib-card" data-cat="foco">
-        <div class="bc-cat" style="color:#2D6A4F">Foco</div>
-        <div class="bc-title">Pomodoro funciona de verdade?</div>
-        <div class="bc-sub">A ciência por trás das pausas estratégicas</div>
-        <div class="bc-foot"><span class="bc-time">⏱ 4 min</span><span style="font-size:10px;color:var(--muted)">Artigo</span></div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 2 -->
+    <div class="trilha-card t2" onclick="abrirTrilha(2)">
+      <div class="tc-emoji">🧘</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 2</div>
+        <div class="tc-titulo">Regulação Emocional no Trabalho</div>
+        <div class="tc-desc">Aprenda a reconhecer, processar e direcionar suas emoções sem suprimir, nem explodir.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~25 min</span>
+          <span class="tc-pill">Goleman · 1995</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t2-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t2-fill" style="width:0%"></div></div>
+        </div>
       </div>
-      <div class="bib-card" data-cat="sono">
-        <div class="bc-cat" style="color:#6D28D9">Sono</div>
-        <div class="bc-title">Dormir mal afeta seu trabalho assim</div>
-        <div class="bc-sub">Dados reais sobre produtividade e sono</div>
-        <div class="bc-foot"><span class="bc-time">⏱ 5 min</span><span style="font-size:10px;color:var(--muted)">Artigo</span></div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 3 -->
+    <div class="trilha-card t3" onclick="abrirTrilha(3)">
+      <div class="tc-emoji">😴</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 3</div>
+        <div class="tc-titulo">Sono e Recuperação</div>
+        <div class="tc-desc">Entenda por que o sono é a base de tudo e construa uma rotina noturna que realmente funciona.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~24 min</span>
+          <span class="tc-pill">Walker · 2017</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t3-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t3-fill" style="width:0%"></div></div>
+        </div>
       </div>
-      <div class="bib-card" data-cat="relacoes">
-        <div class="bc-cat" style="color:#D97706">Relações</div>
-        <div class="bc-title">Como dar e receber feedbacks difíceis</div>
-        <div class="bc-sub">Framework simples para conversas honestas</div>
-        <div class="bc-foot"><span class="bc-time">⏱ 7 min</span><span style="font-size:10px;color:var(--muted)">Guia</span></div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 4 -->
+    <div class="trilha-card t4" onclick="abrirTrilha(4)">
+      <div class="tc-emoji">🧠</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 4</div>
+        <div class="tc-titulo">Foco e Performance Mental</div>
+        <div class="tc-desc">Trabalhe com o ritmo natural do seu cérebro e produza melhor, sem se esgotar no processo.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~23 min</span>
+          <span class="tc-pill">Diamond · 2013</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t4-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t4-fill" style="width:0%"></div></div>
+        </div>
       </div>
-      <div class="bib-card" data-cat="produtividade">
-        <div class="bc-cat" style="color:#2D6A4F">Produtividade</div>
-        <div class="bc-title">O poder das micro-pausas</div>
-        <div class="bc-sub">Por que parar mais te faz produzir mais</div>
-        <div class="bc-foot"><span class="bc-time">⏱ 4 min</span><span style="font-size:10px;color:var(--muted)">Artigo</span></div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 5 -->
+    <div class="trilha-card t5" onclick="abrirTrilha(5)">
+      <div class="tc-emoji">🤝</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 5</div>
+        <div class="tc-titulo">Relacionamentos Saudáveis no Trabalho</div>
+        <div class="tc-desc">Construa conexões genuínas, comunique com empatia e lide com conflitos de forma construtiva.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~22 min</span>
+          <span class="tc-pill">Rosenberg · 2003</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t5-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t5-fill" style="width:0%"></div></div>
+        </div>
       </div>
-      <div class="bib-card" data-cat="foco">
-        <div class="bc-cat" style="color:#2D6A4F">Foco</div>
-        <div class="bc-title">Silenciar notificações sem culpa</div>
-        <div class="bc-sub">Como criar blocos de foco profundo</div>
-        <div class="bc-foot"><span class="bc-time">⏱ 3 min</span><span style="font-size:10px;color:var(--muted)">Dica</span></div>
+      <div class="tc-arr">›</div>
+    </div>
+
+  </div>
+
+  <!-- ── DETALHE DA TRILHA (lista de aulas) ── -->
+  <div class="col-page" id="cp-trilha-detalhe">
+    <div class="trilha-detalhe-hero">
+      <button class="tdh-back" onclick="cpg('biblioteca')">← Todas as trilhas</button>
+      <span class="tdh-emoji" id="tdh-emoji">🔥</span>
+      <div class="tdh-titulo" id="tdh-titulo">—</div>
+      <div class="tdh-sub"   id="tdh-sub">—</div>
+      <div class="tdh-prog-wrap">
+        <div class="tdh-prog-row">
+          <span class="tdh-prog-lbl" id="tdh-prog-lbl">0 de 0 aulas</span>
+          <span class="tdh-prog-pct" id="tdh-prog-pct">0%</span>
+        </div>
+        <div class="tdh-prog-track"><div class="tdh-prog-fill" id="tdh-prog-fill" style="width:0%"></div></div>
       </div>
+    </div>
+    <div id="aulas-list"></div>
+  </div>
+
+  <!-- ── LEITORA DE AULA ── -->
+  <div class="col-page" id="cp-aula-reader">
+    <div class="aula-reader" id="aula-reader-content">
+      <!-- preenchido por JS -->
     </div>
   </div>
+
+
 
 
   <!-- ── QUSP ── -->
@@ -3431,15 +3923,204 @@ body {
     <button onclick="cpg('inicio')" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;">Voltar ao início</button>
   </div>
 
+
+  <!-- ══════════════════════════════════════
+       CENTRO CLÍNICO — SELEÇÃO DE TESTES
+       ══════════════════════════════════════ -->
+  <div class="col-page" id="cp-clinico">
+
+    <div class="clinic-hero">
+      <div class="ch-eye">Centro Clínico · Ranne Care</div>
+      <div class="ch-title">Seu espaço de<br>autoconhecimento real.</div>
+      <div class="ch-sub">Instrumentos validados por psicólogos e psiquiatras. Seus resultados são privados — o RH só vê dados agregados e anônimos.</div>
+      <div class="ch-tags">
+        <span class="ch-tag">🔒 100% privado</span>
+        <span class="ch-tag">🧪 Validação clínica</span>
+        <span class="ch-tag">📋 CID-11 · DSM-5</span>
+      </div>
+    </div>
+
+    <div class="clinic-aviso">
+      <div class="clinic-aviso-icon">ℹ️</div>
+      <div class="clinic-aviso-text">
+        <strong>Estes testes não substituem avaliação profissional.</strong> Eles são ferramentas de rastreamento que ajudam você a entender como está e, se necessário, buscar apoio no momento certo.
+      </div>
+    </div>
+
+    <!-- PHQ-9 -->
+    <div class="test-card" onclick="iniciarTeste('phq9')" id="tc-phq9">
+      <div class="test-card-badge" style="background:#FEF2F2">😔</div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">PHQ-9 · Kroenke & Spitzer, 2001</div>
+        <div class="test-card-title">Rastreamento de Depressão</div>
+        <div class="test-card-desc">Padrão-ouro do DSM-5, usado por médicos e psiquiatras no mundo todo. Mede sintomas depressivos nas últimas 2 semanas.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">9 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">DSM-5</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- GAD-7 -->
+    <div class="test-card" onclick="iniciarTeste('gad7')" id="tc-gad7">
+      <div class="test-card-badge" style="background:#FFFBEB">😰</div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">GAD-7 · Spitzer et al., 2006</div>
+        <div class="test-card-title">Ansiedade Generalizada</div>
+        <div class="test-card-desc">Validado pela American Psychiatric Association. Identifica transtorno de ansiedade generalizada com alta precisão clínica.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">7 perguntas</span>
+          <span class="test-card-pill">~2 min</span>
+          <span class="test-card-pill">APA · DSM-5</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- PSS-10 -->
+    <div class="test-card" onclick="iniciarTeste('pss10')" id="tc-pss10">
+      <div class="test-card-badge" style="background:#EFF6FF">⚡</div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">PSS-10 · Cohen, Kamarck & Mermelstein, 1983</div>
+        <div class="test-card-title">Estresse Percebido</div>
+        <div class="test-card-desc">Desenvolvida na Carnegie Mellon University. Mede o quanto as situações da vida são percebidas como estressantes e incontroláveis.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">10 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">Carnegie Mellon</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- AUDIT-C -->
+    <div class="test-card" onclick="iniciarTeste('auditc')" id="tc-auditc">
+      <div class="test-card-badge" style="background:#F5F3FF">🍷</div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">AUDIT-C · OMS / Babor et al., 2001</div>
+        <div class="test-card-title">Uso de Álcool & Estresse</div>
+        <div class="test-card-desc">Instrumento da OMS para rastreamento de uso nocivo de álcool como resposta ao estresse ocupacional. Amplamente usado em saúde do trabalho.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">3 perguntas</span>
+          <span class="test-card-pill">~1 min</span>
+          <span class="test-card-pill">OMS</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- PRESENTEÍSMO (SPS-6) -->
+    <div class="test-card" onclick="iniciarTeste('sps6')" id="tc-sps6">
+      <div class="test-card-badge" style="background:#ECFDF5">💼</div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">SPS-6 · Koopman et al., 2002</div>
+        <div class="test-card-title">Presenteísmo & Produtividade</div>
+        <div class="test-card-desc">Mede a perda de produtividade causada por problemas de saúde enquanto o colaborador está presente no trabalho. Dado estratégico para o RH.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">6 perguntas</span>
+          <span class="test-card-pill">~2 min</span>
+          <span class="test-card-pill">Stanford</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- SEGURANÇA PSICOLÓGICA (adaptado Edmondson) -->
+    <div class="test-card" onclick="iniciarTeste('psych_safety')" id="tc-psych_safety">
+      <div class="test-card-badge" style="background:#E8F2EC">🤝</div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Edmondson (1999) · Harvard Business School</div>
+        <div class="test-card-title">Segurança Psicológica no Time</div>
+        <div class="test-card-desc">Baseado na pesquisa que fundamentou o Projeto Aristóteles do Google. Mede se você se sente seguro para se expressar e errar no ambiente de trabalho.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">7 perguntas</span>
+          <span class="test-card-pill">~2 min</span>
+          <span class="test-card-pill">Harvard · Google</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+  </div>
+
+  <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
+  <div class="col-page" id="cp-clin-teste">
+
+    <div class="clin-test-header">
+      <div class="clin-test-nome" id="clin-nome-header">—</div>
+      <div class="clin-test-titulo" id="clin-titulo-header">—</div>
+      <div class="clin-test-instrucao" id="clin-instrucao-header">Considere como você se sentiu nas <strong>últimas 2 semanas</strong>.</div>
+    </div>
+
+    <div class="clin-prog-wrap">
+      <div class="clin-prog-row">
+        <span class="clin-prog-lbl" id="clin-prog-lbl">Pergunta 1</span>
+        <span class="clin-prog-pct" id="clin-prog-pct">0%</span>
+      </div>
+      <div class="clin-prog-track"><div class="clin-prog-fill" id="clin-prog-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="clin-question-card">
+      <div class="clin-q-num" id="clin-q-num">Pergunta 1</div>
+      <div class="clin-q-text" id="clin-q-text">—</div>
+      <div class="clin-opts" id="clin-opts"></div>
+    </div>
+
+    <div class="clin-nav">
+      <button class="btn-clin-back" id="clin-btn-back" onclick="clin_prev()" style="display:none">← Voltar</button>
+      <button class="btn-clin-next" id="clin-btn-next" onclick="clin_next()" disabled>Próxima →</button>
+    </div>
+
+    <div class="priv-nota" style="margin-top:8px">
+      <span>🔒</span>
+      <span>Suas respostas são totalmente privadas. O RH nunca vê seus resultados individuais, apenas dados agregados e anônimos da equipe.</span>
+    </div>
+  </div>
+
+  <!-- ══ RESULTADO CLÍNICO ══ -->
+  <div class="col-page" id="cp-clin-resultado">
+
+    <div class="clin-result-hero">
+      <div class="crh-eye" id="crh-eye">Resultado</div>
+      <div class="crh-score" id="crh-score">—</div>
+      <div class="crh-max" id="crh-max">pontos</div>
+      <div class="crh-nivel" id="crh-nivel">—</div>
+      <div class="crh-desc" id="crh-desc">—</div>
+    </div>
+
+    <!-- Encaminhamento por nível -->
+    <div id="clin-encaminhamento"></div>
+
+    <!-- Prescrições individuais -->
+    <div id="clin-prescricoes"></div>
+
+    <!-- O que o profissional diria -->
+    <div id="clin-profissional"></div>
+
+    <!-- Pro gate -->
+    <div class="qr-pro-card" style="margin-bottom:12px">
+      <div class="qr-pro-title">✦ Relatório Pro — Para seu Médico ou Terapeuta</div>
+      <div class="qr-pro-sub">PDF com análise clínica completa, histórico de testes e recomendações para levar à sua próxima consulta.</div>
+      <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade Pro — em breve!')">Gerar PDF do relatório</button>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <button onclick="cpg('clinico')" style="flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">← Outros testes</button>
+      <button onclick="cpg('inicio')" style="flex:1;padding:13px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Voltar ao início</button>
+    </div>
+  </div>
+
   <!-- NAV INFERIOR -->
   <nav class="col-nav">
     <div class="cn-item active" id="cn-inicio" onclick="cpg('inicio')">
       <span class="cn-icon">🏠</span>
       <span class="cn-label">Início</span>
     </div>
-    <div class="cn-item" id="cn-qusp" onclick="cpg('qusp')">
-      <span class="cn-icon">🧠</span>
-      <span class="cn-label">QUSP</span>
+    <div class="cn-item" id="cn-clinico" onclick="cpg('clinico')">
+      <span class="cn-icon">🧪</span>
+      <span class="cn-label">Testes</span>
     </div>
     <div class="cn-item" id="cn-checkin" onclick="cpg('checkin')">
       <span class="cn-icon">✅</span>
@@ -3451,7 +4132,7 @@ body {
     </div>
     <div class="cn-item" id="cn-biblioteca" onclick="cpg('biblioteca')">
       <span class="cn-icon">📚</span>
-      <span class="cn-label">Biblioteca</span>
+      <span class="cn-label">Trilhas</span>
     </div>
   </nav>
 
@@ -3494,15 +4175,26 @@ let deferredInstall = null;
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', async () => {
   if (localStorage.getItem('ranne-dark') === '1') document.body.classList.add('dark');
+
+  // Timeout de segurança — se Supabase demorar >4s, vai para onboarding
+  const safetyTimer = setTimeout(() => {
+    document.getElementById('loading-screen').style.display = 'none';
+    showOnboarding();
+  }, 4000);
+
   try {
     const { data: { session } } = await db.auth.getSession();
+    clearTimeout(safetyTimer);
     if (session?.user) {
       currentUser = session.user;
       await rotearUsuario();
     } else {
       showOnboarding();
     }
-  } catch { showDemo(); }
+  } catch(e) {
+    clearTimeout(safetyTimer);
+    showOnboarding(); // Mostra login em vez de demo
+  }
   document.getElementById('loading-screen').style.display = 'none';
   initPlano();
 });
@@ -3565,6 +4257,7 @@ function showEmpresa() {
     document.getElementById('realMetrics').style.display = 'block';
   }, 900);
   loadDashboardData();
+  setTimeout(renderRHSolucoes, 100);
 }
 
 function showColaborador(nome) {
@@ -4959,6 +5652,874 @@ function atualizarInicioColaborador(nome) {
   if (elData)    elData.textContent = dataStr;
   if (elTbUser)  elTbUser.textContent = 'Olá, ' + nome.split(' ')[0] + '!';
 }
+
+
+/* ══════════════════════════════════════════════════════════
+   CENTRO CLÍNICO — TESTES VALIDADOS
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Base de dados dos testes ── */
+const TESTES = {
+
+  phq9: {
+    id: 'phq9',
+    nome: 'PHQ-9',
+    titulo: 'Rastreamento de Depressão',
+    instrucao: 'Nas últimas 2 semanas, com que frequência você foi incomodado pelos seguintes problemas?',
+    fonte: 'Kroenke & Spitzer (2001) · Patient Health Questionnaire · DSM-5',
+    escala: [
+      { label:'Nenhuma vez', pts:0 },
+      { label:'Vários dias', pts:1 },
+      { label:'Mais da metade dos dias', pts:2 },
+      { label:'Quase todos os dias', pts:3 }
+    ],
+    perguntas: [
+      'Pouco interesse ou prazer em fazer as coisas.',
+      'Sentir-se para baixo, deprimido(a) ou sem esperança.',
+      'Dificuldade para adormecer, para permanecer dormindo ou dormir mais do que o usual.',
+      'Sentir-se cansado(a) ou com pouca energia.',
+      'Apetite diminuído ou aumentado.',
+      'Sentir-se mal consigo mesmo(a) — ou sentir que é um fracasso ou que decepcionou sua família ou a você mesmo(a).',
+      'Dificuldade para se concentrar nas coisas, como ler um jornal ou ver televisão.',
+      'Mover-se ou falar tão devagar que outras pessoas poderiam ter notado, ou ao contrário — estar tão agitado(a) que você ficou andando de um lado para o outro muito mais do que o habitual.',
+      'Pensar que seria melhor estar morto(a) ou em se machucar de alguma forma.'
+    ],
+    max: 27,
+    niveis: [
+      { min:0,  max:4,  nivel:'Mínimo', cor:'#10B981', tipo:'baixo', desc:'Seus sintomas são mínimos. Continue com hábitos saudáveis e autocuidado.' },
+      { min:5,  max:9,  nivel:'Leve', cor:'#52B788', tipo:'baixo', desc:'Sintomas leves. Pode ser útil monitorar e conversar com alguém de confiança.' },
+      { min:10, max:14, nivel:'Moderado', cor:'#F59E0B', tipo:'medio', desc:'Sintomas moderados. Recomendamos considerar uma consulta com profissional de saúde mental.' },
+      { min:15, max:19, nivel:'Moderadamente Grave', cor:'#EF4444', tipo:'alto', desc:'Sintomas significativos. É importante buscar apoio profissional em breve.' },
+      { min:20, max:27, nivel:'Grave', cor:'#DC2626', tipo:'critico', desc:'Sintomas graves. Recomendamos buscar ajuda profissional o quanto antes.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Mantenha rotina de sono regular (7–9h)', 'Reserve tempo para atividades que geram prazer', 'Pratique exercício físico pelo menos 3x por semana', 'Mantenha conexões sociais com pessoas que te fazem bem'],
+      medio: ['Considere iniciar psicoterapia — terapia cognitivo-comportamental (TCC) tem alta eficácia', 'Reduza estressores evitáveis no trabalho', 'Evite álcool e outras substâncias como forma de alívio', 'Compartilhe como está se sentindo com alguém de confiança'],
+      alto: ['Agende consulta com psicólogo ou psiquiatra com urgência', 'Avalie a necessidade de afastamento temporário com seu médico', 'Não tome decisões importantes de carreira neste momento', 'Ative o suporte do plano de saúde da empresa'],
+      critico: ['BUSQUE AJUDA PROFISSIONAL IMEDIATAMENTE', 'CVV (Centro de Valorização da Vida): ligue 188 — gratuito, 24h', 'UPA ou PS mais próximo se sentir risco imediato', 'Não fique sozinho(a) — avise alguém de confiança agora']
+    }
+  },
+
+  gad7: {
+    id: 'gad7',
+    nome: 'GAD-7',
+    titulo: 'Ansiedade Generalizada',
+    instrucao: 'Nas últimas 2 semanas, com que frequência você foi incomodado pelos seguintes problemas?',
+    fonte: 'Spitzer, Kroenke & Williams (2006) · American Psychiatric Association · DSM-5',
+    escala: [
+      { label:'Nenhuma vez', pts:0 },
+      { label:'Vários dias', pts:1 },
+      { label:'Mais da metade dos dias', pts:2 },
+      { label:'Quase todos os dias', pts:3 }
+    ],
+    perguntas: [
+      'Sentir-se nervoso(a), ansioso(a) ou no limite.',
+      'Não ser capaz de impedir ou controlar as preocupações.',
+      'Preocupar-se muito com diferentes coisas.',
+      'Dificuldade para relaxar.',
+      'Ficar tão agitado(a) que se torna difícil permanecer sentado(a).',
+      'Tornar-se facilmente aborrecido(a) ou irritável.',
+      'Sentir medo como se algo terrível fosse acontecer.'
+    ],
+    max: 21,
+    niveis: [
+      { min:0,  max:4,  nivel:'Mínimo', cor:'#10B981', tipo:'baixo', desc:'Nível de ansiedade mínimo. Seus mecanismos de regulação emocional estão funcionando bem.' },
+      { min:5,  max:9,  nivel:'Leve', cor:'#52B788', tipo:'baixo', desc:'Ansiedade leve, dentro do esperado para o ritmo de trabalho atual.' },
+      { min:10, max:14, nivel:'Moderado', cor:'#F59E0B', tipo:'medio', desc:'Ansiedade moderada que pode estar impactando sua qualidade de vida e performance.' },
+      { min:15, max:21, nivel:'Grave', cor:'#EF4444', tipo:'alto', desc:'Ansiedade intensa. Recomendamos avaliação profissional para um plano de manejo adequado.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Continue com práticas de mindfulness e respiração consciente', 'Mantenha rotina de exercícios físicos', 'Preserve horários de descanso e lazer'],
+      medio: ['Pratique a técnica de respiração 4-7-8 diariamente', 'Reduza consumo de cafeína e telas à noite', 'Considere terapia de relaxamento ou meditação guiada', 'Identifique e limite os gatilhos principais de ansiedade'],
+      alto: ['Consulte psicólogo — TCC e terapia de exposição têm excelente resultado para ansiedade', 'Converse com médico sobre opções de manejo', 'Reduza sobrecarga de trabalho temporariamente', 'Evite decisões importantes sob estado ansioso intenso'],
+      critico: ['Busque atendimento psiquiátrico para avaliação de manejo medicamentoso', 'Não subestime sintomas físicos associados (palpitação, falta de ar)', 'Ative suporte do plano de saúde da empresa imediatamente']
+    }
+  },
+
+  pss10: {
+    id: 'pss10',
+    nome: 'PSS-10',
+    titulo: 'Estresse Percebido',
+    instrucao: 'No último mês, com que frequência você se sentiu ou pensou da seguinte maneira?',
+    fonte: 'Cohen, Kamarck & Mermelstein (1983) · Carnegie Mellon University · Perceived Stress Scale',
+    escala: [
+      { label:'Nunca', pts:0 },
+      { label:'Quase nunca', pts:1 },
+      { label:'Às vezes', pts:2 },
+      { label:'Com frequência', pts:3 },
+      { label:'Muito frequente', pts:4 }
+    ],
+    perguntas: [
+      'Com que frequência você ficou transtornado(a) por causa de algo que aconteceu inesperadamente?',
+      'Com que frequência você sentiu que era incapaz de controlar as coisas importantes em sua vida?',
+      'Com que frequência você se sentiu nervoso(a) e estressado(a)?',
+      'Com que frequência você se sentiu confiante na sua capacidade de lidar com seus problemas pessoais?',
+      'Com que frequência você sentiu que as coisas estavam indo do seu jeito?',
+      'Com que frequência você achou que não conseguia lidar com todas as coisas que tinha que fazer?',
+      'Com que frequência você foi capaz de controlar as irritações em sua vida?',
+      'Com que frequência você sentiu que estava por cima das situações?',
+      'Com que frequência você ficou com raiva por causa de coisas que aconteceram fora do seu controle?',
+      'Com que frequência você sentiu que as dificuldades se acumulavam a ponto de você acreditar que não conseguiria superá-las?'
+    ],
+    invertidas: [3, 4, 6, 7],
+    max: 40,
+    niveis: [
+      { min:0,  max:13, nivel:'Estresse Baixo', cor:'#10B981', tipo:'baixo', desc:'Bom nível de controle percebido sobre sua vida. Continue com suas práticas de autocuidado.' },
+      { min:14, max:26, nivel:'Estresse Moderado', cor:'#F59E0B', tipo:'medio', desc:'Estresse moderado — comum em ambientes de alta demanda. Intervenções preventivas são recomendadas.' },
+      { min:27, max:40, nivel:'Estresse Elevado', cor:'#EF4444', tipo:'alto', desc:'Percepção de alto estresse e baixo controle sobre a própria vida. Atenção imediata é necessária.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Mantenha as práticas que estão funcionando', 'Fortaleça sua rede de apoio social', 'Pratique gratidão e reconhecimento de conquistas'],
+      medio: ['Implemente técnica Pomodoro (50min foco/10min pausa real)', 'Estabeleça limites claros entre trabalho e vida pessoal', 'Reduza multitarefa — ela aumenta estresse percebido em 40%', 'Delegue tarefas onde for possível'],
+      alto: ['Avalie redistribuição de demandas com seu gestor', 'Solicite Day-Off ou férias para regulação do sistema nervoso', 'Busque acompanhamento psicológico focado em gestão do estresse', 'Avalie fatores estruturais: cargo, equipe, relacionamentos no trabalho']
+    }
+  },
+
+  auditc: {
+    id: 'auditc',
+    nome: 'AUDIT-C',
+    titulo: 'Uso de Álcool & Estresse',
+    instrucao: 'Responda sobre seu comportamento em relação ao consumo de bebidas alcoólicas.',
+    fonte: 'Babor et al. (2001) · Organização Mundial da Saúde · Alcohol Use Disorders Identification Test',
+    escala: null,
+    perguntas_custom: [
+      {
+        texto: 'Com que frequência você consome bebidas contendo álcool?',
+        opts: ['Nunca','Mensalmente ou menos','2 a 4 vezes por mês','2 a 3 vezes por semana','4 ou mais vezes por semana'],
+        pts:  [0,1,2,3,4]
+      },
+      {
+        texto: 'Quantas doses alcoólicas você costuma consumir em um dia típico quando está bebendo?',
+        opts: ['1 ou 2','3 ou 4','5 ou 6','7, 8 ou 9','10 ou mais'],
+        pts:  [0,1,2,3,4]
+      },
+      {
+        texto: 'Com que frequência você consome 6 ou mais doses em uma única ocasião?',
+        opts: ['Nunca','Menos de uma vez por mês','Mensalmente','Semanalmente','Diariamente ou quase diariamente'],
+        pts:  [0,1,2,3,4]
+      }
+    ],
+    max: 12,
+    niveis: [
+      { min:0,  max:2,  nivel:'Baixo Risco', cor:'#10B981', tipo:'baixo', desc:'Padrão de consumo de baixo risco. Sem evidência de uso problemático.' },
+      { min:3,  max:5,  nivel:'Uso de Risco',cor:'#F59E0B', tipo:'medio', desc:'Padrão de uso de risco — especialmente em contextos de estresse ocupacional.' },
+      { min:6,  max:12, nivel:'Uso Nocivo / Possível Dependência', cor:'#EF4444', tipo:'alto', desc:'Padrão sugestivo de uso nocivo. Recomendamos avaliação com profissional de saúde.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Mantenha consciência sobre os gatilhos de consumo', 'O álcool como "recompensa" após dias difíceis pode se tornar padrão problemático', 'Prefira outros rituais de descompressão: exercício, pausa ativa, socialização'],
+      medio: ['Monitore se o consumo aumenta em períodos de maior estresse no trabalho', 'Estabeleça pelo menos 2 dias sem consumo por semana', 'Identifique se o álcool está sendo usado para regular emoções difíceis', 'Considere conversar com médico de família'],
+      alto: ['Busque avaliação com médico ou psiquiatra — sem julgamento', 'Existem tratamentos eficazes e confidenciais disponíveis', 'O uso nocivo de álcool é um sintoma de sobrecarga — não fraqueza de caráter', 'CAPS AD (Centro de Atenção Psicossocial) oferece atendimento gratuito']
+    }
+  },
+
+  sps6: {
+    id: 'sps6',
+    nome: 'SPS-6',
+    titulo: 'Presenteísmo & Produtividade',
+    instrucao: 'Considerando as últimas 4 semanas, avalie seu desempenho no trabalho.',
+    fonte: 'Koopman et al. (2002) · Stanford University · Stanford Presenteeism Scale',
+    escala: [
+      { label:'Discordo totalmente', pts:1 },
+      { label:'Discordo', pts:2 },
+      { label:'Neutro', pts:3 },
+      { label:'Concordo', pts:4 },
+      { label:'Concordo totalmente', pts:5 }
+    ],
+    perguntas: [
+      'Apesar de qualquer problema de saúde, consegui concluir o trabalho que precisava fazer.',
+      'Apesar de qualquer problema de saúde, consegui manter o nível de qualidade do meu trabalho.',
+      'Fui capaz de me concentrar no meu trabalho.',
+      'Senti que minha produtividade foi alta.',
+      'Me senti com energia suficiente para fazer meu trabalho.',
+      'Pude manter o ritmo esperado no trabalho.'
+    ],
+    max: 30,
+    niveis: [
+      { min:24, max:30, nivel:'Alta Produtividade', cor:'#10B981', tipo:'baixo', desc:'Boa capacidade de manter produtividade mesmo com desafios. Continue monitorando.' },
+      { min:18, max:23, nivel:'Produtividade Moderada', cor:'#F59E0B', tipo:'medio', desc:'Alguma perda de produtividade identificada — pode estar relacionada a saúde ou sobrecarga.' },
+      { min:6,  max:17, nivel:'Baixa Produtividade', cor:'#EF4444', tipo:'alto', desc:'Perda significativa de produtividade. Importante investigar as causas com o gestor e área de saúde.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Continue com as práticas que sustentam seu desempenho', 'Monitore sinais de queda antes que se tornem problemas maiores'],
+      medio: ['Identifique os principais drenos de energia durante o dia', 'Converse com gestor sobre redistribuição ou priorização de demandas', 'Invista em sono — é o maior preditor individual de produtividade cognitiva', 'Avalie se problemas de saúde não tratados estão impactando a performance'],
+      alto: ['Agende avaliação médica para descartar causas físicas', 'Solicite reunião com RH para revisar carga e prazos', 'Afastamento preventivo pode evitar um afastamento mais longo futuro', 'Considere avaliação psicológica — burnout e depressão são causas frequentes de presenteísmo']
+    }
+  },
+
+  psych_safety: {
+    id: 'psych_safety',
+    nome: 'Segurança Psicológica',
+    titulo: 'Segurança Psicológica no Time',
+    instrucao: 'Pense especificamente na sua equipe de trabalho atual ao responder.',
+    fonte: 'Edmondson (1999) · Harvard Business School · Baseado no Projeto Aristóteles do Google',
+    escala: [
+      { label:'Discordo totalmente', pts:1 },
+      { label:'Discordo', pts:2 },
+      { label:'Neutro', pts:3 },
+      { label:'Concordo', pts:4 },
+      { label:'Concordo totalmente', pts:5 }
+    ],
+    perguntas: [
+      'Se eu cometo um erro nesta equipe, geralmente é usado contra mim.',
+      'Os membros desta equipe são capazes de trazer problemas e temas difíceis.',
+      'As pessoas desta equipe às vezes rejeitam os outros por serem diferentes.',
+      'É seguro arriscar nesta equipe.',
+      'É difícil pedir ajuda aos outros membros desta equipe.',
+      'Nenhum membro desta equipe agiria de forma a prejudicar deliberadamente meus esforços.',
+      'Trabalhando com os membros desta equipe, minhas habilidades e talentos únicos são valorizados e utilizados.'
+    ],
+    invertidas: [0, 2, 4],
+    max: 35,
+    niveis: [
+      { min:28, max:35, nivel:'Alta Segurança', cor:'#10B981', tipo:'baixo', desc:'Você se sente seguro para se expressar, errar e pedir ajuda. Excelente ambiente de aprendizagem.' },
+      { min:21, max:27, nivel:'Segurança Moderada', cor:'#52B788', tipo:'baixo', desc:'Nível razoável, mas há espaço para melhorar a confiança e abertura na equipe.' },
+      { min:14, max:20, nivel:'Segurança Baixa', cor:'#F59E0B', tipo:'medio', desc:'Baixa segurança pode estar limitando sua contribuição e bem-estar no trabalho.' },
+      { min:7,  max:13, nivel:'Ambiente Inseguro', cor:'#EF4444', tipo:'alto', desc:'Ambiente com baixa segurança psicológica. Isso impacta diretamente saúde mental e performance.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Continue contribuindo ativamente — sua presença fortalece o clima do time', 'Seja um multiplicador de segurança psicológica com seus colegas'],
+      medio: ['Identifique com quem você se sente mais seguro e fortaleça essas relações', 'Contribua gradualmente com opiniões em contextos de menor risco', 'Converse com seu gestor sobre como melhorar a dinâmica do time'],
+      alto: ['Registre situações específicas que geraram insegurança', 'Converse com RH ou um profissional de confiança sobre o ambiente', 'Considere que alta insegurança psicológica é um fator de risco para burnout e ansiedade', 'Avalie se o problema é sistêmico (cultura da empresa) ou localizado (gestor específico)'],
+      critico: ['Situação de trabalho hostil pode configurar assédio moral — documente', 'Busque orientação de RH ou canal de denúncia da empresa', 'Considere avaliação psicológica — ambientes tóxicos causam danos reais à saúde']
+    }
+  }
+};
+
+/* ── Estado do teste atual ── */
+let clinAtual = null;
+let clinQAtual = 0;
+let clinResps  = [];
+let clinSel    = null;
+const clinDone = {};
+
+/* ── Iniciar teste ── */
+function iniciarTeste(id) {
+  clinAtual  = TESTES[id];
+  clinQAtual = 0;
+  clinResps  = new Array(clinAtual.perguntas ? clinAtual.perguntas.length : clinAtual.perguntas_custom.length).fill(null);
+  clinSel    = null;
+
+  // Header
+  document.getElementById('clin-nome-header').textContent     = clinAtual.nome + ' — ' + clinAtual.titulo;
+  document.getElementById('clin-titulo-header').textContent   = '';
+  document.getElementById('clin-instrucao-header').innerHTML  = clinAtual.instrucao;
+
+  clin_render();
+  cpg('clin-teste');
+}
+
+/* ── Render pergunta ── */
+function clin_render() {
+  const total = clinAtual.perguntas ? clinAtual.perguntas.length : clinAtual.perguntas_custom.length;
+  const pct   = Math.round(((clinQAtual + 1) / total) * 100);
+
+  document.getElementById('clin-prog-lbl').textContent   = 'Pergunta ' + (clinQAtual + 1) + ' de ' + total;
+  document.getElementById('clin-prog-pct').textContent   = pct + '%';
+  document.getElementById('clin-prog-fill').style.width  = pct + '%';
+  document.getElementById('clin-q-num').textContent      = (clinAtual.nome + ' · Pergunta ' + (clinQAtual + 1)).toUpperCase();
+  document.getElementById('clin-btn-back').style.display = clinQAtual > 0 ? 'block' : 'none';
+  document.getElementById('clin-btn-next').textContent   = clinQAtual === total - 1 ? 'Ver resultado ✓' : 'Próxima →';
+  document.getElementById('clin-btn-next').disabled      = clinSel === null;
+
+  // Texto da pergunta
+  let textoQ, opcoesQ;
+  if (clinAtual.perguntas_custom) {
+    const pc = clinAtual.perguntas_custom[clinQAtual];
+    textoQ   = pc.texto;
+    opcoesQ  = pc.opts.map((label, i) => ({ label, pts: pc.pts[i] }));
+  } else {
+    textoQ   = clinAtual.perguntas[clinQAtual];
+    opcoesQ  = clinAtual.escala;
+  }
+  document.getElementById('clin-q-text').textContent = textoQ;
+
+  // Opções
+  const optsEl = document.getElementById('clin-opts');
+  optsEl.innerHTML = opcoesQ.map((opt, i) => {
+    const isSel = clinResps[clinQAtual] !== null && clinResps[clinQAtual] === i;
+    return `<div class="clin-opt${isSel ? ' sel' : ''}" onclick="clin_select(this,${i},${opt.pts})">
+      <div class="clin-opt-dot"></div>
+      <span>${opt.label}</span>
+      <span class="clin-opt-pts">${opt.pts} pt${opt.pts !== 1 ? 's' : ''}</span>
+    </div>`;
+  }).join('');
+  clinSel = clinResps[clinQAtual] !== null ? clinResps[clinQAtual] : null;
+  document.getElementById('clin-btn-next').disabled = clinSel === null;
+}
+
+function clin_select(el, idx, pts) {
+  document.querySelectorAll('#clin-opts .clin-opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  clinSel = idx;
+  clinResps[clinQAtual] = idx;
+  document.getElementById('clin-btn-next').disabled = false;
+}
+
+function clin_prev() {
+  if (clinQAtual > 0) { clinQAtual--; clin_render(); }
+}
+
+function clin_next() {
+  if (clinSel === null) return;
+  const total = clinAtual.perguntas ? clinAtual.perguntas.length : clinAtual.perguntas_custom.length;
+  if (clinQAtual < total - 1) {
+    clinQAtual++;
+    clinSel = null;
+    clin_render();
+  } else {
+    clin_calcular();
+  }
+}
+
+/* ── Calcular resultado ── */
+function clin_calcular() {
+  const t = clinAtual;
+  let total = 0;
+
+  if (t.perguntas_custom) {
+    // AUDIT-C: pontos diretos por opção selecionada
+    clinResps.forEach((idx, i) => {
+      if (idx !== null) total += t.perguntas_custom[i].pts[idx];
+    });
+  } else {
+    clinResps.forEach((idx, i) => {
+      if (idx === null) return;
+      let pts = t.escala[idx].pts;
+      // PSS-10 e psych_safety têm itens invertidos
+      if (t.invertidas && t.invertidas.includes(i)) {
+        pts = (t.escala.length - 1) - idx;
+        if (t.id === 'psych_safety') pts = 5 - t.escala[idx].pts; // 1-5 invertido
+      }
+      total += pts;
+    });
+  }
+
+  // Encontrar nível
+  const niveis = t.niveis;
+  let nivel = niveis[niveis.length - 1];
+  for (const n of niveis) {
+    if (total >= n.min && total <= n.max) { nivel = n; break; }
+  }
+
+  // Marcar como feito
+  clinDone[t.id] = { score: total, nivel: nivel.nivel, tipo: nivel.tipo };
+  const card = document.getElementById('tc-' + t.id);
+  if (card) {
+    card.classList.add('done');
+    if (!card.querySelector('.test-done-chip')) {
+      const chip = document.createElement('div');
+      chip.className = 'test-done-chip';
+      chip.textContent = '✓ ' + nivel.nivel;
+      card.appendChild(chip);
+    }
+  }
+
+  // Montar tela de resultado
+  document.getElementById('crh-eye').textContent   = t.nome + ' — ' + t.titulo;
+  document.getElementById('crh-score').textContent = total;
+  document.getElementById('crh-score').style.color = nivel.cor;
+  document.getElementById('crh-max').textContent   = 'de ' + t.max + ' pontos';
+  document.getElementById('crh-nivel').textContent = nivel.nivel;
+  document.getElementById('crh-nivel').style.color = nivel.cor;
+  document.getElementById('crh-desc').textContent  = nivel.desc;
+
+  // Encaminhamento
+  const encEl = document.getElementById('clin-encaminhamento');
+  encEl.innerHTML = _enc_html(nivel.tipo, nivel.cor);
+
+  // Prescrições
+  const pres = t.prescricao_por_nivel[nivel.tipo] || t.prescricao_por_nivel['medio'];
+  const presEl = document.getElementById('clin-prescricoes');
+  presEl.innerHTML = `<div class="prescricao">
+    <div class="pres-header">
+      <div class="pres-icon">📋</div>
+      <div>
+        <div class="pres-titulo">Plano de Ação Individual</div>
+        <div class="pres-fonte">${t.fonte}</div>
+      </div>
+    </div>
+    <div class="pres-items">
+      ${pres.map(p => `<div class="pres-item">${p}</div>`).join('')}
+    </div>
+  </div>`;
+
+  // O que o profissional diria
+  const profEl = document.getElementById('clin-profissional');
+  profEl.innerHTML = _prof_html(t.id, nivel.tipo);
+
+  cpg('clin-resultado');
+}
+
+function _enc_html(tipo, cor) {
+  const configs = {
+    baixo:   { cls:'enc-baixo',  icon:'✅', titulo:'Você está bem',        desc:'Seus resultados estão dentro do esperado. Continue com seus hábitos de autocuidado e monitore regularmente.', btns:'<button class="enc-btn enc-btn-sec enc-btn-sec-g" onclick="cpg('clinico')">Ver outros testes</button>' },
+    medio:   { cls:'enc-medio',  icon:'⚠️', titulo:'Atenção recomendada',  desc:'Seus resultados indicam que vale a pena conversar com um profissional ou revisar alguns hábitos.', btns:'<button class="enc-btn enc-btn-pri-a" onclick="toast('💬 Funcionalidade em breve!')">Agendar conversa</button><button class="enc-btn enc-btn-sec enc-btn-sec-a" onclick="cpg('biblioteca')">Ver recursos</button>' },
+    alto:    { cls:'enc-alto',   icon:'🆘', titulo:'Apoio profissional recomendado', desc:'Seus resultados indicam que você pode se beneficiar significativamente de suporte profissional. Buscar ajuda é um ato de coragem, não de fraqueza.', btns:'<button class="enc-btn enc-btn-pri" onclick="toast('📞 Recurso: CVV 188 — gratuito 24h')">CVV — 188 (gratuito)</button><button class="enc-btn enc-btn-sec enc-btn-sec-r" onclick="toast('💬 Funcionalidade em breve!')">Falar com RH</button>' },
+    critico: { cls:'enc-alto',   icon:'🚨', titulo:'Busque ajuda agora',   desc:'Seus resultados indicam necessidade de apoio imediato. Por favor, não enfrente isso sozinho(a).', btns:'<button class="enc-btn enc-btn-pri" onclick="toast('📞 CVV: ligue 188 agora — gratuito, 24h, confidencial')">CVV — Ligue 188 agora</button>' }
+  };
+  const c = configs[tipo] || configs.medio;
+  return `<div class="encaminhamento ${c.cls}">
+    <div class="enc-icon">${c.icon}</div>
+    <div style="flex:1">
+      <div class="enc-titulo">${c.titulo}</div>
+      <div class="enc-desc">${c.desc}</div>
+      <div class="enc-acoes">${c.btns}</div>
+    </div>
+  </div>`;
+}
+
+function _prof_html(id, tipo) {
+  const textos = {
+    phq9:  { baixo:'Seus indicadores de humor e interesse estão preservados. Foco em prevenção primária.', medio:'Estamos na fase de "estresse de resistência". Intervenção precoce evita evolução para quadro mais grave.', alto:'O sistema nervoso mostra sinais de sobrecarga. A tomada de decisão pode estar prejudicada neste momento.', critico:'Estado crítico. O risco de afastamento médico é iminente. Prioridade: conexão com suporte profissional imediato.' },
+    gad7:  { baixo:'Boa regulação do sistema nervoso autônomo. Continue com práticas de mindfulness.', medio:'Padrão de antecipação de ameaças ativado. TCC tem 80%+ de eficácia para ansiedade moderada.', alto:'Hiperativação do eixo HPA (hipotálamo-hipófise-adrenal). Avaliação e manejo profissional são necessários.', critico:'Ansiedade grave pode se manifestar fisicamente. Não ignore sintomas como palpitações ou falta de ar.' },
+    pss10: { baixo:'Bom senso de autoeficácia e controle percebido.', medio:'O estresse crônico elevado impacta o córtex pré-frontal — memória, foco e tomada de decisão.', alto:'Altos níveis de cortisol sustentados danificam o hipocampo e aumentam risco cardiovascular a longo prazo.', critico:'Esgotamento dos recursos de coping. Intervenção urgente para evitar colapso físico e mental.' },
+    auditc:{ baixo:'Padrão de consumo sem risco identificado.', medio:'O uso de álcool como regulador emocional cria tolerância rápida e pode mascarar outros transtornos.', alto:'O uso nocivo de álcool é frequentemente um sintoma de burnout ou depressão não tratados.', critico:'Padrão sugestivo de dependência. Tratamento existe e é eficaz — o primeiro passo é a avaliação.' },
+    sps6:  { baixo:'Boa capacidade de manutenção de performance. Continue monitorando.', medio:'O presenteísmo custa 3x mais às empresas do que o absenteísmo — dado do Journal of Occupational Medicine.', alto:'Perda severa de produtividade por problemas de saúde. Afastamento preventivo pode ser mais eficaz que continuar sobrecarregado.', critico:'' },
+    psych_safety: { baixo:'Você opera em um ambiente seguro para aprender, errar e crescer — o principal fator para equipes de alto desempenho.', medio:'Segurança psicológica moderada pode limitar sua criatividade e inovação sem que você perceba.', alto:'Ambientes de baixa segurança psicológica aumentam significativamente o risco de burnout, ansiedade e intenção de saída.', critico:'Ambiente potencialmente hostil. Documentar situações específicas é importante caso necessite recorrer ao RH ou vias legais.' }
+  };
+  const t = textos[id] || textos.phq9;
+  const txt = t[tipo] || t.medio;
+  if (!txt) return '';
+  return `<div class="prescricao">
+    <div class="pres-header">
+      <div class="pres-icon">🔬</div>
+      <div>
+        <div class="pres-titulo">O que o profissional diria</div>
+        <div class="pres-fonte">Baseado em literatura clínica</div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--text);line-height:1.65;font-style:italic;padding:12px;background:#F7F4EF;border-radius:10px;border-left:3px solid var(--green)">"${txt}"</div>
+  </div>`;
+}
+
+/* ── Painel RH — soluções por nível ── */
+// (disponível na página de config da empresa)
+function renderRHSolucoes() {
+  const el = document.getElementById('rh-solucoes');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="rh-solucoes-grid">
+      <div class="rh-sol-card nivel-baixo">
+        <div class="rh-sol-nivel" style="color:#10B981">🟢 Risco Baixo</div>
+        <div class="rh-sol-titulo">Manutenção & Prevenção</div>
+        <div class="rh-sol-desc">Colaboradores com bom equilíbrio. Foco em manter e fortalecer.</div>
+        <div class="rh-sol-acoes">
+          <div class="rh-sol-acao">Reconhecimento positivo e feedbacks de reforço</div>
+          <div class="rh-sol-acao">Programas de desenvolvimento e carreira</div>
+          <div class="rh-sol-acao">Usar como embaixadores de bem-estar na equipe</div>
+        </div>
+      </div>
+      <div class="rh-sol-card nivel-medio">
+        <div class="rh-sol-nivel" style="color:#F59E0B">🟡 Risco Médio</div>
+        <div class="rh-sol-titulo">Ajuste & Intervenção Leve</div>
+        <div class="rh-sol-desc">Sinais de sobrecarga. Ação preventiva evita escalada.</div>
+        <div class="rh-sol-acoes">
+          <div class="rh-sol-acao">Revisão de prazos e volume de demandas</div>
+          <div class="rh-sol-acao">Oferecer day-off ou trabalho flexível</div>
+          <div class="rh-sol-acao">Workshop de gestão do estresse para o time</div>
+          <div class="rh-sol-acao">Check-in 1:1 com o gestor direto</div>
+        </div>
+      </div>
+      <div class="rh-sol-card nivel-alto">
+        <div class="rh-sol-nivel" style="color:#EF4444">🔴 Risco Alto</div>
+        <div class="rh-sol-titulo">Intervenção Imediata</div>
+        <div class="rh-sol-desc">Risco elevado de afastamento. Protocolo de acolhimento necessário.</div>
+        <div class="rh-sol-acoes">
+          <div class="rh-sol-acao">Protocolo de segurança psicológica: sem cobrança de performance agora</div>
+          <div class="rh-sol-acao">Ativar plano de saúde / benefício de terapia</div>
+          <div class="rh-sol-acao">Redução de carga imediata e temporária</div>
+          <div class="rh-sol-acao">Acolhimento confidencial pelo RH</div>
+        </div>
+      </div>
+      <div class="rh-sol-card nivel-critico">
+        <div class="rh-sol-nivel" style="color:#7C3AED">🆘 Crítico — Encaminhamento</div>
+        <div class="rh-sol-titulo">Suporte Clínico Urgente</div>
+        <div class="rh-sol-desc">Estado de colapso iminente. Afastamento preventivo recomendado.</div>
+        <div class="rh-sol-acoes">
+          <div class="rh-sol-acao">Afastamento médico preventivo (INSS ou plano de saúde)</div>
+          <div class="rh-sol-acao">Encaminhamento para psicólogo ou psiquiatra</div>
+          <div class="rh-sol-acao">Análise de clima: verificar se é padrão do setor</div>
+          <div class="rh-sol-acao">Revisão de gestão: liderança pode ser fator</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TRILHAS DE BEM-ESTAR — RANNE CARE
+   Revisado por Viviani Alexandre Rufino, Psicóloga Clínica
+   CRP 06/215926
+   ══════════════════════════════════════════════════════════ */
+
+const CRP_BADGE = 'Revisado por Viviani Alexandre Rufino, Psicóloga Clínica — CRP 06/215926';
+
+const TRILHAS = [
+  {
+    id:1, emoji:'🔥', cor:'#EF4444',
+    titulo:'Prevenção ao Burnout',
+    desc:'Uma jornada para entender o esgotamento, reconhecer seus sinais e construir um estilo de vida mais sustentável.',
+    ref:'Schaufeli, W. B., et al. (2009). Burnout: 35 years of research and practice.',
+    aulas:[
+      {
+        num:1, titulo:'O que é Burnout — e o que não é', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Você já ouviu alguém dizer "estou com Burnout" depois de uma semana puxada? É comum, mas Burnout não é sinônimo de cansaço, estresse ou resultado de uma semana difícil.'},
+          {t:'p', c:'<strong>Burnout é um estado de esgotamento crônico</strong> causado por estresse prolongado e não gerenciado no trabalho. Não surge da noite para o dia — é o resultado de meses ou anos de sobrecarga acumulada sem recuperação adequada.'},
+          {t:'q', c:'"Burnout não é fraqueza. É o que acontece quando uma pessoa forte demais carrega peso demais por tempo demais — sem pedir ajuda."'},
+          {t:'p', c:'A OMS reconheceu o Burnout como fenômeno ocupacional em 2019 (CID-11, código QD85) e o define por três dimensões:'},
+          {t:'caixa', titulo:'As 3 dimensões do Burnout (OMS):', items:['Exaustão emocional — sensação de estar completamente drenado, sem energia para nada.','Distanciamento mental — indiferença, cinismo, sensação de que nada mais importa.','Queda de eficácia — percepção de que você não consegue mais performar como antes.']},
+          {t:'p', c:'Se você está cansado depois de uma semana intensa mas se recupera no fim de semana, isso é cansaço normal. Burnout é quando não existe mais recuperação — você descansa e continua exausto.'},
+          {t:'p', c:'Importante: Burnout pode vir acompanhado de sintomas de depressão e ansiedade. Se você se identificou, não espere para buscar apoio.'},
+          {t:'levar', c:'Burnout não é exagero nem frescura — é um problema de saúde real, com causas identificáveis e soluções concretas. Reconhecê-lo é sempre o primeiro passo.'}
+        ]
+      },
+      {
+        num:2, titulo:'Os sinais que o corpo manda antes de colapsar', tipo:'Leitura + Checklist', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'O Burnout raramente chega de repente. Na maioria das vezes, o corpo e a mente mandam sinais com meses de antecedência — e a gente ignora porque "ainda dá para aguentar".'},
+          {t:'caixa', titulo:'Checklist de sinais de alerta:', items:['Acordo cansado(a), mesmo depois de dormir bem.','Tenho dificuldade em me concentrar em tarefas simples.','Perdi o entusiasmo por coisas que antes gostava no trabalho.','Fico irritado(a) com mais facilidade do que antes.','Sinto dores físicas frequentes sem causa médica (cabeça, costas, pescoço).','Adio tarefas de forma incomum — mesmo as que eu dominava.','Sinto que "estou só cumprindo tabela" — sem sentido no que faço.','Tenho pensamentos frequentes de "largar tudo".','Me isolo de colegas ou pessoas próximas.','Sinto que qualquer coisa a mais vai me quebrar.']},
+          {t:'p', c:'Se você marcou 3 ou mais itens: merece atenção! Se marcou 5 ou mais: é hora de agir — não amanhã, hoje!'},
+          {t:'levar', c:'Seu corpo está sempre se comunicando com você. A questão é: você está o escutando?'}
+        ]
+      },
+      {
+        num:3, titulo:'A armadilha da produtividade tóxica', tipo:'Reflexão', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'"Eu só consigo descansar quando termino tudo." Se esse pensamento já passou pela sua cabeça, você provavelmente conhece bem essa armadilha. O problema é que, no trabalho moderno, "tudo" nunca termina.'},
+          {t:'p', c:'A produtividade tóxica é a crença de que seu valor como pessoa está diretamente ligado ao quanto você produz. Ela se disfarça de dedicação e comprometimento — mas no fundo é uma relação doentia com o trabalho.'},
+          {t:'q', c:'"Descanso não é recompensa pelo trabalho feito. É parte do ciclo de trabalho. Sem ele, você não produz menos — você produz com menos qualidade por mais tempo, até colapsar."'},
+          {t:'caixa', titulo:'Perguntas para reflexão:', items:['Você sente culpa quando descansa durante o dia de trabalho?','Sua identidade está muito ligada ao que você entrega?','Você responde mensagens fora do horário por hábito — mesmo sem urgência real?','Quando alguém pergunta "como você está?", a primeira resposta é sobre trabalho?']},
+          {t:'p', c:'Estudos mostram que depois de 50 horas semanais de trabalho, a produtividade cai significativamente. Trabalhar muito não é trabalhar bem.'},
+          {t:'levar', c:'Questione a narrativa de que mais horas = mais valor. Seu melhor trabalho é resultado de uma mente descansada.'}
+        ]
+      },
+      {
+        num:4, titulo:'Recarregue: o poder das pausas reais', tipo:'Leitura + Prática', tempo:'4 min',
+        corpo:[
+          {t:'p', c:'Você já fez uma "pausa" olhando para o celular e voltou mais cansado do que antes? Isso acontece porque trocar de tela não é descanso — é só trocar de estímulo.'},
+          {t:'p', c:'Pausa real é qualquer atividade que desengaja o cérebro do modo de tarefa. Quando você não dá espaço para o modo de descanso, o cérebro não consegue consolidar aprendizados, ter insights criativos ou regular emoções.'},
+          {t:'caixa', titulo:'Micro-pausas que funcionam (2-5 minutos):', items:['Olhar para o horizonte — saia da tela e olhe para longe por 2 minutos.','Respiração consciente — 5 respirações lentas e profundas. Ativa o modo calma.','Movimento suave — levante, caminhe, faça 5 agachamentos.','Água e silêncio — beba um copo d\'água devagar, sem celular.','Gazetinha mental — feche os olhos por 2 minutos e observe o que aparece sem julgamento.']},
+          {t:'q', c:'"A regra dos 90 minutos: o cérebro opera em ciclos de ~90 minutos de foco. Depois disso, ele pede descanso. Honre esses ciclos."'},
+          {t:'levar', c:'Agende pausas como reuniões. Não espere o cérebro pedir — ofereça descanso antes que ele entre em exaustão.'}
+        ]
+      },
+      {
+        num:5, titulo:'Estabelecer limites sem culpa', tipo:'Leitura + Scripts', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Limite não é egoísmo — é o que separa o que você pode dar com qualidade do que você dá às custas de si mesmo. Quando você não tem limites, acaba ressentido, exausto e entregando menos.'},
+          {t:'p', c:'A dificuldade de dizer não no trabalho geralmente tem uma raiz emocional: medo de decepcionar, de parecer preguiçoso, de ser preterido em promoções. Esses medos são reais — mas raramente refletem a realidade.'},
+          {t:'caixa', titulo:'Scripts para dizer não com respeito:', items:['"Quero ajudar, mas minha capacidade esta semana está no limite com X e Y. Posso olhar isso na semana que vem?"','"Vi sua mensagem agora. Vou responder amanhã de manhã. Se for urgente, me ligue."','"Para entregar isso bem, preciso de X dias. Posso entregar uma versão inicial antes, se ajudar."']},
+          {t:'q', c:'"Limite comunicado com clareza e respeito raramente gera conflito. O que gera conflito é o limite implícito — quando você diz sim mas quer dizer não."'},
+          {t:'levar', c:'Dizer não para o que é demais é dizer sim para o que é essencial.'}
+        ]
+      },
+      {
+        num:6, titulo:'Seu plano pessoal anti-Burnout', tipo:'Atividade de encerramento', tempo:'10 min',
+        corpo:[
+          {t:'p', c:'Chegamos ao final da trilha. Agora é hora de transformar o que você aprendeu em ações concretas e personalizadas para a sua vida.'},
+          {t:'caixa', titulo:'Construa seu plano em 3 partes:', items:['Meus 3 hábitos protetores: escreva 3 hábitos pequenos e realistas que você vai adotar para proteger sua energia.','Um limite que preciso estabelecer: qual é um limite que você sabe que precisa colocar mas ainda não conseguiu?','Um pedido de ajuda: há algo que você está carregando sozinho(a) que poderia compartilhar com alguém?']},
+          {t:'levar', c:'Parabéns por concluir a trilha! Prevenção é um ato diário. Volte a este plano sempre que sentir que está acumulando mais do que consegue carregar.'}
+        ]
+      }
+    ]
+  },
+  {
+    id:2, emoji:'🧘', cor:'#7C3AED',
+    titulo:'Regulação Emocional no Trabalho',
+    desc:'Aprenda a reconhecer, processar e direcionar suas emoções sem suprimir — nem explodir.',
+    ref:'Goleman, D. (1995). Inteligência emocional.',
+    aulas:[
+      {num:1, titulo:'Emoções não são o inimigo', tipo:'Leitura', tempo:'4 min', corpo:[
+        {t:'p', c:'Você já tentou "não sentir" algo no trabalho? Guardar a raiva de um feedback injusto, engolir a frustração de uma decisão que não faz sentido? A maioria das pessoas aprende que emoções no trabalho são inconvenientes. Essa crença está te prejudicando.'},
+        {t:'p', c:'Emoções existem por uma razão. Raiva sinaliza que um limite foi violado. Ansiedade sinaliza que algo importante está em jogo. Tristeza sinaliza perda. <strong>Emoções são dados, não problemas.</strong>'},
+        {t:'q', c:'"Regulação emocional não é não sentir. É sentir sem ser dominado(a). É reconhecer a emoção, entender o que ela está comunicando, e escolher como agir a partir dela."'},
+        {t:'caixa', titulo:'Exercício: Nomeie a emoção:', items:['Pense em uma situação recente no trabalho que gerou desconforto.','O que você sentiu naquele momento? (raiva, medo, vergonha, frustração...)','O que essa emoção estava tentando me dizer?','Eu agi a partir dela ou reagi sem perceber?']},
+        {t:'levar', c:'Suas emoções são informações valiosas. Aprenda a ouvi-las antes de agir.'}
+      ]},
+      {num:2, titulo:'A técnica STOP — pare antes de reagir', tipo:'Prática guiada', tempo:'5 min', corpo:[
+        {t:'p', c:'Você já mandou uma mensagem no calor da emoção e se arrependeu? Já saiu de uma reunião pensando "podia ter respondido diferente"? A técnica STOP é uma ferramenta para esses momentos.'},
+        {t:'caixa', titulo:'STOP — os 4 passos:', items:['S — Stop! Pare! Não reaja ainda. Esse segundo de pausa é onde tudo começa.','T — Take a breath. Respira. Uma respiração longa e consciente ativa o modo calma.','O — Observe. Que emoção é essa? Onde ela está no seu corpo? O que ela está te dizendo?','P — Proceed. Agora você age — mas com escolha, não em reação automática.']},
+        {t:'levar', c:'Entre o estímulo e a resposta há um espaço. O STOP te ensina a usar esse espaço.'}
+      ]},
+      {num:3, titulo:'Ansiedade no trabalho: o que fazer em 5 minutos', tipo:'Prática', tempo:'5 min', corpo:[
+        {t:'p', c:'A ansiedade é uma das emoções mais comuns no ambiente de trabalho. Ela aparece antes de apresentações, reuniões difíceis, entregas importantes. Quando intensa, pode paralisar. Mas existem técnicas simples baseadas em evidências para regular a ansiedade em tempo real.'},
+        {t:'caixa', titulo:'Técnica 4-7-8 (respiração):', items:['Inspire pelo nariz contando até 4.','Segure o ar contando até 7.','Solte pela boca contando até 8.','Repita 4 vezes. Isso ativa o sistema nervoso parassimpático — o modo calma.']},
+        {t:'caixa', titulo:'Técnica 5-4-3-2-1 (aterramento sensorial):', items:['5 coisas que você VÊ ao redor.','4 coisas que você pode TOCAR.','3 coisas que você OUVE agora.','2 coisas que você pode CHEIRAR.','1 coisa que você pode SABOREAR.']},
+        {t:'levar', c:'Guarde essas técnicas no celular. Quando a ansiedade aparecer, você já sabe o que fazer.'}
+      ]},
+      {num:4, titulo:'Lidando com feedbacks difíceis sem se desestruturar', tipo:'Leitura + Prática', tempo:'5 min', corpo:[
+        {t:'p', c:'Receber críticas é uma das situações mais emocionalmente difíceis no trabalho. Nosso cérebro interpreta crítica como ameaça — e ativa a resposta de luta ou fuga. Por isso travamos, ficamos na defensiva ou passamos dias ruminando sobre um comentário.'},
+        {t:'p', c:'Crítica ativa a mesma região do cérebro que dor física. Não é frescura — é neurociência.'},
+        {t:'caixa', titulo:'Protocolo de 3 passos para feedbacks difíceis:', items:['Pause antes de responder. "Obrigado pelo feedback. Posso ter um momento para processar?" é uma resposta válida.','Separe fato de interpretação. O que foi dito de fato? O que você está adicionando emocionalmente?','Extraia o que é útil. Há algo válido nesse feedback? O que posso usar para melhorar?']},
+        {t:'q', c:'"Feedback é informação, não veredicto. Você não precisa concordar com tudo — mas pode escolher o que fazer com cada parte."'},
+        {t:'levar', c:'Feedbacks difíceis são oportunidades disfarçadas. A regulação emocional te ajuda a enxergar isso.'}
+      ]},
+      {num:5, titulo:'Construindo resiliência emocional', tipo:'Leitura + Plano semanal', tempo:'5 min', corpo:[
+        {t:'p', c:'Resiliência não é não sentir — é se recuperar mais rápido. Não é ausência de vulnerabilidade — é a capacidade de atravessar momentos difíceis sem se destruir no processo.'},
+        {t:'caixa', titulo:'3 práticas diárias para construir resiliência:', items:['Nomeie o que está sentindo todos os dias — apenas identificar a emoção já reduz sua intensidade.','Cuide do básico: sono, movimento e alimentação são a base da regulação emocional.','Conecte-se com alguém de confiança — relações protetoras são o maior fator de resiliência.']},
+        {t:'caixa', titulo:'Seu plano semanal de resiliência:', items:['Segunda: Identifique uma emoção que você evitou nesta semana.','Quarta: Pratique uma técnica de regulação (STOP, respiração, ou aterramento).','Sexta: Conecte-se genuinamente com alguém — uma conversa real, não sobre trabalho.']},
+        {t:'levar', c:'Parabéns por concluir a trilha de Regulação Emocional! Você agora tem mais recursos para compreender o que sente e agir com maior consciência e escolha.'}
+      ]}
+    ]
+  },
+  {
+    id:3, emoji:'😴', cor:'#6366F1',
+    titulo:'Sono e Recuperação',
+    desc:'Entenda por que o sono é a base de tudo e construa uma rotina noturna que realmente funciona.',
+    ref:'Walker, M. (2017). Why We Sleep. · Edinger & Means (2005). CBT for primary insomnia.',
+    aulas:[
+      {num:1, titulo:'Por que o sono é a base de tudo', tipo:'Leitura', tempo:'5 min', corpo:[
+        {t:'p', c:'Você já tentou resolver um problema difícil depois de uma noite mal dormida? O sono não é descanso passivo — é quando o cérebro literalmente se limpa, consolida memórias e regula suas emoções para o dia seguinte.'},
+        {t:'p', c:'Uma noite mal dormida reduz sua capacidade de memória em até 40%. Aumenta sua reatividade emocional — você fica mais irritável, mais ansioso, mais propenso a conflitos. Reduz sua capacidade criativa e de tomar decisões complexas.'},
+        {t:'q', c:'"Depois de poucos dias de sono insuficiente, o cérebro se adapta e você deixa de perceber que está prejudicado. Você acha que está bem — mas não está."'},
+        {t:'caixa', titulo:'Autoavaliação do seu sono:', items:['Quantas horas você dorme em média por noite?','Você acorda se sentindo descansado(a)?','Você precisa de alarme para acordar ou acorda naturalmente?','Você sente sonolência durante o dia?']},
+        {t:'levar', c:'Sono não é luxo — é necessidade biológica. Priorizar o sono é priorizar sua saúde, performance e bem-estar.'}
+      ]},
+      {num:2, titulo:'O cérebro que não desliga — e como desligar', tipo:'Técnica prática', tempo:'5 min', corpo:[
+        {t:'p', c:'O maior inimigo do sono não é a tela do celular — é o cérebro que continua trabalhando depois que você para. A ruminação noturna: você deita, fecha os olhos, e começa a pensar no e-mail que não respondeu, na reunião de amanhã.'},
+        {t:'caixa', titulo:'3 técnicas de descarga mental para antes de dormir:', items:['Brain Dump (5 min): escreva tudo que está na sua cabeça. Não precisa organizar — só esvaziar. O cérebro para de "segurar" quando sente que está registrado.','Lista de amanhã (3 min): escreva as 3 coisas mais importantes que você vai fazer amanhã. Isso "fecha" o dia para o seu cérebro.','3 gratidões (2 min): escreva 3 pequenos acontecimentos positivos do dia. Isso muda o estado emocional com que você vai dormir.']},
+        {t:'levar', c:'O sono começa antes de deitar. A preparação mental é tão importante quanto as horas na cama.'}
+      ]},
+      {num:3, titulo:'Sua rotina noturna em 20 minutos', tipo:'Roteiro prático', tempo:'5 min', corpo:[
+        {t:'p', c:'Você não precisa de uma hora de rituais elaborados para dormir bem. Uma sequência simples de 20 minutos prepara o cérebro e o corpo.'},
+        {t:'caixa', titulo:'Rotina noturna de 20 minutos:', items:['Minutos 1-5: longe das telas. Colocar o celular no carregador fora do quarto. Reduz luz artificial.','Minutos 5-10: brain dump ou lista de amanhã.','Minutos 10-15: algo que relaxe o corpo — alongamento leve, chá quente, leitura física.','Minutos 15-20: respiração 4-7-8. Inspira por 4, segura por 7, solta por 8. Repete 4 vezes.']},
+        {t:'levar', c:'Uma rotina noturna simples e consistente é mais poderosa do que qualquer suplemento ou remédio para dormir.'}
+      ]},
+      {num:4, titulo:'Telas, cafeína e o que realmente atrapalha', tipo:'Leitura', tempo:'4 min', corpo:[
+        {t:'p', c:'Há muitos mitos sobre sono. Vamos ao que a ciência realmente diz sobre os principais fatores que afetam a qualidade do seu descanso.'},
+        {t:'caixa', titulo:'O que a ciência diz:', items:['Telas: a luz azul suprime a melatonina — o hormônio do sono. Evite telas 1h antes de dormir. Se não conseguir, use modo noturno.','Cafeína: tem meia-vida de 5-6 horas. Um café às 15h ainda está ativo às 21h. Prefira não consumir após as 14h.','Álcool: parece ajudar a adormecer, mas fragmenta o sono profundo. Você acorda mais cansado(a).','Exercício: melhora o sono — mas evite exercícios intensos nas 2 horas antes de dormir.','Temperatura: quarto mais fresco (18-20°C) favorece o sono profundo.']},
+        {t:'levar', c:'Pequenos ajustes de ambiente e hábito têm impacto enorme na qualidade do sono. Escolha um para mudar hoje.'}
+      ]},
+      {num:5, titulo:'Quando o problema do sono é emocional', tipo:'Reflexão + Autoavaliação', tempo:'5 min', corpo:[
+        {t:'p', c:'Insônia crônica frequentemente está associada a fatores emocionais como ansiedade, estresse e depressão. Quando você resolve o problema emocional, o sono costuma melhorar naturalmente.'},
+        {t:'caixa', titulo:'Sinais de que o problema do sono pode ser emocional:', items:['Você adormece facilmente mas acorda de madrugada pensando no trabalho.','O sono piora significativamente em períodos de estresse.','Você sente ansiedade ao deitar — como se a cama fosse um lugar de preocupação.','Mesmo quando não há nada urgente, você não consegue descansar.']},
+        {t:'p', c:'Se você se identificou com esses sinais, a solução não está apenas em melhorar a higiene do sono — é essencial cuidar também da saúde emocional. Nesses casos, o apoio psicológico pode ser um fator decisivo para mudanças consistentes e duradouras.'},
+        {t:'levar', c:'Parabéns por concluir a trilha de Sono e Recuperação! O descanso é um ato de respeito por você mesmo(a).'}
+      ]}
+    ]
+  },
+  {
+    id:4, emoji:'🧠', cor:'#2D6A4F',
+    titulo:'Foco e Performance Mental',
+    desc:'Trabalhe com o ritmo natural do seu cérebro e produza melhor — sem se esgotar no processo.',
+    ref:'Diamond, A. (2013). Executive functions. Annual Review of Psychology.',
+    aulas:[
+      {num:1, titulo:'Por que você se distrai tanto — e não é culpa sua', tipo:'Leitura', tempo:'5 min', corpo:[
+        {t:'p', c:'Você abre o computador para trabalhar e 10 minutos depois está no Instagram sem saber como chegou lá. Já aconteceu? O problema não é falta de disciplina — é neurobiologia.'},
+        {t:'p', c:'O cérebro humano evoluiu para prestar atenção em novidades, porque novidade podia significar perigo ou oportunidade. O ambiente digital é projetado justamente para explorar esse mecanismo — notificações, rolagem infinita e interações rápidas capturam a atenção ao acionar o sistema de recompensa associado à dopamina.'},
+        {t:'caixa', titulo:'3 mudanças simples de ambiente para hoje:', items:['Desative todas as notificações não essenciais no celular e computador.','Coloque o celular fora do campo de visão durante períodos de trabalho focado.','Feche abas desnecessárias do navegador antes de começar uma tarefa.']},
+        {t:'levar', c:'Distração não é falha de caráter — tem base biológica. Para mudar o comportamento, comece ajustando o ambiente.'}
+      ]},
+      {num:2, titulo:'Ciclos de foco — trabalhe com seu cérebro', tipo:'Técnica prática', tempo:'5 min', corpo:[
+        {t:'p', c:'Seu cérebro opera em ciclos naturais de aproximadamente 90 minutos de alta energia cognitiva, seguidos de um período de recuperação. Quando você ignora esses ciclos e tenta manter foco por 4, 5, 6 horas seguidas — você está degradando sua capacidade cognitiva.'},
+        {t:'caixa', titulo:'Como estruturar seu dia em ciclos:', items:['Ciclo de foco (60-90 min): uma tarefa principal. Notificações desligadas. Sem multitarefa.','Pausa ativa (10-15 min): longe da tela. Movimento, água, ar. Não é hora de checar o celular.','Repita 2-3 ciclos por dia — isso já é um dia de trabalho de alta qualidade.']},
+        {t:'q', c:'"Experimento: tente um único ciclo de 60 minutos hoje. Apenas um. Veja como se sente depois."'},
+        {t:'levar', c:'Menos horas de foco real valem mais do que muitas horas de foco fragmentado.'}
+      ]},
+      {num:3, titulo:'Como criar um ambiente de foco', tipo:'Prática + Checklist', tempo:'4 min', corpo:[
+        {t:'p', c:'O ambiente físico e digital tem impacto enorme na sua capacidade de foco. Você não precisa de um escritório perfeito — precisa de um ambiente que suporte o foco em vez de competir com ele.'},
+        {t:'caixa', titulo:'Checklist do ambiente de foco:', items:['Mesa organizada: superfície limpa reduz carga cognitiva.','Fones de ouvido ou som branco: bloqueia distrações sonoras.','Iluminação adequada: luz natural quando possível.','Temperatura confortável: nem muito frio nem muito quente.','Água na mesa: desidratação reduz concentração.','Celular virado para baixo ou em outro cômodo.','Abas do navegador: só as relacionadas à tarefa atual.']},
+        {t:'levar', c:'Criar um ritual de início de trabalho é como preparar o palco antes do espetáculo.'}
+      ]},
+      {num:4, titulo:'Procrastinação é ansiedade — não preguiça', tipo:'Leitura + Técnica', tempo:'5 min', corpo:[
+        {t:'p', c:'Se você já se chamou de preguiçoso(a) por procrastinar, isso não é justo. Pesquisas mostram que procrastinação não é falta de disciplina — é uma resposta emocional ao desconforto que a tarefa gera.'},
+        {t:'p', c:'Quando você adia uma tarefa, seu cérebro está evitando um desconforto: medo de errar, de ser julgado, de não ser bom o suficiente. A procrastinação é alívio imediato de ansiedade — com custo adiado.'},
+        {t:'caixa', titulo:'Técnica dos 2 minutos + pergunta emocional:', items:['Identifica a tarefa que você está evitando.','Pergunta: "O que estou sentindo em relação a essa tarefa?" (medo, tédio, confusão, pressão...)','Reconhece a emoção sem julgamento.','Define a ação mais pequena possível: não "fazer o relatório" — mas "abrir o documento e escrever o título".','Faz por 2 minutos. Só 2 minutos. A maioria das pessoas continua depois.']},
+        {t:'q', c:'"A próxima vez que procrastinar, não se julgue. Pergunte: que emoção estou evitando? A resposta vai te dizer muito mais."'},
+        {t:'levar', c:'Procrastinação é um sinal emocional, não uma falha de caráter. Ouça o que ela está dizendo.'}
+      ]},
+      {num:5, titulo:'Produtividade sustentável — sem se destruir', tipo:'Leitura + Template', tempo:'5 min', corpo:[
+        {t:'p', c:'Produtividade sustentável não é fazer mais em menos tempo. É fazer o que importa com consistência, sem sacrificar sua saúde no processo.'},
+        {t:'p', c:'A diferença entre produtividade tóxica e sustentável está no que você está disposto(a) a sacrificar. Produtividade sustentável protege sono, relações, saúde e lazer como condição para performar bem.'},
+        {t:'caixa', titulo:'Modelo de planejamento semanal sustentável:', items:['Domingo: escolha as 3 prioridades absolutas da semana. Não mais que 3.','Cada dia: defina 1 tarefa principal e 2 secundárias. O que fizer além é bônus.','Reserve blocos de foco (60-90 min) no calendário — como reuniões inamovíveis.','Sexta: avalie o que foi feito e o que pode esperar. Celebre o que foi entregue.']},
+        {t:'levar', c:'Parabéns por concluir a trilha de Foco e Performance Mental! Você agora tem ferramentas para trabalhar melhor — e viver melhor.'}
+      ]}
+    ]
+  },
+  {
+    id:5, emoji:'🤝', cor:'#D97706',
+    titulo:'Relacionamentos Saudáveis no Trabalho',
+    desc:'Construa conexões genuínas, comunique com empatia e lide com conflitos de forma construtiva.',
+    ref:'Rosenberg, M. B. (2003). Comunicação Não Violenta.',
+    aulas:[
+      {num:1, titulo:'Por que relações no trabalho importam para sua saúde', tipo:'Leitura', tempo:'4 min', corpo:[
+        {t:'p', c:'Você passa mais tempo com seus colegas de trabalho do que com a maioria das pessoas que ama. E a qualidade dessas relações tem um impacto direto na sua saúde mental — mais do que o volume de trabalho, mais do que o salário.'},
+        {t:'p', c:'Pesquisas em saúde organizacional mostram consistentemente que conexão social no trabalho é um dos principais fatores protetores contra Burnout. Pessoas que têm ao menos uma relação de confiança no trabalho são significativamente mais resilientes ao estresse.'},
+        {t:'q', c:'"Relações tóxicas, isolamento social e conflitos crônicos são fatores de risco tão sérios quanto sobrecarga de trabalho."'},
+        {t:'caixa', titulo:'Reflexão:', items:['Há alguém no trabalho com quem você genuinamente se sente à vontade?','Quando foi a última vez que você teve uma conversa real — não sobre trabalho — com um colega?','Há alguma relação no trabalho que está te custando energia de forma constante?']},
+        {t:'levar', c:'Investir em relações no trabalho não é perder tempo — é construir a rede de proteção mais poderosa que existe.'}
+      ]},
+      {num:2, titulo:'Comunicação não-violenta no dia a dia', tipo:'Prática + Exemplos', tempo:'5 min', corpo:[
+        {t:'p', c:'A maioria dos conflitos no trabalho não é sobre o que as pessoas dizem. É sobre como dizem. A Comunicação Não-Violenta — desenvolvida pelo psicólogo Marshall Rosenberg — oferece uma estrutura simples para falar de forma que conecta em vez de afastar.'},
+        {t:'caixa', titulo:'Os 4 passos da CNV:', items:['Observação: descreva o fato sem julgamento. "Quando você entra na reunião atrasado(a)..." (não: "você é sempre irresponsável")','Sentimento: expresse como você se sente. "...eu me sinto frustrado(a)..."','Necessidade: identifique o que você precisa. "...porque preciso que o time esteja presente para tomar decisões juntos..."','Pedido: faça um pedido concreto e possível. "...você consegue avisar com antecedência quando vai se atrasar?"']},
+        {t:'q', c:'"CNV não é sobre ser gentil o tempo todo — é sobre ser honesto de um jeito que o outro consegue ouvir."'},
+        {t:'levar', c:'A forma como você fala muda o que o outro consegue ouvir. CNV é a ferramenta para isso.'}
+      ]},
+      {num:3, titulo:'Lidando com conflitos sem se destruir', tipo:'Roteiro prático', tempo:'5 min', corpo:[
+        {t:'p', c:'Conflito no trabalho é inevitável. O problema não é existir conflito — é como lidamos com ele.'},
+        {t:'caixa', titulo:'Protocolo de abordagem de conflitos:', items:['Espere o momento certo. Nunca aborde no calor — espere se sentir regulado(a).','Peça uma conversa privada: "Posso falar com você sobre algo? Quando seria um bom momento?"','Comece com intenção positiva: "Quero falar sobre isso porque me importo com a nossa relação."','Use CNV: observação, sentimento, necessidade, pedido.','Ouça para entender, não para responder. Faça perguntas: "Como você vê essa situação?"']},
+        {t:'q', c:'"Resolver conflitos com saúde não é sobre ganhar — é sobre preservar a relação e sua própria paz."'},
+        {t:'levar', c:'Conflito bem resolvido fortalece relações. É uma habilidade que se desenvolve.'}
+      ]},
+      {num:4, titulo:'Como pedir e oferecer ajuda sem desconforto', tipo:'Leitura + Prática', tempo:'4 min', corpo:[
+        {t:'p', c:'Pedir ajuda no trabalho deveria ser simples — mas para muitas pessoas é extremamente difícil. O medo de parecer incompetente, de ser um fardo, de dever um favor. Esse medo custa caro.'},
+        {t:'p', c:'A verdade é que pedir ajuda é um sinal de inteligência, não de fraqueza. Pessoas que pedem ajuda aprendem mais rápido, cometem menos erros e constroem relações mais genuínas.'},
+        {t:'caixa', titulo:'Como pedir ajuda de forma eficaz:', items:['"Você poderia me ajudar com X?" — não apenas "me ajuda aí".','Explique o contexto brevemente: "Estou travado(a) nessa parte porque..."','Dê abertura para o outro recusar: "Se não puder agora, tudo bem me dizer."','Agradeça genuinamente — não de forma exagerada.']},
+        {t:'caixa', titulo:'Como oferecer ajuda sem invadir:', items:['Observe antes de oferecer: a pessoa realmente está precisando?','Ofereça de forma concreta: "Posso ajudar com X se quiser."','Aceite um não sem pressão.','Não resolva o problema pelo outro — ajude o outro a resolver.']},
+        {t:'levar', c:'Pedir ajuda é um ato de coragem e inteligência. Oferecer ajuda é um ato de generosidade.'}
+      ]},
+      {num:5, titulo:'Cultura psicologicamente segura começa em você', tipo:'Leitura + Compromisso', tempo:'5 min', corpo:[
+        {t:'p', c:'Segurança psicológica — o sentimento de que você pode ser você mesmo(a) no trabalho sem medo de julgamento ou punição — é o fator número 1 de performance em equipes, segundo pesquisas do Google (Projeto Aristóteles).'},
+        {t:'p', c:'A boa notícia: segurança psicológica não é responsabilidade só da liderança. Cada pessoa contribui. Suas ações diárias moldam o ambiente ao redor.'},
+        {t:'caixa', titulo:'Pequenas ações que constroem segurança psicológica:', items:['Admita quando você errou — isso dá permissão para os outros também errarem.','Agradeça quando alguém discorda de você — mostra que opiniões diferentes são bem-vindas.','Faça perguntas em vez de dar respostas — demonstra curiosidade e abre espaço.','Defenda colegas quando ideias deles forem descartadas sem consideração.','Comemore tentativas corajosas — mesmo quando não deram certo.']},
+        {t:'q', c:'"Você não precisa ser líder para criar um ambiente mais seguro. Cada gesto conta — e os gestos se somam."'},
+        {t:'levar', c:'Parabéns por concluir todas as trilhas da Ranne Care! Você investiu no seu bem-estar e no das pessoas ao seu redor. Isso é estratégia de negócio — e de vida.'}
+      ]}
+    ]
+  }
+];
+
+/* ── Estado das trilhas (salvo em localStorage) ── */
+function getTrilhaProgress() {
+  try { return JSON.parse(localStorage.getItem('ranne-trilhas') || '{}'); } catch { return {}; }
+}
+function setAulaConcluida(trilhaId, aulaNum, concluida) {
+  const prog = getTrilhaProgress();
+  if (!prog[trilhaId]) prog[trilhaId] = {};
+  prog[trilhaId][aulaNum] = concluida;
+  localStorage.setItem('ranne-trilhas', JSON.stringify(prog));
+  atualizarProgressosTrilhas();
+}
+function isAulaConcluida(trilhaId, aulaNum) {
+  const prog = getTrilhaProgress();
+  return !!(prog[trilhaId] && prog[trilhaId][aulaNum]);
+}
+function getTrilhaPct(trilhaId) {
+  const trilha = TRILHAS.find(t => t.id === trilhaId);
+  if (!trilha) return 0;
+  const prog = getTrilhaProgress();
+  const done = Object.values(prog[trilhaId] || {}).filter(Boolean).length;
+  return Math.round((done / trilha.aulas.length) * 100);
+}
+
+/* ── Atualizar barras de progresso na lista de trilhas ── */
+function atualizarProgressosTrilhas() {
+  TRILHAS.forEach(t => {
+    const pct = getTrilhaPct(t.id);
+    const fillEl = document.getElementById('t'+t.id+'-fill');
+    const pctEl  = document.getElementById('t'+t.id+'-pct');
+    if (fillEl) fillEl.style.width = pct + '%';
+    if (pctEl)  pctEl.textContent = pct + '%';
+  });
+}
+
+/* ── Abrir trilha (lista de aulas) ── */
+let trilhaAtual = null;
+function abrirTrilha(id) {
+  trilhaAtual = TRILHAS.find(t => t.id === id);
+  if (!trilhaAtual) return;
+
+  document.getElementById('tdh-emoji').textContent = trilhaAtual.emoji;
+  document.getElementById('tdh-titulo').textContent = trilhaAtual.titulo;
+  document.getElementById('tdh-sub').textContent = trilhaAtual.desc;
+
+  const pct = getTrilhaPct(id);
+  const done = trilhaAtual.aulas.filter(a => isAulaConcluida(id, a.num)).length;
+  document.getElementById('tdh-prog-lbl').textContent = done + ' de ' + trilhaAtual.aulas.length + ' aulas';
+  document.getElementById('tdh-prog-pct').textContent = pct + '%';
+  document.getElementById('tdh-prog-fill').style.width = pct + '%';
+
+  const list = document.getElementById('aulas-list');
+  list.innerHTML = trilhaAtual.aulas.map(a => {
+    const ok = isAulaConcluida(id, a.num);
+    return `<div class="aula-card${ok ? ' concluida' : ''}" onclick="abrirAula(${id},${a.num})">
+      <div class="aula-num">${ok ? '✓' : a.num}</div>
+      <div class="aula-body">
+        <div class="aula-titulo">${a.titulo}</div>
+        <div class="aula-meta">
+          <span class="aula-tipo">${a.tipo}</span>
+          <span class="aula-tipo">·</span>
+          <span class="aula-tempo">⏱ ${a.tempo}</span>
+        </div>
+      </div>
+      <div class="aula-arr">›</div>
+    </div>`;
+  }).join('');
+
+  cpg('trilha-detalhe');
+}
+
+/* ── Abrir aula (leitora) ── */
+let aulaAtualId = null;
+let aulaAtualNum = null;
+function abrirAula(trilhaId, aulaNum) {
+  const trilha = TRILHAS.find(t => t.id === trilhaId);
+  if (!trilha) return;
+  const aula = trilha.aulas.find(a => a.num === aulaNum);
+  if (!aula) return;
+  aulaAtualId  = trilhaId;
+  aulaAtualNum = aulaNum;
+
+  const ja = isAulaConcluida(trilhaId, aulaNum);
+
+  let html = `
+    <button class="ar-back" onclick="abrirTrilha(${trilhaId})">← ${trilha.titulo}</button>
+    <div class="ar-trilha-nome">${trilha.emoji} Trilha ${trilhaId} · Aula ${aulaNum}</div>
+    <div class="ar-titulo">${aula.titulo}</div>
+    <div class="ar-tipo">${aula.tipo} · ⏱ ${aula.tempo}</div>
+    <div class="ar-divider"></div>
+    <div class="ar-body">`;
+
+  aula.corpo.forEach(bloco => {
+    if (bloco.t === 'p')     html += `<p>${bloco.c}</p>`;
+    if (bloco.t === 'q')     html += `<div class="ar-quote">${bloco.c}</div>`;
+    if (bloco.t === 'levar') html += `<div class="ar-para-levar"><div class="ar-para-levar-lbl">Para levar desta aula</div><div class="ar-para-levar-txt">${bloco.c}</div></div>`;
+    if (bloco.t === 'caixa') html += `<div class="ar-caixa"><div class="ar-caixa-titulo">${bloco.titulo}</div>${bloco.items.map(i=>`<div class="ar-item">${i}</div>`).join('')}</div>`;
+  });
+
+  html += `</div>
+    <div class="ar-crp">
+      <div class="ar-crp-avatar">👩‍⚕️</div>
+      <div>
+        <div class="ar-crp-nome">Viviani Alexandre Rufino</div>
+        <div class="ar-crp-crp">Psicóloga Clínica — CRP 06/215926</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic">${trilha.ref}</div>
+    <button class="btn-concluir-aula${ja ? ' ja-feita' : ''}" id="btn-concluir" onclick="toggleConcluir()">
+      ${ja ? '✓ Aula concluída' : 'Marcar como concluída'}
+    </button>`;
+
+  document.getElementById('aula-reader-content').innerHTML = html;
+  cpg('aula-reader');
+}
+
+function toggleConcluir() {
+  const ja = isAulaConcluida(aulaAtualId, aulaAtualNum);
+  setAulaConcluida(aulaAtualId, aulaAtualNum, !ja);
+  const btn = document.getElementById('btn-concluir');
+  if (btn) {
+    btn.classList.toggle('ja-feita', !ja);
+    btn.textContent = !ja ? '✓ Aula concluída' : 'Marcar como concluída';
+  }
+  // Atualiza o detalhe da trilha por baixo
+  const trilha = TRILHAS.find(t => t.id === aulaAtualId);
+  if (trilha) {
+    const done = trilha.aulas.filter(a => isAulaConcluida(aulaAtualId, a.num)).length;
+    const pct  = Math.round((done / trilha.aulas.length) * 100);
+    const lbl = document.getElementById('tdh-prog-lbl');
+    const pctEl = document.getElementById('tdh-prog-pct');
+    const fill = document.getElementById('tdh-prog-fill');
+    if (lbl) lbl.textContent = done + ' de ' + trilha.aulas.length + ' aulas';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (fill) fill.style.width = pct + '%';
+  }
+}
+
+/* Inicializa progresso quando abre a biblioteca */
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(atualizarProgressosTrilhas, 500);
+});
 
 // REGISTRO DO SERVICE WORKER (PWA)
 // ─────────────────────────────────────
