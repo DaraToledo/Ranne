@@ -2533,14 +2533,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* ── ROTEAMENTO POR PERFIL ── */
 async function rotearUsuario() {
+  // 1. Verifica se é empresa
   try {
     const { data: emp, error: empErr } = await db.from('empresas').select('*').eq('user_id', currentUser.id).single();
     if (emp && !empErr) { currentEmpresa = emp; currentRole = 'empresa'; showEmpresa(); return; }
   } catch {}
+
+  // 2. Verifica se é colaborador ou pessoa física
   try {
-    const { data: col, error: colErr } = await db.from('colaboradores').select('*, empresas(nome)').eq('user_id', currentUser.id).single();
-    if (col && !colErr) { currentRole = 'colaborador'; showColaborador(col.nome); return; }
+    const { data: col, error: colErr } = await db.from('colaboradores').select('*').eq('user_id', currentUser.id).single();
+    if (col && !colErr) {
+      if (col.empresa_id) {
+        // Colaborador vinculado a empresa
+        currentRole = 'colaborador';
+      } else {
+        // Pessoa física sem empresa
+        currentRole = 'pessoa';
+      }
+      showColaborador(col.nome);
+      return;
+    }
   } catch {}
+
+  // 3. Nenhum perfil encontrado → onboarding
   showOnboarding();
   goS(1);
 }
@@ -2613,8 +2628,7 @@ async function doLoginSenha() {
     document.getElementById('onboarding').style.display = 'none';
     await rotearUsuario();
   } catch (err) {
-    if (err.message?.includes('Invalid')) { showAuthErr(errEl,'E-mail ou senha incorretos.'); }
-    else { document.getElementById('onboarding').style.display = 'none'; showDemo(); showEmpresa(); }
+    showAuthErr(errEl, err.message?.includes('Invalid') ? 'E-mail ou senha incorretos.' : 'Erro ao entrar. Tente novamente.');
   } finally { btn.disabled = false; btn.textContent = 'Entrar →'; }
 }
 
@@ -3512,9 +3526,8 @@ async function setupPessoa() {
     toast('✅ Conta criada com sucesso!');
 
   } catch(e) {
-    // Demo
-    showColaborador(document.getElementById('pessoa-nome').value || 'Usuário');
-    toast('✅ Bem-vindo à Ranne!');
+    console.error('Erro setupPessoa:', e);
+    showAuthErr(errEl, 'Erro ao criar conta. Tente novamente.');
   } finally {
     btn.disabled = false; btn.textContent = 'Entrar na plataforma →';
   }
