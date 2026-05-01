@@ -8,6 +8,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0B1F2B">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Ranne">
@@ -2532,8 +2533,8 @@ body {
     </div>
 
     <p class="ob-sub">
-      Diagnóstico de clima, plano de ação automático e evolução histórica,<br>
-      tudo transformado em dado de negócio<br>
+      Diagnóstico de clima, plano de ação automático e evolução<br>
+      histórica — tudo transformado em dado de negócio<br>
       para gestores que se importam.
     </p>
 
@@ -2543,7 +2544,7 @@ body {
         <div class="ob-p-icon">📊</div>
         <div class="ob-p-body">
           <strong>Diagnóstico baseado em dados</strong>
-          <span>Clima, Liderança, Carga e Cultura, score real, sem achismo</span>
+          <span>Clima, Liderança, Carga e Cultura — score real, sem achismo</span>
         </div>
         <span class="ob-p-arr">›</span>
       </div>
@@ -2741,7 +2742,7 @@ body {
           <input class="field-input" type="text" id="pessoa-nome" placeholder="Seu nome completo">
           <label class="field-label">CPF</label>
           <input class="field-input" id="pessoa-cpf" placeholder="000.000.000-00" oninput="mascaraCPF(this)">
-          <label class="field-label">Código da empresa <span style="font-weight:300;text-transform:none;letter-spacing:0;color:rgba(26,46,32,.35)">(opcional ‭→ se você é colaborador)</span></label>
+          <label class="field-label">Código da empresa <span style="font-weight:300;text-transform:none;letter-spacing:0;color:rgba(26,46,32,.35)">(opcional — se você é colaborador)</span></label>
           <input class="field-input" id="pessoa-codigo" placeholder="Ex: RANNE-4829" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
           <div id="pessoa-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
           <button class="btn-cta" id="pessoa-btn" onclick="setupPessoa()">Entrar na plataforma →</button>
@@ -3078,7 +3079,7 @@ body {
                 <div class="sci-ref-icon">🔬</div>
                 <div class="sci-ref-body">
                   <div class="sci-ref-fonte">Edmondson, Harvard (1999) · Projeto Aristóteles, Google</div>
-                  <div class="sci-ref-desc">Intervenções de RH baseadas em segurança psicológica, o fator número 1 para equipes de alta performance, segundo Harvard e Google.</div>
+                  <div class="sci-ref-desc">Intervenções de RH baseadas em segurança psicológica — o fator número 1 para equipes de alta performance, segundo Harvard e Google.</div>
                 </div>
               </div>
               <div class="sci-ref">
@@ -3287,7 +3288,7 @@ body {
             <div class="lib-cat lc-burnout" style="margin-bottom:6px">DESTAQUE · BURNOUT</div>
             <h3>Guia Completo: Como Prevenir Burnout na sua Equipe</h3>
             <p>7 sinais de alerta, 5 práticas preventivas e um checklist para líderes e RH.</p>
-            <button class="btn btn-primary btn-sm" onclick="toast('📖 Abrindo artigo...')">Ler agora →</button>
+            <button class="btn btn-primary btn-sm" onclick="abrirArtigo(this.closest('.lib-card')?.querySelector('h4')?.textContent || 'Artigo')">Ler agora →</button>
           </div>
         </div>
         <div class="lib-grid" id="bib-grid">
@@ -3306,7 +3307,7 @@ body {
         <div style="max-width:560px">
           <div class="ci-dark">
             <h3>Como está seu humor hoje?</h3>
-            <p>Resposta privada, só você vê o seu score individual</p>
+            <p>Resposta privada — só você vê o seu score individual</p>
             <div class="em-row" id="checkin-humor">
               <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
               <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
@@ -3880,7 +3881,7 @@ body {
       <div class="tc-body">
         <div class="tc-num">Trilha 8</div>
         <div class="tc-titulo">Saúde Física & Mental: a conexão</div>
-        <div class="tc-desc">Entenda como corpo e mente se afetam mutuamente, e use isso a seu favor no trabalho.</div>
+        <div class="tc-desc">Entenda como corpo e mente se afetam mutuamente — e use isso a seu favor no trabalho.</div>
         <div class="tc-meta">
           <span class="tc-pill">5 aulas</span>
           <span class="tc-pill">~23 min</span>
@@ -4248,6 +4249,9 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = null;
 let currentEmpresa = null;
 window.ciState = {}; // Estado do check-in do colaborador
+
+// checkinState — alias para compatibilidade com código da empresa
+var checkinState = {};
 let currentRole = 'empresa';
 let currentDiagId = null;
 let acoesState = {};
@@ -4606,17 +4610,31 @@ async function criarDiagnostico() {
   const link = `${window.location.origin}/?diag=${diagId}`;
 
   try {
-    await db.from('diagnosticos').insert({
+    // Tentativa 1: inserção completa
+    const { error } = await db.from('diagnosticos').insert({
       id: diagId,
       empresa_id: currentEmpresa.id,
-      nome, publico, total_convidados: convidados,
+      nome,
+      publico,
+      total_convidados: convidados,
       data_encerramento: data || null,
       tipo_resposta: tipo,
       status: 'ativo',
       link
     });
+    if (error) {
+      // Tentativa 2: inserção mínima (menos colunas)
+      await db.from('diagnosticos').insert({
+        id: diagId,
+        empresa_id: currentEmpresa.id,
+        nome,
+        status: 'ativo',
+        link
+      }).catch(() => {}); // se falhar tb, continua em demo
+    }
   } catch {
-    // Continua em modo demo
+    // Continua em modo demo — diagnóstico aparece na lista localmente
+    console.warn('[Ranne] Diagnóstico salvo apenas localmente.');
   }
 
   currentDiagId = diagId;
@@ -4802,9 +4820,10 @@ async function sendInvite() {
    SALVAR CHECK-IN
    ───────────────────────────────────── */
 async function salvarCheckin() {
-  const humor = checkinState.humor;
-  const energia = checkinState.energia;
-  const carga = checkinState.carga;
+  const cs = Object.assign({}, checkinState, window.ciState || {});
+  const humor = cs.humor;
+  const energia = cs.energia;
+  const carga = cs.carga;
 
   try {
     await db.from('checkins').insert({
@@ -4942,12 +4961,19 @@ function selEm(btn, group) {
   const row = btn.closest('.em-row');
   row.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  checkinState[group] = btn.querySelector('.el')?.textContent;
+  checkinState[group] = btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent;
+  window.ciState[group] = checkinState[group]; // sincroniza ambos
 }
 
 /* ─────────────────────────────────────
    COPIAR LINK
    ───────────────────────────────────── */
+// Biblioteca empresa — abrir artigo
+function abrirArtigo(titulo, tempo, tipo) {
+  toast('📖 Abrindo: ' + titulo + ' (' + (tempo||'') + ')');
+  // Futuramente: abrir modal com conteúdo completo
+}
+
 function copyLink() {
   const link = document.getElementById('diag-link').textContent;
   navigator.clipboard.writeText(link).catch(() => {});
@@ -6610,14 +6636,19 @@ TRILHAS.push(...TRILHAS_EXTRAS);
 
 
 /* ── Estado das trilhas (salvo em localStorage) ── */
+function _trilhaKey() {
+  // Chave única por usuário — evita compartilhar progresso entre contas
+  const uid = currentUser?.id || currentUser?.email || 'guest';
+  return 'ranne-trilhas-' + uid;
+}
 function getTrilhaProgress() {
-  try { return JSON.parse(localStorage.getItem('ranne-trilhas') || '{}'); } catch { return {}; }
+  try { return JSON.parse(localStorage.getItem(_trilhaKey()) || '{}'); } catch { return {}; }
 }
 function setAulaConcluida(trilhaId, aulaNum, concluida) {
   const prog = getTrilhaProgress();
   if (!prog[trilhaId]) prog[trilhaId] = {};
   prog[trilhaId][aulaNum] = concluida;
-  localStorage.setItem('ranne-trilhas', JSON.stringify(prog));
+  localStorage.setItem(_trilhaKey(), JSON.stringify(prog));
   atualizarProgressosTrilhas();
 }
 function isAulaConcluida(trilhaId, aulaNum) {
@@ -6763,7 +6794,9 @@ function selCI(el, group) {
   el.classList.add('sel');
   // Guarda no estado global do check-in
   if (!window.ciState) window.ciState = {};
-  window.ciState[group] = el.querySelector('.cl')?.textContent || el.querySelector('.ce')?.textContent;
+  const val = el.querySelector('.cl')?.textContent || el.querySelector('.ce')?.textContent;
+  window.ciState[group] = val;
+  checkinState[group] = val; // sincroniza
   // Habilita botão de enviar se todos preenchidos
   checkCIReady();
 }
@@ -6827,22 +6860,21 @@ function openTip(idx) {
   const expanded = document.getElementById('tip-sheet')?.closest('.tip-expanded');
 
   // Preencher dinamicamente
-  if (sheet) {
-    sheet.querySelector('.ts-title').textContent = tip.titulo;
-    sheet.querySelector('.ts-sub').textContent = tip.sub;
-    // Limpar steps existentes
-    sheet.querySelectorAll('.ts-step').forEach(e => e.remove());
-    const btnClose = sheet.querySelector('.btn-close-sheet');
-    tip.steps.forEach((s, i) => {
-      const div = document.createElement('div');
-      div.className = 'ts-step';
-      div.innerHTML = `<div class="ts-num">${i+1}</div><div class="ts-text">${s}</div>`;
-      sheet.insertBefore(div, btnClose);
-    });
+  const tipOuter = document.getElementById('tip-sheet');
+  const inner = tipOuter?.querySelector('.tip-sheet');
+  if (inner) {
+    const titleEl = inner.querySelector('.ts-title, #ts-title');
+    const subEl   = inner.querySelector('.ts-sub, #ts-sub');
+    const stepsEl = inner.querySelector('#ts-steps');
+    if (titleEl) titleEl.textContent = tip.titulo;
+    if (subEl)   subEl.textContent   = tip.sub;
+    if (stepsEl) {
+      stepsEl.innerHTML = tip.steps.map((s,i) =>
+        `<div class="ts-step"><div class="ts-num">${i+1}</div><div class="ts-text">${s}</div></div>`
+      ).join('');
+    }
   }
-
-  const el = document.getElementById('tip-sheet')?.parentElement;
-  if (el) el.classList.add('open');
+  if (tipOuter) tipOuter.classList.add('open');
 }
 
 function closeTip(e) {
@@ -6852,6 +6884,103 @@ function closeTip(e) {
 }
 
 // ══════════════════════════════════════════════════════════
+
+/* ════════════════════════════════════════════════════════════
+   toggleBreath, enviarCheckin, closeTipBtn
+   ════════════════════════════════════════════════════════════ */
+let breathRunning = false;
+let breathTimer = null;
+const BREATH_PHASES = [
+  { label:'Inspira', dur:4, phase:'inhale' },
+  { label:'Segura',  dur:7, phase:'hold'   },
+  { label:'Expira',  dur:8, phase:'exhale' },
+];
+
+function toggleBreath() {
+  const btn = document.getElementById('btn-breath');
+  if (breathRunning) {
+    clearInterval(breathTimer);
+    breathRunning = false;
+    btn.textContent = 'Começar exercício';
+    btn.classList.remove('running');
+    document.getElementById('breath-instruction').textContent = 'Pronto para começar?';
+    document.getElementById('breath-count').textContent = '4';
+    document.getElementById('breath-phase').textContent = 'inspira';
+    document.getElementById('breath-ring').className = 'breath-ring';
+    document.querySelectorAll('#breath-progress .bp-dot').forEach(d => d.className = 'bp-dot');
+  } else {
+    breathRunning = true;
+    btn.textContent = 'Parar';
+    btn.classList.add('running');
+    runBreathPhase(0, 0);
+  }
+}
+
+function runBreathPhase(phaseIdx, cyclesDone) {
+  if (!breathRunning) return;
+  if (cyclesDone >= 4) {
+    breathRunning = false;
+    clearInterval(breathTimer);
+    document.getElementById('breath-instruction').textContent = '✅ Parabéns! Respira normalmente.';
+    document.getElementById('btn-breath').textContent = 'Fazer novamente';
+    document.getElementById('btn-breath').classList.remove('running');
+    document.querySelectorAll('#breath-progress .bp-dot').forEach(d => d.classList.add('done'));
+    return;
+  }
+  const phase = BREATH_PHASES[phaseIdx % 3];
+  let count = phase.dur;
+  document.getElementById('breath-instruction').textContent = phase.label + '...';
+  document.getElementById('breath-phase').textContent = phase.label.toLowerCase();
+  document.getElementById('breath-count').textContent = count;
+  document.getElementById('breath-ring').className = 'breath-ring ' + phase.phase;
+  const dots = document.querySelectorAll('#breath-progress .bp-dot');
+  dots.forEach((d,i) => { d.className = 'bp-dot' + (i < cyclesDone ? ' done' : i === cyclesDone ? ' active' : ''); });
+  clearInterval(breathTimer);
+  breathTimer = setInterval(() => {
+    count--;
+    const el = document.getElementById('breath-count');
+    if (el) el.textContent = count;
+    if (count <= 0) {
+      clearInterval(breathTimer);
+      const next = phaseIdx + 1;
+      runBreathPhase(next, next % 3 === 0 ? cyclesDone + 1 : cyclesDone);
+    }
+  }, 1000);
+}
+
+async function enviarCheckin() {
+  const state = Object.assign({}, checkinState, window.ciState || {});
+  const grupos = ['humor','energia','carga','foco'];
+  if (!grupos.every(g => state[g])) {
+    toast('⚠ Responda todas as perguntas antes de enviar!');
+    return;
+  }
+  try {
+    if (currentUser && db) {
+      await db.from('checkins').insert({
+        user_id: currentUser.id,
+        humor: state.humor, energia: state.energia,
+        carga: state.carga, foco: state.foco,
+        created_at: new Date().toISOString()
+      }).catch(() => {});
+    }
+  } catch {}
+  // Mostrar confirmação
+  document.querySelectorAll('#cp-checkin .ci-block').forEach(b => b.style.display = 'none');
+  const btnSub = document.querySelector('#cp-checkin .btn-submit-ci');
+  if (btnSub) btnSub.style.display = 'none';
+  const done = document.getElementById('ci-done');
+  if (done) done.style.display = 'block';
+  window.ciState = {}; checkinState = {};
+  toast('✅ Check-in enviado!');
+}
+
+function closeTipBtn() {
+  const el = document.getElementById('tip-sheet');
+  if (el) el.classList.remove('open');
+}
+
+/* ════ salvarCheckin unificado ════ */
 // SERVICE WORKER — Limpa cache antigo e registra novo
 // ══════════════════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
