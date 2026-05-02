@@ -3131,6 +3131,8 @@ body {
               <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
             </div>
 
+          </div><!-- /isa-grid -->
+
           <!-- ══ GRID PRINCIPAL ══ -->
           <div class="dash-grid">
 
@@ -4661,13 +4663,16 @@ async function loadDashboardData() {
       .order('created_at', { ascending: false });
 
     // Busca colaboradores reais
-    const { data: cols } = await db
-      .from('colaboradores')
-      .select('id')
-      .eq('empresa_id', currentEmpresa.id)
-      .catch(() => ({ data: [] }));
+    let cols = [];
+    try {
+      const { data: colsData } = await db
+        .from('colaboradores')
+        .select('id')
+        .eq('empresa_id', currentEmpresa.id);
+      cols = colsData || [];
+    } catch { cols = []; }
 
-    const totalCols = cols?.length || 0;
+    const totalCols = cols.length || 0;
     const ultimoDiag = diags?.[0];
 
     if (ultimoDiag) {
