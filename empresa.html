@@ -29,30 +29,71 @@
 <style>
 /* ══════════ RESET & VARS ══════════ */
 :root {
+  /* ── Cores ── */
   --teal: #2D5A4E;
   --mint: #6F9E93;
   --mint-light: #F0EDE6;
+  --green: #2D6A4F;
+  --green-light: #E8F2EC;
   --amber: #C9A84C;
   --red: #EF4444;
   --bg: #F0EDE6;
   --white: #FFFFFF;
   --text: #2C2C2C;
-  --muted: #8A8178;
+  --muted: #6B645D;      /* elevado de #8A8178 para WCAG AA */
+  --muted-dark: #5A5350; /* para textos secundários em fundo claro */
   --border: #E8E3DA;
+
+  /* ── Escala tipográfica (rem) ── */
+  --text-xs:   0.6875rem;  /* 11px */
+  --text-sm:   0.75rem;    /* 12px */
+  --text-base: 0.875rem;   /* 14px */
+  --text-lg:   1rem;       /* 16px */
+  --text-xl:   1.125rem;   /* 18px */
+  --text-2xl:  1.375rem;   /* 22px */
+  --text-3xl:  1.5rem;     /* 24px */
+
+  /* ── Escala de espaçamento 4pt ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Sombras padronizadas ── */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 8px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+
+  /* ── Layout ── */
   --sidebar-w: 248px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* ── Radius ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:14px; -webkit-font-smoothing:antialiased; }
 
 /* ══════════ DARK MODE ══════════ */
 body.dark {
-  --bg: #0D1B24;
-  --white: #132030;
-  --text: #E8F4F0;
-  --muted: #8BA5B5;
+  --bg:     #0D1B24;
+  --white:  #132030;
+  --text:   #E8F4F0;
+  --muted:  #8BA5B5;
+  --muted-dark: #7A98A8;
   --border: #1E3344;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.25), 0 1px 8px rgba(0,0,0,.15);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.3), 0 1px 4px rgba(0,0,0,.2);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.25);
 }
 body.dark .sidebar { background:#071520; }
 body.dark .card { box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
@@ -77,6 +118,35 @@ body.dark .alert-crit { background:#2D1515; border-color:#5A2020; }
 body.dark .alert-warn { background:#2D2010; border-color:#5A4010; }
 body.dark .alert-info { background:#101D2D; border-color:#1E3A5A; }
 body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
+/* ══════════════════════════════════════
+   ACESSIBILIDADE — FOCO VISÍVEL
+   ══════════════════════════════════════ */
+:focus-visible {
+  outline: 2px solid #4ECBA0;
+  outline-offset: 2px;
+}
+.btn:focus-visible,
+.btn-primary:focus-visible,
+.btn-outline:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid #4ECBA0;
+  outline-offset: 3px;
+}
+button:focus-visible {
+  outline: 2px solid #4ECBA0;
+  outline-offset: 2px;
+}
+/* Remove outline padrão feio mas mantém para teclado */
+button, a, input, select, textarea { outline: none; }
+button:focus-visible, a:focus-visible,
+input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-offset: 2px; }
+
+/* Opacidades mínimas para WCAG AA */
+.ob-logo-tag { color:rgba(0,0,0,.50) !important; }
+.ob-sub { color:rgba(0,0,0,.55) !important; }
+.ob-stat-lbl { color:rgba(0,0,0,.50) !important; }
+.ob-p-body span { color:rgba(0,0,0,.55) !important; }
+
 
 /* ══════════ LOADING SCREEN ══════════ */
 #loading-screen {
@@ -134,7 +204,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 .ob-logo-mark img { width:36px; height:36px; object-fit:contain; }
 .ob-logo-name { font-size:16px; font-weight:700; color:#1A2E20; letter-spacing:-.1px; }
 .ob-logo-sep { width:1px; height:12px; background:rgba(0,0,0,.15); margin:0 8px; }
-.ob-logo-tag { font-size:11px; color:rgba(0,0,0,.35); }
+.ob-logo-tag { font-size:11px; color:rgba(0,0,0,.55); }
 
 .ob-badge {
   display:inline-flex; align-items:center; gap:8px; margin-bottom:26px;
@@ -160,7 +230,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 .ob-h1-sans .ob-green { color:#2D6A4F; }
 .ob-h1-dim {
   font-family:'Fraunces',serif; font-size:26px; font-weight:300;
-  color:rgba(0,0,0,.35); line-height:1.3; letter-spacing:-.5px;
+  color:rgba(0,0,0,.55); line-height:1.3; letter-spacing:-.5px;
   font-style:italic; display:block; margin-top:10px;
 }
 
@@ -265,7 +335,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 .auth-form { padding:20px; }
 .auth-eyebrow {
   font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px;
-  color:rgba(0,0,0,.3); margin-bottom:12px;
+  color:rgba(0,0,0,.52); margin-bottom:12px;
 }
 .auth-box h2 { font-size:17px; font-weight:800; color:#1A2E20; margin-bottom:4px; letter-spacing:-.2px; }
 .auth-box .auth-sub { font-size:12px; color:rgba(0,0,0,.4); margin-bottom:18px; line-height:1.5; }
@@ -294,7 +364,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 .role-card.active .rc-tick { opacity:1; transform:scale(1); }
 .role-card .rc-icon { font-size:22px; margin-bottom:7px; display:block; }
 .role-card strong { display:block; color:#1A2E20; font-size:12px; font-weight:700; margin-bottom:2px; }
-.role-card span { color:rgba(0,0,0,.35); font-size:10px; }
+.role-card span { color:rgba(0,0,0,.55); font-size:10px; }
 
 /* Steps */
 .step { display:none; }
@@ -305,7 +375,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 .step-dot.done { background:#2D6A4F; }
 
 /* Inputs */
-.field-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(0,0,0,.35); margin-bottom:7px; display:block; }
+.field-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:rgba(0,0,0,.55); margin-bottom:7px; display:block; }
 .field-input {
   width:100%; padding:11px 14px;
   background:#FAFAF8; border:1.5px solid rgba(0,0,0,.1); border-radius:10px;
@@ -329,8 +399,8 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 /* Divider */
 .ob-divider { display:flex; align-items:center; gap:8px; margin:12px 0; }
 .ob-divider hr { flex:1; border:none; border-top:1px solid rgba(0,0,0,.07); }
-.ob-divider span { font-size:10px; color:rgba(0,0,0,.3); white-space:nowrap; }
-.ob-fine { text-align:center; font-size:10px; color:rgba(0,0,0,.28); line-height:1.8; }
+.ob-divider span { font-size:10px; color:rgba(0,0,0,.52); white-space:nowrap; }
+.ob-fine { text-align:center; font-size:10px; color:rgba(0,0,0,.50); line-height:1.8; }
 
 /* Welcome colaborador */
 .welcome-collab { text-align:center; padding:8px 0; }
@@ -366,6 +436,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
   width:var(--sidebar-w); background:#061318; display:flex; flex-direction:column;
   position:fixed; top:0; left:0; height:100vh; z-index:50;
   border-right:1px solid rgba(78,203,160,0.07);
+  box-shadow:4px 0 24px rgba(0,0,0,.15);
   padding-top:var(--safe-top);
   background-image: linear-gradient(180deg, #071A22 0%, #061318 60%, #040F14 100%);
 }
@@ -424,7 +495,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
   color:#fff; font-weight:800; font-size:11px; flex-shrink:0;
 }
 .sb-uname { color:rgba(255,255,255,.8); font-size:11.5px; font-weight:600; }
-.sb-urole { color:rgba(255,255,255,.28); font-size:9.5px; }
+.sb-urole { color:rgba(255,255,255,.50); font-size:9.5px; }
 .sb-logout { margin-left:auto; color:rgba(255,255,255,0.25); cursor:pointer; font-size:16px; transition:all 0.2s; background:none; border:none; padding:4px; border-radius:6px; }
 .sb-logout:hover { color:#EF4444; background:rgba(239,68,68,.1); }
 .main { margin-left:var(--sidebar-w); flex:1; padding:28px 32px; min-height:100vh; background:var(--bg); }
@@ -465,7 +536,7 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 /* ══════════ CARDS ══════════ */
 .card {
   background:var(--white); border-radius:16px; padding:22px;
-  box-shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 20px rgba(0,0,0,.05);
+  box-shadow:var(--shadow-sm);
   border:1px solid var(--border);
 }
 .card-sm { padding:16px; border-radius:13px; }
@@ -479,10 +550,10 @@ body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
 .metric {
   background:var(--white); border-radius:16px; padding:20px;
   border:1px solid var(--border);
-  box-shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.04);
+  box-shadow:var(--shadow-sm);
   position:relative; overflow:hidden; transition:transform .2s, box-shadow .2s;
 }
-.metric:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.08); }
+.metric:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
 .metric::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
 .metric.m-green::before { background:linear-gradient(90deg,#4ECBA0,#2DAB80); }
 .metric.m-amber::before { background:linear-gradient(90deg,#F59E0B,#D97706); }
@@ -1256,6 +1327,71 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .btn-concluir-aula.ja-feita { background:#ECFDF5; color:#059669; border:1.5px solid #A7F3D0; box-shadow:none; }
 .btn-concluir-aula.ja-feita:hover { transform:none; }
 
+
+/* ══ BIBLIOTECA — faixas por categoria ══ */
+.lib-card { position:relative; overflow:hidden; }
+.lib-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+}
+.lib-card[data-cat="burnout"]::before     { background:#EF4444; }
+.lib-card[data-cat="liderança"]::before   { background:#C9A84C; }
+.lib-card[data-cat="cultura"]::before     { background:#7C3AED; }
+.lib-card[data-cat="bem-estar"]::before   { background:#4ECBA0; }
+.lib-card[data-cat="gestão"]::before      { background:#0EA5E9; }
+.lib-card[data-cat="burnout"] .lc-cat     { color:#DC2626; }
+.lib-card[data-cat="liderança"] .lc-cat   { color:#C9A84C; }
+.lib-card[data-cat="cultura"] .lc-cat     { color:#7C3AED; }
+.lib-card[data-cat="bem-estar"] .lc-cat   { color:#059669; }
+.lib-card[data-cat="gestão"] .lc-cat      { color:#0EA5E9; }
+
+
+/* ══ PLANO DE AÇÃO — headers de prioridade ══ */
+.sec-hdr {
+  display:flex; align-items:center; gap:var(--space-3);
+  padding:var(--space-2) var(--space-4);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom:var(--space-3); font-size:var(--text-xs);
+  font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+}
+.sec-hdr.alta   { background:rgba(239,68,68,.07);   border-left:3px solid #EF4444; color:#DC2626; }
+.sec-hdr.media  { background:rgba(245,158,11,.07);  border-left:3px solid #F59E0B; color:#D97706; }
+.sec-hdr.baixa  { background:rgba(78,203,160,.07);  border-left:3px solid #4ECBA0; color:#059669; }
+.sec-hdr .sh-pill {
+  margin-left:auto; padding:2px 8px; border-radius:99px;
+  font-size:var(--text-xs); font-weight:700;
+}
+.sec-hdr.alta  .sh-pill  { background:#FEF2F2; color:#DC2626; }
+.sec-hdr.media .sh-pill  { background:#FFFBEB; color:#D97706; }
+.sec-hdr.baixa .sh-pill  { background:#ECFDF5; color:#059669; }
+
+
+/* ══ CHECK-IN — animação de seleção ══ */
+@keyframes emPop {
+  0%   { transform:scale(1); }
+  40%  { transform:scale(1.18); }
+  70%  { transform:scale(0.94); }
+  100% { transform:scale(1); }
+}
+.em-btn.sel { animation:emPop .35s cubic-bezier(.16,1,.3,1); }
+.em-btn-lt.sel[data-val="1"] { box-shadow:0 0 0 3px rgba(239,68,68,.25);  border-color:rgba(239,68,68,.4); }
+.em-btn-lt.sel[data-val="2"] { box-shadow:0 0 0 3px rgba(245,158,11,.2);  border-color:rgba(245,158,11,.4); }
+.em-btn-lt.sel[data-val="3"] { box-shadow:0 0 0 3px rgba(107,114,128,.2); border-color:rgba(107,114,128,.4); }
+.em-btn-lt.sel[data-val="4"] { box-shadow:0 0 0 3px rgba(78,203,160,.2);  border-color:rgba(78,203,160,.4); }
+.em-btn-lt.sel[data-val="5"] { box-shadow:0 0 0 3px rgba(16,185,129,.25); border-color:rgba(16,185,129,.4); }
+
+
+/* ══ ISA CARDS — anel de progresso ══ */
+.isa-card { position:relative; }
+.isa-ring-wrap { position:relative; width:52px; height:52px; margin:0 auto 4px; }
+.isa-ring-wrap svg { width:52px; height:52px; transform:rotate(-90deg); }
+.isa-ring-track { fill:none; stroke:var(--border); stroke-width:5; }
+.isa-ring-fill  { fill:none; stroke-width:5; stroke-linecap:round;
+  stroke-dasharray:132; stroke-dashoffset:132;
+  transition:stroke-dashoffset 1.2s cubic-bezier(.16,1,.3,1) .3s; }
+.isa-ring-inner { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.isa-ring-val   { font-size:13px; font-weight:900; letter-spacing:-0.5px; }
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .page-sub { display:none; }
@@ -1944,7 +2080,7 @@ body {
 .bv-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(78,203,160,.4); }
 
 .bv-skip {
-  font-size:11px; color:rgba(255,255,255,.22); cursor:pointer;
+  font-size:11px; color:rgba(255,255,255,.45); cursor:pointer;
   margin-top:16px; letter-spacing:.05em;
   opacity:0; animation:bvUp .4s 1.6s ease forwards;
   background:none; border:none; font-family:'Inter',sans-serif;
@@ -2438,6 +2574,7 @@ body {
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
   </div>
+  <div id="ls-phrase" style="margin-top:20px;font-size:12px;color:rgba(255,255,255,.45);font-family:'Inter',sans-serif;letter-spacing:.03em;animation:lsFadeIn .6s .5s ease both;min-height:18px;text-align:center"></div>
 </div>
 
 <!-- TOAST -->
@@ -2881,33 +3018,67 @@ body {
               <div style="font-size:11px;color:var(--muted);margin-top:2px">Baseado no QUSP · última atualização: hoje</div>
             </div>
           </div>
-          <div class="isa-grid" style="margin-bottom:20px;">
+          <div class="isa-grid" style="margin-bottom:20px;" id="isa-grid">
             <div class="isa-card">
-              
-              <div class="isa-card-val" style="color:var(--muted)">—</div>
+              <div class="isa-ring-wrap">
+                <svg viewBox="0 0 52 52">
+                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
+                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#EF4444" style="stroke-dashoffset:132"/>
+                </svg>
+                <div class="isa-ring-inner">
+                  <span class="isa-ring-val" id="isa-burnout" style="color:#EF4444">—</span>
+                </div>
+              </div>
               <div class="isa-card-lbl">Burnout</div>
             </div>
             <div class="isa-card">
-              
-              <div class="isa-card-val" style="color:var(--muted)">—</div>
+              <div class="isa-ring-wrap">
+                <svg viewBox="0 0 52 52">
+                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
+                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#F59E0B" style="stroke-dashoffset:132"/>
+                </svg>
+                <div class="isa-ring-inner">
+                  <span class="isa-ring-val" id="isa-estresse" style="color:#F59E0B">—</span>
+                </div>
+              </div>
               <div class="isa-card-lbl">Estresse</div>
             </div>
             <div class="isa-card">
-              
-              <div class="isa-card-val" style="color:var(--muted)">—</div>
+              <div class="isa-ring-wrap">
+                <svg viewBox="0 0 52 52">
+                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
+                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#6366F1" style="stroke-dashoffset:132"/>
+                </svg>
+                <div class="isa-ring-inner">
+                  <span class="isa-ring-val" id="isa-sono" style="color:#6366F1">—</span>
+                </div>
+              </div>
               <div class="isa-card-lbl">Sono</div>
             </div>
             <div class="isa-card">
-              
-              <div class="isa-card-val" style="color:var(--muted)">—</div>
+              <div class="isa-ring-wrap">
+                <svg viewBox="0 0 52 52">
+                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
+                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#10B981" style="stroke-dashoffset:132"/>
+                </svg>
+                <div class="isa-ring-inner">
+                  <span class="isa-ring-val" id="isa-social" style="color:#10B981">—</span>
+                </div>
+              </div>
               <div class="isa-card-lbl">Social</div>
             </div>
             <div class="isa-card" style="border:1.5px solid rgba(78,203,160,.25);background:linear-gradient(135deg,rgba(78,203,160,.04),rgba(45,106,79,.03))">
-              
-              <div class="isa-card-val" style="font-size:16px;font-weight:900;color:var(--muted)">—</div>
+              <div class="isa-ring-wrap">
+                <svg viewBox="0 0 52 52">
+                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
+                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#2D6A4F" style="stroke-dashoffset:132"/>
+                </svg>
+                <div class="isa-ring-inner">
+                  <span class="isa-ring-val" id="isa-isa geral" style="color:#2D5A4E">—</span>
+                </div>
+              </div>
               <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
             </div>
-          </div>
 
           <!-- ══ GRID PRINCIPAL ══ -->
           <div class="dash-grid">
@@ -3160,7 +3331,7 @@ body {
           <div class="progress-bar-row"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:43%"></div></div><span class="prog-pct" id="plano-progresso-txt">3 de 7 — 43%</span></div>
           <div class="tabs"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
           <div id="acoes-lista">
-            <div class="sec-hdr sh-red">🔴 ALTA PRIORIDADE</div>
+            <div class="sec-hdr sh-red"><span class="sec-hdr alta">Alta Prioridade<span class="sh-pill">Crítico</span></span></div>
             <div class="action-row" data-id="1" data-status="pendente">
               <div class="a-check" onclick="toggleAcao(this)"></div>
               <div><div class="a-title">Mapeamento e redistribuição de demandas</div><div class="a-meta"><span class="tag t-carga">Carga de Trabalho</span><span class="tag t-alta">Alta</span><span class="tag t-gray">Workshop · 3 sem</span></div></div>
@@ -7003,6 +7174,33 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+
+
+/* ══ Loading screen — frases rotativas ══ */
+(function initLoadingPhrases() {
+  const frases = [
+    'Carregando seus dados organizacionais…',
+    'Analisando scores por dimensão…',
+    'Verificando alertas de risco…',
+    'Preparando seu painel de saúde…',
+    'Quase lá…',
+  ];
+  let fi = 0;
+  const run = () => {
+    const el = document.getElementById('ls-phrase');
+    if (!el) return;
+    el.textContent = frases[0];
+    el.style.transition = 'opacity .3s';
+    setInterval(() => {
+      fi = (fi + 1) % frases.length;
+      el.style.opacity = '0';
+      setTimeout(() => { el.textContent = frases[fi]; el.style.opacity = '1'; }, 300);
+    }, 2200);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else { run(); }
+})();
 
 </script>
 
