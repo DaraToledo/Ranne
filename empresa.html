@@ -830,7 +830,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
   cursor:default; transition:all .2s;
 }
 .sci-badge:hover { background:rgba(78,203,160,.1); }
-.sci-badge::before { content:'⬡'; font-size:8px; opacity:.6; }
+.sci-badge::before { content:'·'; font-size:8px; opacity:.6; }
 
 .sci-strip {
   display:flex; gap:6px; flex-wrap:wrap; padding:10px 0 14px;
@@ -2432,7 +2432,7 @@ body {
     <img src="/icons/launchericon-192x192.png" alt="Ranne" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 4px 20px rgba(201,168,76,.35))">
   </div>
   <div style="font-family:'Fraunces',serif;font-size:26px;color:#fff;font-style:italic;margin-bottom:6px;animation:lsFadeIn .6s .1s ease both">Ranne</div>
-  <div style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.05em;margin-bottom:32px;animation:lsFadeIn .6s .2s ease both">Saúde Organizacional</div>
+  <div style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.05em;margin-bottom:32px;animation:lsFadeIn .6s .2s ease both">Saúde Mental Corporativa</div>
   <div class="ls-dots" style="animation:lsFadeIn .6s .3s ease both">
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
@@ -2518,7 +2518,7 @@ body {
       </div>
       <span class="ob-logo-name">Ranne</span>
       <div class="ob-logo-sep"></div>
-      <span class="ob-logo-tag">Saúde Organizacional</span>
+      <span class="ob-logo-tag">Saúde Mental Corporativa</span>
     </div>
 
     <div class="ob-badge">
@@ -2768,7 +2768,7 @@ body {
           </div>
           <div class="sb-brand">Ranne</div>
         </div>
-        <div class="sb-tagline">Saúde Organizacional</div>
+        <div class="sb-tagline">Saúde Mental Corporativa</div>
         <div class="sb-plan-badge" id="sb-plan-badge">
           <div class="sb-plan-dot free" id="sb-plan-dot"></div>
           <span class="sb-plan-text free" id="sb-plan-text">Plano Free</span>
@@ -2883,27 +2883,27 @@ body {
           </div>
           <div class="isa-grid" style="margin-bottom:20px;">
             <div class="isa-card">
-              <div class="isa-card-icon">●</div>
+              
               <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Burnout</div>
             </div>
             <div class="isa-card">
-              <div class="isa-card-icon">●</div>
+              
               <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Estresse</div>
             </div>
             <div class="isa-card">
-              <div class="isa-card-icon">●</div>
+              
               <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Sono</div>
             </div>
             <div class="isa-card">
-              <div class="isa-card-icon">●</div>
+              
               <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Social</div>
             </div>
             <div class="isa-card" style="border:1.5px solid rgba(78,203,160,.25);background:linear-gradient(135deg,rgba(78,203,160,.04),rgba(45,106,79,.03))">
-              <div class="isa-card-icon">●</div>
+              
               <div class="isa-card-val" style="font-size:16px;font-weight:900;color:var(--muted)">—</div>
               <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
             </div>
@@ -2915,7 +2915,7 @@ body {
             <!-- Score por Dimensão + Scores -->
             <div class="card">
               <div class="card-hdr">
-                <span class="card-title">📊 Score por Dimensão (QUSP)</span>
+                <span class="card-title">Score por Dimensão</span>
                 <a class="card-link" onclick="pg('progresso',null)">Histórico →</a>
               </div>
               <div class="score-item"><div class="score-row"><span class="score-name">Burnout</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-red" style="width:0%"></div></div></div>
@@ -2961,12 +2961,9 @@ body {
             <!-- Heatmap por Setor (PRO GATE) -->
             <div class="pro-gate">
               <div class="card" style="min-height:200px;">
-                <div class="card-hdr"><span class="card-title">🗺️ Heatmap por Setor</span><span class="chip chip-pro">✦ Pro</span></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;opacity:.4">
-                  <div style="background:#FEF2F2;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#DC2626">TI</div><div style="font-size:18px;font-weight:900;color:#DC2626">80%</div><div style="font-size:9px;color:var(--muted)">Fadiga Digital</div></div>
-                  <div style="background:#FFFBEB;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#D97706">Comercial</div><div style="font-size:18px;font-weight:900;color:#D97706">70%</div><div style="font-size:9px;color:var(--muted)">Ansiedade Social</div></div>
-                  <div style="background:#ECFDF5;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#059669">RH</div><div style="font-size:18px;font-weight:900;color:#059669">82%</div><div style="font-size:9px;color:var(--muted)">Score Saudável</div></div>
-                  <div style="background:#FEF2F2;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:700;color:#DC2626">Ops</div><div style="font-size:18px;font-weight:900;color:#DC2626">47%</div><div style="font-size:9px;color:var(--muted)">Burnout Alto</div></div>
+                <div class="card-hdr"><span class="card-title">Heatmap por Setor</span><span class="chip chip-pro">✦ Pro</span></div>
+                <div style="opacity:.35;text-align:center;padding:24px;font-size:12px;color:var(--muted)">
+                  Disponível após diagnósticos respondidos por setor.
                 </div>
               </div>
               <div class="pro-gate-overlay">
@@ -2980,13 +2977,9 @@ body {
             <!-- Previsão de Turnover (PRO GATE) -->
             <div class="pro-gate">
               <div class="card" style="min-height:200px;">
-                <div class="card-hdr"><span class="card-title">📉 Previsão de Turnover</span><span class="chip chip-pro">✦ Pro</span></div>
-                <div style="opacity:.4">
-                  <div style="background:#FEF2F2;border-radius:12px;padding:14px;margin-bottom:10px">
-                    <div style="font-size:11px;font-weight:700;color:#DC2626;margin-bottom:4px">⚠ Risco Alto — próx. 90 dias</div>
-                    <div style="font-size:12px;color:var(--muted)">Colaboradores com cinismo elevado (Bloco 1) têm <strong style="color:var(--text)">60%</strong> mais chance de pedir demissão</div>
-                  </div>
-                  <div style="font-size:12px;color:var(--muted)">Colaboradores em risco identificados: <strong style="color:#DC2626">4</strong></div>
+                <div class="card-hdr"><span class="card-title">Previsão de Turnover</span><span class="chip chip-pro">✦ Pro</span></div>
+                <div style="opacity:.35;text-align:center;padding:24px;font-size:12px;color:var(--muted)">
+                  Disponível com histórico de pelo menos dois diagnósticos.
                 </div>
               </div>
               <div class="pro-gate-overlay">
@@ -3003,7 +2996,7 @@ body {
           <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,#0B1F2B,#112230);">
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
               <div>
-                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:6px">📋 Relatório Mensal para RH</div>
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:6px">Relatório Mensal</div>
                 <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Relatório disponível</div>
                 <div style="display:flex;gap:16px;flex-wrap:wrap;">
                   <span style="font-size:12px;color:rgba(255,255,255,.55)">Engajamento: <strong style="color:#4ECBA0" id="rel-engajamento">—</strong></span>
@@ -3017,7 +3010,7 @@ body {
               </div>
             </div>
             <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:rgba(255,255,255,.3);font-style:italic">
-              "Dados emocionais transformados em decisões estratégicas."
+              Dados emocionais transformados em decisões estratégicas.
             </div>
           </div>
 
@@ -3026,7 +3019,7 @@ body {
           <!-- ══ PAINEL DE SOLUÇÕES RH ══ -->
           <div class="card" style="margin-bottom:16px">
             <div class="card-hdr">
-              <span class="card-title">🏥 Soluções por Nível de Risco</span>
+              <span class="card-title">Soluções por Nível de Risco</span>
               <span class="chip chip-green">Guia RH</span>
             </div>
             <div id="rh-solucoes"></div>
@@ -3034,7 +3027,7 @@ body {
 
           <!-- ══ BASE CIENTÍFICA ══ -->
           <div class="sci-footer">
-            <div class="sci-footer-title">📚 Fundamentação Científica — Ranne Care</div>
+            <div class="sci-footer-title">Fundamentação Científica — Ranne Care</div>
             <div class="sci-refs">
               <div class="sci-ref">
                 <div class="sci-ref-icon">🧪</div>
@@ -3080,7 +3073,7 @@ body {
       <!-- DIAGNÓSTICOS -->
       <div id="p-diagnosticos" style="display:none">
         <div class="topbar">
-          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Diagnósticos</div><div class="page-sub">Crie, acompanhe e encerre diagnósticos de clima</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Diagnósticos</div><div class="page-sub">Diagnósticos de clima em andamento</div></div>
           <button class="btn btn-primary" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
         </div>
         <div id="diagnosticos-lista">
@@ -3119,7 +3112,7 @@ body {
           <span class="si">✅</span>
           <h2>Diagnóstico criado!</h2>
           <p>Compartilhe o link abaixo com sua equipe. O colaborador não precisa fazer login para responder.</p>
-          <div class="link-box" id="diag-link" onclick="copyLink()">Gerando link...</div>
+          <div class="link-box" id="diag-link" onclick="copyLink()">Aguarde, gerando link...</div>
           <div style="display:flex;gap:10px;justify-content:center">
             <button class="btn btn-primary" onclick="copyLink()">📋 Copiar Link</button>
             <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Ver Diagnósticos</button>
@@ -3254,7 +3247,7 @@ body {
 
       <!-- BIBLIOTECA -->
       <div id="p-biblioteca" style="display:none">
-        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Biblioteca</div><div class="page-sub">Conteúdo curatorial para saúde organizacional</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Biblioteca</div><div class="page-sub">Curadoria de conteúdo para o seu time</div></div></div>
         <div class="search-wrap"><input placeholder="Buscar conteúdo..." oninput="searchBiblioteca(this.value)"></div>
         <div class="tabs">
           <div class="tab active" onclick="filterBib('todos',this)">Todos</div>
@@ -3285,7 +3278,7 @@ body {
 
       <!-- CHECK-IN -->
       <div id="p-checkin" style="display:none">
-        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Check-in Semanal</div><div class="page-sub">Como sua equipe está chegando nessa semana?</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Check-in Semanal</div><div class="page-sub">Como o time chegou essa semana?</div></div></div>
         <div style="max-width:560px">
           <div class="ci-dark">
             <h3>Como está seu humor hoje?</h3>
@@ -3323,7 +3316,7 @@ body {
       <!-- EQUIPE -->
       <div id="p-equipe" style="display:none">
         <div class="topbar">
-          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Equipe</div><div class="page-sub">Gerencie os membros da plataforma</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Equipe</div><div class="page-sub">Quem faz parte da plataforma</div></div>
           <button class="btn btn-primary btn-sm" onclick="document.getElementById('modal-invite').classList.add('open')">+ Convidar Membro</button>
         </div>
         <div class="card" style="margin-bottom:16px">
@@ -3347,7 +3340,7 @@ body {
 
       <!-- CONFIG -->
       <div id="p-config" style="display:none">
-        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Configurações</div><div class="page-sub">Perfil da empresa, plano e cobrança</div></div></div>
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button><div class="page-title">Configurações</div><div class="page-sub">Como sua conta está configurada</div></div></div>
         <div class="card" style="max-width:480px;margin-bottom:20px">
           <div class="card-hdr"><span class="card-title">Perfil da Empresa</span></div>
           <div class="fi-group"><label class="fi-label">Nome da empresa</label><input class="fi-input" id="cfg-nome"></div>
@@ -4318,7 +4311,7 @@ function showEmpresa() {
   document.getElementById('sb-empresa-nome').textContent = nome;
   document.getElementById('sb-avatar-txt').textContent = ini;
   document.getElementById('dash-greeting').textContent = 'Olá, ' + nome + ' 👋';
-  document.getElementById('dash-sub').textContent = 'Bem-vindo ao seu painel';
+  document.getElementById('dash-sub').textContent = 'Seu painel de saúde organizacional';
   document.getElementById('cfg-nome').value = currentEmpresa?.nome || '';
   setTimeout(() => {
     document.getElementById('skelWrap').style.display = 'none';
@@ -4475,7 +4468,7 @@ async function loadDashboardData() {
       _setMetricNum('data-target="84"', ultimoDiag.taxa_resposta != null
         ? ultimoDiag.taxa_resposta + '%' : '—');
     } else {
-      document.getElementById('dash-sub').textContent = 'Nenhum diagnóstico criado ainda';
+      document.getElementById('dash-sub').textContent = 'Ainda sem diagnósticos por aqui';
       _setMetricNum('data-target="48"', totalCols > 0 ? totalCols : '—');
     }
 
@@ -4520,7 +4513,7 @@ async function loadDiagnosticos() {
       lista.innerHTML = `<div class="card" style="text-align:center;padding:40px;color:var(--muted)">
         <div style="font-size:40px;margin-bottom:16px">📋</div>
         <div style="font-weight:600;margin-bottom:8px">Nenhum diagnóstico ainda</div>
-        <div style="font-size:12px;margin-bottom:16px">Crie seu primeiro diagnóstico para começar</div>
+        <div style="font-size:12px;margin-bottom:16px">Comece criando o primeiro diagnóstico do seu time</div>
         <button class="btn btn-primary" onclick="pg('novo-diagnostico',null)">+ Criar primeiro diagnóstico</button>
       </div>`;
       return;
