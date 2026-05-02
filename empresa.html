@@ -498,7 +498,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 .sb-urole { color:rgba(255,255,255,.50); font-size:9.5px; }
 .sb-logout { margin-left:auto; color:rgba(255,255,255,0.25); cursor:pointer; font-size:16px; transition:all 0.2s; background:none; border:none; padding:4px; border-radius:6px; }
 .sb-logout:hover { color:#EF4444; background:rgba(239,68,68,.1); }
-.main { margin-left:var(--sidebar-w); flex:1; padding:28px 32px; min-height:100vh; background:var(--bg); }
+.main { margin-left:var(--sidebar-w); flex:1; padding:24px 28px; min-height:100vh; background:var(--bg); }
 
 /* ══════════ TOP BAR ══════════ */
 .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; gap:16px; }
@@ -1392,30 +1392,80 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .isa-ring-inner { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
 .isa-ring-val   { font-size:13px; font-weight:900; letter-spacing:-0.5px; }
 
-/* RESPONSIVE */
+/* ══════════════════════════════════════
+   RESPONSIVE — BREAKPOINTS COMPLETOS
+   ══════════════════════════════════════ */
+
+/* ── Telas médias: 900-1280px (laptop pequeno com sidebar) ── */
+@media(max-width:1280px){
+  .main { padding:20px 20px; }
+  .metrics { grid-template-columns:repeat(2,1fr)!important; }
+  .isa-grid { grid-template-columns:repeat(3,1fr)!important; }
+  .dash-grid { grid-template-columns:1fr!important; }
+  .lib-grid { grid-template-columns:1fr 1fr!important; }
+  .plans-row { grid-template-columns:1fr 1fr!important; }
+  /* Pro gates lado a lado viram stack */
+  div[style*="grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px"] {
+    grid-template-columns:1fr!important;
+  }
+}
+
+/* ── Telas médias: 900-1100px ── */
+@media(max-width:1100px){
+  .main { padding:16px 16px; }
+  .isa-grid { grid-template-columns:repeat(3,1fr)!important; }
+  .rh-solucoes-grid { grid-template-columns:1fr!important; }
+  .res-grid { grid-template-columns:1fr 1fr!important; }
+  .fi-row { grid-template-columns:1fr!important; }
+  .sci-strip { flex-wrap:wrap; }
+}
+
+/* ── Tablet: 768-900px ── */
+@media(max-width:900px){
+  :root { --sidebar-w: 220px; }
+  .main { padding:16px 14px; }
+  .metrics { grid-template-columns:1fr 1fr!important; }
+  .isa-grid { grid-template-columns:repeat(3,1fr)!important; }
+  .dash-grid { grid-template-columns:1fr!important; }
+  .dim-grid { grid-template-columns:1fr!important; }
+  .lib-grid { grid-template-columns:1fr!important; }
+  .plans-row { grid-template-columns:1fr!important; }
+  .res-grid { grid-template-columns:1fr 1fr!important; }
+  .topbar { flex-wrap:wrap; gap:10px; }
+  /* Skeleton também */
+  #skelWrap { grid-template-columns:1fr 1fr!important; }
+}
+
+/* ── Mobile: <768px ── */
 @media(max-width:768px){
   .page-sub { display:none; }
-  .mob-menu-btn{display:flex!important;}
-  .sidebar{position:fixed;left:-265px;top:0;bottom:0;z-index:200;transition:left 0.3s ease;box-shadow:4px 0 24px rgba(0,0,0,0.2);}
-  .sidebar.mob-open{left:0;}
-  .main{margin-left:0!important;padding:16px;}
-  .topbar{padding:0 0 16px;}
-  .page-title{font-size:17px;}
-  .metrics{grid-template-columns:1fr 1fr!important;}
-  .metric:first-child{grid-column:1/-1;}
-  .dash-grid{grid-template-columns:1fr!important;}
-  .dim-grid{grid-template-columns:1fr!important;}
-  .role-cards{grid-template-columns:1fr!important;}
-  .onboard-left{display:none!important;}
-  .onboard-right{width:100%!important;padding:24px 16px!important;background:transparent!important;border:none!important;}
-  .auth-box{border-radius:20px!important;padding:28px 24px!important;}
-  .lib-grid{grid-template-columns:1fr!important;}
-  .lib-feat{flex-direction:column;}
-  .plans-row{grid-template-columns:1fr!important;}
-  .res-grid{grid-template-columns:1fr 1fr!important;}
-  .fi-row{grid-template-columns:1fr!important;}
-  .diag-item{flex-direction:column;align-items:flex-start;}
-  .diag-stats{width:100%;justify-content:flex-start;flex-wrap:wrap;gap:10px;}
+  .mob-menu-btn { display:flex!important; }
+  .sidebar { position:fixed;left:-265px;top:0;bottom:0;z-index:200;transition:left .3s ease;box-shadow:4px 0 24px rgba(0,0,0,.2); }
+  .sidebar.mob-open { left:0; }
+  .main { margin-left:0!important; padding:14px; }
+  .topbar { padding:0 0 14px; flex-wrap:wrap; gap:8px; }
+  .page-title { font-size:17px; }
+  .metrics { grid-template-columns:1fr 1fr!important; }
+  .metric:first-child { grid-column:1/-1; }
+  .isa-grid { grid-template-columns:repeat(3,1fr)!important; }
+  .dash-grid { grid-template-columns:1fr!important; }
+  .dim-grid { grid-template-columns:1fr!important; }
+  .role-cards { grid-template-columns:1fr!important; }
+  .lib-grid { grid-template-columns:1fr!important; }
+  .lib-feat { flex-direction:column; }
+  .plans-row { grid-template-columns:1fr!important; }
+  .res-grid { grid-template-columns:1fr 1fr!important; }
+  .fi-row { grid-template-columns:1fr!important; }
+  .rh-solucoes-grid { grid-template-columns:1fr!important; }
+  .diag-item { flex-direction:column;align-items:flex-start; }
+  .diag-stats { width:100%;justify-content:flex-start;flex-wrap:wrap;gap:10px; }
+  #skelWrap { grid-template-columns:1fr 1fr!important; }
+  .onboard-left { display:none!important; }
+  .onboard-right { width:100%!important;padding:24px 16px!important;background:transparent!important;border:none!important; }
+  .auth-box { border-radius:20px!important;padding:28px 24px!important; }
+  /* Pro gates viram stack */
+  div[style*="grid-template-columns:1fr 1fr;gap:16px"] { grid-template-columns:1fr!important; }
+  .sci-badge { font-size:8px; padding:2px 7px; }
 }
 
 /* ══ COLLAB SPECIFIC ══ */
@@ -2952,7 +3002,7 @@ body {
         </div>
 
         <!-- SKELETON -->
-        <div id="skelWrap" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
+        <div id="skelWrap" class="metrics" style="margin-bottom:24px;">
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
           <div class="skel-card"><div class="skel skel-line" style="width:50%"></div><div class="skel skel-big"></div><div class="skel skel-line" style="width:65%"></div></div>
