@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ranne Admin</title>
+<title>Ranne — Admin</title>
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/launchericon-192x192.png">
+<link rel="apple-touch-icon" href="/icons/launchericon-192x192.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -184,6 +186,18 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 </head>
 <body>
 
+<!-- LOADING SCREEN ADMIN -->
+<div id="admin-loading" style="display:none;position:fixed;inset:0;background:#1A2E20;z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:18px;">
+  <img src="/icons/launchericon-192x192.png" alt="Ranne" style="width:56px;height:56px;object-fit:contain">
+  <div style="display:flex;gap:7px;">
+    <div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.6);animation:adminPulse 1.2s ease-in-out infinite"></div>
+    <div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.6);animation:adminPulse 1.2s .2s ease-in-out infinite"></div>
+    <div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.6);animation:adminPulse 1.2s .4s ease-in-out infinite"></div>
+  </div>
+</div>
+<style>@keyframes adminPulse{0%,100%{opacity:.3}50%{opacity:1}}</style>
+
+
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-orb"></div>
@@ -216,10 +230,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
       <div class="sb-header">
         <div class="sb-logo">
           <div class="sb-mark">
-            <svg viewBox="0 0 15 15" fill="none">
-              <path d="M7.5 13.5C7.5 13.5 1 9.5 1 5.8C1 3.8 2.5 2.5 4.2 2.5C5.4 2.5 6.5 3.2 7.5 4.4C8.5 3.2 9.6 2.5 10.8 2.5C12.5 2.5 14 3.8 14 5.8C14 9.5 7.5 13.5 7.5 13.5Z" fill="rgba(255,255,255,.85)"/>
-              <path d="M3.5 7.5L5 7.5L6 5.5L7.5 10L9 7L10 7.5L12 7.5" stroke="#1A2E20" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <img src="/icons/launchericon-192x192.png" alt="Ranne" style="width:26px;height:26px;object-fit:contain">
           </div>
           <span class="sb-name">Ranne</span>
         </div>
@@ -446,6 +457,7 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Dados de demo
+// Usado APENAS quando há erro de conexão com Supabase
 const DEMO_EMPRESAS = [
   { id:1, nome:'Nexus Digital', cnpj:'12.345.678/0001-90', email:'rh@nexus.com.br', plano:'growth', status:'ativa', colaboradores:32, diagnosticos:5, score:78, ultimo_acesso:'2026-04-25', mrr:597 },
   { id:2, nome:'Alvotech', cnpj:'98.765.432/0001-10', email:'ti@alvotech.com.br', plano:'starter', status:'ativa', colaboradores:18, diagnosticos:3, score:65, ultimo_acesso:'2026-04-24', mrr:297 },
@@ -466,12 +478,23 @@ let currentPage = 'dashboard';
 
 /* ── LOGIN ── */
 document.addEventListener('DOMContentLoaded', async () => {
+  // Mostrar loading enquanto verifica sessão — evita flash da tela de login
+  const loadingEl = document.getElementById('admin-loading');
+  const loginEl   = document.getElementById('login-screen');
+  if (loadingEl) loadingEl.style.display = 'flex';
+  if (loginEl)   loginEl.style.display = 'none';
+
   try {
     const { data: { session } } = await db.auth.getSession();
-    if (session?.user) { showApp(session.user.email); }
-    else { document.getElementById('login-screen').style.display = 'flex'; }
+    if (session?.user) {
+      showApp(session.user.email);
+    } else {
+      if (loadingEl) loadingEl.style.display = 'none';
+      if (loginEl)   loginEl.style.display = 'flex';
+    }
   } catch {
-    document.getElementById('login-screen').style.display = 'flex';
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (loginEl)   loginEl.style.display = 'flex';
   }
 });
 
@@ -490,8 +513,11 @@ async function doAdminLogin() {
     const { data, error } = await db.auth.signInWithPassword({ email, password: senha });
     if (error) throw error;
 
-    // Verifica se é admin
-    if (data.user.email !== ADMIN_EMAIL) {
+    // Verifica se é admin — por email E por metadata role
+    const isAdminEmail = data.user.email === ADMIN_EMAIL;
+    const isAdminRole  = data.user.user_metadata?.role === 'admin'
+                      || data.user.app_metadata?.role  === 'admin';
+    if (!isAdminEmail && !isAdminRole) {
       await db.auth.signOut();
       throw new Error('Acesso não autorizado.');
     }
@@ -509,6 +535,9 @@ async function doAdminLogin() {
 }
 
 function showApp(email) {
+  // Esconder loading e login, mostrar app
+  const loadingEl = document.getElementById('admin-loading');
+  if (loadingEl) loadingEl.style.display = 'none';
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   const initials = email.split('@')[0].slice(0,2).toUpperCase();
@@ -518,11 +547,35 @@ function showApp(email) {
   loadData();
 }
 
+
+function buildMRRHistory(empresas) {
+  const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const hoje = new Date();
+  return Array.from({length:6}, (_, i) => {
+    const d = new Date(hoje.getFullYear(), hoje.getMonth() - (5-i), 1);
+    const mes = MESES[d.getMonth()];
+    const val = empresas
+      .filter(e => e.plano !== 'free' && e.status === 'ativa'
+        && (!e.created_at || new Date(e.created_at) <= new Date(d.getFullYear(), d.getMonth()+1, 0)))
+      .reduce((s, e) => s + (e.mrr || 0), 0);
+    return { mes, val };
+  });
+}
+
 async function loadData() {
   try {
     const { data } = await db.from('empresas').select('*').order('created_at', { ascending: false });
-    if (data?.length) empresasData = data;
-  } catch {}
+    if (data && data.length > 0) {
+      empresasData = data;
+      MRR_HISTORY = buildMRRHistory(data);
+    } else {
+      empresasData = [];
+      MRR_HISTORY = buildMRRHistory([]);
+    }
+  } catch(e) {
+    console.warn('[Admin] Erro ao carregar:', e);
+    MRR_HISTORY = buildMRRHistory(empresasData);
+  }
   renderDashboard();
   renderEmpresas(empresasData);
   renderAlertas();
@@ -580,7 +633,19 @@ function renderDashboard() {
 
 /* ── TABELA EMPRESAS ── */
 function renderEmpresas(data) {
-  document.getElementById('empresas-count').textContent = `${data.length} empresa${data.length!==1?'s':''} cadastrada${data.length!==1?'s':''}`;
+  const count = data.length;
+  document.getElementById('empresas-count').textContent =
+    count === 0 ? 'Nenhuma empresa cadastrada'
+    : `${count} empresa${count!==1?'s':''} cadastrada${count!==1?'s':''}`;
+  if (count === 0) {
+    document.getElementById('all-tbody').innerHTML =
+      `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);font-size:13px">
+        <div style="font-size:28px;margin-bottom:10px">🏢</div>
+        <strong style="display:block;margin-bottom:4px">Nenhuma empresa cadastrada ainda</strong>
+        <span>As empresas aparecem aqui quando se cadastrarem pela plataforma.</span>
+      </td></tr>`;
+    return;
+  }
   document.getElementById('all-tbody').innerHTML = data.map(e => empresaRow(e, false)).join('');
 }
 
