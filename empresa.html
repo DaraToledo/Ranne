@@ -3595,7 +3595,7 @@ body {
         <textarea id="ci-aberto" placeholder="Pode escrever à vontade, é anônimo para o time..." style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;height:80px;outline:none;resize:none;font-family:'Inter',sans-serif;background:#F7F4EF;color:var(--text);transition:border .2s" onfocus="this.style.borderColor='#2D6A4F'" onblur="this.style.borderColor='rgba(26,46,32,.1)'"></textarea>
       </div>
 
-      <button class="btn-submit-ci" onclick="enviarCheckin()">Enviar check-in ✓</button>
+      <button class="btn-submit-ci" id="btn-submit-ci" onclick="enviarCheckin()">Enviar check-in ✓</button>
     </div>
 
     <!-- Confirmação -->
@@ -4196,8 +4196,6 @@ body {
 </div><!-- /app -->
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div>
-
 <!-- SHEET DE DICAS -->
 <div class="tip-expanded" id="tip-sheet" onclick="closeTip(event)">
   <div class="tip-sheet">
@@ -4295,12 +4293,6 @@ function showDemo() {
   showOnboarding();
 }
 
-function showOnboarding() {
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('onboarding').style.display = 'flex';
-  document.getElementById('app-empresa').style.display = 'none';
-  document.getElementById('app-colaborador').style.display = 'none';
-}
 
 function showEmpresa() {
   document.getElementById('onboarding').style.display = 'none';
@@ -4902,8 +4894,8 @@ function updatePlanoProgress() {
   const fill = document.getElementById('plano-fill');
   const txt = document.getElementById('plano-progresso-txt');
   const badge = document.getElementById('badge-acoes');
-  const metricTxt = document.getElementById('acoes-progresso');
-  const metricPct = document.getElementById('acoes-pct');
+  const metricTxt = document.getElementById('acoes-progresso'); // opcional
+  const metricPct = document.getElementById('acoes-pct');        // opcional
 
   if (fill) fill.style.width = pct + '%';
   if (txt) txt.textContent = `${done} de ${total} — ${pct}%`;
@@ -5041,9 +5033,6 @@ function showOnboarding() {
   document.getElementById('app-colaborador').style.display = 'none';
 }
 
-function goS(n) {
-  goSStep('s' + (n === 3 ? '3-' + currentRole : n));
-}
 
 function goSStep(id) {
   const current = document.querySelector('.step.active');
@@ -5062,11 +5051,6 @@ function goSStep(id) {
   }, 200);
 }
 
-function selRole(r, el) {
-  currentRole = r;
-  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-}
 
 function enterApp(r) {
   document.getElementById('onboarding').style.display = 'none';
