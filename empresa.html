@@ -2432,7 +2432,7 @@ body {
     <img src="/icons/launchericon-192x192.png" alt="Ranne" style="width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 4px 20px rgba(201,168,76,.35))">
   </div>
   <div style="font-family:'Fraunces',serif;font-size:26px;color:#fff;font-style:italic;margin-bottom:6px;animation:lsFadeIn .6s .1s ease both">Ranne</div>
-  <div style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.05em;margin-bottom:32px;animation:lsFadeIn .6s .2s ease both">Saúde Mental Corporativa</div>
+  <div style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.05em;margin-bottom:32px;animation:lsFadeIn .6s .2s ease both">Saúde Organizacional</div>
   <div class="ls-dots" style="animation:lsFadeIn .6s .3s ease both">
     <div class="ls-dot"></div>
     <div class="ls-dot"></div>
@@ -2768,7 +2768,7 @@ body {
           </div>
           <div class="sb-brand">Ranne</div>
         </div>
-        <div class="sb-tagline">Saúde Mental Corporativa</div>
+        <div class="sb-tagline">Saúde Organizacional</div>
         <div class="sb-plan-badge" id="sb-plan-badge">
           <div class="sb-plan-dot free" id="sb-plan-dot"></div>
           <span class="sb-plan-text free" id="sb-plan-text">Plano Free</span>
@@ -2804,7 +2804,7 @@ body {
           <div style="display:flex;align-items:center;gap:12px;">
             <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
             <div>
-              <div class="page-title" id="dash-greeting">Olá 👋</div>
+              <div class="page-title" id="dash-greeting">Olá</div>
               <div class="page-sub" id="dash-sub">Carregando dados...</div>
             </div>
           </div>
@@ -2835,45 +2835,39 @@ body {
             <span class="sci-badge">Neurociência do Sono · Walker</span>
           </div>
 
-          <!-- ══ ALERTA INTELIGENTE (sempre visível) ══ -->
-          <div class="alert alert-crit" style="margin-bottom:16px;border-radius:14px;padding:16px 18px;">
-            <div class="alert-icon">⚠️</div>
+          <!-- ══ ALERTA INTELIGENTE (aparece só com dados reais) ══ -->
+          <div id="alerta-inteligente" style="display:none;" class="alert alert-crit" style="margin-bottom:16px;border-radius:14px;padding:16px 18px;">
+            <div class="alert-icon" style="font-size:14px;color:#D97706;font-weight:700">!</div>
             <div class="alert-body" style="flex:1">
-              <strong>Alerta: aumento de sinais de estresse na equipe Comercial nos últimos 7 dias.</strong>
-              <span>Colaboradores com alta pontuação em Burnout têm 60% mais chance de pedir demissão em 90 dias.</span>
+              <strong id="alerta-texto">Alerta de risco identificado.</strong>
+              <span id="alerta-sub"></span>
               <div class="alert-action">
-                <button class="alert-btn alert-btn-pri" onclick="toast('📋 Abrindo detalhes do alerta...')">Ver detalhes</button>
-                <button class="alert-btn alert-btn-sec" onclick="toast('🎯 Sugestão de ação gerada!')">Sugerir ação</button>
+                <button class="alert-btn alert-btn-pri" onclick="toast('Funcionalidade disponível em breve.')">Ver detalhes</button>
               </div>
             </div>
-            <span class="chip chip-red" style="align-self:flex-start;margin-top:0">Alta Prioridade</span>
           </div>
 
           <!-- ══ MÉTRICAS PRINCIPAIS (Free) ══ -->
           <div style="margin-bottom:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Visão Geral — Plano Free</div>
           <div class="metrics" style="margin-bottom:20px;">
             <div class="metric m-amber">
-              <div class="metric-icon">🧠</div>
               <div class="metric-label">Score Geral</div>
               <div class="metric-value v-amber"><span class="count-up" data-target="68">0</span></div>
               <div class="metric-sub">de 100 pontos</div>
               <span class="chip chip-amber">⚠ Atenção</span>
             </div>
             <div class="metric m-blue">
-              <div class="metric-icon">👥</div>
               <div class="metric-label">Colaboradores Ativos</div>
               <div class="metric-value"><span class="count-up" data-target="48">0</span></div>
               <div class="metric-sub" id="taxa-sub">responderam ao QUSP</div>
             </div>
             <div class="metric m-red">
-              <div class="metric-icon">🔴</div>
               <div class="metric-label">Em Risco Elevado</div>
               <div class="metric-value v-red"><span class="count-up" data-target="3">0</span></div>
               <div class="metric-sub">intervenção imediata</div>
               <span class="chip chip-red">Crítico</span>
             </div>
             <div class="metric m-green">
-              <div class="metric-icon">📈</div>
               <div class="metric-label">Taxa de Resposta</div>
               <div class="metric-value v-green"><span class="count-up" data-target="84" data-suffix="%">0%</span></div>
               <div class="metric-sub">equipe engajada</div>
@@ -2884,33 +2878,33 @@ body {
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <div>
               <div style="font-size:13.5px;font-weight:700;color:var(--text)">Índice de Saúde Organizacional</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px">Baseado no QUSP — última atualização: hoje</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:2px">Baseado no QUSP · última atualização: hoje</div>
             </div>
           </div>
           <div class="isa-grid" style="margin-bottom:20px;">
             <div class="isa-card">
-              <div class="isa-card-icon">🔥</div>
-              <div class="isa-card-val v-red">54</div>
+              <div class="isa-card-icon">●</div>
+              <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Burnout</div>
             </div>
             <div class="isa-card">
-              <div class="isa-card-icon">⚡</div>
-              <div class="isa-card-val v-amber">62</div>
+              <div class="isa-card-icon">●</div>
+              <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Estresse</div>
             </div>
             <div class="isa-card">
-              <div class="isa-card-icon">🌙</div>
-              <div class="isa-card-val v-amber">58</div>
+              <div class="isa-card-icon">●</div>
+              <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Sono</div>
             </div>
             <div class="isa-card">
-              <div class="isa-card-icon">🤝</div>
-              <div class="isa-card-val v-green">74</div>
+              <div class="isa-card-icon">●</div>
+              <div class="isa-card-val" style="color:var(--muted)">—</div>
               <div class="isa-card-lbl">Social</div>
             </div>
             <div class="isa-card" style="border:1.5px solid rgba(78,203,160,.25);background:linear-gradient(135deg,rgba(78,203,160,.04),rgba(45,106,79,.03))">
-              <div class="isa-card-icon">🏥</div>
-              <div class="isa-card-val" style="font-size:16px;font-weight:900;color:#2D5A4E">62</div>
+              <div class="isa-card-icon">●</div>
+              <div class="isa-card-val" style="font-size:16px;font-weight:900;color:var(--muted)">—</div>
               <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
             </div>
           </div>
@@ -2924,10 +2918,10 @@ body {
                 <span class="card-title">📊 Score por Dimensão (QUSP)</span>
                 <a class="card-link" onclick="pg('progresso',null)">Histórico →</a>
               </div>
-              <div class="score-item"><div class="score-row"><span class="score-name">🔥 Burnout</span><span class="score-num v-red">54</span></div><div class="bar-track"><div class="bar-fill fill-red" style="width:54%"></div></div></div>
-              <div class="score-item"><div class="score-row"><span class="score-name">⚡ Estresse Físico</span><span class="score-num v-amber">62</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:62%"></div></div></div>
-              <div class="score-item"><div class="score-row"><span class="score-name">🌙 Sono & Fadiga Digital</span><span class="score-num v-amber">58</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:58%"></div></div></div>
-              <div class="score-item"><div class="score-row"><span class="score-name">🤝 Ansiedade Social</span><span class="score-num v-green">74</span></div><div class="bar-track"><div class="bar-fill fill-green" style="width:74%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">Burnout</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-red" style="width:0%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">Estresse Físico</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:0%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">Sono e Fadiga Digital</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:0%"></div></div></div>
+              <div class="score-item"><div class="score-row"><span class="score-name">Ansiedade Social</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-green" style="width:0%"></div></div></div>
               <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
                 <button class="btn btn-primary btn-sm" onclick="pg('plano',null)">Ver Plano de Ação →</button>
               </div>
@@ -2941,10 +2935,10 @@ body {
                 <div class="card-hdr" style="margin-bottom:12px;">
                   <span class="card-title">Como está o time</span>
                 </div>
-                <div class="status-team">
-                  <div class="st-row"><div class="st-dot amber"></div><span class="st-setor">Comercial</span><span class="st-status">Atenção</span><span class="st-score v-amber">61</span></div>
-                  <div class="st-row"><div class="st-dot green"></div><span class="st-setor">Financeiro</span><span class="st-status">Estável</span><span class="st-score v-green">78</span></div>
-                  <div class="st-row"><div class="st-dot red"></div><span class="st-setor">Operacional</span><span class="st-status">Crítico</span><span class="st-score v-red">47</span></div>
+                <div id="status-team-content">
+                  <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
+                    Disponível após o primeiro diagnóstico respondido pelos colaboradores.
+                  </div>
                 </div>
               </div>
 
@@ -2954,20 +2948,8 @@ body {
                   <span class="card-title">Acompanhamento</span>
                   <a class="card-link" onclick="toast('👥 Abrindo lista completa...')">Ver todos</a>
                 </div>
-                <div class="acomp-row">
-                  <div class="acomp-avatar" style="background:#F59E0B">AS</div>
-                  <div><div class="acomp-name">Ana Souza</div><div class="acomp-sub">Burnout alto · Comercial</div></div>
-                  <span class="acomp-pill acomp-ativo">🟡 Ativo</span>
-                </div>
-                <div class="acomp-row">
-                  <div class="acomp-avatar" style="background:#EF4444">JL</div>
-                  <div><div class="acomp-name">João Lima</div><div class="acomp-sub">Estresse crítico · Ops</div></div>
-                  <span class="acomp-pill acomp-alto">🔴 Alta Prio.</span>
-                </div>
-                <div class="acomp-row">
-                  <div class="acomp-avatar" style="background:#10B981">CM</div>
-                  <div><div class="acomp-name">Carla Mendes</div><div class="acomp-sub">Recuperação positiva</div></div>
-                  <span class="acomp-pill acomp-ok">🟢 Finalizado</span>
+                <div id="acomp-content" style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
+                  Os colaboradores em acompanhamento aparecerão aqui após responderem ao diagnóstico.
                 </div>
               </div>
             </div>
@@ -3022,9 +3004,9 @@ body {
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
               <div>
                 <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:6px">📋 Relatório Mensal para RH</div>
-                <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Relatório de Abril 2026 disponível</div>
+                <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:6px">Relatório disponível</div>
                 <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Engajamento: <strong style="color:#4ECBA0">78%</strong></span>
+                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Engajamento: <strong style="color:#4ECBA0" id="rel-engajamento">—</strong></span>
                   <span style="font-size:12px;color:rgba(255,255,255,.55)">Evolução: <strong style="color:#4ECBA0">positiva</strong></span>
                   <span style="font-size:12px;color:rgba(255,255,255,.55)">Atenção: <strong style="color:#F59E0B">equipe comercial</strong></span>
                 </div>
@@ -3035,7 +3017,7 @@ body {
               </div>
             </div>
             <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:rgba(255,255,255,.3);font-style:italic">
-              "A Ranne Care transforma dados emocionais em decisões estratégicas para o RH."
+              "Dados emocionais transformados em decisões estratégicas."
             </div>
           </div>
 
@@ -4450,45 +4432,74 @@ function showAuthErr(el, msg) { if(el){el.textContent=msg;el.style.display='bloc
 async function loadDashboardData() {
   if (!currentEmpresa) return;
 
-  // Atualiza UI com dados da empresa
   const nome = currentEmpresa.nome || 'Empresa';
   const initials = nome.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
   document.getElementById('sb-empresa-nome').textContent = nome;
   document.getElementById('sb-avatar-txt').textContent = initials;
-  document.getElementById('dash-greeting').textContent = `Olá, ${nome} 👋`;
+  document.getElementById('dash-greeting').textContent = `Olá, ${nome}`;
+
+  // Zera tudo antes de buscar — sem dados mockados
+  _setMetricNum('data-target="68"',  '—');
+  _setMetricNum('data-target="48"',  '—');
+  _setMetricNum('data-target="3"',   '—');
+  _setMetricNum('data-target="84"',  '—');
+  document.getElementById('dash-sub').textContent = 'Carregando...';
 
   try {
-    // Busca último diagnóstico
+    // Busca diagnósticos reais
     const { data: diags } = await db
       .from('diagnosticos')
       .select('*')
       .eq('empresa_id', currentEmpresa.id)
-      .order('created_at', { ascending: false })
-      .limit(1);
+      .order('created_at', { ascending: false });
 
-    if (diags?.length > 0) {
-      const d = diags[0];
-      document.getElementById('last-diag-date').textContent = formatDate(d.created_at);
-      document.getElementById('last-diag-status').textContent = d.status === 'ativo' ? '🟢 Ativo' : 'Encerrado';
-      document.getElementById('dash-sub').textContent = `${d.nome} · Score em avaliação`;
+    // Busca colaboradores reais
+    const { data: cols } = await db
+      .from('colaboradores')
+      .select('id')
+      .eq('empresa_id', currentEmpresa.id)
+      .catch(() => ({ data: [] }));
+
+    const totalCols = cols?.length || 0;
+    const ultimoDiag = diags?.[0];
+
+    if (ultimoDiag) {
+      document.getElementById('dash-sub').textContent =
+        ultimoDiag.status === 'ativo'
+          ? `${ultimoDiag.nome} · em andamento`
+          : `Último: ${ultimoDiag.nome} · ${formatDate(ultimoDiag.created_at)}`;
+
+      _setMetricNum('data-target="68"', ultimoDiag.score_geral  ?? '—');
+      _setMetricNum('data-target="48"', totalCols > 0 ? totalCols : (ultimoDiag.total_convidados ?? '—'));
+      _setMetricNum('data-target="3"',  ultimoDiag.em_risco     ?? '—');
+      _setMetricNum('data-target="84"', ultimoDiag.taxa_resposta != null
+        ? ultimoDiag.taxa_resposta + '%' : '—');
     } else {
-      document.getElementById('last-diag-date').textContent = '—';
-      document.getElementById('dash-sub').textContent = 'Nenhum diagnóstico ainda';
+      document.getElementById('dash-sub').textContent = 'Nenhum diagnóstico criado ainda';
+      _setMetricNum('data-target="48"', totalCols > 0 ? totalCols : '—');
     }
-  } catch (e) {
-    // Em modo demo, mantém os dados visuais do HTML
+
+  } catch(e) {
+    document.getElementById('dash-sub').textContent = 'Sem conexão com o banco de dados';
+    console.warn('[Ranne] loadDashboardData erro:', e);
   }
 
-  // Mostra métricas com animação
-  setTimeout(() => {
-    document.getElementById('skelWrap').style.display = 'none';
-    document.getElementById('realMetrics').style.display = 'block';
-    animateCounters();
-  }, 900);
+  // Mostra métricas
+  document.getElementById('skelWrap').style.display = 'none';
+  document.getElementById('realMetrics').style.display = 'block';
 
-  // Carrega diagnósticos
   loadDiagnosticos();
   loadMembros();
+}
+
+// Atualiza um card de métrica pelo data-target
+function _setMetricNum(attr, val) {
+  const el = document.querySelector(`[${attr}]`);
+  if (el) {
+    el.textContent = val;
+    el.removeAttribute('data-target');
+    el.removeAttribute('data-suffix');
+  }
 }
 
 /* ─────────────────────────────────────
@@ -4761,7 +4772,7 @@ async function salvarConfig() {
     await db.from('empresas').update({ nome, setor, size }).eq('id', currentEmpresa.id);
     currentEmpresa = { ...currentEmpresa, nome, setor, size };
     document.getElementById('sb-empresa-nome').textContent = nome;
-    document.getElementById('dash-greeting').textContent = `Olá, ${nome} 👋`;
+    document.getElementById('dash-greeting').textContent = `Olá, ${nome}`;
   } catch {}
 
   toast('✅ Configurações salvas!');
