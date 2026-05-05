@@ -6106,7 +6106,7 @@ function qusp_render() {
   document.getElementById('qusp-btn-back').style.display = qusp_atual > 0 ? 'block' : 'none';
 }
 
-function qusp_mostrarResultado() {
+async function qusp_mostrarResultado() {
   // Calcular scores por bloco
   const b1 = qusp_resps.slice(0,5).reduce((a,v) => a + (v||0), 0);
   const b2 = qusp_resps.slice(5,10).reduce((a,v) => a + (v||0), 0);
