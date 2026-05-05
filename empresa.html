@@ -3537,6 +3537,145 @@ body {
         </div>
       </div>
 
+      <!-- FICHA INDIVIDUAL DO COLABORADOR -->
+<div id="p-ficha" style="display:none">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="page-title" id="ficha-nome">—</div>
+        <div class="page-sub" id="ficha-cargo">—</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="pg('equipe',null)">← Voltar</button>
+      <button class="btn btn-primary btn-sm" onclick="abrirModalIntervencao()">+ Registrar Intervenção</button>
+    </div>
+  </div>
+
+  <!-- Cabeçalho da ficha -->
+  <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#071A22,#0D2B1E);border:1px solid rgba(78,203,160,.15)">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div id="ficha-avatar" style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2D6A4F,#4ECBA0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0">--</div>
+      <div style="flex:1">
+        <div style="color:#fff;font-size:17px;font-weight:800;margin-bottom:4px" id="ficha-nome-hdr">—</div>
+        <div style="color:rgba(255,255,255,.45);font-size:12px" id="ficha-info-hdr">—</div>
+      </div>
+      <div id="ficha-risco-badge" style="padding:6px 16px;border-radius:99px;font-size:12px;font-weight:700">—</div>
+    </div>
+  </div>
+
+  <!-- Métricas rápidas -->
+  <div class="metrics" style="margin-bottom:16px" id="ficha-metrics">
+    <div class="metric m-green">
+      <div class="metric-label">Score Atual</div>
+      <div class="metric-value" id="ficha-score-atual">—</div>
+      <div class="metric-sub">último diagnóstico</div>
+    </div>
+    <div class="metric m-blue">
+      <div class="metric-label">Diagnósticos</div>
+      <div class="metric-value" id="ficha-total-diags">—</div>
+      <div class="metric-sub">respondidos</div>
+    </div>
+    <div class="metric m-amber">
+      <div class="metric-label">Última Resposta</div>
+      <div class="metric-value" style="font-size:16px" id="ficha-ultima-resp">—</div>
+      <div class="metric-sub">data</div>
+    </div>
+    <div class="metric m-purple">
+      <div class="metric-label">Intervenções</div>
+      <div class="metric-value" id="ficha-total-interv">0</div>
+      <div class="metric-sub">registradas</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+
+    <!-- Score por dimensão -->
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Score por Dimensão</span><span style="font-size:11px;color:var(--muted)">último QUSP</span></div>
+      <div id="ficha-dimensoes">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Nenhum diagnóstico respondido ainda.</div>
+      </div>
+    </div>
+
+    <!-- Histórico de scores -->
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Evolução do Score</span></div>
+      <div id="ficha-historico">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Histórico aparece após 2+ diagnósticos.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Intervenções registradas -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr">
+      <span class="card-title">Intervenções do RH</span>
+      <button class="btn btn-primary btn-sm" onclick="abrirModalIntervencao()">+ Nova</button>
+    </div>
+    <div id="ficha-intervencoes">
+      <div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">
+        <div style="font-size:28px;margin-bottom:8px">📋</div>
+        Nenhuma intervenção registrada ainda.
+      </div>
+    </div>
+  </div>
+
+  <!-- Observações internas -->
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Observações Internas</span><span style="font-size:10px;color:var(--muted)">🔒 Visível apenas ao RH</span></div>
+    <textarea id="ficha-obs" placeholder="Anotações confidenciais sobre este colaborador..." style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;height:100px;outline:none;resize:none;font-family:'Inter',sans-serif;background:#F7F4EF;color:var(--text);transition:border .2s" onfocus="this.style.borderColor='#4ECBA0'" onblur="salvarObservacao()"></textarea>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">Salvo automaticamente ao sair do campo.</div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRAR INTERVENÇÃO -->
+<div class="overlay" id="modal-intervencao">
+  <div class="modal" style="max-width:480px">
+    <h3>📋 Registrar Intervenção</h3>
+    <p>Documente a ação tomada com este colaborador. Registro visível apenas ao RH.</p>
+    <div class="fi-group">
+      <label class="fi-label">Tipo de intervenção</label>
+      <select class="fi-input fi-select" id="interv-tipo">
+        <option value="conversa">Conversa 1:1</option>
+        <option value="encaminhamento">Encaminhamento para psicólogo/psiquiatra</option>
+        <option value="afastamento">Afastamento médico</option>
+        <option value="reducao_carga">Redução de carga temporária</option>
+        <option value="ajuste_funcao">Ajuste de função</option>
+        <option value="outro">Outro</option>
+      </select>
+    </div>
+    <div class="fi-group">
+      <label class="fi-label">Descrição</label>
+      <textarea class="fi-input" id="interv-desc" placeholder="O que foi discutido, combinado ou observado..." style="height:80px;resize:none"></textarea>
+    </div>
+    <div class="fi-row">
+      <div class="fi-group">
+        <label class="fi-label">Responsável</label>
+        <input class="fi-input" id="interv-resp" placeholder="Nome do RH ou gestor">
+      </div>
+      <div class="fi-group">
+        <label class="fi-label">Status</label>
+        <select class="fi-input fi-select" id="interv-status">
+          <option value="em_andamento">Em andamento</option>
+          <option value="concluido">Concluído</option>
+          <option value="aguardando">Aguardando retorno</option>
+        </select>
+      </div>
+    </div>
+    <div class="fi-group">
+      <label class="fi-label">Data de follow-up (opcional)</label>
+      <input class="fi-input" type="date" id="interv-followup">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-intervencao').classList.remove('open')">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="salvarIntervencao()">Salvar Intervenção →</button>
+    </div>
+  </div>
+</div>
+      
       <!-- EQUIPE -->
       <div id="p-equipe" style="display:none">
         <div class="topbar">
@@ -4772,30 +4911,36 @@ async function loadMembros() {
 
   try {
     const { data: membros } = await db
-      .from('membros_empresa')
+      .from('colaboradores')
       .select('*')
       .eq('empresa_id', currentEmpresa?.id);
 
     if (!membros || membros.length === 0) {
-      lista.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">Nenhum membro ainda. Convide alguém!</div>`;
+      lista.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">Nenhum colaborador ainda. Convide alguém!</div>`;
       return;
     }
 
-    const cores = ['linear-gradient(135deg,#4ECBA0,#2DAB80)', 'linear-gradient(135deg,#F59E0B,#D97706)', 'linear-gradient(135deg,#7C3AED,#6D28D9)', 'linear-gradient(135deg,#0EA5E9,#0284C7)'];
+    const cores = [
+      'linear-gradient(135deg,#4ECBA0,#2DAB80)',
+      'linear-gradient(135deg,#F59E0B,#D97706)',
+      'linear-gradient(135deg,#7C3AED,#6D28D9)',
+      'linear-gradient(135deg,#0EA5E9,#0284C7)'
+    ];
+
     lista.innerHTML = membros.map((m, i) => {
-      const initials = m.nome.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+      const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
       return `<div class="member-row">
-        <div class="m-avatar" style="background:${cores[i%cores.length]};color:${i===0?'#0B1F2B':'#fff'}">${initials}</div>
-        <div style="flex:1"><div class="m-name">${m.nome}</div><div class="m-email">${m.email}</div></div>
-        <span class="r-tag ${m.role === 'admin' ? 'r-admin' : m.role === 'lider' ? 'r-lider' : 'r-colab'}">${m.role === 'admin' ? 'Admin' : m.role === 'lider' ? 'Líder' : 'Colaborador'}</span>
-        <button class="btn btn-ghost btn-sm" style="margin-left:8px">···</button>
+        <div class="m-avatar" style="background:${cores[i%cores.length]};color:#fff">${initials}</div>
+        <div style="flex:1">
+          <div class="m-name">${m.nome || '—'}</div>
+          <div class="m-email">${m.email || '—'}</div>
+        </div>
+        <span class="r-tag r-colab">Colaborador</span>
+        <button class="btn btn-primary btn-sm" style="margin-left:8px" onclick="abrirFicha('${m.id}')">Ver ficha →</button>
       </div>`;
     }).join('');
   } catch {
-    lista.innerHTML = `
-      <div class="member-row"><div class="m-avatar" style="background:linear-gradient(135deg,#4ECBA0,#2DAB80);color:#0B1F2B">AL</div><div style="flex:1"><div class="m-name">Ana Lima</div><div class="m-email">ana@empresa.com.br</div></div><span class="r-tag r-admin">Admin</span><button class="btn btn-ghost btn-sm" style="margin-left:8px">···</button></div>
-      <div class="member-row"><div class="m-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff">CS</div><div style="flex:1"><div class="m-name">Carlos Santos</div><div class="m-email">carlos@empresa.com.br</div></div><span class="r-tag r-lider">Líder</span><button class="btn btn-ghost btn-sm" style="margin-left:8px">···</button></div>
-    `;
+    lista.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Erro ao carregar colaboradores.</div>`;
   }
 }
 
@@ -5437,6 +5582,210 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+  /* ══════════════════════════════════════
+   FICHA INDIVIDUAL DO COLABORADOR
+   ══════════════════════════════════════ */
+
+let fichaColaboradorId = null;
+
+async function abrirFicha(colaboradorId) {
+  fichaColaboradorId = colaboradorId;
+  pg('ficha', null);
+
+  // Busca dados do colaborador
+  try {
+    const { data: col } = await db.from('colaboradores')
+      .select('*').eq('id', colaboradorId).single();
+
+    if (!col) return;
+
+    const initials = (col.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+    document.getElementById('ficha-avatar').textContent = initials;
+    document.getElementById('ficha-nome').textContent = col.nome || '—';
+    document.getElementById('ficha-nome-hdr').textContent = col.nome || '—';
+    document.getElementById('ficha-cargo').textContent = col.cargo || 'Colaborador';
+    document.getElementById('ficha-info-hdr').textContent = `${col.email || '—'} · Cadastrado em ${formatDate(col.created_at)}`;
+
+    // Carrega respostas do colaborador
+    const { data: respostas } = await db.from('respostas')
+      .select('*')
+      .eq('colaborador_id', colaboradorId)
+      .order('enviado_em', { ascending: false });
+
+    const total = respostas?.length || 0;
+    document.getElementById('ficha-total-diags').textContent = total;
+
+    if (total > 0) {
+      const ultima = respostas[0];
+      const scores = ultima.scores_json || {};
+      const scoreGeral = scores.total ?? Math.round(
+        ((scores.burnout||0)+(scores.estresse||0)+(scores.sono||0)+(scores.social||0)) / 4
+      );
+
+      document.getElementById('ficha-score-atual').textContent = scoreGeral || '—';
+      document.getElementById('ficha-ultima-resp').textContent = formatDate(ultima.enviado_em);
+
+      // Badge de risco
+      const badge = document.getElementById('ficha-risco-badge');
+      if (scoreGeral >= 60) {
+        badge.style.background = 'rgba(16,185,129,.15)';
+        badge.style.border = '1px solid rgba(16,185,129,.3)';
+        badge.style.color = '#10B981';
+        badge.textContent = '🟢 OK';
+      } else if (scoreGeral >= 40) {
+        badge.style.background = 'rgba(245,158,11,.15)';
+        badge.style.border = '1px solid rgba(245,158,11,.3)';
+        badge.style.color = '#F59E0B';
+        badge.textContent = '🟡 Atenção';
+      } else {
+        badge.style.background = 'rgba(239,68,68,.15)';
+        badge.style.border = '1px solid rgba(239,68,68,.3)';
+        badge.style.color = '#EF4444';
+        badge.textContent = '🔴 Crítico';
+      }
+
+      // Score por dimensão
+      const dims = [
+        { nome:'Burnout', val: scores.burnout, cor:'#EF4444', fill:'fill-red' },
+        { nome:'Estresse', val: scores.estresse, cor:'#F59E0B', fill:'fill-amber' },
+        { nome:'Sono', val: scores.sono, cor:'#6366F1', fill:'fill-amber' },
+        { nome:'Social', val: scores.social, cor:'#10B981', fill:'fill-green' },
+      ];
+      document.getElementById('ficha-dimensoes').innerHTML = dims.map(d => {
+        const v = d.val ?? '—';
+        const pct = typeof v === 'number' ? Math.round((v/20)*100) : 0;
+        const cor = pct >= 60 ? '#10B981' : pct >= 40 ? '#F59E0B' : '#EF4444';
+        return `<div class="score-item">
+          <div class="score-row">
+            <span class="score-name">${d.nome}</span>
+            <span class="score-num" style="color:${cor}">${v}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${pct}%;background:${d.cor}"></div>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Histórico de evolução
+      if (respostas.length >= 2) {
+        const historico = respostas.slice(0,6).reverse();
+        const max = Math.max(...historico.map(r => r.scores_json?.total || 0));
+        document.getElementById('ficha-historico').innerHTML = `
+          <div style="display:flex;align-items:flex-end;gap:8px;height:80px;padding:0 4px">
+            ${historico.map((r,i) => {
+              const s = r.scores_json?.total || 0;
+              const h = max ? Math.round((s/max)*70) : 10;
+              const isLast = i === historico.length-1;
+              return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+                <div style="width:100%;height:${h}px;border-radius:6px 6px 0 0;background:${isLast?'#4ECBA0':'#4ECBA0'};opacity:${isLast?1:.5}"></div>
+                <span style="font-size:9px;color:var(--muted)">${formatDate(r.enviado_em).slice(0,5)}</span>
+              </div>`;
+            }).join('')}
+          </div>`;
+      }
+    } else {
+      document.getElementById('ficha-score-atual').textContent = '—';
+      document.getElementById('ficha-ultima-resp').textContent = '—';
+      document.getElementById('ficha-risco-badge').textContent = '⚪ Sem dados';
+    }
+
+    // Carrega intervenções
+    await carregarIntervencoes(colaboradorId);
+
+    // Carrega observações
+    const { data: obs } = await db.from('fichas_rh')
+      .select('observacoes').eq('colaborador_id', colaboradorId).single().catch(() => ({ data: null }));
+    document.getElementById('ficha-obs').value = obs?.observacoes || '';
+
+  } catch(e) {
+    console.warn('[Ficha]', e);
+    toast('⚠️ Erro ao carregar ficha.');
+  }
+}
+
+async function carregarIntervencoes(colaboradorId) {
+  const el = document.getElementById('ficha-intervencoes');
+  const totalEl = document.getElementById('ficha-total-interv');
+  try {
+    const { data } = await db.from('intervencoes_rh')
+      .select('*').eq('colaborador_id', colaboradorId)
+      .order('created_at', { ascending: false });
+
+    if (!data || data.length === 0) {
+      el.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">
+        <div style="font-size:28px;margin-bottom:8px">📋</div>
+        Nenhuma intervenção registrada ainda.
+      </div>`;
+      totalEl.textContent = '0';
+      return;
+    }
+
+    totalEl.textContent = data.length;
+    const tipos = { conversa:'💬 Conversa 1:1', encaminhamento:'🏥 Encaminhamento', afastamento:'🏠 Afastamento', reducao_carga:'⚖️ Redução de carga', ajuste_funcao:'🔄 Ajuste de função', outro:'📝 Outro' };
+    const status = { em_andamento:'🟡 Em andamento', concluido:'✅ Concluído', aguardando:'⏳ Aguardando retorno' };
+
+    el.innerHTML = data.map(i => `
+      <div style="padding:14px;border-bottom:1px solid var(--border);last-child:border-none">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:700;color:var(--text)">${tipos[i.tipo] || i.tipo}</span>
+          <span style="font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;background:#F1F5F9;color:#64748B">${status[i.status] || i.status}</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">${i.descricao || '—'}</div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--muted)">
+          <span>👤 ${i.responsavel || '—'}</span>
+          <span>📅 ${formatDate(i.created_at)}</span>
+          ${i.followup_em ? `<span>🔔 Follow-up: ${formatDate(i.followup_em)}</span>` : ''}
+        </div>
+      </div>`).join('');
+  } catch {
+    el.innerHTML = `<div style="padding:16px;color:var(--muted);font-size:12px">Tabela de intervenções não encontrada ainda.</div>`;
+  }
+}
+
+async function salvarIntervencao() {
+  const tipo    = document.getElementById('interv-tipo').value;
+  const desc    = document.getElementById('interv-desc').value.trim();
+  const resp    = document.getElementById('interv-resp').value.trim();
+  const status  = document.getElementById('interv-status').value;
+  const followup = document.getElementById('interv-followup').value;
+
+  if (!desc) { toast('⚠️ Adicione uma descrição.'); return; }
+
+  try {
+    await db.from('intervencoes_rh').insert({
+      colaborador_id: fichaColaboradorId,
+      empresa_id: currentEmpresa?.id,
+      tipo, descricao: desc, responsavel: resp,
+      status, followup_em: followup || null
+    });
+    document.getElementById('modal-intervencao').classList.remove('open');
+    toast('✅ Intervenção registrada!');
+    await carregarIntervencoes(fichaColaboradorId);
+    // Limpa campos
+    document.getElementById('interv-desc').value = '';
+    document.getElementById('interv-resp').value = '';
+    document.getElementById('interv-followup').value = '';
+  } catch(e) {
+    toast('⚠️ Erro ao salvar. Crie a tabela intervencoes_rh no Supabase.');
+    console.warn(e);
+  }
+}
+
+function abrirModalIntervencao() {
+  document.getElementById('modal-intervencao').classList.add('open');
+}
+
+async function salvarObservacao() {
+  const obs = document.getElementById('ficha-obs').value;
+  try {
+    await db.from('fichas_rh').upsert({
+      colaborador_id: fichaColaboradorId,
+      empresa_id: currentEmpresa?.id,
+      observacoes: obs,
+      atualizado_em: new Date().toISOString()
+    }, { onConflict: 'colaborador_id' });
+  } catch {}
+}
 
 /* ── NOVO ONBOARDING ── */
 
@@ -5827,6 +6176,22 @@ function qusp_mostrarResultado() {
     </div>`;
   }).join('');
 
+  // Salva respostas do QUSP vinculadas ao colaborador
+if (currentUser) {
+  try {
+    const { data: col } = await db.from('colaboradores')
+      .select('id').eq('user_id', currentUser.id).single();
+    
+    await db.from('respostas').insert({
+      colaborador_id: col?.id || null,
+      empresa_id: currentEmpresa?.id || null,
+      scores_json: { burnout: b1, estresse: b2, sono: b3, social: b4, total },
+      respostas: { respostas: qusp_resps },
+      enviado_em: new Date().toISOString()
+    }).catch(() => {});
+  } catch {}
+}
+  
   cpg('qusp-resultado');
 }
 
@@ -7172,11 +7537,25 @@ async function enviarCheckin() {
   }
   try {
     if (currentUser && db) {
-      await db.from('checkins').insert({
-        user_id: currentUser.id,
-        humor: state.humor, energia: state.energia,
-        carga: state.carga, foco: state.foco,
-        created_at: new Date().toISOString()
+      // Busca o colaborador_id vinculado ao usuário
+      let colaboradorId = null;
+      try {
+        const { data: col } = await db.from('colaboradores')
+          .select('id').eq('user_id', currentUser.id).single();
+        colaboradorId = col?.id || null;
+      } catch {}
+
+      await db.from('respostas').insert({
+        colaborador_id: colaboradorId,
+        empresa_id: currentEmpresa?.id || null,
+        scores_json: {
+          humor: state.humor,
+          energia: state.energia,
+          carga: state.carga,
+          foco: state.foco
+        },
+        respostas: { tipo: 'checkin', ...state },
+        enviado_em: new Date().toISOString()
       }).catch(() => {});
     }
   } catch {}
