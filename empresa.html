@@ -5395,6 +5395,7 @@ function showDemo() {
 
 function showEmpresa() {
   document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'block';
   document.getElementById('app-colaborador').style.display = 'none';
   const nome = currentEmpresa?.nome || 'Empresa';
@@ -5416,6 +5417,7 @@ function showEmpresa() {
 
 function showColaborador(nome) {
   document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'block';
   const nameEl = document.getElementById('collab-user-name');
@@ -5473,32 +5475,86 @@ async function setupEmpresa() {
   const setor  = document.getElementById('empresa-setor').value;
   const errEl  = document.getElementById('setup-error');
   const btn    = document.getElementById('setup-btn');
-  // Lê e-mail/senha dos campos de cadastro (salvos em goS2Next)
   const email  = window._cadEmail || document.getElementById('cad-email')?.value.trim() || '';
   const senha  = window._cadSenha || document.getElementById('cad-senha')?.value || '';
-  
-  if (!nome) { showAuthErr(errEl,'Informe o nome da empresa.'); return; }
-  btn.disabled = true; btn.textContent = 'Criando...';
+
+  if (!nome) { showAuthErr(errEl, 'Informe o nome da empresa.'); return; }
+  if (!email || !senha) {
+    showAuthErr(errEl, 'Sessão expirada. Volte e preencha e-mail e senha novamente.');
+    goSStep('s2'); return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Criando conta...';
+  errEl.style.display = 'none';
+
   try {
-    let userId = currentUser?.id;
-    if (!userId || userId === 'demo') {
-      if (!email || !senha) { showAuthErr(errEl,'Sessão expirada. Volte ao passo anterior e preencha o e-mail e senha novamente.'); goSStep('s2'); return; btn.disabled=false; btn.textContent='Entrar na plataforma →'; return; }
-      const { data: authData, error } = await db.auth.signUp({ email, password: senha });
-      if (error && !error.message?.includes('already')) throw error;
-      userId = authData?.user?.id;
-      if (!userId) { showAuthErr(errEl,'Não foi possível criar sua conta. Verifique seu e-mail e senha.'); btn.disabled=false; btn.textContent='Entrar na plataforma →'; return; }
-      currentUser = authData?.user || { id: userId, email };
+    // PASSO 1: Criar conta ou logar se já existe
+    let authUser = currentUser;
+
+    if (!authUser?.id || authUser.id === 'demo') {
+      // Tenta criar conta nova
+      const { data: signUpData, error: signUpErr } = await db.auth.signUp({ email, password: senha });
+
+      if (signUpErr) {
+        // Se email já existe, tenta fazer login direto
+        if (signUpErr.message?.toLowerCase().includes('already') || signUpErr.status === 422) {
+          const { data: loginData, error: loginErr } = await db.auth.signInWithPassword({ email, password: senha });
+          if (loginErr) throw new Error('E-mail já cadastrado. Use o login ou redefina sua senha.');
+          authUser = loginData.user;
+        } else {
+          throw signUpErr;
+        }
+      } else {
+        authUser = signUpData?.user;
+        // Se Supabase requer confirmação de email e não retornou sessão, faz login manual
+        if (!signUpData?.session) {
+          const { data: loginData, error: loginErr } = await db.auth.signInWithPassword({ email, password: senha });
+          if (!loginErr && loginData?.user) authUser = loginData.user;
+        }
+      }
     }
+
+    if (!authUser?.id) {
+      throw new Error('Não foi possível autenticar. Verifique seu e-mail e senha.');
+    }
+
+    currentUser = authUser;
+    currentRole = 'empresa';
+
+    // PASSO 2: Verifica se já existe empresa para este usuário
+    const { data: empExist } = await db.from('empresas').select('*').eq('user_id', authUser.id).maybeSingle();
+    if (empExist) {
+      currentEmpresa = empExist;
+      document.getElementById('onboarding-steps').style.display = 'none';
+      showEmpresa();
+      toast('🎉 Bem-vindo de volta à Ranne!');
+      return;
+    }
+
+    // PASSO 3: Cria registro da empresa
     const codigoEmpresa = gerarCodigo();
-    const { data: emp } = await db.from('empresas').insert({ user_id: userId, nome, cnpj, size, setor, plan:'free', codigo_acesso: codigoEmpresa }).select().single();
-    currentEmpresa = emp || { id:'demo', nome, cnpj, size, setor, plan:'free', codigo_acesso: codigoEmpresa };
+    const { data: emp, error: insertErr } = await db.from('empresas')
+      .insert({ user_id: authUser.id, nome, cnpj, size, setor, plan: 'free', codigo_acesso: codigoEmpresa })
+      .select().single();
+
+    if (insertErr) {
+      // RLS pode bloquear se a sessão não está ativa — tenta com upsert
+      console.error('[setupEmpresa] insert error:', insertErr);
+      throw new Error('Erro ao salvar dados da empresa. Tente novamente.');
+    }
+
+    currentEmpresa = emp;
+    document.getElementById('onboarding-steps').style.display = 'none';
     showEmpresa();
     toast('🎉 Bem-vindo à Ranne!');
-  } catch {
-    currentEmpresa = { id:'demo', nome, cnpj, size, setor, plan:'free' };
-    showEmpresa();
-    toast('🎉 Bem-vindo à Ranne! (modo demo)');
-  } finally { btn.disabled = false; btn.textContent = 'Entrar na plataforma →'; }
+
+  } catch(err) {
+    console.error('[setupEmpresa]', err);
+    showAuthErr(errEl, err.message || 'Erro ao criar conta. Tente novamente.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Entrar na plataforma →';
+  }
 }
 
 
@@ -5515,6 +5571,7 @@ async function doLoginColaborador() {
     if (error) throw error;
     currentUser = data.user;
     document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('onboarding-steps').style.display = 'none';
     showColaborador(data.user.user_metadata?.nome || email.split('@')[0]);
   } catch {
     showAuthErr(errEl,'E-mail ou senha incorretos.');
@@ -6745,26 +6802,34 @@ async function setupPessoa() {
     }
 
     // Cria usuário no Supabase Auth
-    const { data: authData, error: authErr } = await db.auth.signUp({ email, password: senha });
+    let authUser = null;
+    const { data: signUpData, error: signUpErr } = await db.auth.signUp({ email, password: senha });
 
-    let userId = authData?.user?.id;
-
-    // Se o e-mail já existe, tenta fazer login para obter o userId
-    if (authErr?.message?.includes('already registered') || authErr?.message?.includes('already')) {
-      const { data: loginData, error: loginErr } = await db.auth.signInWithPassword({ email, password: senha });
-      if (loginErr) throw loginErr;
-      userId = loginData?.user?.id;
-      currentUser = loginData?.user;
+    if (signUpErr) {
+      // Email já existe — tenta login
+      if (signUpErr.message?.toLowerCase().includes('already') || signUpErr.status === 422) {
+        const { data: loginData, error: loginErr } = await db.auth.signInWithPassword({ email, password: senha });
+        if (loginErr) throw new Error('E-mail já cadastrado. Use o login ou redefina sua senha.');
+        authUser = loginData.user;
+      } else {
+        throw signUpErr;
+      }
     } else {
-      if (authErr) throw authErr;
-      currentUser = authData?.user || { id: userId, email };
+      authUser = signUpData?.user;
+      // Se Supabase requer confirmação e não criou sessão, faz login manual
+      if (!signUpData?.session) {
+        const { data: loginData, error: loginErr } = await db.auth.signInWithPassword({ email, password: senha });
+        if (!loginErr && loginData?.user) authUser = loginData.user;
+      }
     }
 
-    if (!userId) throw new Error('Não foi possível obter o ID do usuário.');
+    if (!authUser?.id) throw new Error('Não foi possível autenticar. Verifique seu e-mail e senha.');
+    currentUser = authUser;
+    const userId = authUser.id;
 
     // Verifica se tem código de empresa
     if (codigo) {
-      const { data: emp, error: empErr } = await db.from('empresas').select('id').eq('codigo_acesso', codigo).single();
+      const { data: emp, error: empErr } = await db.from('empresas').select('id').eq('codigo_acesso', codigo).maybeSingle();
       if (empErr || !emp) {
         showAuthErr(errEl,'Código de empresa não encontrado. Verifique e tente novamente.');
         btn.disabled = false; btn.textContent = 'Entrar na plataforma →';
@@ -6775,6 +6840,7 @@ async function setupPessoa() {
         user_id: userId, empresa_id: emp.id, nome, email, cpf
       }, { onConflict: 'user_id' });
       currentRole = 'colaborador';
+      document.getElementById('onboarding-steps').style.display = 'none';
       showColaborador(nome);
       toast('✅ Conta criada! Vinculado à empresa.');
       return;
@@ -6786,6 +6852,7 @@ async function setupPessoa() {
     }, { onConflict: 'user_id' });
 
     currentRole = 'pessoa';
+    document.getElementById('onboarding-steps').style.display = 'none';
     showColaborador(nome);
     toast('✅ Conta criada com sucesso!');
 
