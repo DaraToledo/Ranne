@@ -462,11 +462,11 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 #tour-overlay.hidden { opacity: 0; pointer-events: none; }
 
 #tour-backdrop {
-  position: fixed; inset: 0; z-index: 8999;
-  background: rgba(7, 21, 14, 0.72);
-  transition: opacity 0.3s ease;
+  position: fixed; inset: 0; z-index: 8990;
+  background: transparent;
+  pointer-events: none;
 }
-#tour-backdrop.hidden { opacity: 0; pointer-events: none; }
+#tour-backdrop.hidden { display: none; }
 
 #tour-spotlight {
   position: fixed;
@@ -492,18 +492,36 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   50%       { outline-color: #2D5A4E; outline-offset: 7px; }
 }
 
+/* Tour card — bottom sheet no mobile, canto inferior direito no desktop */
 #tour-card {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9002;
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 20px 22px 16px;
-  width: min(320px, calc(100vw - 40px));
-  box-shadow: 0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.12);
+  bottom: 24px;
+  right: 24px;
+  left: auto;
+  top: auto;
+  transform: none;
+  z-index: 9900;
+  background: #132030;
+  color: #E8F4F0;
+  border-radius: 18px;
+  padding: 18px 20px 14px;
+  width: 300px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2);
   pointer-events: all;
+  border: 1px solid rgba(78,203,160,0.2);
+}
+@media (max-width: 600px) {
+  #tour-card {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 16px 20px calc(16px + env(safe-area-inset-bottom, 0px));
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
 }
 body.dark 
 /* Tour highlight — borda pulsante no elemento alvo */
@@ -527,17 +545,15 @@ body.dark
 
 #tour-card .tc-step {
   font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; color: #6F9E93; margin-bottom: 8px;
+  letter-spacing: 1px; color: #4ECBA0; margin-bottom: 8px;
 }
 #tour-card .tc-title {
-  font-size: 15px; font-weight: 700; color: #1C1C1C;
+  font-size: 15px; font-weight: 700; color: #E8F4F0;
   margin-bottom: 6px; line-height: 1.3;
 }
-body.dark #tour-card .tc-title { color: #E8F4F0; }
 #tour-card .tc-body {
-  font-size: 12.5px; color: #6B645D; line-height: 1.6; margin-bottom: 16px;
+  font-size: 12.5px; color: rgba(232,244,240,0.7); line-height: 1.6; margin-bottom: 14px;
 }
-body.dark #tour-card .tc-body { color: #8BA5B5; }
 
 #tour-card .tc-footer {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -547,22 +563,22 @@ body.dark #tour-card .tc-body { color: #8BA5B5; }
 }
 #tour-card .tc-dot {
   width: 6px; height: 6px; border-radius: 50%;
-  background: #E3DDD5; transition: all 0.2s;
+  background: rgba(255,255,255,0.2); transition: all 0.2s;
 }
 #tour-card .tc-dot.active {
-  background: #2D5A4E; width: 18px; border-radius: 3px;
+  background: #4ECBA0; width: 18px; border-radius: 3px;
 }
-body.dark #tour-card .tc-dot { background: #1E3344; }
-body.dark #tour-card .tc-dot.active { background: #4ECBA0; }
 
 #tour-card .tc-btns { display: flex; gap: 6px; }
 #tour-card .tc-btn-skip {
-  padding: 7px 12px; border-radius: 8px; border: 1px solid #E3DDD5;
+  padding: 7px 12px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
   background: transparent; font-family: 'Inter', sans-serif;
-  font-size: 12px; font-weight: 500; color: #6B645D; cursor: pointer;
+  font-size: 12px; font-weight: 500;
+  color: rgba(232,244,240,0.6); cursor: pointer;
   transition: background 0.12s;
 }
-#tour-card .tc-btn-skip:hover { background: #F0EDE6; }
+#tour-card .tc-btn-skip:hover { background: rgba(255,255,255,0.08); }
 #tour-card .tc-btn-next {
   padding: 7px 16px; border-radius: 8px; border: none;
   background: #2D5A4E; font-family: 'Inter', sans-serif;
@@ -7516,59 +7532,59 @@ const TOUR_KEY = 'ranne-tour-v2-done';
 
 const TOUR_STEPS = [
   {
-    emoji: '📊',
-    title: 'Visão Geral da Equipe',
-    body: 'Aqui você vê o score geral de saúde (ISA), colaboradores em risco e as 4 dimensões psicossociais — gerados automaticamente pelo QUSP respondido pela equipe.',
+    emoji: '👋',
+    title: 'Bem-vindo ao painel RH!',
+    body: 'Este é o painel exclusivo do RH do Ranne Care. Vamos conhecer cada seção em 8 passos rápidos. Clique em Próximo para começar.',
     action: () => pg('dashboard', document.querySelector('.sb-item')),
-    highlight: '#p-dashboard'
+    highlight: null
   },
   {
-    emoji: '🗺',
-    title: 'Heatmap por Setor',
-    body: 'Veja qual área da empresa está em risco crítico, atenção ou saudável. Setores com menos de 3 pessoas não exibem score individual — proteção LGPD.',
-    action: null,
-    highlight: '#heatmap-setores'
-  },
-  {
-    emoji: '👤',
-    title: 'Gestão Individual',
-    body: 'Em Colaboradores você acessa a ficha de cada pessoa, vê o histórico de scores, registra intervenções (1:1, encaminhamentos, afastamentos) e recebe alertas automáticos de piora.',
-    action: () => pg('colaboradores', null),
-    highlight: '#p-colaboradores'
+    emoji: '📊',
+    title: 'Dashboard — Saúde da Equipe',
+    body: 'Veja o score geral (ISA), quantos colaboradores estão em risco, as 4 dimensões psicossociais (Burnout, Estresse, Sono, Social) e alertas automáticos — tudo em tempo real.',
+    action: () => pg('dashboard', document.querySelector('.sb-item')),
+    highlight: '#p-dashboard .metrics'
   },
   {
     emoji: '📋',
-    title: 'Diagnóstico QUSP',
-    body: 'Crie ciclos de diagnóstico, gere o link QUSP para envio por WhatsApp ou e-mail e monitore as respostas em tempo real, com taxa de resposta por setor.',
+    title: 'Diagnósticos QUSP',
+    body: 'Crie um ciclo de diagnóstico, gere o link QUSP e envie por WhatsApp ou e-mail. Acompanhe quem respondeu em tempo real e reenvie lembretes para pendentes.',
     action: () => pg('diagnosticos', null),
     highlight: '#p-diagnosticos'
   },
   {
     emoji: '✅',
     title: 'Plano de Ação',
-    body: 'Após cada diagnóstico, o app gera automaticamente um plano de ação priorizado (Crítico, Alta, Média, Baixa). Marque ações concluídas e exporte para PDF.',
+    body: 'O app gera automaticamente ações priorizadas (Crítico, Alta, Média, Baixa) com base nos resultados do QUSP. Marque ações concluídas, defina responsáveis e exporte em PDF.',
     action: () => pg('plano', null),
     highlight: '#p-plano'
   },
   {
+    emoji: '👤',
+    title: 'Colaboradores — Ficha Individual',
+    body: 'Clique em qualquer colaborador para ver score, histórico mensal e scores por dimensão. Registre intervenções (1:1, encaminhamento, afastamento) — visível apenas ao RH.',
+    action: () => pg('colaboradores', null),
+    highlight: '#p-colaboradores'
+  },
+  {
+    emoji: '👥',
+    title: 'Equipe — Convidar Membros',
+    body: 'Gerencie quem está cadastrado na plataforma. Gere códigos de convite para novos colaboradores e veja o status de cada membro.',
+    action: () => pg('equipe', null),
+    highlight: '#p-equipe'
+  },
+  {
     emoji: '⚖️',
-    title: 'Relatório NR-1',
-    body: 'Exporte o Relatório de Conformidade NR-1 com um clique — comprova que sua empresa cumpre a lei de 2025 e pode ser apresentado em fiscalização do Ministério do Trabalho.',
+    title: 'Relatórios & NR-1',
+    body: 'Gere o Relatório de Conformidade NR-1 em PDF com um clique — comprova gestão ativa de riscos psicossociais para o Ministério do Trabalho. Relatório mensal automático também disponível.',
     action: () => pg('relatorios', null),
     highlight: '#p-relatorios'
   },
   {
-    emoji: '❓',
-    title: 'Ajuda sempre disponível',
-    body: 'Este tour e toda a documentação ficam na seção Ajuda & Tour no menu lateral — acesse sempre que precisar relembrar alguma funcionalidade.',
-    action: null,
-    highlight: null
-  },
-  {
     emoji: '🌿',
     title: 'Tudo pronto!',
-    body: 'Comece criando seu primeiro diagnóstico e enviando o link QUSP para a equipe. Em minutos você terá os primeiros dados de saúde organizacional.',
-    action: () => pg('dashboard', document.querySelector('.sb-item')),
+    body: 'Comece criando seu primeiro diagnóstico. Vá em Diagnósticos → + Novo Diagnóstico, gere o link e envie para a equipe. Em minutos você terá os primeiros dados.',
+    action: () => pg('diagnosticos', null),
     highlight: null,
     isLast: true
   }
@@ -7587,10 +7603,9 @@ function _tourMostrarCard() {
   const step = TOUR_STEPS[_tourStep];
   if (!step) { encerrarTour(); return; }
 
-  // Executa ação de navegação do step
-  if (step.action) {
-    step.action();
-  }
+  // Esconde card durante transição
+  const card = document.getElementById('tour-card');
+  if (card) { card.style.opacity = '0'; card.style.display = 'block'; }
 
   // Remove highlight anterior
   if (_tourHighlightEl) {
@@ -7598,7 +7613,10 @@ function _tourMostrarCard() {
     _tourHighlightEl = null;
   }
 
-  // Pequeno delay para a página renderizar antes de posicionar
+  // Navega para a página do step
+  if (step.action) step.action();
+
+  // Aguarda renderização da página, depois atualiza card
   setTimeout(() => {
     // Aplica highlight no elemento alvo
     if (step.highlight) {
@@ -7606,46 +7624,33 @@ function _tourMostrarCard() {
       if (el) {
         el.classList.add('tour-highlight');
         _tourHighlightEl = el;
-        // Scroll suave até o elemento
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     }
 
-    // Atualiza conteúdo do card
-    document.getElementById('tc-emoji').textContent  = step.emoji || '📍';
-    document.getElementById('tc-step').textContent   = `${_tourStep + 1} de ${TOUR_STEPS.length}`;
-    document.getElementById('tc-title').textContent  = step.title;
-    document.getElementById('tc-body').textContent   = step.body;
+    // Conteúdo do card
+    document.getElementById('tc-emoji').textContent = step.emoji || '📍';
+    document.getElementById('tc-step').textContent  = `${_tourStep + 1} de ${TOUR_STEPS.length}`;
+    document.getElementById('tc-title').textContent = step.title;
+    document.getElementById('tc-body').textContent  = step.body;
+    document.getElementById('tc-btn-next').textContent = step.isLast ? '✓ Começar' : 'Próximo →';
+    document.getElementById('tc-dots').innerHTML = TOUR_STEPS.map((_,i) =>
+      `<div class="tc-dot${i===_tourStep?' active':''}"></div>`).join('');
 
-    const btnNext = document.getElementById('tc-btn-next');
-    btnNext.textContent = step.isLast ? '✓ Começar' : 'Próximo →';
+    // Mostra backdrop (transparente — só para pointer-events)
+    document.getElementById('tour-backdrop')?.classList.remove('hidden');
 
-    // Dots
-    document.getElementById('tc-dots').innerHTML = TOUR_STEPS.map((_, i) =>
-      `<div class="tc-dot${i === _tourStep ? ' active' : ''}"></div>`
-    ).join('');
-
-    // Mostra o card (sempre centralizado — funciona em qualquer tela)
-    const card = document.getElementById('tour-card');
-    const back = document.getElementById('tour-backdrop');
-    card.style.display = 'block';
-    card.style.opacity = '0';
-    card.style.transform = 'translate(-50%, -50%) scale(0.95)';
-    back.classList.remove('hidden');
-
-    requestAnimationFrame(() => {
-      card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-      card.style.opacity = '1';
-      card.style.transform = 'translate(-50%, -50%) scale(1)';
-    });
-
-    // Esconde elementos não usados
+    // Esconde spotlight/arrow não usados
     const spot = document.getElementById('tour-spotlight');
     const arrow = document.getElementById('tour-arrow');
-    if (spot) spot.style.display = 'none';
+    if (spot)  spot.style.display  = 'none';
     if (arrow) arrow.style.display = 'none';
 
-  }, step.action ? 350 : 0);
+    // Aparece com fade
+    card.style.transition = 'opacity 0.2s ease';
+    card.style.opacity = '1';
+
+  }, step.action ? 400 : 50);
 }
 
 function tourProximo() {
@@ -7654,11 +7659,7 @@ function tourProximo() {
     encerrarTour();
     return;
   }
-  // Fade out card antes de mudar
-  const card = document.getElementById('tour-card');
-  card.style.transition = 'opacity 0.15s ease';
-  card.style.opacity = '0';
-  setTimeout(_tourMostrarCard, 150);
+  _tourMostrarCard();
 }
 
 function encerrarTour() {
@@ -7675,8 +7676,8 @@ function encerrarTour() {
   });
   const back = document.getElementById('tour-backdrop');
   if (back) back.classList.add('hidden');
-  // Volta ao dashboard
-  pg('dashboard', document.querySelector('.sb-item'));
+  // CTA: vai para diagnósticos
+  pg('diagnosticos', null);
 }
 
 function dispararTourSeNecessario() {
