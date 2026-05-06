@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
 
 <!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- supabase moved to body -->
 
 <style>
 /* ══════════ RESET & VARS ══════════ */
@@ -422,6 +422,8 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 
 
 
+
+/* S3 sub-steps 
 /* ══════════ KIT FORMULÁRIOS ══════════ */
 .form-kit-card {
   background: var(--white);
@@ -3550,31 +3552,138 @@ body {
             <div class="step-dot done"></div>
             <div class="step-dot done"></div>
           </div>
-          <div class="auth-eyebrow">Passo 3 de 3 — Quase lá</div>
+          <div class="auth-eyebrow">Passo 3 de 3 — Cadastro da Empresa</div>
           <h2>Dados da empresa</h2>
-         <p class="auth-sub">Preencha os dados para ativar o painel. Em seguida, você poderá enviar o diagnóstico para sua equipe e ver os resultados em tempo real.</p>
-          <label class="field-label">Nome da empresa</label>
-          <input class="field-input" type="text" id="empresa-nome" placeholder="Ex: Ranne Tecnologia">
-          <label class="field-label">CNPJ</label>
-          <input class="field-input" id="empresa-cnpj" placeholder="00.000.000/0001-00" oninput="mascaraCNPJ(this)">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div>
-              <label class="field-label" style="display:block;margin-bottom:6px">Nº colaboradores</label>
-              <input class="field-input" type="number" id="empresa-size" placeholder="Ex: 25">
+          <p class="auth-sub">Preencha os dados para ativar o painel. Você poderá editar estas informações depois em Configurações.</p>
+
+          <!-- Sub-steps internos -->
+          <div id="s3-sub-indicator" style="display:flex;gap:5px;margin-bottom:16px;">
+            <div class="s3-sub-dot active" id="s3sub-dot-1"></div>
+            <div class="s3-sub-dot" id="s3sub-dot-2"></div>
+            <div class="s3-sub-dot" id="s3sub-dot-3"></div>
+          </div>
+
+          <!-- SUB-STEP A: Dados básicos -->
+          <div id="s3-sub-a">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#6F9E93;margin-bottom:10px;">1 · Dados da empresa</div>
+            <label class="field-label">Razão Social <span style="color:#C0392B">*</span></label>
+            <input class="field-input" type="text" id="empresa-nome" placeholder="Ex: Empresa Tecnologia LTDA">
+            <label class="field-label" style="margin-top:10px;">Nome Fantasia</label>
+            <input class="field-input" type="text" id="empresa-fantasia" placeholder="Ex: TechCorp">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">CNPJ <span style="color:#C0392B">*</span></label>
+                <input class="field-input" id="empresa-cnpj" placeholder="00.000.000/0001-00" oninput="mascaraCNPJ(this)">
+              </div>
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Data de Fundação</label>
+                <input class="field-input" type="date" id="empresa-fundacao">
+              </div>
             </div>
-            <div>
-              <label class="field-label" style="display:block;margin-bottom:6px">Setor</label>
-              <select class="field-input field-select" id="empresa-setor">
-                <option value="">Setor...</option>
-                <option>Tecnologia</option><option>Serviços</option><option>Indústria</option>
-                <option>Comercial</option><option>Saúde</option><option>Educação</option>
-              </select>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Segmento / Setor <span style="color:#C0392B">*</span></label>
+                <select class="field-input field-select" id="empresa-setor">
+                  <option value="">Selecione...</option>
+                  <option>Tecnologia</option><option>Serviços</option><option>Indústria</option>
+                  <option>Comercial</option><option>Saúde</option><option>Educação</option>
+                  <option>Financeiro</option><option>Varejo</option><option>Logística</option><option>Outro</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Nº de Colaboradores <span style="color:#C0392B">*</span></label>
+                <input class="field-input" type="number" id="empresa-size" placeholder="Ex: 50">
+              </div>
+            </div>
+            <label class="field-label" style="margin-top:10px;">Site / LinkedIn</label>
+            <input class="field-input" type="url" id="empresa-site" placeholder="https://">
+            <label class="field-label" style="margin-top:10px;">Endereço Completo</label>
+            <input class="field-input" type="text" id="empresa-endereco" placeholder="Rua, número, bairro, cidade, estado, CEP">
+            <button class="btn-cta" style="margin-top:16px;" onclick="s3SubProximo('b')">Continuar →</button>
+          </div>
+
+          <!-- SUB-STEP B: Responsável RH -->
+          <div id="s3-sub-b" style="display:none;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#6F9E93;margin-bottom:10px;">2 · Responsável pelo contrato (RH / Gestor)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Nome Completo <span style="color:#C0392B">*</span></label>
+                <input class="field-input" type="text" id="empresa-resp-nome" placeholder="Seu nome">
+              </div>
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Cargo <span style="color:#C0392B">*</span></label>
+                <input class="field-input" type="text" id="empresa-resp-cargo" placeholder="Ex: Gerente de RH">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">E-mail <span style="color:#C0392B">*</span></label>
+                <input class="field-input" type="email" id="empresa-resp-email" placeholder="rh@empresa.com.br">
+              </div>
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">WhatsApp</label>
+                <input class="field-input" type="tel" id="empresa-resp-tel" placeholder="(11) 90000-0000">
+              </div>
+            </div>
+
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#6F9E93;margin:16px 0 10px;">Perfil da empresa</div>
+            <label class="field-label">Principal desafio de saúde mental hoje</label>
+            <textarea class="field-input" id="empresa-desafio" placeholder="Descreva brevemente..." style="resize:vertical;min-height:64px;margin-top:4px;"></textarea>
+
+            <label class="field-label" style="margin-top:12px;display:block;">Expectativa com a Ranne (pode marcar mais de um)</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-diag" style="accent-color:#2D5A4E;"> Diagnóstico de clima</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-prog" style="accent-color:#2D5A4E;"> Programa de bem-estar</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-psico" style="accent-color:#2D5A4E;"> Suporte psicológico</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-lider" style="accent-color:#2D5A4E;"> Treinamento de liderança</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-dash" style="accent-color:#2D5A4E;"> Dashboard e relatórios RH</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-nr1" style="accent-color:#2D5A4E;"> Conformidade NR-1</label>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:16px;">
+              <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('a')">←</button>
+              <button class="btn-cta" style="flex:1;" onclick="s3SubProximo('c')">Continuar →</button>
             </div>
           </div>
-          <div id="setup-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
-          <button class="btn-cta" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
-          <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px">
-            <span style="color:#2D6A4F;font-weight:600;cursor:pointer" onclick="goSStep('s2')">← Voltar</span>
+
+          <!-- SUB-STEP C: Plano + finalizar -->
+          <div id="s3-sub-c" style="display:none;">
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#6F9E93;margin-bottom:10px;">3 · Plano contratado</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+              <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-starter" onclick="selPlano('starter')">
+                <input type="radio" name="empresa-plano" value="starter" style="accent-color:#2D5A4E;"> <span style="font-size:12.5px;font-weight:600;">☆ Starter</span>
+              </label>
+              <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-growth" onclick="selPlano('growth')">
+                <input type="radio" name="empresa-plano" value="growth" style="accent-color:#2D5A4E;"> <span style="font-size:12.5px;font-weight:600;">↑ Growth</span>
+              </label>
+              <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-enterprise" onclick="selPlano('enterprise')">
+                <input type="radio" name="empresa-plano" value="enterprise" style="accent-color:#2D5A4E;"> <span style="font-size:12.5px;font-weight:600;">⬡ Enterprise</span>
+              </label>
+              <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-custom" onclick="selPlano('custom')">
+                <input type="radio" name="empresa-plano" value="custom" style="accent-color:#2D5A4E;"> <span style="font-size:12.5px;font-weight:600;">✦ Personalizado</span>
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Data de Início</label>
+                <input class="field-input" type="date" id="empresa-inicio">
+              </div>
+              <div>
+                <label class="field-label" style="display:block;margin-bottom:6px;">Vigência</label>
+                <input class="field-input" type="text" id="empresa-vigencia" placeholder="Ex: 12 meses">
+              </div>
+            </div>
+            <label class="field-label" style="margin-top:10px;">Observações / Condições Especiais</label>
+            <textarea class="field-input" id="empresa-obs" placeholder="Informações adicionais sobre o contrato..." style="resize:vertical;min-height:56px;margin-top:4px;"></textarea>
+
+            <div id="setup-error" style="color:#991B1B;font-size:12px;margin:12px 0 0;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
+            <div style="display:flex;gap:8px;margin-top:16px;">
+              <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('b')">←</button>
+              <button class="btn-cta" style="flex:1;" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
+            </div>
+          </div>
+
+          <p style="text-align:center;font-size:12px;color:#6B7F76;margin-top:12px;">
+            <span style="color:#2D5A4E;font-weight:600;cursor:pointer;" onclick="goSStep('s2')">← Voltar ao login</span>
           </p>
         </div>
 
@@ -3608,7 +3717,7 @@ body {
 </div>
 
 <!-- ══════════ APP EMPRESA ══════════ -->
-<div id="app-empresa" class="app">
+<div id="app-empresa" class="app" style="display:none">
   <div class="layout">
     <div class="sb-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
     <aside class="sidebar" id="mainSidebar">
@@ -6272,6 +6381,7 @@ body {
 
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ══════ RANNE UNIFIED APP ══════ */
 
@@ -6296,11 +6406,17 @@ let deferredInstall = null;
 document.addEventListener('DOMContentLoaded', async () => {
   if (localStorage.getItem('ranne-dark') === '1') document.body.classList.add('dark');
 
-  // Timeout de segurança — se Supabase demorar >4s, vai para onboarding
+  // Hard timeout — esconde loading screen em 1.5s SEMPRE, sem exceção
+  setTimeout(() => {
+    const ls = document.getElementById('loading-screen');
+    if (ls) ls.style.display = 'none';
+  }, 1500);
+
+  // Timeout de segurança — se Supabase demorar >2.5s, vai para onboarding
   const safetyTimer = setTimeout(() => {
     document.getElementById('loading-screen').style.display = 'none';
     showOnboarding();
-  }, 4000);
+  }, 2500);
 
   try {
     const { data: { session } } = await db.auth.getSession();
@@ -6360,6 +6476,7 @@ function showDemo() {
 
 
 function showEmpresa() {
+  document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'block';
@@ -6382,6 +6499,7 @@ function showEmpresa() {
 }
 
 function showColaborador(nome) {
+  document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'none';
@@ -6435,10 +6553,17 @@ async function doLoginSenha() {
 }
 
 async function setupEmpresa() {
-  const nome   = document.getElementById('empresa-nome').value.trim();
-  const cnpj   = document.getElementById('empresa-cnpj')?.value.trim() || '';
-  const size   = parseInt(document.getElementById('empresa-size').value) || 0;
-  const setor  = document.getElementById('empresa-setor').value;
+  const nome     = document.getElementById('empresa-nome')?.value.trim() || '';
+  const cnpj     = document.getElementById('empresa-cnpj')?.value.trim() || '';
+  const size     = parseInt(document.getElementById('empresa-size')?.value) || 0;
+  const setor    = document.getElementById('empresa-setor')?.value || '';
+  const fantasia = document.getElementById('empresa-fantasia')?.value.trim() || '';
+  const endereco = document.getElementById('empresa-endereco')?.value.trim() || '';
+  const site     = document.getElementById('empresa-site')?.value.trim() || '';
+  const respNome = document.getElementById('empresa-resp-nome')?.value.trim() || '';
+  const respCargo= document.getElementById('empresa-resp-cargo')?.value.trim() || '';
+  const respTel  = document.getElementById('empresa-resp-tel')?.value.trim() || '';
+  const plano    = document.querySelector('input[name="empresa-plano"]:checked')?.value || 'free';
   const errEl  = document.getElementById('setup-error');
   const btn    = document.getElementById('setup-btn');
   const email  = window._cadEmail || document.getElementById('cad-email')?.value.trim() || '';
@@ -6500,7 +6625,7 @@ async function setupEmpresa() {
     // PASSO 3: Cria registro da empresa
     const codigoEmpresa = gerarCodigo();
     const { data: emp, error: insertErr } = await db.from('empresas')
-      .insert({ user_id: authUser.id, nome, cnpj, size, setor, plan: 'free', codigo_acesso: codigoEmpresa })
+      .insert({ user_id: authUser.id, nome, cnpj, size, setor, plan: plano || 'free', codigo_acesso: codigoEmpresa, nome_fantasia: fantasia, endereco, site, resp_nome: respNome, resp_cargo: respCargo, resp_tel: respTel })
       .select().single();
 
     if (insertErr) {
@@ -8354,6 +8479,59 @@ function dispararTourSeNecessario() {
 }
 
 /* ══════════ AJUDA — Tour & Accordion ══════════ */
+
+/* S3-empresa sub-steps */
+function s3SubProximo(sub) {
+  const checks = {
+    b: () => {
+      const nome = document.getElementById('empresa-nome')?.value?.trim();
+      if (!nome) { toast('⚠️ Informe a Razão Social da empresa.'); return false; }
+      const size = document.getElementById('empresa-size')?.value;
+      if (!size) { toast('⚠️ Informe o número de colaboradores.'); return false; }
+      return true;
+    },
+    c: () => {
+      const resp = document.getElementById('empresa-resp-nome')?.value?.trim();
+      if (!resp) { toast('⚠️ Informe o nome do responsável de RH.'); return false; }
+      return true;
+    }
+  };
+  if (checks[sub] && !checks[sub]()) return;
+
+  // Esconde todos sub-steps
+  ['a','b','c'].forEach(s => {
+    const el = document.getElementById('s3-sub-' + s);
+    if (el) el.style.display = 'none';
+  });
+  const next = document.getElementById('s3-sub-' + sub);
+  if (next) next.style.display = 'block';
+
+  // Atualiza dots
+  const order = ['a','b','c'];
+  const idx = order.indexOf(sub);
+  order.forEach((s, i) => {
+    const dot = document.getElementById('s3sub-dot-' + (i+1));
+    if (!dot) return;
+    if (i < idx) { dot.className = 's3-sub-dot done'; }
+    else if (i === idx) { dot.className = 's3-sub-dot active'; }
+    else { dot.className = 's3-sub-dot'; }
+  });
+
+  // Scroll ao topo do card
+  document.querySelector('#s3-empresa')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function s3SubVoltar(sub) {
+  s3SubProximo(sub);
+}
+
+function selPlano(plano) {
+  ['starter','growth','enterprise','custom'].forEach(p => {
+    const el = document.getElementById('plano-' + p);
+    if (el) el.style.borderColor = p === plano ? '#2D5A4E' : '#E3DDD5';
+  });
+}
+
 function reiniciarTour() {
   localStorage.removeItem(TOUR_KEY);
   // Vai ao dashboard e inicia
@@ -8363,6 +8541,8 @@ function reiniciarTour() {
 }
 
 
+
+/* S3 sub-steps 
 /* ══════════ KIT FORMULÁRIOS ══════════ */
 
 function toggleFK(id) {
