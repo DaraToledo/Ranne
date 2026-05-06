@@ -2890,7 +2890,7 @@ body {
           </div>
           <div class="auth-eyebrow">Dados da empresa</div>
           <h2>Configure sua empresa</h2>
-          <p class="auth-sub">Preencha os dados para ativar o painel.</p>
+         <p class="auth-sub">Preencha os dados para ativar o painel. Em seguida, você poderá enviar o diagnóstico para sua equipe e ver os resultados em tempo real.</p>
           <label class="field-label">Nome da empresa</label>
           <input class="field-input" type="text" id="empresa-nome" placeholder="Ex: Ranne Tecnologia">
           <label class="field-label">CNPJ</label>
@@ -2957,7 +2957,7 @@ body {
           <div class="sb-brand">Ranne</div>
         </div>
         <div class="sb-tagline">Saúde Mental Corporativa</div>
-        <div class="sb-plan-badge" id="sb-plan-badge">
+        <div class="sb-plan-badge" id="sb-plan-badge" style="display:none">
           <div class="sb-plan-dot free" id="sb-plan-dot"></div>
           <span class="sb-plan-text free" id="sb-plan-text">Plano Free</span>
         </div>
@@ -3036,11 +3036,11 @@ body {
           </div>
 
           <!-- ══ MÉTRICAS PRINCIPAIS (Free) ══ -->
-          <div style="margin-bottom:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Visão Geral — Plano Free</div>
+          <div style="margin-bottom:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Visão Geral</div>
           <div class="metrics" style="margin-bottom:20px;">
             <div class="metric m-amber">
               <div class="metric-label">Score Geral</div>
-              <div class="metric-value v-amber"><span class="count-up" data-target="68">0</span></div>
+              <div class="metric-value v-amber" style="font-size:38px;letter-spacing:-2px"><span class="count-up" data-target="68">0</span></div>
               <div class="metric-sub">de 100 pontos</div>
               <span class="chip chip-amber">⚠ Atenção</span>
             </div>
@@ -3538,6 +3538,13 @@ body {
       </div>
 
       <!-- FICHA INDIVIDUAL DO COLABORADOR -->
+
+<!-- Nota ética NR-1 -->
+<div id="ficha-nota-etica" style="display:flex;gap:10px;align-items:flex-start;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.18);border-radius:12px;padding:12px 15px;margin-bottom:16px;font-size:11.5px;color:var(--muted);line-height:1.55">
+  <span style="font-size:16px;flex-shrink:0">⚖️</span>
+  <span><strong style="color:var(--text)">Dados de mapeamento organizacional — não diagnóstico clínico.</strong> Esta ficha exibe indicadores de bem-estar coletivo. Não substitui avaliação psicológica individual. Acesso exclusivo do RH.</span>
+</div>
+      
 <div id="p-ficha" style="display:none">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:12px;">
@@ -4826,10 +4833,16 @@ async function loadDashboardData() {
       _setMetricNum('data-target="84"', ultimoDiag.taxa_resposta != null
         ? ultimoDiag.taxa_resposta + '%' : '—');
     } else {
-      document.getElementById('dash-sub').textContent = 'Ainda sem diagnósticos por aqui';
-      _setMetricNum('data-target="48"', totalCols > 0 ? totalCols : '—');
+      document.getElementById('dash-sub').textContent = 'Dados de demonstração — envie o primeiro diagnóstico para ver os dados reais';
+// Mantém valores simulados para visualização
     }
-
+    
+// Garante que ISA cards mostram — no estado vazio
+['isa-burnout','isa-estresse','isa-sono','isa-social','isa-isa geral'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el && el.textContent === '') el.textContent = '—';
+});
+    
   } catch(e) {
     document.getElementById('dash-sub').textContent = 'Sem conexão com o banco de dados';
     console.warn('[Ranne] loadDashboardData erro:', e);
@@ -5606,6 +5619,10 @@ async function abrirFicha(colaboradorId) {
     document.getElementById('ficha-cargo').textContent = col.cargo || 'Colaborador';
     document.getElementById('ficha-info-hdr').textContent = `${col.email || '—'} · Cadastrado em ${formatDate(col.created_at)}`;
 
+// Nota ética visível no topo da ficha
+const notaEl = document.getElementById('ficha-nota-etica');
+if (notaEl) notaEl.style.display = 'flex';
+  
     // Carrega respostas do colaborador
     const { data: respostas } = await db.from('respostas')
       .select('*')
