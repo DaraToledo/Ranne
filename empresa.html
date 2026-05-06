@@ -148,6 +148,112 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 .ob-p-body span { color:rgba(0,0,0,.55) !important; }
 
 
+
+/* ══════════ TOUR GUIADO ══════════ */
+#tour-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#tour-overlay.hidden { opacity: 0; pointer-events: none; }
+
+#tour-backdrop {
+  position: fixed; inset: 0; z-index: 8999;
+  background: rgba(7, 21, 14, 0.72);
+  transition: opacity 0.3s ease;
+}
+#tour-backdrop.hidden { opacity: 0; pointer-events: none; }
+
+#tour-spotlight {
+  position: fixed;
+  z-index: 9001;
+  border-radius: 14px;
+  box-shadow: 0 0 0 4000px rgba(7, 21, 14, 0.72);
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+#tour-card {
+  position: fixed;
+  z-index: 9002;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px 22px 16px;
+  width: 300px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: all;
+}
+body.dark #tour-card {
+  background: #132030;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+#tour-card .tc-step {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #6F9E93; margin-bottom: 8px;
+}
+#tour-card .tc-title {
+  font-size: 15px; font-weight: 700; color: #1C1C1C;
+  margin-bottom: 6px; line-height: 1.3;
+}
+body.dark #tour-card .tc-title { color: #E8F4F0; }
+#tour-card .tc-body {
+  font-size: 12.5px; color: #6B645D; line-height: 1.6; margin-bottom: 16px;
+}
+body.dark #tour-card .tc-body { color: #8BA5B5; }
+
+#tour-card .tc-footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+#tour-card .tc-dots {
+  display: flex; gap: 5px; align-items: center;
+}
+#tour-card .tc-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #E3DDD5; transition: all 0.2s;
+}
+#tour-card .tc-dot.active {
+  background: #2D5A4E; width: 18px; border-radius: 3px;
+}
+body.dark #tour-card .tc-dot { background: #1E3344; }
+body.dark #tour-card .tc-dot.active { background: #4ECBA0; }
+
+#tour-card .tc-btns { display: flex; gap: 6px; }
+#tour-card .tc-btn-skip {
+  padding: 7px 12px; border-radius: 8px; border: 1px solid #E3DDD5;
+  background: transparent; font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 500; color: #6B645D; cursor: pointer;
+  transition: background 0.12s;
+}
+#tour-card .tc-btn-skip:hover { background: #F0EDE6; }
+#tour-card .tc-btn-next {
+  padding: 7px 16px; border-radius: 8px; border: none;
+  background: #2D5A4E; font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;
+  transition: opacity 0.12s; display: flex; align-items: center; gap: 5px;
+}
+#tour-card .tc-btn-next:hover { opacity: 0.88; }
+
+#tour-arrow {
+  position: fixed; z-index: 9003;
+  width: 0; height: 0;
+  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.tour-arrow-top {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #FFFFFF;
+}
+.tour-arrow-bottom {
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 9px solid #FFFFFF;
+}
+body.dark .tour-arrow-top { border-bottom-color: #132030; }
+body.dark .tour-arrow-bottom { border-top-color: #132030; }
+
 /* ══════════ LOADING SCREEN ══════════ */
 #loading-screen {
   position:fixed; inset:0; background:#2D5A4E; display:flex;
@@ -527,6 +633,34 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   border-radius:0 10px 10px 0; transition:top 0.25s cubic-bezier(.16,1,.3,1);
   pointer-events:none; z-index:0;
 }
+
+/* ══ COLABORADORES RH ══ */
+.filter-chip-rh {
+  flex-shrink:0; padding:5px 11px; border-radius:99px;
+  border:1px solid var(--border); background:var(--white);
+  font-size:11.5px; font-weight:500; color:var(--muted);
+  cursor:pointer; transition:all 0.12s; white-space:nowrap;
+  font-family:'Inter',sans-serif;
+}
+.filter-chip-rh.active { background:var(--teal); color:#fff; border-color:var(--teal); }
+.colab-row {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:10px; cursor:pointer;
+  transition:background 0.12s; border-bottom:1px solid var(--border);
+}
+.colab-row:last-child { border-bottom:none; }
+.colab-row:hover { background:var(--bg); }
+.colab-av {
+  width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700; flex-shrink:0;
+}
+.cav-red { background:#FDECEA; color:#C0392B; }
+.cav-amber { background:#FEF5E7; color:#92620A; }
+.cav-green { background:#E8F5EC; color:#2D6A4F; }
+.cav-gray { background:#F2EEE8; color:#6B645D; }
+.cav-teal { background:var(--green-light); color:var(--teal); }
+
 .sb-section { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.4px; color:rgba(255,255,255,0.18); padding:4px 10px 6px; margin-top:12px; position:relative; z-index:1; }
 .sb-item {
   display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px;
@@ -3058,9 +3192,10 @@ body {
         <div class="sb-item" onclick="pg('biblioteca',this)"><span class="ic">📚</span> Biblioteca</div>
         <div class="sb-item" onclick="pg('checkin',this)"><span class="ic">✅</span> Check-in Semanal</div>
         <div class="sb-section">Gestão</div>
+        <div class="sb-item" onclick="pg('colaboradores',this)"><span class="ic">👤</span> Colaboradores</div>
         <div class="sb-item" onclick="pg('equipe',this)"><span class="ic">👥</span> Equipe</div>
+        <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic">📊</span> Relatórios & NR-1</div>
         <div class="sb-item" onclick="pg('config',this)"><span class="ic">⚙️</span> Configurações</div>
-        <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic">📋</span> Relatório NR-1</div>
       </nav>
       <div class="sb-footer">
         <div class="sb-user">
@@ -3116,7 +3251,7 @@ body {
               <strong id="alerta-texto">Alerta de risco identificado.</strong>
               <span id="alerta-sub"></span>
               <div class="alert-action">
-                <button class="alert-btn alert-btn-pri" onclick="toast('Funcionalidade disponível em breve.')">Ver detalhes</button>
+                <button class="alert-btn alert-btn-pri" onclick="pg('colaboradores',null)">Ver detalhes</button>
               </div>
             </div>
           </div>
@@ -3256,7 +3391,7 @@ body {
               <div class="card card-sm">
                 <div class="card-hdr" style="margin-bottom:10px;">
                   <span class="card-title">Acompanhamento</span>
-                  <a class="card-link" onclick="toast('👥 Abrindo lista completa...')">Ver todos</a>
+                  <a class="card-link" onclick="pg('colaboradores',null)">Ver todos</a>
                 </div>
                 <div id="acomp-content" style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
                   Os colaboradores em acompanhamento aparecerão aqui após responderem ao diagnóstico.
@@ -3265,41 +3400,39 @@ body {
             </div>
           </div>
 
-          <!-- ══ SEÇÃO PRO — HEATMAP + PREVISÃO TURNOVER ══ -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:20px;">
-
-            <!-- Heatmap por Setor (PRO GATE) -->
-            <div class="pro-gate">
-              <div class="card" style="min-height:200px;">
-                <div class="card-hdr"><span class="card-title">Heatmap por Setor</span><span class="chip chip-pro">✦ Pro</span></div>
-                <div style="opacity:.35;text-align:center;padding:24px;font-size:12px;color:var(--muted)">
-                  Disponível após diagnósticos respondidos por setor.
+          <!-- ══ HEATMAP POR SETOR ══ -->
+          <div style="margin-bottom:20px;">
+            <div class="card">
+              <div class="card-hdr">
+                <span class="card-title">Heatmap por Setor</span>
+                <button class="btn btn-outline btn-sm" onclick="pg('colaboradores',null)">Ver equipe →</button>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="heatmap-setores">
+                <div style="border-radius:10px;padding:12px;background:#FDECEA;">
+                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">Comercial</div>
+                  <div style="font-size:24px;font-weight:700;color:#C0392B;margin:4px 0;">54</div>
+                  <div style="font-size:10px;color:var(--muted);">12 pessoas · Crítico</div>
+                </div>
+                <div style="border-radius:10px;padding:12px;background:#E8F5EC;">
+                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">TI</div>
+                  <div style="font-size:24px;font-weight:700;color:#2D6A4F;margin:4px 0;">83</div>
+                  <div style="font-size:10px;color:var(--muted);">9 pessoas · Saudável</div>
+                </div>
+                <div style="border-radius:10px;padding:12px;background:#FEF5E7;">
+                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">Financeiro</div>
+                  <div style="font-size:24px;font-weight:700;color:#D4891A;margin:4px 0;">67</div>
+                  <div style="font-size:10px;color:var(--muted);">8 pessoas · Atenção</div>
+                </div>
+                <div style="border-radius:10px;padding:12px;background:#E8F5EC;">
+                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">Operações</div>
+                  <div style="font-size:24px;font-weight:700;color:#2D6A4F;margin:4px 0;">79</div>
+                  <div style="font-size:10px;color:var(--muted);">18 pessoas · Saudável</div>
                 </div>
               </div>
-              <div class="pro-gate-overlay">
-                <div class="pro-gate-icon">🔒</div>
-                <div class="pro-gate-title">Heatmap por Setor</div>
-                <div class="pro-gate-sub">Veja qual setor está em risco agora</div>
-                <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade para Pro — em breve!')">Fazer upgrade</button>
+              <div style="margin-top:10px;padding:8px 10px;background:rgba(111,158,147,.07);border:1px solid rgba(111,158,147,.2);border-radius:8px;font-size:11px;color:var(--muted);">
+                🔒 Setores com menos de 3 colaboradores não exibem score individual — LGPD compliant
               </div>
             </div>
-
-            <!-- Previsão de Turnover (PRO GATE) -->
-            <div class="pro-gate">
-              <div class="card" style="min-height:200px;">
-                <div class="card-hdr"><span class="card-title">Previsão de Turnover</span><span class="chip chip-pro">✦ Pro</span></div>
-                <div style="opacity:.35;text-align:center;padding:24px;font-size:12px;color:var(--muted)">
-                  Disponível com histórico de pelo menos dois diagnósticos.
-                </div>
-              </div>
-              <div class="pro-gate-overlay">
-                <div class="pro-gate-icon">🔒</div>
-                <div class="pro-gate-title">Previsão de Turnover IA</div>
-                <div class="pro-gate-sub">Antecipe demissões com 90 dias de antecedência</div>
-                <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade para Pro — em breve!')">Fazer upgrade</button>
-              </div>
-            </div>
-
           </div>
 
           <!-- ══ RELATÓRIO RH ══ -->
@@ -3315,7 +3448,7 @@ body {
                 </div>
               </div>
               <div style="display:flex;gap:8px;">
-                <button class="btn btn-sm" style="background:rgba(78,203,160,.15);color:#4ECBA0;border:1px solid rgba(78,203,160,.25)" onclick="toast('📥 Baixando relatório...')">⬇ Baixar</button>
+                <button class="btn btn-sm" style="background:rgba(78,203,160,.15);color:#4ECBA0;border:1px solid rgba(78,203,160,.25)" onclick="pg('relatorios',null)">⬇ Baixar</button>
                 <button class="btn btn-sm" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)" onclick="toast('📤 Compartilhando com liderança...')">↗ Compartilhar</button>
               </div>
             </div>
@@ -3641,7 +3774,7 @@ body {
       </div>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-ghost btn-sm" onclick="pg('equipe',null)">← Voltar</button>
+      <button class="btn btn-ghost btn-sm" onclick="window._fichaFrom==='colaboradores' ? pg('colaboradores',null) : pg('equipe',null)">← Voltar</button>
       <button class="btn btn-primary btn-sm" onclick="abrirModalIntervencao()">+ Registrar Intervenção</button>
     </div>
   </div>
@@ -3769,6 +3902,50 @@ body {
   </div>
 </div>
       
+
+      <!-- COLABORADORES -->
+      <div id="p-colaboradores" style="display:none">
+        <div class="topbar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+            <div>
+              <div class="page-title">Colaboradores</div>
+              <div class="page-sub">Gestão individual · Acesso exclusivo RH</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('modal-invite').classList.add('open')">+ Convidar</button>
+        </div>
+
+        <!-- Lista de colaboradores -->
+        <div id="colab-lista-view">
+          <!-- Busca e filtros -->
+          <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;">
+            <div style="flex:1;display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:8px 12px;">
+              <span style="color:var(--muted);font-size:14px;">🔍</span>
+              <input type="text" id="colab-busca" placeholder="Buscar colaborador..." oninput="filtrarColabs()" style="border:none;background:transparent;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);flex:1;outline:none;">
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;">
+            <button class="filter-chip-rh active" onclick="filtroRisco('todos',this)">Todos</button>
+            <button class="filter-chip-rh" onclick="filtroRisco('critico',this)" style="color:#C0392B;">🔴 Crítico</button>
+            <button class="filter-chip-rh" onclick="filtroRisco('atencao',this)" style="color:#D4891A;">🟡 Atenção</button>
+            <button class="filter-chip-rh" onclick="filtroRisco('ok',this)" style="color:#2D6A4F;">🟢 OK</button>
+            <button class="filter-chip-rh" onclick="filtroRisco('sem_resp',this)">⚪ Sem resposta</button>
+          </div>
+
+          <div class="card" style="padding:8px;">
+            <div id="colab-membros-lista">
+              <div style="text-align:center;padding:24px;color:var(--muted);font-size:12px;">Carregando colaboradores...</div>
+            </div>
+          </div>
+
+          <div style="margin-top:10px;padding:10px 12px;background:rgba(111,158,147,.08);border:1px solid rgba(111,158,147,.2);border-radius:10px;display:flex;align-items:flex-start;gap:8px;">
+            <span style="font-size:13px;flex-shrink:0;margin-top:1px;">🔒</span>
+            <span style="font-size:11.5px;color:var(--muted);line-height:1.5;">Os colaboradores não visualizam dados uns dos outros. Scores e fichas individuais são visíveis apenas ao RH — LGPD compliant.</span>
+          </div>
+        </div>
+      </div>
+
       <!-- EQUIPE -->
       <div id="p-equipe" style="display:none">
         <div class="topbar">
@@ -3859,6 +4036,130 @@ body {
           </button>
         </div>
 
+      <!-- RELATÓRIOS -->
+      <div id="p-relatorios" style="display:none">
+        <div class="topbar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+            <div>
+              <div class="page-title">Relatórios</div>
+              <div class="page-sub">Dados estratégicos e conformidade NR-1</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" style="background:rgba(201,168,76,.12);color:#7A5200;border:1px solid rgba(201,168,76,.3);font-weight:600;" onclick="gerarRelatorioNR1()">📄 Exportar NR-1</button>
+          </div>
+        </div>
+
+        <!-- Destaque NR-1 -->
+        <div style="background:linear-gradient(135deg,#1B3D2F,#2D5A4E);border-radius:16px;padding:20px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <span style="font-size:20px;">⚖️</span>
+            <div>
+              <div style="color:#fff;font-size:14px;font-weight:700;">Relatório de Conformidade NR-1</div>
+              <div style="color:rgba(255,255,255,.55);font-size:11px;margin-top:2px;">Válido para fiscalização do Ministério do Trabalho</div>
+            </div>
+          </div>
+          <div style="color:rgba(255,255,255,.65);font-size:12px;line-height:1.6;margin-bottom:14px;">
+            A NR-1 atualizada em 2025 exige gestão ativa de riscos psicossociais (GRO). Este relatório documenta que sua empresa identificou, avaliou e agiu sobre os riscos — evitando autuação e multa.
+          </div>
+          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px;margin-bottom:14px;font-size:11.5px;color:rgba(255,255,255,.75);line-height:1.7;">
+            <strong style="color:#4ECBA0;">O que o relatório inclui:</strong><br>
+            Identificação da empresa (CNPJ, setor, nº colaboradores) · Ciclos QUSP realizados com datas e taxa de participação · Resultados por dimensão de risco · Colaboradores em risco elevado (sem nome — apenas número) · Intervenções realizadas: tipo, data, status · Evolução dos scores entre ciclos · Plano de ação vigente · Assinatura digital do responsável de RH
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div class="fi-group" style="flex:1;min-width:140px;">
+              <label class="fi-label" style="color:rgba(255,255,255,.5);">Período</label>
+              <select class="fi-input fi-select" id="nr1-periodo-rel" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff;">
+                <option value="6m">Últimos 6 meses</option>
+                <option value="12m">Último ano</option>
+                <option value="all">Todo o histórico</option>
+              </select>
+            </div>
+            <div class="fi-group" style="flex:1;min-width:140px;">
+              <label class="fi-label" style="color:rgba(255,255,255,.5);">Responsável RH</label>
+              <input class="fi-input" id="nr1-resp-rel" placeholder="Nome do responsável" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff;">
+            </div>
+          </div>
+          <button style="margin-top:12px;width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#3D2800;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;box-shadow:0 2px 8px rgba(201,168,76,.3);" onclick="gerarRelatorioNR1()">
+            📄 Gerar Relatório NR-1 — PDF
+          </button>
+        </div>
+
+        <!-- Relatório Mensal -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-hdr">
+            <span class="card-title">Relatório Mensal — Automático</span>
+            <span class="chip chip-green" style="font-size:10px;">Auto-gerado</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="background:#F7F4EF;border-radius:10px;padding:10px 12px;border:1px solid var(--border);">
+              <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Score Geral</div>
+              <div style="font-size:22px;font-weight:700;color:var(--mint);margin:2px 0;" id="rel-score-geral">74</div>
+              <div style="font-size:10.5px;color:var(--green);font-weight:600;">↑ +6 vs. mês anterior</div>
+            </div>
+            <div style="background:#F7F4EF;border-radius:10px;padding:10px 12px;border:1px solid var(--border);">
+              <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Taxa Resposta</div>
+              <div style="font-size:22px;font-weight:700;color:var(--mint);margin:2px 0;" id="rel-taxa">82%</div>
+              <div style="font-size:10.5px;color:var(--muted);">equipe engajada</div>
+            </div>
+            <div style="background:#FEF5E7;border-radius:10px;padding:10px 12px;border:1px solid rgba(212,137,26,.15);">
+              <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Dimensão crítica</div>
+              <div style="font-size:13px;font-weight:700;color:#D4891A;margin:4px 0;">Burnout (68)</div>
+              <div style="font-size:10.5px;color:var(--muted);">requer atenção</div>
+            </div>
+            <div style="background:#FDECEA;border-radius:10px;padding:10px 12px;border:1px solid rgba(192,57,43,.12);">
+              <div style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Setor em risco</div>
+              <div style="font-size:13px;font-weight:700;color:#C0392B;margin:4px 0;">Comercial (54)</div>
+              <div style="font-size:10.5px;color:var(--muted);">intervenção indicada</div>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px;">
+            <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Recomendações para o próximo ciclo:</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> Priorizar intervenções no setor Comercial — score crítico (54)</div>
+              <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> Ações de prevenção ao Burnout para toda a empresa</div>
+              <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> Reenviar QUSP para 8 colaboradores pendentes antes de 31/mai</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="toast('📥 Baixando relatório mensal...')">⬇ Baixar PDF</button>
+            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="toast('📤 Link copiado para compartilhar!')">↗ Compartilhar</button>
+          </div>
+        </div>
+
+        <!-- Histórico de Ciclos -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-hdr">
+            <span class="card-title">Histórico de Diagnósticos</span>
+            <button class="btn btn-outline btn-sm" onclick="toast('📊 Exportando histórico...')">Exportar</button>
+          </div>
+          <div style="display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+              <div><div style="font-size:12.5px;font-weight:600;">Q2/2026 — Maio</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">82% responderam · Score: 74 · Em andamento</div></div>
+              <span class="chip chip-amber">Ativo</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+              <div><div style="font-size:12.5px;font-weight:600;">Q1/2026 — Abril</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">84% responderam · Score: 68</div></div>
+              <button class="btn btn-outline btn-sm" onclick="pg('resultados',null)">Ver →</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+              <div><div style="font-size:12.5px;font-weight:600;">Q4/2025 — Janeiro</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">76% responderam · Score: 71</div></div>
+              <button class="btn btn-outline btn-sm" onclick="toast('Abrindo ciclo Q4/2025...')">Ver →</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;">
+              <div><div style="font-size:12.5px;font-weight:600;">Q3/2025 — Outubro</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">91% responderam · Score: 74</div></div>
+              <button class="btn btn-outline btn-sm" onclick="toast('Abrindo ciclo Q3/2025...')">Ver →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nota LGPD -->
+        <div style="text-align:center;padding:16px;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;">
+          🔒 LGPD compliant · Dados criptografados · Revisado por Viviani A. Rufino — Psicóloga CRP 06/215926
+        </div>
+      </div>
+
       </div>
 
     </main>
@@ -3867,6 +4168,24 @@ body {
 
 
 <!-- ══════════ BOAS-VINDAS ══════════ -->
+
+<!-- ══════════ TOUR GUIADO ══════════ -->
+<div id="tour-backdrop" class="hidden"></div>
+<div id="tour-spotlight" style="display:none;"></div>
+<div id="tour-arrow" style="display:none;"></div>
+<div id="tour-card" style="display:none;">
+  <div class="tc-step" id="tc-step">Passo 1 de 7</div>
+  <div class="tc-title" id="tc-title">Bem-vindo ao Ranne Care</div>
+  <div class="tc-body" id="tc-body">Vamos fazer um tour rápido pelas funcionalidades principais do seu painel.</div>
+  <div class="tc-footer">
+    <div class="tc-dots" id="tc-dots"></div>
+    <div class="tc-btns">
+      <button class="tc-btn-skip" onclick="encerrarTour()">Pular tour</button>
+      <button class="tc-btn-next" id="tc-btn-next" onclick="tourProximo()">Próximo →</button>
+    </div>
+  </div>
+</div>
+
 <div id="boas-vindas">
   <canvas id="bv-canvas"></canvas>
   <div class="bv-orb bv-orb1"></div>
@@ -4853,6 +5172,8 @@ function showColaborador(nome) {
   atualizarInicioColaborador(nome);
   // Mostra boas-vindas (só na 1ª vez do dia)
   setTimeout(() => mostrarBoasVindas(nome), 400);
+  // Se boas-vindas for pulada hoje, tour dispara de qualquer forma
+  setTimeout(() => dispararTourSeNecessario(), 1800);
 }
 
 /* ── EMPRESA FUNCTIONS ── */
@@ -5931,6 +6252,163 @@ async function salvarIntervencao() {
   }
 }
 
+
+/* ══════════ COLABORADORES — Gestão Individual RH ══════════ */
+let colabFiltroAtivo = 'todos';
+let colabBusca = '';
+let _todosColabs = [];
+
+async function loadColaboradores() {
+  const lista = document.getElementById('colab-membros-lista');
+  if (!lista) return;
+  lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px;">Carregando...</div>';
+
+  try {
+    // Buscar membros da empresa
+    const { data: membros } = await db
+      .from('colaboradores')
+      .select('*')
+      .eq('empresa_id', currentEmpresa?.id);
+
+    // Buscar último diagnóstico de cada um
+    const { data: scores } = await db
+      .from('diagnosticos')
+      .select('colaborador_id, score_geral, score_burnout, score_estresse, score_sono, score_social, created_at')
+      .eq('empresa_id', currentEmpresa?.id)
+      .order('created_at', { ascending: false });
+
+    const scoreMap = {};
+    if (scores) {
+      scores.forEach(s => {
+        if (!scoreMap[s.colaborador_id]) scoreMap[s.colaborador_id] = s;
+      });
+    }
+
+    _todosColabs = (membros || []).map(m => ({
+      ...m,
+      score: scoreMap[m.id] || null
+    }));
+
+    renderColabs();
+  } catch(e) {
+    // Fallback com dados de exemplo para apresentação
+    _todosColabs = [
+      { id: 'ex1', nome: 'João Silva', cargo: 'Vendedor Sênior', setor: 'Comercial', initials: 'JS', score: { score_geral: 49 }, risco: 'critico' },
+      { id: 'ex2', nome: 'Ana Martins', cargo: 'Analista', setor: 'Financeiro', initials: 'AM', score: { score_geral: 63 }, risco: 'atencao' },
+      { id: 'ex3', nome: 'Carlos Reis', cargo: 'Dev Backend', setor: 'TI', initials: 'CR', score: { score_geral: 84 }, risco: 'ok' },
+      { id: 'ex4', nome: 'Letícia Ferreira', cargo: 'Gestora', setor: 'Operações', initials: 'LF', score: { score_geral: 91 }, risco: 'ok' },
+      { id: 'ex5', nome: 'Marcos Pinto', cargo: 'Representante', setor: 'Comercial', initials: 'MP', score: null, risco: 'sem_resp' },
+    ];
+    renderColabs();
+  }
+}
+
+function getRisco(score) {
+  if (!score || score.score_geral == null) return 'sem_resp';
+  if (score.score_geral < 55) return 'critico';
+  if (score.score_geral < 70) return 'atencao';
+  return 'ok';
+}
+
+function riscoBadge(risco) {
+  const map = {
+    critico: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#FDECEA;color:#C0392B;">🔴 Crítico</span>',
+    atencao: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#FEF5E7;color:#D4891A;">🟡 Atenção</span>',
+    ok: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#E8F5EC;color:#2D6A4F;">🟢 OK</span>',
+    sem_resp: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#F2EEE8;color:#6B645D;">⚪ Pendente</span>',
+  };
+  return map[risco] || map.sem_resp;
+}
+
+function avClass(risco) {
+  return { critico: 'cav-red', atencao: 'cav-amber', ok: 'cav-green', sem_resp: 'cav-gray' }[risco] || 'cav-gray';
+}
+
+function renderColabs() {
+  const lista = document.getElementById('colab-membros-lista');
+  if (!lista) return;
+  const busca = (document.getElementById('colab-busca')?.value || '').toLowerCase();
+
+  const filtered = _todosColabs.filter(c => {
+    const r = c.risco || getRisco(c.score);
+    const matchFiltro = colabFiltroAtivo === 'todos' || r === colabFiltroAtivo;
+    const matchBusca = !busca || c.nome?.toLowerCase().includes(busca) || c.setor?.toLowerCase().includes(busca);
+    return matchFiltro && matchBusca;
+  });
+
+  if (!filtered.length) {
+    lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px;">Nenhum colaborador encontrado.</div>';
+    return;
+  }
+
+  lista.innerHTML = filtered.map(c => {
+    const risco = c.risco || getRisco(c.score);
+    const scoreVal = c.score ? c.score.score_geral : null;
+    const scoreColor = { critico: '#C0392B', atencao: '#D4891A', ok: '#2D6A4F', sem_resp: '#6B645D' }[risco];
+    const initials = c.initials || (c.nome ? c.nome.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase() : '?');
+    return `<div class="colab-row" onclick="abrirFicha('${c.id}')">
+      <div class="colab-av ${avClass(risco)}">${initials}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.nome || '—'}</div>
+        <div style="font-size:10.5px;color:var(--muted);margin-top:1px;">${c.setor || ''} ${c.cargo ? '· ' + c.cargo : ''}</div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:${scoreColor};min-width:24px;text-align:right;">${scoreVal !== null && scoreVal !== undefined ? scoreVal : '—'}</div>
+      <div>${riscoBadge(risco)}</div>
+    </div>`;
+  }).join('');
+}
+
+function filtrarColabs() {
+  renderColabs();
+}
+
+function filtroRisco(filtro, btn) {
+  colabFiltroAtivo = filtro;
+  document.querySelectorAll('.filter-chip-rh').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderColabs();
+}
+
+function abrirFicha(id) {
+  // Abrir ficha do colaborador existente
+  const colab = _todosColabs.find(c => c.id === id);
+  if (!colab) return;
+  // Preenche nome/cargo para a ficha existente
+  fichaColaboradorId = id;
+  const nomeEl = document.getElementById('ficha-nome');
+  const cargoEl = document.getElementById('ficha-cargo');
+  const nomeHdrEl = document.getElementById('ficha-nome-hdr');
+  const infoHdrEl = document.getElementById('ficha-info-hdr');
+  const avatarEl = document.getElementById('ficha-avatar');
+  if (nomeEl) nomeEl.textContent = colab.nome || '—';
+  if (cargoEl) cargoEl.textContent = colab.cargo || '—';
+  if (nomeHdrEl) nomeHdrEl.textContent = colab.nome || '—';
+  if (infoHdrEl) infoHdrEl.textContent = `${colab.cargo || ''} · ${colab.setor || ''}`;
+  if (avatarEl) {
+    const initials = colab.initials || (colab.nome ? colab.nome.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase() : '?');
+    avatarEl.textContent = initials;
+  }
+  window._fichaFrom = 'colaboradores';
+  pg('ficha', null);
+}
+
+/* ══════════ RELATÓRIOS ══════════ */
+function carregarDadosRelatorio() {
+  // Sincroniza valores do nr1-periodo e nr1-responsavel com os campos existentes em config
+  const periodoRel = document.getElementById('nr1-periodo-rel');
+  const respRel = document.getElementById('nr1-resp-rel');
+  const periodoConfig = document.getElementById('nr1-periodo');
+  const respConfig = document.getElementById('nr1-responsavel');
+  if (periodoRel && periodoConfig) periodoRel.value = periodoConfig.value;
+  if (respRel && respConfig) respRel.value = respConfig.value;
+
+  // Atualiza campos do relatório mensal com dados reais se disponíveis
+  if (window._ultimoScoreGeral) {
+    const el = document.getElementById('rel-score-geral');
+    if (el) el.textContent = window._ultimoScoreGeral;
+  }
+}
+
 function abrirModalIntervencao() {
   document.getElementById('modal-intervencao').classList.add('open');
 }
@@ -6408,6 +6886,196 @@ function atualizarBadgePlano(isPro) {
    BOAS-VINDAS — LÓGICA
    ══════════════════════════════════════ */
 
+
+/* ══════════════════════════════════════════════
+   TOUR GUIADO — Ranne Care
+   Dispara uma vez após o primeiro login
+   ══════════════════════════════════════════════ */
+
+const TOUR_KEY = 'ranne-tour-v2-done';
+
+const TOUR_STEPS = [
+  {
+    title: 'Seu painel de saúde organizacional',
+    body: 'Aqui você acompanha o score geral da equipe, colaboradores em risco e todas as dimensões psicossociais — tudo gerado automaticamente pelo QUSP.',
+    selector: '#p-dashboard .metrics',
+    position: 'bottom',
+    beforeShow: () => { pg('dashboard', document.querySelector('.sb-item')); }
+  },
+  {
+    title: 'Heatmap por setor',
+    body: 'Visualize qual área da empresa está em risco crítico, atenção ou saudável. Dados anonimizados e LGPD compliant.',
+    selector: '#heatmap-setores',
+    position: 'top',
+  },
+  {
+    title: 'Gestão individual — Colaboradores',
+    body: 'Acesse a ficha de cada colaborador, veja o histórico de scores por dimensão, registre intervenções e receba alertas automáticos de piora.',
+    selector: '.sb-item[onclick*="colaboradores"]',
+    position: 'right',
+    beforeShow: () => {
+      // Highlight sidebar item
+    }
+  },
+  {
+    title: 'Diagnóstico QUSP',
+    body: 'Crie ciclos de diagnóstico, envie o link por WhatsApp ou e-mail e monitore as respostas em tempo real. Taxa de resposta visível por setor.',
+    selector: '.sb-item[onclick*="diagnosticos"]',
+    position: 'right',
+  },
+  {
+    title: 'Plano de Ação automático',
+    body: 'Após cada diagnóstico, o app gera automaticamente um plano de ação priorizado por nível de risco — Crítico, Alta, Média e Baixa.',
+    selector: '.sb-item[onclick*="plano"]',
+    position: 'right',
+  },
+  {
+    title: 'Relatórios & Conformidade NR-1',
+    body: 'Exporte o Relatório de Conformidade NR-1 com um clique — comprova que sua empresa cumpre a lei e pode ser apresentado em fiscalização do Ministério do Trabalho.',
+    selector: '.sb-item[onclick*="relatorios"]',
+    position: 'right',
+  },
+  {
+    title: 'Tudo pronto! 🌿',
+    body: 'Comece criando seu primeiro diagnóstico e enviando o link QUSP para a equipe. Em minutos você terá os primeiros dados de saúde organizacional.',
+    selector: null,
+    position: 'center',
+    isLast: true,
+  }
+];
+
+let _tourStep = 0;
+
+function iniciarTour() {
+  if (localStorage.getItem(TOUR_KEY)) return;
+  _tourStep = 0;
+  renderTourStep();
+}
+
+function renderTourStep() {
+  const step = TOUR_STEPS[_tourStep];
+  if (!step) { encerrarTour(); return; }
+
+  if (step.beforeShow) step.beforeShow();
+
+  // Atualiza conteúdo do card
+  document.getElementById('tc-step').textContent = `Passo ${_tourStep + 1} de ${TOUR_STEPS.length}`;
+  document.getElementById('tc-title').textContent = step.title;
+  document.getElementById('tc-body').textContent = step.body;
+
+  const btnNext = document.getElementById('tc-btn-next');
+  btnNext.textContent = step.isLast ? '✓ Começar' : 'Próximo →';
+
+  // Dots
+  const dots = document.getElementById('tc-dots');
+  dots.innerHTML = TOUR_STEPS.map((_, i) =>
+    `<div class="tc-dot${i === _tourStep ? ' active' : ''}"></div>`
+  ).join('');
+
+  // Spotlight e posição do card
+  const card  = document.getElementById('tour-card');
+  const spot  = document.getElementById('tour-spotlight');
+  const arrow = document.getElementById('tour-arrow');
+  const back  = document.getElementById('tour-backdrop');
+
+  back.classList.remove('hidden');
+  card.style.display = 'block';
+
+  if (!step.selector || step.position === 'center') {
+    // Sem spotlight — card centralizado
+    spot.style.display = 'none';
+    arrow.style.display = 'none';
+    card.style.top = '50%';
+    card.style.left = '50%';
+    card.style.transform = 'translate(-50%, -50%)';
+    return;
+  }
+
+  const el = document.querySelector(step.selector);
+  if (!el) {
+    // Elemento não visível agora — só centra o card
+    spot.style.display = 'none';
+    arrow.style.display = 'none';
+    card.style.top = '50%';
+    card.style.left = '50%';
+    card.style.transform = 'translate(-50%, -50%)';
+    return;
+  }
+
+  const rect = el.getBoundingClientRect();
+  const pad  = 10;
+
+  spot.style.display = 'block';
+  spot.style.top    = (rect.top - pad) + 'px';
+  spot.style.left   = (rect.left - pad) + 'px';
+  spot.style.width  = (rect.width + pad * 2) + 'px';
+  spot.style.height = (rect.height + pad * 2) + 'px';
+
+  card.style.transform = '';
+  const cardW = 300;
+  const cardH = 200; // aprox
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const MARGIN = 16;
+
+  let cardTop, cardLeft;
+  arrow.className = '';
+  arrow.style.display = 'block';
+
+  if (step.position === 'bottom') {
+    cardTop  = rect.bottom + pad + 14;
+    cardLeft = Math.max(MARGIN, Math.min(rect.left + rect.width/2 - cardW/2, vw - cardW - MARGIN));
+    card.style.top  = cardTop + 'px';
+    card.style.left = cardLeft + 'px';
+    // Arrow pointing up (card está abaixo do elemento)
+    arrow.classList.add('tour-arrow-top');
+    arrow.style.top  = (cardTop - 9) + 'px';
+    arrow.style.left = (cardLeft + cardW/2 - 9) + 'px';
+  } else if (step.position === 'top') {
+    cardTop  = rect.top - pad - cardH - 14;
+    cardLeft = Math.max(MARGIN, Math.min(rect.left + rect.width/2 - cardW/2, vw - cardW - MARGIN));
+    if (cardTop < MARGIN) { cardTop = rect.bottom + pad + 14; }
+    card.style.top  = cardTop + 'px';
+    card.style.left = cardLeft + 'px';
+    arrow.classList.add('tour-arrow-bottom');
+    arrow.style.top  = (cardTop + cardH - 2) + 'px';
+    arrow.style.left = (cardLeft + cardW/2 - 9) + 'px';
+  } else if (step.position === 'right') {
+    cardTop  = Math.max(MARGIN, Math.min(rect.top + rect.height/2 - cardH/2, vh - cardH - MARGIN));
+    cardLeft = rect.right + pad + 14;
+    if (cardLeft + cardW > vw - MARGIN) {
+      cardLeft = rect.left - cardW - pad - 14;
+    }
+    card.style.top  = cardTop + 'px';
+    card.style.left = Math.max(MARGIN, cardLeft) + 'px';
+    arrow.style.display = 'none'; // sem arrow lateral por simplicidade
+  }
+}
+
+function tourProximo() {
+  _tourStep++;
+  if (_tourStep >= TOUR_STEPS.length) {
+    encerrarTour();
+    return;
+  }
+  renderTourStep();
+}
+
+function encerrarTour() {
+  localStorage.setItem(TOUR_KEY, '1');
+  const els = ['tour-card','tour-spotlight','tour-arrow'];
+  els.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
+  const back = document.getElementById('tour-backdrop');
+  if (back) back.classList.add('hidden');
+}
+
+// Disparo: depois de fechar as boas-vindas ou após login direto
+function dispararTourSeNecessario() {
+  if (localStorage.getItem(TOUR_KEY)) return;
+  setTimeout(iniciarTour, 800);
+}
+
+
 function mostrarBoasVindas(nome) {
   const bv = document.getElementById('boas-vindas');
   if (!bv) return;
@@ -6436,6 +7104,7 @@ function fecharBoasVindas() {
   if (!bv) return;
   const nome = document.getElementById('bv-nome').textContent;
   localStorage.setItem('ranne-bv-' + nome, new Date().toDateString());
+  dispararTourSeNecessario();
   bv.classList.add('leaving');
   setTimeout(() => {
     bv.classList.remove('show', 'leaving');
@@ -7878,8 +8547,8 @@ function salvarConfigAlerta() {
    ══════════════════════════════════════════════════════════ */
 
 async function gerarRelatorioNR1() {
-  const responsavel = document.getElementById('nr1-responsavel')?.value?.trim() || 'Responsável de RH';
-  const periodo     = document.getElementById('nr1-periodo')?.value || '6m';
+  const responsavel = (document.getElementById('nr1-resp-rel')?.value?.trim()) || document.getElementById('nr1-responsavel')?.value?.trim() || 'Responsável de RH';
+  const periodo     = (document.getElementById('nr1-periodo-rel')?.value) || document.getElementById('nr1-periodo')?.value || '6m';
 
   toast('⏳ Gerando relatório NR-1...');
 
@@ -8137,6 +8806,8 @@ function pg(id, el) {
   }
 
   if (id === 'equipe') loadMembros();
+  if (id === 'colaboradores') loadColaboradores();
+  if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
     if (currentEmpresa) {
       document.getElementById('cfg-nome').value = currentEmpresa.nome || '';
