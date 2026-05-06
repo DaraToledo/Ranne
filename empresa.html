@@ -477,18 +477,50 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   pointer-events: none;
 }
 
+
+/* Tour highlight — borda pulsante no elemento alvo */
+.tour-highlight {
+  outline: 3px solid #4ECBA0 !important;
+  outline-offset: 4px !important;
+  border-radius: 12px;
+  animation: tourPulse 1.5s ease-in-out infinite;
+  position: relative;
+  z-index: 8998;
+}
+@keyframes tourPulse {
+  0%, 100% { outline-color: #4ECBA0; outline-offset: 4px; }
+  50%       { outline-color: #2D5A4E; outline-offset: 7px; }
+}
+
 #tour-card {
   position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 9002;
   background: #FFFFFF;
   border-radius: 16px;
   padding: 20px 22px 16px;
-  width: 300px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  width: min(320px, calc(100vw - 40px));
+  box-shadow: 0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.12);
   pointer-events: all;
 }
-body.dark #tour-card {
+body.dark 
+/* Tour highlight — borda pulsante no elemento alvo */
+.tour-highlight {
+  outline: 3px solid #4ECBA0 !important;
+  outline-offset: 4px !important;
+  border-radius: 12px;
+  animation: tourPulse 1.5s ease-in-out infinite;
+  position: relative;
+  z-index: 8998;
+}
+@keyframes tourPulse {
+  0%, 100% { outline-color: #4ECBA0; outline-offset: 4px; }
+  50%       { outline-color: #2D5A4E; outline-offset: 7px; }
+}
+
+#tour-card {
   background: #132030;
   box-shadow: 0 8px 40px rgba(0,0,0,0.5);
 }
@@ -4669,14 +4701,17 @@ body {
 <div id="tour-backdrop" class="hidden"></div>
 <div id="tour-spotlight" style="display:none;"></div>
 <div id="tour-arrow" style="display:none;"></div>
-<div id="tour-card" style="display:none;">
-  <div class="tc-step" id="tc-step">Passo 1 de 7</div>
+<div id="tour-card" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9002;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+    <span id="tc-emoji" style="font-size:22px;line-height:1;">📊</span>
+    <div class="tc-step" id="tc-step">1 de 8</div>
+  </div>
   <div class="tc-title" id="tc-title">Bem-vindo ao Ranne Care</div>
   <div class="tc-body" id="tc-body">Vamos fazer um tour rápido pelas funcionalidades principais do seu painel.</div>
   <div class="tc-footer">
     <div class="tc-dots" id="tc-dots"></div>
     <div class="tc-btns">
-      <button class="tc-btn-skip" onclick="encerrarTour()">Pular tour</button>
+      <button class="tc-btn-skip" onclick="encerrarTour()">Pular</button>
       <button class="tc-btn-next" id="tc-btn-next" onclick="tourProximo()">Próximo →</button>
     </div>
   </div>
@@ -7472,58 +7507,185 @@ function atualizarBadgePlano(isPro) {
 
 const TOUR_KEY = 'ranne-tour-v2-done';
 
+/* ═══════════════════════════════════════════════
+   TOUR GUIADO v3 — Robusto para mobile e desktop
+   Não usa spotlight (que some no mobile).
+   Usa um card fixo centralizado com destaque
+   de borda no elemento alvo.
+   ═══════════════════════════════════════════════ */
+
 const TOUR_STEPS = [
   {
-    title: 'Seu painel de saúde organizacional',
-    body: 'Aqui você acompanha o score geral da equipe, colaboradores em risco e todas as dimensões psicossociais — tudo gerado automaticamente pelo QUSP.',
-    selector: '#p-dashboard .metrics',
-    position: 'bottom',
-    beforeShow: () => { pg('dashboard', document.querySelector('.sb-item')); }
+    emoji: '📊',
+    title: 'Visão Geral da Equipe',
+    body: 'Aqui você vê o score geral de saúde (ISA), colaboradores em risco e as 4 dimensões psicossociais — gerados automaticamente pelo QUSP respondido pela equipe.',
+    action: () => pg('dashboard', document.querySelector('.sb-item')),
+    highlight: '#p-dashboard'
   },
   {
-    title: 'Heatmap por setor',
-    body: 'Visualize qual área da empresa está em risco crítico, atenção ou saudável. Dados anonimizados e LGPD compliant.',
-    selector: '#heatmap-setores',
-    position: 'top',
+    emoji: '🗺',
+    title: 'Heatmap por Setor',
+    body: 'Veja qual área da empresa está em risco crítico, atenção ou saudável. Setores com menos de 3 pessoas não exibem score individual — proteção LGPD.',
+    action: null,
+    highlight: '#heatmap-setores'
   },
   {
-    title: 'Gestão individual — Colaboradores',
-    body: 'Acesse a ficha de cada colaborador, veja o histórico de scores por dimensão, registre intervenções e receba alertas automáticos de piora.',
-    selector: '.sb-item[onclick*="colaboradores"]',
-    position: 'right',
-    beforeShow: () => {
-      // Highlight sidebar item
-    }
+    emoji: '👤',
+    title: 'Gestão Individual',
+    body: 'Em Colaboradores você acessa a ficha de cada pessoa, vê o histórico de scores, registra intervenções (1:1, encaminhamentos, afastamentos) e recebe alertas automáticos de piora.',
+    action: () => pg('colaboradores', null),
+    highlight: '#p-colaboradores'
   },
   {
+    emoji: '📋',
     title: 'Diagnóstico QUSP',
-    body: 'Crie ciclos de diagnóstico, envie o link por WhatsApp ou e-mail e monitore as respostas em tempo real. Taxa de resposta visível por setor.',
-    selector: '.sb-item[onclick*="diagnosticos"]',
-    position: 'right',
+    body: 'Crie ciclos de diagnóstico, gere o link QUSP para envio por WhatsApp ou e-mail e monitore as respostas em tempo real, com taxa de resposta por setor.',
+    action: () => pg('diagnosticos', null),
+    highlight: '#p-diagnosticos'
   },
   {
-    title: 'Plano de Ação automático',
-    body: 'Após cada diagnóstico, o app gera automaticamente um plano de ação priorizado por nível de risco — Crítico, Alta, Média e Baixa.',
-    selector: '.sb-item[onclick*="plano"]',
-    position: 'right',
+    emoji: '✅',
+    title: 'Plano de Ação',
+    body: 'Após cada diagnóstico, o app gera automaticamente um plano de ação priorizado (Crítico, Alta, Média, Baixa). Marque ações concluídas e exporte para PDF.',
+    action: () => pg('plano', null),
+    highlight: '#p-plano'
   },
   {
-    title: 'Relatórios & Conformidade NR-1',
-    body: 'Exporte o Relatório de Conformidade NR-1 com um clique — comprova que sua empresa cumpre a lei e pode ser apresentado em fiscalização do Ministério do Trabalho.',
-    selector: '.sb-item[onclick*="relatorios"]',
-    position: 'right',
+    emoji: '⚖️',
+    title: 'Relatório NR-1',
+    body: 'Exporte o Relatório de Conformidade NR-1 com um clique — comprova que sua empresa cumpre a lei de 2025 e pode ser apresentado em fiscalização do Ministério do Trabalho.',
+    action: () => pg('relatorios', null),
+    highlight: '#p-relatorios'
   },
   {
-    title: 'Tudo pronto! 🌿',
+    emoji: '❓',
+    title: 'Ajuda sempre disponível',
+    body: 'Este tour e toda a documentação ficam na seção Ajuda & Tour no menu lateral — acesse sempre que precisar relembrar alguma funcionalidade.',
+    action: null,
+    highlight: null
+  },
+  {
+    emoji: '🌿',
+    title: 'Tudo pronto!',
     body: 'Comece criando seu primeiro diagnóstico e enviando o link QUSP para a equipe. Em minutos você terá os primeiros dados de saúde organizacional.',
-    selector: null,
-    position: 'center',
-    isLast: true,
+    action: () => pg('dashboard', document.querySelector('.sb-item')),
+    highlight: null,
+    isLast: true
   }
 ];
 
 let _tourStep = 0;
+let _tourHighlightEl = null;
 
+function iniciarTour() {
+  if (localStorage.getItem(TOUR_KEY)) return;
+  _tourStep = 0;
+  _tourMostrarCard();
+}
+
+function _tourMostrarCard() {
+  const step = TOUR_STEPS[_tourStep];
+  if (!step) { encerrarTour(); return; }
+
+  // Executa ação de navegação do step
+  if (step.action) {
+    step.action();
+  }
+
+  // Remove highlight anterior
+  if (_tourHighlightEl) {
+    _tourHighlightEl.classList.remove('tour-highlight');
+    _tourHighlightEl = null;
+  }
+
+  // Pequeno delay para a página renderizar antes de posicionar
+  setTimeout(() => {
+    // Aplica highlight no elemento alvo
+    if (step.highlight) {
+      const el = document.querySelector(step.highlight);
+      if (el) {
+        el.classList.add('tour-highlight');
+        _tourHighlightEl = el;
+        // Scroll suave até o elemento
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // Atualiza conteúdo do card
+    document.getElementById('tc-emoji').textContent  = step.emoji || '📍';
+    document.getElementById('tc-step').textContent   = `${_tourStep + 1} de ${TOUR_STEPS.length}`;
+    document.getElementById('tc-title').textContent  = step.title;
+    document.getElementById('tc-body').textContent   = step.body;
+
+    const btnNext = document.getElementById('tc-btn-next');
+    btnNext.textContent = step.isLast ? '✓ Começar' : 'Próximo →';
+
+    // Dots
+    document.getElementById('tc-dots').innerHTML = TOUR_STEPS.map((_, i) =>
+      `<div class="tc-dot${i === _tourStep ? ' active' : ''}"></div>`
+    ).join('');
+
+    // Mostra o card (sempre centralizado — funciona em qualquer tela)
+    const card = document.getElementById('tour-card');
+    const back = document.getElementById('tour-backdrop');
+    card.style.display = 'block';
+    card.style.opacity = '0';
+    card.style.transform = 'translate(-50%, -50%) scale(0.95)';
+    back.classList.remove('hidden');
+
+    requestAnimationFrame(() => {
+      card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+
+    // Esconde elementos não usados
+    const spot = document.getElementById('tour-spotlight');
+    const arrow = document.getElementById('tour-arrow');
+    if (spot) spot.style.display = 'none';
+    if (arrow) arrow.style.display = 'none';
+
+  }, step.action ? 350 : 0);
+}
+
+function tourProximo() {
+  _tourStep++;
+  if (_tourStep >= TOUR_STEPS.length) {
+    encerrarTour();
+    return;
+  }
+  // Fade out card antes de mudar
+  const card = document.getElementById('tour-card');
+  card.style.transition = 'opacity 0.15s ease';
+  card.style.opacity = '0';
+  setTimeout(_tourMostrarCard, 150);
+}
+
+function encerrarTour() {
+  localStorage.setItem(TOUR_KEY, '1');
+  // Remove highlight
+  if (_tourHighlightEl) {
+    _tourHighlightEl.classList.remove('tour-highlight');
+    _tourHighlightEl = null;
+  }
+  const els = ['tour-card', 'tour-spotlight', 'tour-arrow'];
+  els.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const back = document.getElementById('tour-backdrop');
+  if (back) back.classList.add('hidden');
+  // Volta ao dashboard
+  pg('dashboard', document.querySelector('.sb-item'));
+}
+
+function dispararTourSeNecessario() {
+  if (localStorage.getItem(TOUR_KEY)) return;
+  if (currentRole !== 'empresa') return;
+  const appEmp = document.getElementById('app-empresa');
+  if (!appEmp || appEmp.style.display === 'none') return;
+  setTimeout(iniciarTour, 800);
+}
 
 /* ══════════ AJUDA — Tour & Accordion ══════════ */
 function reiniciarTour() {
