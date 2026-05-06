@@ -5355,15 +5355,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* ── ROTEAMENTO POR PERFIL ── */
 async function rotearUsuario() {
+  if (window._roteandoUsuario) return; // guard contra chamadas duplas
+  window._roteandoUsuario = true;
+  try {
   // 1. Verifica se é empresa
   try {
-    const { data: emp, error: empErr } = await db.from('empresas').select('*').eq('user_id', currentUser.id).single();
+    const { data: emp, error: empErr } = await db.from('empresas').select('*').eq('user_id', currentUser.id).maybeSingle();
     if (emp && !empErr) { currentEmpresa = emp; currentRole = 'empresa'; showEmpresa(); return; }
   } catch {}
 
   // 2. Verifica se é colaborador ou pessoa física
   try {
-    const { data: col, error: colErr } = await db.from('colaboradores').select('*').eq('user_id', currentUser.id).single();
+    const { data: col, error: colErr } = await db.from('colaboradores').select('*').eq('user_id', currentUser.id).maybeSingle();
     if (col && !colErr) {
       if (col.empresa_id) {
         // Colaborador vinculado a empresa
@@ -5380,6 +5383,7 @@ async function rotearUsuario() {
   // 3. Nenhum perfil encontrado → onboarding
   showOnboarding();
   goS(1);
+  } finally { window._roteandoUsuario = false; }
 }
 
 function showDemo() {
@@ -5406,6 +5410,8 @@ function showEmpresa() {
   }, 900);
   loadDashboardData();
   setTimeout(renderRHSolucoes, 100);
+  // Tour — dispara apenas na primeira vez
+  setTimeout(dispararTourSeNecessario, 2000);
 }
 
 function showColaborador(nome) {
@@ -5416,10 +5422,14 @@ function showColaborador(nome) {
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
   atualizarInicioColaborador(nome);
-  // Mostra boas-vindas (só na 1ª vez do dia)
-  setTimeout(() => mostrarBoasVindas(nome), 400);
-  // Se boas-vindas for pulada hoje, tour dispara de qualquer forma
-  setTimeout(() => dispararTourSeNecessario(), 1800);
+  // Mostra boas-vindas depois da página estar pronta
+  setTimeout(() => mostrarBoasVindas(nome), 1200);
+  // Tour: apenas se boas-vindas não for mostrada (já viu hoje)
+  setTimeout(() => {
+    const hoje = new Date().toDateString();
+    const jaBv = localStorage.getItem('ranne-bv-' + nome) === hoje;
+    if (jaBv) dispararTourSeNecessario();
+  }, 2200);
 }
 
 /* ── EMPRESA FUNCTIONS ── */
@@ -5449,9 +5459,10 @@ async function doLoginSenha() {
     if (error) throw error;
     currentUser = data.user;
     document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('onboarding-steps').style.display = 'none';
     await rotearUsuario();
   } catch (err) {
-    showAuthErr(errEl, err.message?.includes('Invalid') ? 'E-mail ou senha incorretos.' : 'Erro ao entrar. Tente novamente.');
+    showAuthErr(errEl, (err.message?.includes('Invalid') || err.message?.includes('credentials')) ? 'E-mail ou senha incorretos. Verifique seus dados.' : 'Erro ao entrar. Tente novamente.');
   } finally { btn.disabled = false; btn.textContent = 'Entrar →'; }
 }
 
@@ -5462,15 +5473,16 @@ async function setupEmpresa() {
   const setor  = document.getElementById('empresa-setor').value;
   const errEl  = document.getElementById('setup-error');
   const btn    = document.getElementById('setup-btn');
-  const email  = document.getElementById('login-email').value.trim();
-  const senha  = document.getElementById('cad-senha-field')?.value || document.getElementById('login-senha-field')?.value || '';
+  // Lê e-mail/senha dos campos de cadastro (salvos em goS2Next)
+  const email  = window._cadEmail || document.getElementById('cad-email')?.value.trim() || '';
+  const senha  = window._cadSenha || document.getElementById('cad-senha')?.value || '';
   
   if (!nome) { showAuthErr(errEl,'Informe o nome da empresa.'); return; }
   btn.disabled = true; btn.textContent = 'Criando...';
   try {
     let userId = currentUser?.id;
     if (!userId || userId === 'demo') {
-      if (!email || !senha) { showAuthErr(errEl,'Erro: e-mail ou senha não encontrados. Tente cadastrar novamente.'); btn.disabled=false; btn.textContent='Entrar na plataforma →'; return; }
+      if (!email || !senha) { showAuthErr(errEl,'Sessão expirada. Volte ao passo anterior e preencha o e-mail e senha novamente.'); goSStep('s2'); return; btn.disabled=false; btn.textContent='Entrar na plataforma →'; return; }
       const { data: authData, error } = await db.auth.signUp({ email, password: senha });
       if (error && !error.message?.includes('already')) throw error;
       userId = authData?.user?.id;
@@ -7318,6 +7330,11 @@ function encerrarTour() {
 // Disparo: depois de fechar as boas-vindas ou após login direto
 function dispararTourSeNecessario() {
   if (localStorage.getItem(TOUR_KEY)) return;
+  // Tour só para perfil empresa (painel RH)
+  if (currentRole !== 'empresa') return;
+  // Garante que o app-empresa está visível
+  const appEmp = document.getElementById('app-empresa');
+  if (!appEmp || appEmp.style.display === 'none') return;
   setTimeout(iniciarTour, 800);
 }
 
@@ -7325,6 +7342,9 @@ function dispararTourSeNecessario() {
 function mostrarBoasVindas(nome) {
   const bv = document.getElementById('boas-vindas');
   if (!bv) return;
+  // Só mostra se o app-colaborador estiver visível
+  const appColab = document.getElementById('app-colaborador');
+  if (!appColab || appColab.style.display === 'none' || appColab.style.display === '') return;
   // Se já viu hoje, pula
   const hoje = new Date().toDateString();
   if (localStorage.getItem('ranne-bv-' + nome) === hoje) return;
