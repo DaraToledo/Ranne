@@ -592,6 +592,7 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   max-height: 380px;
   overflow: hidden;
   flex-shrink: 0;
+  background: linear-gradient(160deg, #1B3D2F 0%, #2D5A4E 60%, #3D7A60 100%);
 }
 .ob-hero img {
   width: 100%; height: 100%;
@@ -603,6 +604,10 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   content: '';
   position: absolute; inset: 0;
   background: linear-gradient(to bottom, rgba(27,61,47,.12) 0%, transparent 35%, rgba(244,239,230,.6) 80%, #F4EFE6 100%);
+}
+/* Fallback overlay when no image — makes gradient readable */
+.ob-hero.no-image::after {
+  background: linear-gradient(to bottom, rgba(27,61,47,.3) 0%, transparent 40%, rgba(244,239,230,.8) 85%, #F4EFE6 100%);
 }
 
 /* Logo pill */
@@ -626,11 +631,12 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   position: absolute; top: calc(16px + env(safe-area-inset-top,0px)); right: 20px;
   z-index: 2;
   display: flex; align-items: center; gap: 6px;
-  background: rgba(27,61,47,.82);
+  background: rgba(27,61,47,.88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 99px;
   padding: 6px 12px 6px 9px;
+  border: 1px solid rgba(78,203,160,.2);
 }
 .ob-live-dot {
   width: 6px; height: 6px; border-radius: 50%;
@@ -3159,10 +3165,11 @@ body {
 
   <div class="ob-hero" role="img" aria-label="Profissional de RH trabalhando">
     <img
-      src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/xk94y.jpg"
+      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=80&fit=crop&crop=faces,center"
       alt="Profissional sorrindo ao usar a plataforma Ranne Care"
       fetchpriority="high"
       loading="eager"
+      onerror="this.style.display='none';this.parentElement.classList.add('no-image')"
     >
     <div class="ob-logo-pill">
       <img src="/icons/launchericon-192x192.png" alt="">
