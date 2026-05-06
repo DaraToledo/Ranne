@@ -8059,73 +8059,6 @@ async function gerarRelatorioNR1() {
 
 </div>
 
-<script>
-/* ── ONBOARDING novo design — wiring para funções originais ── */
-(function() {
-  var _selectedRole = 'empresa';
-
-  window.obSelRole = function(card) {
-    document.querySelectorAll('.role-card').forEach(function(c) {
-      c.classList.remove('selected');
-      c.setAttribute('aria-checked', 'false');
-    });
-    card.classList.add('selected');
-    card.setAttribute('aria-checked', 'true');
-    _selectedRole = card.dataset.role;
-    // Sync with original selRole if available
-    try { if (typeof selRole === 'function') { /* handled by goS */ } } catch(e) {}
-  };
-
-  window.obContinuar = function() {
-    // Chama o fluxo original: mostra onboarding interno e vai para step 2
-    var onboardingDiv = document.getElementById('onboarding');
-    if (onboardingDiv) onboardingDiv.style.display = 'none';
-    
-    // Show original onboarding (fullpage) or go directly to step
-    if (_selectedRole === 'pessoa') {
-      // Para pessoa física, usa o fluxo do colaborador se existir
-      if (typeof goSStep === 'function') {
-        // Mostrar o fullpage original para continuar o cadastro
-        showOriginalOnboarding();
-        goSStep('s2');
-      }
-    } else {
-      showOriginalOnboarding();
-      if (typeof goS === 'function') goS(2);
-    }
-  };
-
-  window.obLogin = function() {
-    var onboardingDiv = document.getElementById('onboarding');
-    if (onboardingDiv) onboardingDiv.style.display = 'none';
-    showOriginalOnboarding();
-    if (typeof goSStep === 'function') goSStep('s-login');
-  };
-
-  function showOriginalOnboarding() {
-    var orig = document.getElementById('onboarding-steps');
-    if (orig) orig.style.display = 'flex';
-  }
-})();
-
-/* ── Loading screen frases rotativas ── */
-(function() {
-  var frases = [
-    'Preparando sua experiência…',
-    'Carregando dados organizacionais…',
-    'Verificando segurança…',
-    'Quase lá…',
-  ];
-  var fi = 0;
-  var el = document.getElementById('ls-phrase');
-  if (!el) return;
-  setInterval(function() {
-    fi = (fi + 1) % frases.length;
-    el.style.opacity = '0';
-    setTimeout(function() { el.textContent = frases[fi]; el.style.opacity = '1'; }, 300);
-  }, 2200);
-})();
-</script>
 
 </body>
 </html>`;
@@ -8269,5 +8202,73 @@ if ('serviceWorker' in navigator) {
 
 </script>
 
+
+<script>
+/* ── ONBOARDING novo design — wiring para funções originais ── */
+(function() {
+  var _selectedRole = 'empresa';
+
+  window.obSelRole = function(card) {
+    document.querySelectorAll('.role-card').forEach(function(c) {
+      c.classList.remove('selected');
+      c.setAttribute('aria-checked', 'false');
+    });
+    card.classList.add('selected');
+    card.setAttribute('aria-checked', 'true');
+    _selectedRole = card.dataset.role;
+    // Sync with original selRole if available
+    try { if (typeof selRole === 'function') { /* handled by goS */ } } catch(e) {}
+  };
+
+  window.obContinuar = function() {
+    // Chama o fluxo original: mostra onboarding interno e vai para step 2
+    var onboardingDiv = document.getElementById('onboarding');
+    if (onboardingDiv) onboardingDiv.style.display = 'none';
+    
+    // Show original onboarding (fullpage) or go directly to step
+    if (_selectedRole === 'pessoa') {
+      // Para pessoa física, usa o fluxo do colaborador se existir
+      if (typeof goSStep === 'function') {
+        // Mostrar o fullpage original para continuar o cadastro
+        showOriginalOnboarding();
+        goSStep('s2');
+      }
+    } else {
+      showOriginalOnboarding();
+      if (typeof goS === 'function') goS(2);
+    }
+  };
+
+  window.obLogin = function() {
+    var onboardingDiv = document.getElementById('onboarding');
+    if (onboardingDiv) onboardingDiv.style.display = 'none';
+    showOriginalOnboarding();
+    if (typeof goSStep === 'function') goSStep('s-login');
+  };
+
+  function showOriginalOnboarding() {
+    var orig = document.getElementById('onboarding-steps');
+    if (orig) orig.style.display = 'flex';
+  }
+})();
+
+/* ── Loading screen frases rotativas ── */
+(function() {
+  var frases = [
+    'Preparando sua experiência…',
+    'Carregando dados organizacionais…',
+    'Verificando segurança…',
+    'Quase lá…',
+  ];
+  var fi = 0;
+  var el = document.getElementById('ls-phrase');
+  if (!el) return;
+  setInterval(function() {
+    fi = (fi + 1) % frases.length;
+    el.style.opacity = '0';
+    setTimeout(function() { el.textContent = frases[fi]; el.style.opacity = '1'; }, 300);
+  }, 2200);
+})();
+</script>
 </body>
 </html>
