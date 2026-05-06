@@ -421,6 +421,117 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 
 
 
+
+/* ══════════ KIT FORMULÁRIOS ══════════ */
+.form-kit-card {
+  background: var(--white);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.form-kit-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; cursor: pointer;
+  transition: background .12s;
+  user-select: none;
+}
+.form-kit-header:hover { background: var(--bg); }
+.form-kit-num {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--teal); color: #fff;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.form-kit-info { flex: 1; }
+.form-kit-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.form-kit-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.form-kit-chevron { color: var(--muted); font-size: 18px; transition: transform .2s; }
+.form-kit-card.open .form-kit-chevron { transform: rotate(180deg); }
+.form-kit-body {
+  display: none; padding: 0 16px 16px;
+  border-top: 0.5px solid var(--border);
+}
+.form-kit-card.open .form-kit-body { display: block; }
+
+/* Campos dentro dos formulários */
+.fk-section { margin-top: 16px; }
+.fk-section-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .7px; color: var(--muted);
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 0.5px solid var(--border);
+}
+.fk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.fk-row-1 { margin-bottom: 8px; }
+.fk-group { display: flex; flex-direction: column; gap: 4px; }
+.fk-label {
+  font-size: 10.5px; font-weight: 600;
+  color: var(--muted); text-transform: uppercase; letter-spacing: .5px;
+}
+.fk-label .fk-req { color: #C0392B; margin-left: 2px; }
+.fk-input, .fk-textarea, .fk-select {
+  width: 100%; padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px; background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px; color: var(--text);
+  outline: none; transition: border-color .15s;
+}
+.fk-input:focus, .fk-textarea:focus, .fk-select:focus {
+  border-color: var(--teal);
+  background: #fff;
+}
+.fk-textarea { resize: vertical; min-height: 70px; }
+.fk-checks { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.fk-check-row { display: flex; align-items: flex-start; gap: 8px; }
+.fk-check-row input[type=checkbox] { margin-top: 2px; accent-color: var(--teal); }
+.fk-check-row label { font-size: 12px; color: var(--text); line-height: 1.4; cursor: pointer; }
+.fk-grid-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+
+/* Escala Likert 1-7 */
+.fk-likert-table { width: 100%; margin-bottom: 10px; }
+.fk-likert-table th {
+  font-size: 10px; font-weight: 700; color: var(--muted);
+  text-align: center; padding: 4px 2px;
+}
+.fk-likert-table td {
+  font-size: 11.5px; color: var(--text);
+  padding: 6px 4px; border-bottom: 0.5px solid var(--border);
+  vertical-align: middle;
+}
+.fk-likert-table td:first-child { padding-right: 8px; }
+.fk-likert-table td input[type=radio] { accent-color: var(--teal); cursor: pointer; }
+.fk-likert-table tr:last-child td { border-bottom: none; }
+
+/* NPS scale */
+.fk-nps { display: flex; gap: 4px; flex-wrap: wrap; margin: 8px 0; }
+.fk-nps-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.fk-nps-btn:hover { border-color: var(--teal); color: var(--teal); }
+.fk-nps-btn.selected { background: var(--teal); color: #fff; border-color: var(--teal); }
+.fk-nps-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-bottom: 8px; }
+
+/* Assinatura */
+.fk-assinatura {
+  display: flex; gap: 10px; margin-top: 4px;
+}
+.fk-assin-box {
+  flex: 1; height: 60px; border: 1px dashed var(--border);
+  border-radius: 8px; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--muted);
+}
+
+/* Print / Imprimir */
+.fk-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 0.5px solid var(--border); }
+
 /* ══════════ AJUDA & TOUR ══════════ */
 .ajuda-modulo { overflow:hidden; }
 .ajuda-mod-header {
@@ -3525,6 +3636,7 @@ body {
         <div class="sb-item" onclick="pg('biblioteca',this)"><span class="ic">📚</span> Biblioteca</div>
         <div class="sb-item" onclick="pg('checkin',this)"><span class="ic">✅</span> Check-in Semanal</div>
         <div class="sb-section">Gestão</div>
+        <div class="sb-item" onclick="pg('formularios',this)"><span class="ic">📝</span> Kit Formulários</div>
         <div class="sb-item" onclick="pg('colaboradores',this)"><span class="ic">👤</span> Colaboradores</div>
         <div class="sb-item" onclick="pg('equipe',this)"><span class="ic">👥</span> Equipe</div>
         <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic">📊</span> Relatórios & NR-1</div>
@@ -4236,6 +4348,559 @@ body {
   </div>
 </div>
       
+
+
+      <!-- KIT FORMULÁRIOS -->
+      <div id="p-formularios" style="display:none">
+        <div class="topbar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+            <div>
+              <div class="page-title">Kit Formulários</div>
+              <div class="page-sub">Ranne Care · 6 formulários · Uso interno</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Imprimir</button>
+        </div>
+
+        <!-- Intro -->
+        <div style="background:linear-gradient(135deg,#1B3D2F,#2D5A4E);border-radius:14px;padding:16px;margin-bottom:14px;">
+          <div style="color:#fff;font-size:14px;font-weight:700;margin-bottom:6px;">📝 Kit de Formulários Ranne Care</div>
+          <div style="color:rgba(255,255,255,.6);font-size:12px;line-height:1.6;">Formulários para uso interno da consultoria. Clique em cada formulário para expandir, preencher e imprimir.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+            <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;">01 Cadastro Empresa</span>
+            <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;">02 Diagnóstico RH</span>
+            <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;">03 Anamnese</span>
+            <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;">04 Agendamento</span>
+            <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;">05 NPS</span>
+            <span style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:600;">06 LGPD</span>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO 01 -->
+        <div class="form-kit-card" id="fk1">
+          <div class="form-kit-header" onclick="toggleFK('fk1')">
+            <div class="form-kit-num">01</div>
+            <div class="form-kit-info">
+              <div class="form-kit-title">Cadastro de Empresa Cliente</div>
+              <div class="form-kit-sub">Preenchimento pelo responsável comercial ou RH na contratação</div>
+            </div>
+            <span class="form-kit-chevron">▾</span>
+          </div>
+          <div class="form-kit-body">
+            <div class="fk-section">
+              <div class="fk-section-title">1. Dados da Empresa</div>
+              <div class="fk-row-1 fk-group">
+                <label class="fk-label">Razão Social <span class="fk-req">*</span></label>
+                <input class="fk-input" type="text" placeholder="Ex: Empresa Tecnologia LTDA">
+              </div>
+              <div class="fk-row-1 fk-group">
+                <label class="fk-label">Nome Fantasia</label>
+                <input class="fk-input" type="text" placeholder="Ex: TechCorp">
+              </div>
+              <div class="fk-row">
+                <div class="fk-group">
+                  <label class="fk-label">CNPJ <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="text" placeholder="00.000.000/0001-00">
+                </div>
+                <div class="fk-group">
+                  <label class="fk-label">Data de Fundação</label>
+                  <input class="fk-input" type="date">
+                </div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group">
+                  <label class="fk-label">Segmento / Setor <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="text" placeholder="Ex: Tecnologia">
+                </div>
+                <div class="fk-group">
+                  <label class="fk-label">Nº de Colaboradores <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="number" placeholder="Ex: 50">
+                </div>
+              </div>
+              <div class="fk-row-1 fk-group">
+                <label class="fk-label">Site / LinkedIn</label>
+                <input class="fk-input" type="url" placeholder="https://">
+              </div>
+              <div class="fk-row-1 fk-group">
+                <label class="fk-label">Endereço Completo</label>
+                <input class="fk-input" type="text" placeholder="Rua, número, bairro, cidade, estado, CEP">
+              </div>
+            </div>
+
+            <div class="fk-section">
+              <div class="fk-section-title">2. Responsável pelo Contrato (RH / Gestor)</div>
+              <div class="fk-row">
+                <div class="fk-group">
+                  <label class="fk-label">Nome Completo <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="text">
+                </div>
+                <div class="fk-group">
+                  <label class="fk-label">Cargo <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="text">
+                </div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group">
+                  <label class="fk-label">E-mail <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="email">
+                </div>
+                <div class="fk-group">
+                  <label class="fk-label">WhatsApp / Telefone <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="tel">
+                </div>
+              </div>
+            </div>
+
+            <div class="fk-section">
+              <div class="fk-section-title">3. Perfil da Empresa</div>
+              <div class="fk-row-1 fk-group" style="margin-bottom:10px;">
+                <label class="fk-label">Principal desafio de saúde mental hoje <span class="fk-req">*</span></label>
+                <textarea class="fk-textarea" placeholder="Descreva brevemente..."></textarea>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Iniciativas anteriores de saúde mental?</label>
+              <div class="fk-checks">
+                <div class="fk-check-row"><input type="radio" name="fk1-init" id="fk1-sim"><label for="fk1-sim">Sim – qual? <input class="fk-input" type="text" style="display:inline;width:140px;padding:2px 6px;margin-left:6px;" placeholder="Qual?"></label></div>
+                <div class="fk-check-row"><input type="radio" name="fk1-init" id="fk1-nao"><label for="fk1-nao">Não</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk1-init" id="fk1-aval"><label for="fk1-aval">Está em avaliação</label></div>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Expectativa com a Ranne</label>
+              <div class="fk-grid-checks">
+                <div class="fk-check-row"><input type="checkbox" id="fk1-e1"><label for="fk1-e1">Diagnóstico de clima / burnout</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk1-e2"><label for="fk1-e2">Programa contínuo de bem-estar</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk1-e3"><label for="fk1-e3">Suporte psicológico para equipe</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk1-e4"><label for="fk1-e4">Treinamento de liderança</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk1-e5"><label for="fk1-e5">Dashboard e relatórios para RH</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk1-e6"><label for="fk1-e6">Outro</label></div>
+              </div>
+            </div>
+
+            <div class="fk-section">
+              <div class="fk-section-title">4. Plano Contratado</div>
+              <div class="fk-grid-checks">
+                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p1"><label for="fk1-p1">☆ Starter</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p2"><label for="fk1-p2">↑ Growth</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p3"><label for="fk1-p3">⬡ Enterprise</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p4"><label for="fk1-p4">✦ Personalizado</label></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group">
+                  <label class="fk-label">Data de Início <span class="fk-req">*</span></label>
+                  <input class="fk-input" type="date">
+                </div>
+                <div class="fk-group">
+                  <label class="fk-label">Vigência do Contrato</label>
+                  <input class="fk-input" type="text" placeholder="Ex: 12 meses">
+                </div>
+              </div>
+              <div class="fk-row-1 fk-group">
+                <label class="fk-label">Observações / Condições Especiais</label>
+                <textarea class="fk-textarea" placeholder="Informações adicionais sobre o contrato..."></textarea>
+              </div>
+            </div>
+
+            <div class="fk-section">
+              <div class="fk-section-title">5. Assinatura</div>
+              <div class="fk-row">
+                <div>
+                  <div class="fk-assin-box">Assinatura do Responsável</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px;">Data: _____ / _____ / _______</div>
+                </div>
+                <div>
+                  <div class="fk-assin-box">Assinatura Ranne Care</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:4px;">Data: _____ / _____ / _______</div>
+                </div>
+              </div>
+            </div>
+            <div class="fk-actions">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">🖨 Imprimir formulário</button>
+              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk1')">↺ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO 02 -->
+        <div class="form-kit-card" id="fk2">
+          <div class="form-kit-header" onclick="toggleFK('fk2')">
+            <div class="form-kit-num">02</div>
+            <div class="form-kit-info">
+              <div class="form-kit-title">Diagnóstico de Saúde Mental</div>
+              <div class="form-kit-sub">Preenchido pelo gestor ou RH — anônimo e confidencial</div>
+            </div>
+            <span class="form-kit-chevron">▾</span>
+          </div>
+          <div class="form-kit-body">
+            <p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin:12px 0 4px;">Este diagnóstico mapeia o clima organizacional nas 4 dimensões da Ranne: Cultura Organizacional, Liderança e Gestão, Carga de Trabalho e Clima e Relacionamentos.</p>
+
+            <div class="fk-section">
+              <div class="fk-section-title">1. Identificação (Opcional)</div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Empresa</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Departamento / Área</label><input class="fk-input" type="text"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Cargo / Função</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Data de Preenchimento</label><input class="fk-input" type="date"></div>
+              </div>
+            </div>
+
+            <div class="fk-section">
+              <div class="fk-section-title">🏛️ 2. Cultura Organizacional — Avalie de 1 a 7</div>
+              <table class="fk-likert-table">
+                <thead><tr><th style="text-align:left;width:55%;">Afirmação</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+                <tbody id="fk2-cult"></tbody>
+              </table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">👤 3. Liderança e Gestão — Avalie de 1 a 7</div>
+              <table class="fk-likert-table"><thead><tr><th style="text-align:left;width:55%;">Afirmação</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody id="fk2-lid"></tbody></table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">⚡ 4. Carga de Trabalho — Avalie de 1 a 7</div>
+              <table class="fk-likert-table"><thead><tr><th style="text-align:left;width:55%;">Afirmação</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody id="fk2-carga"></tbody></table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">🤝 5. Clima e Relacionamentos — Avalie de 1 a 7</div>
+              <table class="fk-likert-table"><thead><tr><th style="text-align:left;width:55%;">Afirmação</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody id="fk2-clima"></tbody></table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">6. Questões Abertas</div>
+              <div class="fk-group" style="margin-bottom:10px;"><label class="fk-label">Maior desafio de saúde mental que você percebe na equipe?</label><textarea class="fk-textarea" placeholder="Descreva com suas palavras..."></textarea></div>
+              <div class="fk-group" style="margin-bottom:10px;"><label class="fk-label">O que poderia melhorar o bem-estar da equipe?</label><textarea class="fk-textarea" placeholder="Sugestões, ideias, observações..."></textarea></div>
+              <div class="fk-group"><label class="fk-label">Há algo que a liderança poderia fazer diferente?</label><textarea class="fk-textarea"></textarea></div>
+            </div>
+            <div class="fk-actions">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">🖨 Imprimir</button>
+              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk2')">↺ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO 03 -->
+        <div class="form-kit-card" id="fk3">
+          <div class="form-kit-header" onclick="toggleFK('fk3')">
+            <div class="form-kit-num">03</div>
+            <div class="form-kit-info">
+              <div class="form-kit-title">Anamnese do Colaborador</div>
+              <div class="form-kit-sub">Preenchido individualmente — confidencial e seguro</div>
+            </div>
+            <span class="form-kit-chevron">▾</span>
+          </div>
+          <div class="form-kit-body">
+            <p style="font-size:11.5px;color:var(--muted);line-height:1.6;margin:12px 0 4px;">Suas respostas são confidenciais e ajudam a personalizar a jornada de bem-estar. Nenhuma informação identificável é compartilhada com sua empresa sem autorização.</p>
+            <div class="fk-section">
+              <div class="fk-section-title">1. Dados Pessoais (Opcional)</div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Nome (ou apelido)</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Idade</label><input class="fk-input" type="number"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Departamento / Cargo</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Tempo na empresa</label><input class="fk-input" type="text" placeholder="Ex: 2 anos"></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">2. Saúde e Bem-estar Geral</div>
+              <label class="fk-label" style="margin-bottom:6px;">Como você avalia sua saúde mental no momento? <span class="fk-req">*</span></label>
+              <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk3-sm" id="fk3-mb"><label for="fk3-mb">Muito boa</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-sm" id="fk3-b"><label for="fk3-b">Boa</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-sm" id="fk3-r"><label for="fk3-r">Regular</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-sm" id="fk3-ru"><label for="fk3-ru">Ruim</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-sm" id="fk3-mr"><label for="fk3-mr">Muito ruim</label></div>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Sintomas frequentes (pode marcar mais de um)</label>
+              <div class="fk-grid-checks">
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s1"><label for="fk3-s1">Estresse elevado</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s2"><label for="fk3-s2">Ansiedade</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s3"><label for="fk3-s3">Dificuldade de concentração</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s4"><label for="fk3-s4">Insônia / sono ruim</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s5"><label for="fk3-s5">Esgotamento / fadiga</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s6"><label for="fk3-s6">Irritabilidade</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s7"><label for="fk3-s7">Tristeza ou desmotivação</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s8"><label for="fk3-s8">Dores físicas no trabalho</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s9"><label for="fk3-s9">Isolamento social</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-s10"><label for="fk3-s10">Nenhum dos acima</label></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">3. Trabalho e Rotina</div>
+              <label class="fk-label" style="margin-bottom:6px;">Carga de trabalho atual <span class="fk-req">*</span></label>
+              <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk3-carga" id="fk3-cl"><label for="fk3-cl">Leve</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-carga" id="fk3-ca"><label for="fk3-ca">Adequada</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-carga" id="fk3-ci"><label for="fk3-ci">Intensa</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-carga" id="fk3-cm"><label for="fk3-cm">Muito pesada</label></div>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Consegue se desconectar fora do horário?</label>
+              <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk3-desc" id="fk3-ds"><label for="fk3-ds">Sempre</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-desc" id="fk3-dav"><label for="fk3-dav">Às vezes</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-desc" id="fk3-dr"><label for="fk3-dr">Raramente</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-desc" id="fk3-dn"><label for="fk3-dn">Nunca</label></div>
+              </div>
+              <div class="fk-section-title" style="margin-top:10px;">Nível de satisfação — 1 (muito insatisfeito) a 7 (muito satisfeito)</div>
+              <table class="fk-likert-table">
+                <thead><tr><th style="text-align:left;width:55%;">Item</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+                <tbody id="fk3-sat"></tbody>
+              </table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">4. Contexto Pessoal</div>
+              <label class="fk-label" style="margin-bottom:6px;">Práticas de autocuidado regulares</label>
+              <div class="fk-grid-checks" style="margin-bottom:12px;">
+                <div class="fk-check-row"><input type="checkbox" id="fk3-ac1"><label for="fk3-ac1">Atividade física</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-ac2"><label for="fk3-ac2">Meditação / mindfulness</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-ac3"><label for="fk3-ac3">Psicoterapia</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-ac4"><label for="fk3-ac4">Hobbies e lazer</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-ac5"><label for="fk3-ac5">Alimentação saudável</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-ac6"><label for="fk3-ac6">Não pratico nenhuma</label></div>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Acompanhamento psicológico</label>
+              <div class="fk-checks" style="margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk3-psico" id="fk3-p1"><label for="fk3-p1">Sim, atualmente</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-psico" id="fk3-p2"><label for="fk3-p2">Já fiz, mas não faço mais</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-psico" id="fk3-p3"><label for="fk3-p3">Nunca fiz, mas tenho interesse</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-psico" id="fk3-p4"><label for="fk3-p4">Nunca fiz e não tenho interesse</label></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">5. Expectativas com a Ranne</div>
+              <div class="fk-grid-checks" style="margin-bottom:10px;">
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp1"><label for="fk3-exp1">Reduzir estresse e ansiedade</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp2"><label for="fk3-exp2">Melhorar o sono</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp3"><label for="fk3-exp3">Equilíbrio trabalho-vida</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp4"><label for="fk3-exp4">Habilidades emocionais</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp5"><label for="fk3-exp5">Suporte psicológico</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp6"><label for="fk3-exp6">Foco e produtividade</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp7"><label for="fk3-exp7">Relacionamentos no trabalho</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk3-exp8"><label for="fk3-exp8">Outro</label></div>
+              </div>
+              <div class="fk-group"><label class="fk-label">Algo sobre sua saúde que gostaria de compartilhar?</label><textarea class="fk-textarea" placeholder="Informações que ajudem a personalizar sua jornada..."></textarea></div>
+            </div>
+            <div class="fk-actions">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">🖨 Imprimir</button>
+              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk3')">↺ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO 04 -->
+        <div class="form-kit-card" id="fk4">
+          <div class="form-kit-header" onclick="toggleFK('fk4')">
+            <div class="form-kit-num">04</div>
+            <div class="form-kit-info">
+              <div class="form-kit-title">Agendamento de Serviço</div>
+              <div class="form-kit-sub">Solicitação de serviços Ranne para empresas clientes</div>
+            </div>
+            <span class="form-kit-chevron">▾</span>
+          </div>
+          <div class="form-kit-body">
+            <div class="fk-section">
+              <div class="fk-section-title">1. Dados do Solicitante</div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Nome da Empresa <span class="fk-req">*</span></label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">CNPJ</label><input class="fk-input" type="text" placeholder="00.000.000/0001-00"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Nome do Solicitante <span class="fk-req">*</span></label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Cargo <span class="fk-req">*</span></label><input class="fk-input" type="text"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">E-mail <span class="fk-req">*</span></label><input class="fk-input" type="email"></div>
+                <div class="fk-group"><label class="fk-label">WhatsApp <span class="fk-req">*</span></label><input class="fk-input" type="tel"></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">2. Serviço Solicitado</div>
+              <label class="fk-label" style="margin-bottom:6px;">Tipo de Serviço <span class="fk-req">*</span></label>
+              <div class="fk-grid-checks" style="margin-bottom:12px;">
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s1"><label for="fk4-s1">Sessão psicologia individual</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s2"><label for="fk4-s2">Sessão psicologia em grupo</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s3"><label for="fk4-s3">Workshop de saúde mental</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s4"><label for="fk4-s4">Palestra para equipe</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s5"><label for="fk4-s5">Treinamento liderança emocional</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s6"><label for="fk4-s6">Consultoria estratégica de RH</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s7"><label for="fk4-s7">Diagnóstico psicossocial</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s8"><label for="fk4-s8">Nutrição comportamental</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s9"><label for="fk4-s9">Atividade de movimento / corpo</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s10"><label for="fk4-s10">Terapia integrativa</label></div>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Destinado a <span class="fk-req">*</span></label>
+              <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk4-dest" id="fk4-d1"><label for="fk4-d1">Toda a equipe</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk4-dest" id="fk4-d2"><label for="fk4-d2">Lideranças</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk4-dest" id="fk4-d3"><label for="fk4-d3">Área específica</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk4-dest" id="fk4-d4"><label for="fk4-d4">Colaborador individual</label></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Nº estimado de participantes</label><input class="fk-input" type="number"></div>
+                <div class="fk-group">
+                  <label class="fk-label">Formato</label>
+                  <select class="fk-select">
+                    <option value="">Selecione...</option>
+                    <option>Presencial</option><option>Online</option><option>Híbrido</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">3. Preferência de Data e Horário</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="fk-row" style="align-items:center;"><label style="font-size:11.5px;color:var(--muted);width:24px;font-weight:700;">1ª</label><input class="fk-input" type="date" style="flex:1;"><input class="fk-input" type="time" style="flex:1;margin-left:6px;"></div>
+                <div class="fk-row" style="align-items:center;"><label style="font-size:11.5px;color:var(--muted);width:24px;font-weight:700;">2ª</label><input class="fk-input" type="date" style="flex:1;"><input class="fk-input" type="time" style="flex:1;margin-left:6px;"></div>
+                <div class="fk-row" style="align-items:center;"><label style="font-size:11.5px;color:var(--muted);width:24px;font-weight:700;">3ª</label><input class="fk-input" type="date" style="flex:1;"><input class="fk-input" type="time" style="flex:1;margin-left:6px;"></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">4. Detalhes Adicionais</div>
+              <div class="fk-group" style="margin-bottom:8px;"><label class="fk-label">Objetivo ou contexto do agendamento</label><textarea class="fk-textarea" placeholder="Ex: A equipe de tecnologia está com sobrecarga há 2 meses..."></textarea></div>
+              <div class="fk-group" style="margin-bottom:8px;"><label class="fk-label">Local (se presencial) ou plataforma (se online)</label><input class="fk-input" type="text" placeholder="Ex: Escritório SP / Google Meet / Zoom"></div>
+              <div class="fk-group"><label class="fk-label">Observações importantes</label><textarea class="fk-textarea" placeholder="Restrições, necessidades especiais, preferência de profissional..."></textarea></div>
+            </div>
+            <div class="fk-actions">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">🖨 Imprimir</button>
+              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk4')">↺ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO 05 -->
+        <div class="form-kit-card" id="fk5">
+          <div class="form-kit-header" onclick="toggleFK('fk5')">
+            <div class="form-kit-num">05</div>
+            <div class="form-kit-info">
+              <div class="form-kit-title">Pesquisa de Satisfação / NPS</div>
+              <div class="form-kit-sub">Avaliação do serviço prestado pela Ranne Care</div>
+            </div>
+            <span class="form-kit-chevron">▾</span>
+          </div>
+          <div class="form-kit-body">
+            <div class="fk-section">
+              <div class="fk-section-title">1. Identificação (Opcional)</div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Nome</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Empresa</label><input class="fk-input" type="text"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Serviço avaliado</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Data do serviço</label><input class="fk-input" type="date"></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">2. NPS — Probabilidade de Recomendação (0 a 10)</div>
+              <div class="fk-nps-labels"><span>Não recomendaria</span><span>Neutro</span><span>Recomendaria muito</span></div>
+              <div class="fk-nps" id="fk5-nps"></div>
+              <div class="fk-group" style="margin-top:8px;"><label class="fk-label">Por que você deu essa nota?</label><textarea class="fk-textarea" placeholder="Conte-nos o que motivou sua avaliação..."></textarea></div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">3. Avaliação do Serviço — 1 (ruim) a 7 (excelente)</div>
+              <table class="fk-likert-table"><thead><tr><th style="text-align:left;width:55%;">Item</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody id="fk5-aval"></tbody></table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">4. Experiência Geral</div>
+              <div class="fk-group" style="margin-bottom:8px;"><label class="fk-label">O que você mais gostou no serviço?</label><textarea class="fk-textarea" placeholder="Pontos fortes, momentos marcantes..."></textarea></div>
+              <div class="fk-group" style="margin-bottom:8px;"><label class="fk-label">O que poderia ter sido melhor?</label><textarea class="fk-textarea" placeholder="Críticas construtivas, sugestões..."></textarea></div>
+              <label class="fk-label" style="margin-bottom:6px;">Voltaria a contratar a Ranne?</label>
+              <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk5-voltar" id="fk5-v1"><label for="fk5-v1">Sim, com certeza</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk5-voltar" id="fk5-v2"><label for="fk5-v2">Provavelmente sim</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk5-voltar" id="fk5-v3"><label for="fk5-v3">Talvez</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk5-voltar" id="fk5-v4"><label for="fk5-v4">Não</label></div>
+              </div>
+              <label class="fk-label" style="margin-bottom:6px;">Autoriza uso como case?</label>
+              <div class="fk-checks" style="margin-bottom:8px;">
+                <div class="fk-check-row"><input type="radio" name="fk5-case" id="fk5-c1"><label for="fk5-c1">Sim, pode usar meu nome e empresa</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk5-case" id="fk5-c2"><label for="fk5-c2">Sim, mas de forma anônima</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk5-case" id="fk5-c3"><label for="fk5-c3">Não autorizo</label></div>
+              </div>
+              <div class="fk-group"><label class="fk-label">Depoimento (opcional)</label><textarea class="fk-textarea" placeholder='"Trabalhar com a Ranne foi..."'></textarea></div>
+            </div>
+            <div class="fk-actions">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">🖨 Imprimir</button>
+              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk5')">↺ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMULÁRIO 06 -->
+        <div class="form-kit-card" id="fk6">
+          <div class="form-kit-header" onclick="toggleFK('fk6')">
+            <div class="form-kit-num" style="background:#C9A84C;">06</div>
+            <div class="form-kit-info">
+              <div class="form-kit-title">Termo de Consentimento & LGPD</div>
+              <div class="form-kit-sub">Autorização para coleta e uso de dados — obrigatório</div>
+            </div>
+            <span class="form-kit-chevron">▾</span>
+          </div>
+          <div class="form-kit-body">
+            <div style="background:#FEF9EF;border:1px solid rgba(201,168,76,.2);border-left:3px solid #C9A84C;border-radius:8px;padding:10px 12px;margin:12px 0;font-size:12px;color:#5A5040;line-height:1.6;">
+              Em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018), a Ranne Care solicita seu consentimento para coleta, armazenamento e uso de dados pessoais e de saúde.
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">1. Dados do Titular</div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Nome Completo <span class="fk-req">*</span></label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">CPF <span class="fk-req">*</span></label><input class="fk-input" type="text" placeholder="000.000.000-00"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">E-mail <span class="fk-req">*</span></label><input class="fk-input" type="email"></div>
+                <div class="fk-group"><label class="fk-label">WhatsApp / Telefone</label><input class="fk-input" type="tel"></div>
+              </div>
+              <div class="fk-row">
+                <div class="fk-group"><label class="fk-label">Empresa vinculada</label><input class="fk-input" type="text"></div>
+                <div class="fk-group"><label class="fk-label">Cargo</label><input class="fk-input" type="text"></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">2. Dados Coletados e Finalidade</div>
+              <table style="width:100%;font-size:12px;border-collapse:collapse;">
+                <thead><tr style="background:var(--bg);"><th style="padding:7px 10px;text-align:left;border:0.5px solid var(--border);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;">Dado Coletado</th><th style="padding:7px 10px;text-align:left;border:0.5px solid var(--border);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;">Finalidade</th></tr></thead>
+                <tbody>
+                  <tr><td style="padding:7px 10px;border:0.5px solid var(--border);">Dados de identificação</td><td style="padding:7px 10px;border:0.5px solid var(--border);color:var(--muted);">Cadastro e comunicação</td></tr>
+                  <tr style="background:var(--bg);"><td style="padding:7px 10px;border:0.5px solid var(--border);">Dados de saúde emocional</td><td style="padding:7px 10px;border:0.5px solid var(--border);color:var(--muted);">Personalização da jornada de bem-estar</td></tr>
+                  <tr><td style="padding:7px 10px;border:0.5px solid var(--border);">Respostas aos diagnósticos</td><td style="padding:7px 10px;border:0.5px solid var(--border);color:var(--muted);">Geração de relatórios e planos de ação</td></tr>
+                  <tr style="background:var(--bg);"><td style="padding:7px 10px;border:0.5px solid var(--border);">Dados de uso da plataforma</td><td style="padding:7px 10px;border:0.5px solid var(--border);color:var(--muted);">Melhoria contínua da experiência</td></tr>
+                  <tr><td style="padding:7px 10px;border:0.5px solid var(--border);">Feedbacks e depoimentos</td><td style="padding:7px 10px;border:0.5px solid var(--border);color:var(--muted);">Aprimoramento dos serviços</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">3. Garantias ao Titular</div>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text);">
+                <div style="display:flex;gap:8px;"><span style="color:var(--green);font-weight:700;">✓</span>Acesso, correção e exclusão dos dados a qualquer momento</div>
+                <div style="display:flex;gap:8px;"><span style="color:var(--green);font-weight:700;">✓</span>Anonimização dos dados sensíveis de saúde nos relatórios</div>
+                <div style="display:flex;gap:8px;"><span style="color:var(--green);font-weight:700;">✓</span>Não compartilhamento de dados com terceiros sem consentimento</div>
+                <div style="display:flex;gap:8px;"><span style="color:var(--green);font-weight:700;">✓</span>Armazenamento seguro com criptografia e controles de acesso</div>
+                <div style="display:flex;gap:8px;"><span style="color:var(--green);font-weight:700;">✓</span>Direito de revogar este consentimento a qualquer momento</div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">4. Consentimento</div>
+              <div class="fk-checks">
+                <div class="fk-check-row"><input type="checkbox" id="fk6-c1"><label for="fk6-c1"><strong>CONCORDO</strong> com a coleta e uso dos meus dados conforme descrito neste termo.</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk6-c2"><label for="fk6-c2"><strong>CONCORDO com uso de depoimento anônimo</strong> para materiais institucionais da Ranne.</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk6-c3"><label for="fk6-c3"><strong>CONCORDO com uso de depoimento identificado</strong> (nome e empresa) para materiais da Ranne.</label></div>
+              </div>
+            </div>
+            <div class="fk-section">
+              <div class="fk-section-title">5. Assinatura</div>
+              <div class="fk-row">
+                <div><div class="fk-assin-box">Assinatura do Titular</div><div style="font-size:11px;color:var(--muted);margin-top:4px;">Data: _____ / _____ / _______</div></div>
+                <div><div class="fk-input" style="padding:8px 10px;font-size:12px;color:var(--muted);">Local: São Paulo, SP</div></div>
+              </div>
+            </div>
+            <div class="fk-actions">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">🖨 Imprimir</button>
+              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk6')">↺ Limpar</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center;padding:16px 0 8px;font-size:11px;color:var(--muted);">
+          Ranne Care · Kit de Formulários · Versão 2026 · Uso interno
+        </div>
+      </div>
 
       <!-- COLABORADORES -->
       <div id="p-colaboradores" style="display:none">
@@ -7697,6 +8362,107 @@ function reiniciarTour() {
   setTimeout(iniciarTour, 500);
 }
 
+
+/* ══════════ KIT FORMULÁRIOS ══════════ */
+
+function toggleFK(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  const isOpen = card.classList.contains('open');
+  // Fecha todos
+  document.querySelectorAll('.form-kit-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) {
+    card.classList.add('open');
+    // Scroll suave para o card
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+}
+
+function limparFormulario(id) {
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.querySelectorAll('input:not([type=radio]):not([type=checkbox])').forEach(i => i.value = '');
+  card.querySelectorAll('textarea').forEach(t => t.value = '');
+  card.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(c => c.checked = false);
+  card.querySelectorAll('.fk-nps-btn').forEach(b => b.classList.remove('selected'));
+  toast('✅ Formulário limpo.');
+}
+
+function _buildLikert(tbodyId, items) {
+  const tb = document.getElementById(tbodyId);
+  if (!tb) return;
+  tb.innerHTML = items.map((item, idx) => `
+    <tr>
+      <td>${item}</td>
+      ${[1,2,3,4,5,6,7].map(n => `<td style="text-align:center"><input type="radio" name="${tbodyId}-q${idx}" value="${n}"></td>`).join('')}
+    </tr>
+  `).join('');
+}
+
+function _buildNPS(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = Array.from({length:11},(_,i) =>
+    `<button class="fk-nps-btn" onclick="selectNPS(this,'${containerId}')">${i}</button>`
+  ).join('');
+}
+
+function selectNPS(btn, containerId) {
+  document.querySelectorAll(`#${containerId} .fk-nps-btn`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function _initFormularios() {
+  // Formulário 02 — Diagnóstico RH — Likert tables
+  _buildLikert('fk2-cult', [
+    'Os valores da empresa são claros e praticados no dia a dia.',
+    'Os colaboradores se sentem seguros para expressar opiniões.',
+    'Existe reconhecimento pelo trabalho bem feito.',
+    'A empresa investe no desenvolvimento das pessoas.',
+    'Há transparência nas decisões e comunicação interna.'
+  ]);
+  _buildLikert('fk2-lid', [
+    'Os líderes dão feedbacks claros e construtivos.',
+    'A liderança está disponível e acessível à equipe.',
+    'Os gestores demonstram empatia e escuta ativa.',
+    'As metas e expectativas são claras e realistas.',
+    'Os líderes apoiam o equilíbrio trabalho-vida pessoal.'
+  ]);
+  _buildLikert('fk2-carga', [
+    'O volume de trabalho é gerenciável.',
+    'Os prazos são realistas e negociáveis.',
+    'Os colaboradores conseguem descansar fora do horário.',
+    'Existe equilíbrio na distribuição de demandas.',
+    'A equipe não costuma trabalhar em fins de semana ou à noite.'
+  ]);
+  _buildLikert('fk2-clima', [
+    'O relacionamento entre colegas é respeitoso e colaborativo.',
+    'Conflitos internos são resolvidos de forma saudável.',
+    'Existe senso de pertencimento e comunidade no time.',
+    'A empresa promove iniciativas de integração e conexão.',
+    'As pessoas se sentem valorizadas como indivíduos.'
+  ]);
+
+  // Formulário 03 — Anamnese — satisfação
+  _buildLikert('fk3-sat', [
+    'Satisfação geral com o trabalho',
+    'Relação com a liderança',
+    'Relação com colegas',
+    'Equilíbrio entre vida pessoal e profissional'
+  ]);
+
+  // Formulário 05 — NPS e avaliação
+  _buildNPS('fk5-nps');
+  _buildLikert('fk5-aval', [
+    'Qualidade do atendimento / serviço prestado',
+    'Clareza e comunicação da equipe Ranne',
+    'Pontualidade e organização',
+    'Relevância do conteúdo para nossa realidade',
+    'Impacto percebido no bem-estar da equipe',
+    'Custo-benefício'
+  ]);
+}
+
 function toggleAjudaMod(header) {
   const mod = header.closest('.ajuda-modulo');
   if (!mod) return;
@@ -8556,7 +9322,7 @@ const TRILHAS = [
           {t:'p', c:'A OMS reconheceu o Burnout como fenômeno ocupacional em 2019 (CID-11, código QD85) e o define por três dimensões:'},
           {t:'caixa', titulo:'As 3 dimensões do Burnout (OMS):', items:['Exaustão emocional — sensação de estar completamente drenado, sem energia para nada.','Distanciamento mental — indiferença, cinismo, sensação de que nada mais importa.','Queda de eficácia — percepção de que você não consegue mais performar como antes.']},
           {t:'p', c:'Se você está cansado depois de uma semana intensa mas se recupera no fim de semana, isso é cansaço normal. Burnout é quando não existe mais recuperação — você descansa e continua exausto.'},
-          {t:'p', c:'Importante: Burnout pode vir acompanhado de sintomas de depressão e ansiedade. Se você se identificou, não espere para buscar apoio.'},
+          {t:'p', c:'Importante: Burnout pode vir acompanhado de sinais dos sintomas da depressão e da ansiedade. Se você se identificou, não espere para buscar apoio.'},
           {t:'levar', c:'Burnout não é exagero nem frescura — é um problema de saúde real, com causas identificáveis e soluções concretas. Reconhecê-lo é sempre o primeiro passo.'}
         ]
       },
@@ -9645,6 +10411,7 @@ function pg(id, el) {
 
   if (id === 'equipe') loadMembros();
   if (id === 'ajuda') document.querySelectorAll('.ajuda-modulo').forEach(m => m.classList.remove('open'));
+  if (id === 'formularios') { document.querySelectorAll('.form-kit-card.open').forEach(c=>c.classList.remove('open')); _initFormularios(); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
