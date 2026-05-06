@@ -657,7 +657,7 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   z-index: 1;
   background: #FFFFFF;
   border-radius: 32px 32px 0 0;
-  padding: 32px 24px calc(32px + env(safe-area-inset-bottom,0px));
+  padding: 32px 24px calc(80px + env(safe-area-inset-bottom,0px));
   flex: 1;
   box-shadow: 0 -4px 32px rgba(27,61,47,.06);
   animation: cardUp .6s .15s cubic-bezier(.16,1,.3,1) both;
@@ -3165,7 +3165,7 @@ body {
 
   <div class="ob-hero" role="img" aria-label="Profissional de RH trabalhando">
     <img
-      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=80&fit=crop&crop=faces,center"
+      src="https://cdn.jsdelivr.net/gh/DaraToledo/Ranne@main/xk94y.jpg"
       alt="Profissional sorrindo ao usar a plataforma Ranne Care"
       fetchpriority="high"
       loading="eager"
@@ -4289,6 +4289,8 @@ body {
           </button>
         </div>
 
+      </div><!-- /p-config -->
+
       <!-- RELATÓRIOS -->
       <div id="p-relatorios" style="display:none">
         <div class="topbar">
@@ -4411,9 +4413,6 @@ body {
         <div style="text-align:center;padding:16px;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;">
           🔒 LGPD compliant · Dados criptografados · Revisado por Viviani A. Rufino — Psicóloga CRP 06/215926
         </div>
-      </div>
-
-      </div>
 
     </main>
   </div>
@@ -4508,7 +4507,7 @@ body {
           <div class="ih-greeting-day" id="ih-data">Carregando...</div>
         </div>
         <div class="ih-streak">
-          <div class="ih-streak-num">4</div>
+          <div class="ih-streak-num" id="ih-streak-num">—</div>
           <div class="ih-streak-lbl">semanas</div>
         </div>
       </div>
@@ -4534,23 +4533,23 @@ body {
       <div class="ih-dims">
         <div class="ih-dim">
           <div class="ih-dim-name">Humor</div>
-          <div class="ih-dim-val ihv-green">82</div>
-          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-green" style="width:82%"></div></div>
+          <div class="ih-dim-val ihv-green" id="ih-val-humor">—</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-green" id="ih-bar-humor" style="width:0%"></div></div>
         </div>
         <div class="ih-dim">
           <div class="ih-dim-name">Energia</div>
-          <div class="ih-dim-val ihv-amber">64</div>
-          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-amber" style="width:64%;animation-delay:.15s"></div></div>
+          <div class="ih-dim-val ihv-amber" id="ih-val-energia">—</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-amber" id="ih-bar-energia" style="width:0%;animation-delay:.15s"></div></div>
         </div>
         <div class="ih-dim">
           <div class="ih-dim-name">Carga</div>
-          <div class="ih-dim-val ihv-amber">58</div>
-          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-amber" style="width:58%;animation-delay:.3s"></div></div>
+          <div class="ih-dim-val ihv-amber" id="ih-val-carga">—</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-amber" id="ih-bar-carga" style="width:0%;animation-delay:.3s"></div></div>
         </div>
         <div class="ih-dim">
           <div class="ih-dim-name">Foco</div>
-          <div class="ih-dim-val ihv-green">79</div>
-          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-green" style="width:79%;animation-delay:.45s"></div></div>
+          <div class="ih-dim-val ihv-green" id="ih-val-foco">—</div>
+          <div class="ih-dim-bar"><div class="ih-dim-fill ihf-green" id="ih-bar-foco" style="width:0%;animation-delay:.45s"></div></div>
         </div>
       </div>
     </div>
@@ -6010,14 +6009,17 @@ async function salvarCheckin() {
   const carga = cs.carga;
 
   try {
+    const focoVal = cs.foco ?? Math.round((humor * 0.7 + energia * 0.3));
     await db.from('checkins').insert({
       empresa_id: currentEmpresa?.id,
       user_id: currentUser?.id,
       humor, energia, carga,
+      foco: focoVal,
       semana: getWeekNumber()
     });
   } catch {}
 
+  await carregarDadosHomeColaborador();
   toast('✅ Check-in enviado! Obrigado.');
 }
 
@@ -7496,7 +7498,6 @@ function _bvCanvas() {
 
 /* Atualiza dados da tela inicial */
 function atualizarInicioColaborador(nome) {
-  // Período do dia
   const h = new Date().getHours();
   const periodo = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
   const dias = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
@@ -7504,15 +7505,87 @@ function atualizarInicioColaborador(nome) {
   const hoje = new Date();
   const dataStr = dias[hoje.getDay()] + ', ' + hoje.getDate() + ' de ' + meses[hoje.getMonth()];
 
+  const primeiroNome = nome.split(' ')[0];
   const elPeriodo = document.getElementById('ih-periodo');
   const elNome    = document.getElementById('ih-nome');
   const elData    = document.getElementById('ih-data');
   const elTbUser  = document.getElementById('tb-user-name');
 
   if (elPeriodo) elPeriodo.textContent = periodo;
-  if (elNome)    elNome.textContent = nome.split(' ')[0]; // só primeiro nome
+  if (elNome)    elNome.textContent = primeiroNome;
   if (elData)    elData.textContent = dataStr;
-  if (elTbUser)  elTbUser.textContent = 'Olá, ' + nome.split(' ')[0] + '!';
+  if (elTbUser)  elTbUser.textContent = 'Olá, ' + primeiroNome + '!';
+
+  // Carrega dados reais do Supabase
+  carregarDadosHomeColaborador();
+}
+
+async function carregarDadosHomeColaborador() {
+  if (!currentUser?.id) return;
+
+  try {
+    // Busca último check-in
+    const semAtual = getWeekNumber();
+    const { data: checkins } = await db
+      .from('checkins')
+      .select('humor, energia, carga, foco, semana, created_at')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false })
+      .limit(4);
+
+    if (checkins && checkins.length > 0) {
+      const ultimo = checkins[0];
+      const humor   = Math.round(ultimo.humor   ?? 0);
+      const energia = Math.round(ultimo.energia  ?? 0);
+      const carga   = Math.round(ultimo.carga    ?? 0);
+      const foco    = Math.round(ultimo.foco     ?? humor); // foco pode não existir
+      const score   = Math.round((humor + energia + (100 - carga) + foco) / 4);
+
+      // Atualiza score ring
+      const scoreEl = document.getElementById('ih-score-num');
+      const ringEl  = document.getElementById('ih-ring-fill');
+      const chipEl  = document.getElementById('ih-chip');
+      if (scoreEl) scoreEl.textContent = score;
+      if (ringEl) {
+        const offset = Math.round(263 - (score / 100) * 263);
+        ringEl.style.setProperty('--ih-offset', offset);
+      }
+      if (chipEl) {
+        if (score >= 70) { chipEl.textContent = '✨ Você está bem'; chipEl.className = 'ih-score-chip ih-chip-good'; }
+        else if (score >= 50) { chipEl.textContent = '⚡ Atenção ao seu bem-estar'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
+        else { chipEl.textContent = '🌧 Cuide de você'; chipEl.className = 'ih-score-chip ih-chip-bad'; }
+      }
+
+      // Atualiza dimensões
+      const dims = { humor, energia, carga, foco };
+      for (const [k, v] of Object.entries(dims)) {
+        const valEl = document.getElementById('ih-val-' + k);
+        const barEl = document.getElementById('ih-bar-' + k);
+        if (valEl) valEl.textContent = v;
+        if (barEl) barEl.style.width = v + '%';
+      }
+
+      // Streak (semanas consecutivas com check-in)
+      const semanasUnicas = [...new Set(checkins.map(c => c.semana))];
+      const streakEl = document.getElementById('ih-streak-num');
+      if (streakEl) streakEl.textContent = semanasUnicas.length;
+
+      // Salva para uso offline
+      window._ultimoCheckin = { humor, energia, carga, foco, score };
+    } else {
+      // Sem dados — mantém placeholders com dashes
+      ['humor','energia','carga','foco'].forEach(k => {
+        const el = document.getElementById('ih-val-' + k);
+        if (el) el.textContent = '—';
+      });
+      const scoreEl = document.getElementById('ih-score-num');
+      if (scoreEl) scoreEl.textContent = '—';
+      const chipEl = document.getElementById('ih-chip');
+      if (chipEl) { chipEl.textContent = 'Faça seu primeiro check-in'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
+    }
+  } catch(e) {
+    console.warn('[home collab]', e);
+  }
 }
 
 
@@ -8898,9 +8971,9 @@ async function gerarRelatorioNR1() {
     let diagnosticos = [], colaboradores = [], intervencoes = [];
 
     if (db && currentEmpresa?.id) {
-      const { data: diags }  = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false }).catch(() => ({data:[]}));
-      const { data: cols }   = await db.from('colaboradores').select('id, nome, cargo, setor').eq('empresa_id', currentEmpresa.id).catch(() => ({data:[]}));
-      const { data: intervs }= await db.from('intervencoes_rh').select('*').eq('empresa_id', currentEmpresa.id).catch(() => ({data:[]}));
+      try { const r = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false }); diagnosticos = r.data || []; } catch {}
+      try { const r = await db.from('colaboradores').select('id, nome, cargo, setor').eq('empresa_id', currentEmpresa.id); colaboradores = r.data || []; } catch {}
+      try { const r = await db.from('intervencoes_rh').select('*').eq('empresa_id', currentEmpresa.id); intervencoes = r.data || []; } catch {}
       diagnosticos  = diags  || [];
       colaboradores = cols   || [];
       intervencoes  = intervs || [];
