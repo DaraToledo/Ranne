@@ -420,6 +420,39 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 .step.active { display: block; }
 
 
+
+/* ══════════ AJUDA & TOUR ══════════ */
+.ajuda-modulo { overflow:hidden; }
+.ajuda-mod-header {
+  display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer; padding:2px 0; gap:10px;
+  user-select:none; -webkit-tap-highlight-color:transparent;
+}
+.ajuda-chevron {
+  font-size:18px; color:var(--muted); transition:transform 0.25s ease;
+  flex-shrink:0; line-height:1;
+}
+.ajuda-modulo.open .ajuda-chevron { transform:rotate(180deg); }
+.ajuda-mod-body {
+  display:none;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  margin-top:12px;
+  flex-direction:column;
+  gap:12px;
+}
+.ajuda-modulo.open .ajuda-mod-body { display:flex; }
+.ajuda-item-title {
+  font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px;
+}
+.ajuda-item-desc {
+  font-size:12px; color:var(--muted); line-height:1.65;
+}
+.ajuda-hero {
+  background:linear-gradient(135deg,#1B3D2F,#2D5A4E);
+  border-radius:16px; padding:20px; margin-bottom:14px;
+}
+
 /* ══════════ TOUR GUIADO ══════════ */
 #tour-overlay {
   position: fixed; inset: 0; z-index: 9000;
@@ -566,15 +599,13 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   z-index: 100;
   width: 100vw;
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   padding: 0 !important;
   margin: 0 !important;
 }
 #onboarding .ob-page {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
 }
 /* Page wrapper */
 .ob-page {
@@ -583,7 +614,6 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   flex-direction: column;
   position: relative;
   background: #F4EFE6;
-  overflow-x: hidden;
 }
 
 /* Hero image */
@@ -660,8 +690,8 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
   z-index: 1;
   background: #FFFFFF;
   border-radius: 32px 32px 0 0;
-  padding: 32px 24px calc(100px + env(safe-area-inset-bottom,0px));
-  min-height: 60vh;
+  padding: 32px 24px calc(80px + env(safe-area-inset-bottom,0px));
+  flex: 1;
   box-shadow: 0 -4px 32px rgba(27,61,47,.06);
   animation: cardUp .6s .15s cubic-bezier(.16,1,.3,1) both;
 }
@@ -829,7 +859,6 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
 /* ── Desktop layout ── */
 @media (min-width: 900px) {
   .ob-page { flex-direction: row; min-height: 100vh; height: 100vh; overflow: hidden; }
-  #onboarding { overflow: hidden; }
   .ob-hero { width: 48%; height: 100vh; max-height: none; min-height: 100vh; flex-shrink: 0; }
   .ob-hero img { object-position: center 15%; }
   .ob-hero::after { background: linear-gradient(135deg, rgba(27,61,47,.45) 0%, rgba(27,61,47,.15) 40%, transparent 65%, rgba(27,61,47,.6) 100%); }
@@ -3452,6 +3481,7 @@ body {
         <div class="sb-item" onclick="pg('equipe',this)"><span class="ic">👥</span> Equipe</div>
         <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic">📊</span> Relatórios & NR-1</div>
         <div class="sb-item" onclick="pg('config',this)"><span class="ic">⚙️</span> Configurações</div>
+        <div class="sb-item" onclick="pg('ajuda',this)"><span class="ic">❓</span> Ajuda & Tour</div>
       </nav>
       <div class="sb-footer">
         <div class="sb-user">
@@ -4293,6 +4323,217 @@ body {
         </div>
 
       </div><!-- /p-config -->
+
+
+      <!-- AJUDA & TOUR -->
+      <div id="p-ajuda" style="display:none">
+        <div class="topbar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+            <div>
+              <div class="page-title">Ajuda & Tour</div>
+              <div class="page-sub">Como usar o Ranne Care</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="reiniciarTour()">▶ Refazer tour</button>
+        </div>
+
+        <!-- Hero tour -->
+        <div class="ajuda-hero">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <span style="font-size:26px;">🗺️</span>
+            <div>
+              <div style="color:#fff;font-size:14px;font-weight:700;">Tour guiado interativo</div>
+              <div style="color:rgba(255,255,255,.5);font-size:11.5px;margin-top:2px;">Apresentação passo a passo do painel</div>
+            </div>
+          </div>
+          <p style="color:rgba(255,255,255,.6);font-size:12px;line-height:1.6;margin-bottom:12px;">O tour destaca cada seção com um spotlight e explica o que ela faz. Ideal para novas entradas ou para apresentar a plataforma à liderança.</p>
+          <button onclick="reiniciarTour()" style="width:100%;padding:11px;border-radius:10px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;">
+            ▶ Iniciar tour guiado →
+          </button>
+        </div>
+
+        <!-- Seção: Funcionalidades -->
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;">Funcionalidades</div>
+
+        <!-- Dashboard -->
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:18px;">📊</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">Dashboard — Visão Geral</div>
+                <div style="font-size:11px;color:var(--muted);">Panorama de saúde em tempo real</div>
+              </div>
+            </div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <div><div class="ajuda-item-title">📈 Score Geral de Saúde (ISA)</div><div class="ajuda-item-desc">Número de 0 a 100 que representa a saúde psicossocial média da empresa. Calculado automaticamente a partir das respostas do QUSP pelos colaboradores.</div></div>
+            <div><div class="ajuda-item-title">🔴🟡🟢 Badges de risco</div><div class="ajuda-item-desc"><b>Crítico</b> (score &lt; 55) · <b>Atenção</b> (55–70) · <b>OK</b> (&gt; 70). O dashboard mostra quantos colaboradores estão em cada nível e gera alertas automáticos.</div></div>
+            <div><div class="ajuda-item-title">🌡 4 Dimensões do ISA</div><div class="ajuda-item-desc"><b>Burnout</b> · <b>Estresse Físico</b> · <b>Sono e Fadiga Digital</b> · <b>Ansiedade Social</b>. Cada dimensão tem score separado com comparativo ao mês anterior.</div></div>
+            <div><div class="ajuda-item-title">🗺 Heatmap por Setor</div><div class="ajuda-item-desc">Mapa visual de risco por área (Comercial, TI, Financeiro…). Setores com menos de 3 pessoas não exibem score individual — proteção LGPD.</div></div>
+            <div><div class="ajuda-item-title">⚡ Alertas inteligentes</div><div class="ajuda-item-desc">Disparados automaticamente quando um colaborador piora ≥ 15 pontos entre dois diagnósticos, ou quando um setor cai abaixo do limiar configurado.</div></div>
+          </div>
+        </div>
+
+        <!-- Colaboradores -->
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:18px;">👤</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">Colaboradores — Gestão Individual</div>
+                <div style="font-size:11px;color:var(--muted);">Exclusivo RH · Ficha por pessoa</div>
+              </div>
+            </div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <div><div class="ajuda-item-title">📋 Lista com filtro por risco</div><div class="ajuda-item-desc">Todos os colaboradores com badges de risco ao lado. Filtre por Crítico, Atenção, OK ou Sem resposta. Busca por nome disponível.</div></div>
+            <div><div class="ajuda-item-title">🗂 Ficha Individual</div><div class="ajuda-item-desc">Clique em qualquer colaborador para ver score atual, evolução mês a mês, scores por dimensão e recomendação de intervenção. Apenas scores numéricos — respostas de texto aberto ficam privadas do RH.</div></div>
+            <div><div class="ajuda-item-title">📝 Registro de Intervenções</div><div class="ajuda-item-desc">Documente: Conversa 1:1 · Encaminhamento · Afastamento · Redução de carga. Cria histórico auditável exigido pela NR-1. Visível apenas ao RH — o colaborador não acessa.</div></div>
+            <div><div class="ajuda-item-title">🔔 Alerta de piora individual</div><div class="ajuda-item-desc">O app compara scores entre diagnósticos. Queda ≥ 15 pts dispara alerta com nome, dimensão afetada e sugestão de ação. Limiar configurável em Configurações.</div></div>
+          </div>
+        </div>
+
+        <!-- Diagnóstico -->
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:18px;">📋</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">Diagnóstico QUSP</div>
+                <div style="font-size:11px;color:var(--muted);">Criação, envio e monitoramento</div>
+              </div>
+            </div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <div><div class="ajuda-item-title">➕ Criar novo ciclo</div><div class="ajuda-item-desc">Defina nome e prazo. Selecione colaboradores e gere o link do QUSP para envio por WhatsApp, e-mail ou diretamente no app.</div></div>
+            <div><div class="ajuda-item-title">📡 Monitoramento em tempo real</div><div class="ajuda-item-desc">Acompanhe responderam vs. pendentes por setor e reenvie lembretes com um clique para quem ainda não preencheu.</div></div>
+            <div><div class="ajuda-item-title">🕐 Histórico de ciclos</div><div class="ajuda-item-desc">Todos os diagnósticos anteriores com datas, taxas de resposta e scores. Comparativo entre ciclos e exportação PDF/Excel.</div></div>
+            <div><div class="ajuda-item-title">🔒 Privacidade total</div><div class="ajuda-item-desc">O colaborador responde na área dele. O RH acessa apenas scores numéricos — nunca respostas de texto aberto. 100% LGPD compliant.</div></div>
+          </div>
+        </div>
+
+        <!-- Plano de Ação -->
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:18px;">✅</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">Plano de Ação</div>
+                <div style="font-size:11px;color:var(--muted);">Intervenções geradas pelo diagnóstico</div>
+              </div>
+            </div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <div><div class="ajuda-item-title">🤖 Geração automática</div><div class="ajuda-item-desc">Após cada diagnóstico, o app gera ações organizadas por prioridade (Crítico · Alta · Média · Baixa) com base nos scores do QUSP.</div></div>
+            <div><div class="ajuda-item-title">☑ Gestão das ações</div><div class="ajuda-item-desc">Marque como concluídas, defina responsáveis, prazos e notas internas. Progresso geral calculado automaticamente.</div></div>
+            <div><div class="ajuda-item-title">📄 Exportar PDF</div><div class="ajuda-item-desc">Plano completo pronto para apresentar à diretoria, com prioridades, responsáveis e prazos.</div></div>
+          </div>
+        </div>
+
+        <!-- Relatórios -->
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:18px;">⚖️</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">Relatórios & NR-1</div>
+                <div style="font-size:11px;color:var(--muted);">Conformidade legal e documentação</div>
+              </div>
+            </div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <div><div class="ajuda-item-title">📅 Relatório mensal automático</div><div class="ajuda-item-desc">Score geral vs. mês anterior · dimensões críticas · setor em risco · ações concluídas · recomendações para o próximo ciclo.</div></div>
+            <div><div class="ajuda-item-title">⚖️ Relatório de Conformidade NR-1</div><div class="ajuda-item-desc">PDF exportável que comprova que sua empresa cumpre a NR-1 (2025) — exigindo gestão ativa de riscos psicossociais. Válido para fiscalização do Ministério do Trabalho.</div></div>
+            <div><div class="ajuda-item-title">O relatório NR-1 inclui</div><div class="ajuda-item-desc">Identificação da empresa · Ciclos QUSP realizados · Taxa de participação · Resultados por dimensão · Intervenções com tipo e status · Evolução entre ciclos · Assinatura digital do responsável de RH.</div></div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:18px 0 10px;">Perguntas frequentes</div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Como convidar colaboradores para a plataforma?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">Vá em <b>Equipe → + Convidar Membro</b>. Informe nome e e-mail e gere um código de acesso. Compartilhe o código com o colaborador — ao criar a conta com o código ele será vinculado automaticamente à sua empresa.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Os colaboradores veem os dados uns dos outros?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">Não. Cada colaborador acessa apenas seus próprios dados. O RH vê scores agregados e fichas individuais, mas nunca as respostas de texto aberto. Plataforma 100% LGPD compliant com dados criptografados.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Com que frequência devo enviar o diagnóstico?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">Recomendamos ciclos <b>trimestrais</b> para acompanhamento longitudinal. Para equipes em risco elevado, ciclos <b>mensais</b> permitem monitorar a eficácia das intervenções com mais precisão.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">O que é o QUSP e em que é baseado?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">O QUSP (Questionário de Saúde Psicossocial) é o instrumento diagnóstico da Ranne, baseado no <b>MBI — Maslach Burnout Inventory</b>, nos critérios da <b>OMS/CID-11</b> e na escala de tecnoestresse de Tarafdar. Revisado pela Psicóloga Clínica <b>Viviani Alexandre Rufino — CRP 06/215926</b>.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Como a NR-1 (2025) afeta minha empresa?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">A NR-1 atualizada (Portaria MTE nº 1.419/2024) exige que todas as empresas realizem o <b>Gerenciamento de Riscos Ocupacionais (GRO)</b> incluindo riscos psicossociais. Empresas sem documentação estão sujeitas a autuação e multa. O Ranne gera o relatório comprobatório com um clique em <b>Relatórios & NR-1</b>.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">O tour não apareceu quando entrei. Como ver?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">O tour aparece automaticamente apenas na primeira vez. Se você já entrou antes, ele fica salvo como "visto". Para rever, clique no botão <b>"▶ Iniciar tour guiado"</b> acima — isso reseta e inicia o tour do zero.</p>
+          </div>
+        </div>
+
+        <!-- Rodapé -->
+        <div style="margin-top:20px;padding:14px 16px;background:var(--bg);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div style="font-size:12.5px;font-weight:600;color:var(--text);">Refazer o tour guiado</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;">Reinicia a apresentação interativa do painel</div>
+          </div>
+          <button onclick="reiniciarTour()" class="btn btn-primary btn-sm">▶ Refazer tour</button>
+        </div>
+
+        <div style="text-align:center;margin:20px 0 8px;font-size:11px;color:var(--muted);line-height:1.7;">
+          Ranne Care · Humanne Integra<br>
+          <a href="mailto:suporte@rannecare.com.br" style="color:var(--mint);text-decoration:none;">suporte@rannecare.com.br</a><br>
+          Revisado por Viviani Alexandre Rufino — Psicóloga Clínica CRP 06/215926
+        </div>
+
+      </div>
 
       <!-- RELATÓRIOS -->
       <div id="p-relatorios" style="display:none">
@@ -7283,6 +7524,24 @@ const TOUR_STEPS = [
 
 let _tourStep = 0;
 
+
+/* ══════════ AJUDA — Tour & Accordion ══════════ */
+function reiniciarTour() {
+  localStorage.removeItem(TOUR_KEY);
+  // Vai ao dashboard e inicia
+  const dashItem = document.querySelector('.sb-item[onclick*="dashboard"]');
+  pg('dashboard', dashItem);
+  setTimeout(iniciarTour, 500);
+}
+
+function toggleAjudaMod(header) {
+  const mod = header.closest('.ajuda-modulo');
+  if (!mod) return;
+  const isOpen = mod.classList.contains('open');
+  document.querySelectorAll('.ajuda-modulo.open').forEach(m => m.classList.remove('open'));
+  if (!isOpen) mod.classList.add('open');
+}
+
 function iniciarTour() {
   if (localStorage.getItem(TOUR_KEY)) return;
   _tourStep = 0;
@@ -9222,6 +9481,7 @@ function pg(id, el) {
   }
 
   if (id === 'equipe') loadMembros();
+  if (id === 'ajuda') document.querySelectorAll('.ajuda-modulo').forEach(m => m.classList.remove('open'));
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
