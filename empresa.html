@@ -220,12 +220,20 @@ body {
   margin: 0 auto 28px;
 }
 
+/* Brand row — small logo + eyebrow */
+.ob-brand-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+}
+.ob-brand-logo {
+  width: 28px; height: 28px; object-fit: contain; flex-shrink: 0;
+}
 /* Eyebrow */
 .ob-eyebrow {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 10px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 1.2px; color: var(--forest-lt);
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 .ob-eyebrow::before {
   content: '';
@@ -593,14 +601,6 @@ body {
       loading="eager"
     >
 
-    <!-- Logo pill -->
-    <div class="ob-logo-pill" aria-label="Ranne Care — Saúde Mental Corporativa">
-      <img src="/icons/launchericon-192x192.png" alt="">
-      <span>Ranne</span>
-      <div class="ob-sep" aria-hidden="true"></div>
-      <span class="ob-tag">Saúde Mental Corporativa</span>
-    </div>
-
     <!-- Live badge -->
     <div class="ob-live-badge" aria-label="Plataforma ativa em mais de 120 empresas">
       <div class="ob-live-dot" aria-hidden="true"></div>
@@ -645,7 +645,10 @@ body {
 
       <div class="ob-handle" aria-hidden="true"></div>
 
-      <p class="ob-eyebrow">Bem-vindo à Ranne</p>
+      <div class="ob-brand-row">
+        <img src="/icons/launchericon-192x192.png" alt="Ranne Care" class="ob-brand-logo">
+        <p class="ob-eyebrow">Bem-vindo à Ranne</p>
+      </div>
 
       <h2 class="ob-h2">Como vai usar<br>a <em>plataforma?</em></h2>
       <p class="ob-sub">Escolha o perfil certo para ter a melhor experiência.</p>
