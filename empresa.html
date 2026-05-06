@@ -21,7 +21,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="/icons/launchericon-512x512.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/launchericon-192x192.png">
 <link rel="shortcut icon" href="/icons/launchericon-192x192.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
 
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -181,6 +181,22 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 @keyframes lsFade { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
 @keyframes lsSweep { 0%{transform:translateX(-100%)} 100%{transform:translateX(220%)} }
 
+
+/* ── Onboarding outer wrapper ── */
+#onboarding {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#onboarding .ob-page {
+  width: 100%;
+  height: 100%;
+}
 /* Page wrapper */
 .ob-page {
   min-height: 100vh;
@@ -2850,7 +2866,7 @@ body {
 
 
 <!-- ══ AUTH STEPS (original flow — mostrado após seleção de perfil) ══ -->
-<div id="onboarding-steps" class="fullpage" style="display:none">
+<div id="onboarding-steps" class="fullpage" style="display:none;position:fixed;inset:0;z-index:100;width:100vw;height:100vh;overflow-y:auto">
   <div class="ob-bg-texture"></div>
   <div class="ob-orb1"></div>
   <div class="ob-orb2"></div>
