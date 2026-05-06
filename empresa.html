@@ -142,7 +142,7 @@ button:focus-visible, a:focus-visible,
 input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-offset: 2px; }
 
 /* Opacidades mínimas para WCAG AA */
-.ob-logo-tag { color:rgba(0,0,0,.50) !important; }
+.ob-logo-tag { color:rgba(0,0,0,.55) !important; }
 .ob-sub { color:rgba(0,0,0,.55) !important; }
 .ob-stat-lbl { color:rgba(0,0,0,.50) !important; }
 .ob-p-body span { color:rgba(0,0,0,.55) !important; }
@@ -189,13 +189,15 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   z-index: 100;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 0 !important;
   margin: 0 !important;
+  background: #F4EFE6;
 }
 #onboarding .ob-page {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 }
 /* Page wrapper */
 .ob-page {
@@ -204,6 +206,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   flex-direction: column;
   position: relative;
   background: #F4EFE6;
+  overflow-x: hidden;
 }
 
 /* Hero image */
@@ -362,10 +365,12 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   width: 44px; height: 44px; border-radius: 12px;
   background: rgba(27,61,47,.07);
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 12px; font-size: 22px;
+  margin: 0 auto 12px;
   transition: background .2s, transform .2s;
 }
+.rc-icon svg { transition: stroke .2s; }
 .role-card.selected .rc-icon { background: rgba(45,90,78,.14); transform: scale(1.05); }
+.role-card.selected .rc-icon svg { stroke: #1B3D2F !important; }
 .rc-label { font-size: 13px; font-weight: 700; color: #1A2820; margin-bottom: 3px; display: block; }
 .rc-sub { font-size: 10.5px; color: #6B7F76; display: block; line-height: 1.4; }
 
@@ -397,38 +402,46 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 .ob-links a:hover { border-color: #2D5A4E; }
 
 /* Trust strip */
-.ob-trust { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px; }
-.ob-trust-item { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: #6B7F76; font-weight: 500; }
-.ob-trust-item svg { width: 13px; height: 13px; stroke: #6F9E8A; stroke-width: 2; fill: none; flex-shrink: 0; }
-.ob-trust-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(27,61,47,.18); flex-shrink: 0; }
+.ob-trust { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.ob-trust-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #6B7F76; font-weight: 500; }
+.ob-trust-item svg { width: 12px; height: 12px; stroke: #6F9E8A; stroke-width: 2; fill: none; flex-shrink: 0; }
+.ob-trust-dot { width: 2.5px; height: 2.5px; border-radius: 50%; background: rgba(27,61,47,.18); flex-shrink: 0; }
 
 /* Disclaimer */
 .ob-disclaimer {
-  background: #F4EFE6;
-  border: 1px solid rgba(27,61,47,.10);
-  border-left: 3px solid #C9A84C;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 16px;
+  background: rgba(201,168,76,.07);
+  border: 1px solid rgba(201,168,76,.22);
+  border-left: 2.5px solid #C9A84C;
+  border-radius: 10px;
+  padding: 11px 13px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
 }
-.ob-disclaimer p { font-size: 11.5px; color: #3D4F47; line-height: 1.65; }
+.ob-disclaimer-icon {
+  flex-shrink: 0;
+  width: 15px; height: 15px; margin-top: 1px;
+  stroke: #9A7E30; stroke-width: 2; fill: none;
+}
+.ob-disclaimer p { font-size: 11px; color: #4A3D1A; line-height: 1.6; margin: 0; }
 
 /* CRP badge */
 .ob-crp {
   display: flex; align-items: center; gap: 10px;
-  background: #F4EFE6;
-  border: 1px solid rgba(27,61,47,.10);
-  border-radius: 12px;
-  padding: 10px 12px;
+  border-top: 1px solid rgba(27,61,47,.08);
+  padding-top: 12px;
+  margin-top: 2px;
 }
 .ob-crp-avatar {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: rgba(27,61,47,.1);
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, #2D5A4E, #3D7A60);
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
+  flex-shrink: 0;
 }
-.ob-crp-text strong { display: block; font-size: 11.5px; font-weight: 700; color: #1A2820; margin-bottom: 1px; }
-.ob-crp-text span { font-size: 10.5px; color: #6B7F76; }
+.ob-crp-avatar svg { width: 15px; height: 15px; stroke: rgba(255,255,255,.85); stroke-width: 2; fill: none; }
+.ob-crp-text strong { display: block; font-size: 11px; font-weight: 700; color: #1A2820; margin-bottom: 1px; }
+.ob-crp-text span { font-size: 10px; color: #6B7F76; }
 
 /* ob-right wrapper */
 .ob-right { display: contents; }
@@ -2803,7 +2816,9 @@ body {
           <div class="rc-check" aria-hidden="true">
             <svg viewBox="0 0 12 9"><polyline points="1,4.5 4.5,8 11,1"/></svg>
           </div>
-          <div class="rc-icon" aria-hidden="true">🏢</div>
+          <div class="rc-icon" aria-hidden="true">
+            <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;stroke:#2D5A4E"><rect x="2" y="7" width="18" height="13" rx="1.5"/><path d="M7 7V5a4 4 0 018 0v2"/><line x1="11" y1="12" x2="11" y2="15"/></svg>
+          </div>
           <span class="rc-label">Empresa</span>
           <span class="rc-sub">Gestor · RH · CEO</span>
         </div>
@@ -2814,7 +2829,9 @@ body {
           <div class="rc-check" aria-hidden="true">
             <svg viewBox="0 0 12 9"><polyline points="1,4.5 4.5,8 11,1"/></svg>
           </div>
-          <div class="rc-icon" aria-hidden="true">👤</div>
+          <div class="rc-icon" aria-hidden="true">
+            <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;stroke:#2D5A4E"><circle cx="11" cy="8" r="3.5"/><path d="M4 19c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5"/></svg>
+          </div>
           <span class="rc-label">Pessoa Física</span>
           <span class="rc-sub">Uso individual</span>
         </div>
@@ -2848,11 +2865,14 @@ body {
       </div>
 
       <div class="ob-disclaimer" role="note">
-        <p>⚠️ Esta plataforma é uma ferramenta de autoconhecimento — não substitui avaliação ou diagnóstico profissional. Se identificar sinais de sofrimento intenso, converse com um psicólogo ou médico.</p>
+        <svg class="ob-disclaimer-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r=".6" fill="#9A7E30" stroke="none"/></svg>
+        <p>Esta plataforma é uma ferramenta de autoconhecimento — não substitui avaliação ou diagnóstico profissional. Se identificar sinais de sofrimento intenso, consulte um psicólogo ou médico.</p>
       </div>
 
       <div class="ob-crp" aria-label="Conteúdo revisado por profissional de saúde">
-        <div class="ob-crp-avatar" aria-hidden="true">🧠</div>
+        <div class="ob-crp-avatar" aria-hidden="true">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="2.5"/><path d="M3 14c0-3.3 2.2-5 5-5s5 1.7 5 5"/></svg>
+        </div>
         <div class="ob-crp-text">
           <strong>Viviani Alexandre Rufino</strong>
           <span>Psicóloga Clínica · CRP 06/215926</span>
@@ -2873,6 +2893,11 @@ body {
   <div class="onboard-left" style="display:none"></div>
   <div class="onboard-right" style="width:100%;max-width:100%;padding:24px 16px;align-items:flex-start;min-height:100vh">
     <div class="auth-box" style="border-radius:20px;max-width:460px;width:100%;margin:0 auto">
+      <div class="auth-preview" style="padding:0;overflow:hidden;">
+        <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/xk94y.jpg"
+             alt="Prévia do dashboard Ranne"
+             style="width:100%;height:auto;display:block;">
+      </div>
 <div class="auth-form">
 
         <!-- ── STEP 1: Escolha o perfil ── -->
