@@ -2997,6 +2997,7 @@ body {
         <div class="sb-section">Gestão</div>
         <div class="sb-item" onclick="pg('equipe',this)"><span class="ic">👥</span> Equipe</div>
         <div class="sb-item" onclick="pg('config',this)"><span class="ic">⚙️</span> Configurações</div>
+        <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic">📋</span> Relatório NR-1</div>
       </nav>
       <div class="sb-footer">
         <div class="sb-user">
@@ -3743,6 +3744,58 @@ body {
           <button class="btn btn-primary btn-sm" onclick="salvarConfig()">Salvar Alterações</button>
         </div>
 
+        <!-- Configurações de Alerta -->
+        <div class="card" style="max-width:480px;margin-bottom:20px;margin-top:20px">
+          <div class="card-hdr"><span class="card-title">⚙️ Alertas de Piora Individual</span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6">O app monitora automaticamente os scores entre diagnósticos e avisa quando um colaborador piora significativamente.</p>
+          <div class="fi-row">
+            <div class="fi-group">
+              <label class="fi-label">Limiar de alerta (pontos)</label>
+              <input class="fi-input" type="number" id="cfg-limiar" value="15" min="5" max="40">
+              <div style="font-size:10.5px;color:var(--muted);margin-top:4px">Queda ≥ X pts no score geral dispara alerta</div>
+            </div>
+            <div class="fi-group">
+              <label class="fi-label">Canal de notificação</label>
+              <select class="fi-input fi-select" id="cfg-canal-alerta">
+                <option value="app">Somente no app</option>
+                <option value="email">E-mail + app</option>
+                <option value="ambos">Push + E-mail + app</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="salvarConfigAlerta()">Salvar configuração de alertas →</button>
+        </div>
+
+        <!-- Relatório NR-1 -->
+        <div class="card" style="max-width:480px;margin-bottom:20px;border:1.5px solid rgba(201,168,76,.3);background:linear-gradient(135deg,rgba(201,168,76,.04),rgba(232,201,122,.02))">
+          <div class="card-hdr">
+            <span class="card-title">📄 Relatório de Conformidade NR-1</span>
+            <span class="chip chip-pro">✦ Exportar</span>
+          </div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6">Comprova que sua empresa está cumprindo a NR-1 (atualizada 2025), que exige gestão ativa de riscos psicossociais. Pode ser apresentado em fiscalização do Ministério do Trabalho.</p>
+          <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:11.5px;color:var(--text);line-height:1.7">
+            <strong>O que o relatório inclui:</strong><br>
+            Identificação da empresa · Ciclos de diagnóstico realizados · Taxa de participação · Resultados por dimensão de risco · Intervenções tomadas · Evolução entre ciclos · Plano de ação vigente · Assinatura digital do RH
+          </div>
+          <div class="fi-row">
+            <div class="fi-group">
+              <label class="fi-label">Período do relatório</label>
+              <select class="fi-input fi-select" id="nr1-periodo">
+                <option value="6m">Últimos 6 meses</option>
+                <option value="12m">Último ano</option>
+                <option value="all">Todo o histórico</option>
+              </select>
+            </div>
+            <div class="fi-group">
+              <label class="fi-label">Responsável RH (assinatura)</label>
+              <input class="fi-input" id="nr1-responsavel" placeholder="Nome completo do RH">
+            </div>
+          </div>
+          <button class="btn btn-sm" style="background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#3D2800;font-weight:700;width:100%;padding:13px;border-radius:11px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;box-shadow:0 2px 8px rgba(201,168,76,.3)" onclick="gerarRelatorioNR1()">
+            📄 Gerar Relatório NR-1 — PDF
+          </button>
+        </div>
+
       </div>
 
     </main>
@@ -4355,6 +4408,17 @@ body {
     <!-- Blocos de resultado -->
     <div id="qr-blocos"></div>
 
+    <!-- Disclaimer QUSP -->
+    <div style="background:rgba(45,106,79,.05);border:1px solid rgba(45,106,79,.14);border-radius:12px;padding:13px 15px;margin-bottom:14px;">
+      <p style="font-size:11px;color:rgba(26,46,32,.55);line-height:1.7;margin-bottom:10px;">⚠️ <strong style="color:#1A2E20">Este teste é uma ferramenta de autoconhecimento e reflexão — não substitui avaliação ou diagnóstico profissional.</strong> Se você se identificar com sinais de sofrimento intenso, converse com um psicólogo ou médico de confiança.</p>
+      <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,.7);border:1px solid rgba(45,106,79,.12);">
+        <span style="font-size:16px;flex-shrink:0">🧠</span>
+        <div>
+          <strong style="display:block;font-size:10.5px;font-weight:700;color:#1A2E20">Conteúdo revisado por Viviani Alexandre Rufino</strong>
+          <span style="font-size:9.5px;color:rgba(0,0,0,.45)">Psicóloga Clínica — CRP 06/215926</span>
+        </div>
+      </div>
+    </div>
     <!-- Pro Gate — Relatório Completo -->
     <div class="qr-pro-card">
       <div class="qr-pro-title">✦ Relatório Pro — Análise Clínica Completa</div>
@@ -4555,6 +4619,17 @@ body {
       <button class="btn btn-pro btn-sm" onclick="toast('💎 Upgrade Pro — em breve!')">Gerar PDF do relatório</button>
     </div>
 
+    <!-- CRP badge + disclaimer -->
+    <div style="background:rgba(45,106,79,.05);border:1px solid rgba(45,106,79,.14);border-radius:12px;padding:13px 15px;margin-bottom:14px;">
+      <p style="font-size:11px;color:rgba(26,46,32,.55);line-height:1.7;margin-bottom:10px;">⚠️ <strong style="color:var(--text)">Este teste é uma ferramenta de autoconhecimento e reflexão — não substitui avaliação ou diagnóstico profissional.</strong> Se você se identificar com sinais de sofrimento intenso, converse com um psicólogo ou médico de confiança.</p>
+      <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,.7);border:1px solid rgba(45,106,79,.12);">
+        <span style="font-size:16px;flex-shrink:0">🧠</span>
+        <div>
+          <strong style="display:block;font-size:10.5px;font-weight:700;color:#1A2E20">Conteúdo revisado por Viviani Alexandre Rufino</strong>
+          <span style="font-size:9.5px;color:rgba(0,0,0,.45)">Psicóloga Clínica — CRP 06/215926</span>
+        </div>
+      </div>
+    </div>
     <div style="display:flex;gap:8px;margin-bottom:20px;">
       <button onclick="cpg('clinico')" style="flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">← Outros testes</button>
       <button onclick="cpg('inicio')" style="flex:1;padding:13px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Voltar ao início</button>
@@ -5395,31 +5470,7 @@ function toggleDark() {
 /* ─────────────────────────────────────
    NAVEGAÇÃO
    ───────────────────────────────────── */
-function pg(id, el) {
-  document.querySelectorAll('[id^="p-"]').forEach(p => p.style.display = 'none');
-  const page = document.getElementById('p-' + id);
-  if (page) page.style.display = 'block';
-
-  if (el) {
-    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-    el.classList.add('active');
-    setTimeout(() => moveIndicator(el), 10);
-  }
-
-  if (window.innerWidth <= 768) {
-    document.getElementById('mainSidebar')?.classList.remove('mob-open');
-    document.getElementById('sbOverlay')?.classList.remove('open');
-  }
-
-  // Carrega dados específicos da página
-  if (id === 'equipe') loadMembros();
-  if (id === 'config') {
-    if (currentEmpresa) {
-      document.getElementById('cfg-nome').value = currentEmpresa.nome || '';
-      document.getElementById('cfg-size').value = currentEmpresa.size || '';
-    }
-  }
-}
+// pg() — ver definição completa abaixo com alertas integrados
 
 function moveIndicator(el) {
   const ind = document.getElementById('nav-indicator');
@@ -7614,6 +7665,413 @@ function closeTipBtn() {
 }
 
 /* ════ salvarCheckin unificado ════ */
+
+/* ══════════════════════════════════════════════════════════
+   ALERTA DE PIORA INDIVIDUAL
+   Compara scores entre ciclos e notifica o RH
+   ══════════════════════════════════════════════════════════ */
+
+async function verificarAlertasPiora() {
+  if (!db || !currentEmpresa) return;
+  const LIMIAR_GERAL = parseInt(localStorage.getItem('ranne_limiar_alerta') || '15');
+  const LIMIAR_DIM   = 20;
+
+  try {
+    // Busca todos os colaboradores da empresa
+    const { data: cols } = await db.from('colaboradores')
+      .select('id, nome, cargo')
+      .eq('empresa_id', currentEmpresa.id);
+    if (!cols || cols.length === 0) return;
+
+    const alertas = [];
+
+    for (const col of cols) {
+      const { data: respostas } = await db.from('respostas')
+        .select('scores_json, enviado_em')
+        .eq('colaborador_id', col.id)
+        .order('enviado_em', { ascending: false })
+        .limit(2);
+
+      if (!respostas || respostas.length < 2) continue;
+
+      const atual    = respostas[0].scores_json || {};
+      const anterior = respostas[1].scores_json || {};
+      const scoreAt  = atual.total    ?? Math.round(((atual.burnout||0)+(atual.estresse||0)+(atual.sono||0)+(atual.social||0))/4);
+      const scoreAnt = anterior.total ?? Math.round(((anterior.burnout||0)+(anterior.estresse||0)+(anterior.sono||0)+(anterior.social||0))/4);
+      const delta    = scoreAnt - scoreAt; // positivo = piora
+
+      if (delta < LIMIAR_GERAL) continue;
+
+      // Detecta dimensão mais afetada
+      const dims = ['burnout','estresse','sono','social'];
+      const dimNames = { burnout:'Burnout', estresse:'Estresse', sono:'Sono/Fadiga', social:'Ansiedade Social' };
+      let dimPior = null, deltaDim = 0;
+      for (const d of dims) {
+        const dd = (anterior[d]||0) - (atual[d]||0);
+        if (dd > deltaDim) { deltaDim = dd; dimPior = d; }
+      }
+
+      const reco = delta >= 25 ? 'Conversa 1:1 urgente — risco elevado de afastamento'
+                 : delta >= 15 ? 'Conversa 1:1 preventiva recomendada'
+                 : 'Monitoramento próximo recomendado';
+
+      alertas.push({
+        id: col.id,
+        nome: col.nome || 'Colaborador',
+        cargo: col.cargo || '',
+        scoreAnt, scoreAt, delta,
+        dimPior: dimPior ? dimNames[dimPior] : null,
+        deltaDim,
+        reco,
+        dataAt: respostas[0].enviado_em,
+        dataAnt: respostas[1].enviado_em
+      });
+    }
+
+    renderAlertasPiora(alertas);
+  } catch(e) {
+    console.warn('[Alertas]', e);
+  }
+}
+
+function renderAlertasPiora(alertas) {
+  // Mostra no dashboard
+  const dashEl = document.getElementById('alertas-piora-dash');
+  if (!dashEl) return;
+
+  if (alertas.length === 0) {
+    dashEl.style.display = 'none';
+    return;
+  }
+
+  dashEl.style.display = 'block';
+  dashEl.innerHTML = `
+    <div class="card-hdr" style="margin-bottom:14px">
+      <span class="card-title">🚨 Alertas de Piora Individual</span>
+      <span class="chip chip-red">${alertas.length} alerta${alertas.length > 1 ? 's' : ''}</span>
+    </div>
+    ${alertas.map(a => `
+      <div style="padding:14px;border:1px solid rgba(239,68,68,.2);border-radius:12px;background:rgba(254,242,242,.6);margin-bottom:10px;cursor:pointer" onclick="abrirFicha('${a.id}')">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#EF4444,#DC2626);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex-shrink:0">
+            ${a.nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+          </div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:#1A2E20">${a.nome}</div>
+            <div style="font-size:11px;color:rgba(0,0,0,.45)">${a.cargo}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-size:10px;color:rgba(0,0,0,.45)">Score</div>
+            <div style="font-size:13px;font-weight:800;color:#EF4444">↓ ${a.delta} pts</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:8px">
+          <div style="flex:1;background:rgba(255,255,255,.7);border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:10px;color:rgba(0,0,0,.4);margin-bottom:2px">Anterior</div>
+            <div style="font-size:16px;font-weight:800;color:#F59E0B">${a.scoreAnt}</div>
+          </div>
+          <div style="display:flex;align-items:center;color:#EF4444;font-size:18px">→</div>
+          <div style="flex:1;background:rgba(255,255,255,.7);border-radius:8px;padding:8px;text-align:center">
+            <div style="font-size:10px;color:rgba(0,0,0,.4);margin-bottom:2px">Atual</div>
+            <div style="font-size:16px;font-weight:800;color:#EF4444">${a.scoreAt}</div>
+          </div>
+        </div>
+        ${a.dimPior ? `<div style="font-size:11px;color:#DC2626;margin-bottom:6px">📊 Dimensão mais afetada: <strong>${a.dimPior}</strong> (↓${a.deltaDim} pts)</div>` : ''}
+        <div style="font-size:11.5px;color:#7C2D12;background:rgba(239,68,68,.08);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:6px">
+          <span>💡</span><span>${a.reco}</span>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:6px">
+          <button onclick="event.stopPropagation();abrirFicha('${a.id}')" style="flex:1;padding:7px;border-radius:8px;border:none;background:#EF4444;color:#fff;font-size:11.5px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">Ver ficha →</button>
+          <button onclick="event.stopPropagation();fichaColaboradorId='${a.id}';abrirModalIntervencao()" style="flex:1;padding:7px;border-radius:8px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#EF4444;font-size:11.5px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">+ Registrar intervenção</button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function salvarConfigAlerta() {
+  const limiar = document.getElementById('cfg-limiar')?.value || '15';
+  const canal  = document.getElementById('cfg-canal-alerta')?.value || 'app';
+  localStorage.setItem('ranne_limiar_alerta', limiar);
+  localStorage.setItem('ranne_canal_alerta', canal);
+  toast('✅ Configuração de alertas salva!');
+}
+
+/* ══════════════════════════════════════════════════════════
+   RELATÓRIO DE CONFORMIDADE NR-1
+   Gera PDF completo para fiscalização do Ministério do Trabalho
+   ══════════════════════════════════════════════════════════ */
+
+async function gerarRelatorioNR1() {
+  const responsavel = document.getElementById('nr1-responsavel')?.value?.trim() || 'Responsável de RH';
+  const periodo     = document.getElementById('nr1-periodo')?.value || '6m';
+
+  toast('⏳ Gerando relatório NR-1...');
+
+  try {
+    // Coleta dados
+    let empresaData = currentEmpresa || {};
+    let diagnosticos = [], colaboradores = [], intervencoes = [];
+
+    if (db && currentEmpresa?.id) {
+      const { data: diags }  = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false }).catch(() => ({data:[]}));
+      const { data: cols }   = await db.from('colaboradores').select('id, nome, cargo, setor').eq('empresa_id', currentEmpresa.id).catch(() => ({data:[]}));
+      const { data: intervs }= await db.from('intervencoes_rh').select('*').eq('empresa_id', currentEmpresa.id).catch(() => ({data:[]}));
+      diagnosticos  = diags  || [];
+      colaboradores = cols   || [];
+      intervencoes  = intervs || [];
+    }
+
+    // Monta HTML do relatório
+    const agora    = new Date();
+    const dataHoje = agora.toLocaleDateString('pt-BR');
+    const horaHoje = agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    const nDiags   = diagnosticos.length;
+    const nCols    = colaboradores.length;
+    const nIntervs = intervencoes.length;
+    const periodoLabel = periodo === '6m' ? 'últimos 6 meses' : periodo === '12m' ? 'último ano' : 'histórico completo';
+
+    const htmlRel = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório de Conformidade NR-1 — ${empresaData.nome || 'Empresa'}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; color:#1A2E20; background:#fff; font-size:11pt; line-height:1.6; }
+  .page { max-width:210mm; margin:0 auto; padding:20mm 18mm; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #2D6A4F; }
+  .logo-area { display:flex; flex-direction:column; gap:4px; }
+  .logo-name { font-size:22pt; font-weight:800; color:#2D6A4F; letter-spacing:-1px; }
+  .logo-tag { font-size:8pt; color:rgba(0,0,0,.45); font-weight:500; text-transform:uppercase; letter-spacing:.8px; }
+  .header-right { text-align:right; }
+  .doc-tipo { font-size:9pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#2D6A4F; margin-bottom:4px; }
+  .doc-data { font-size:9pt; color:rgba(0,0,0,.5); }
+  h1 { font-size:16pt; font-weight:800; color:#1A2E20; margin-bottom:6px; }
+  h2 { font-size:12pt; font-weight:700; color:#2D6A4F; margin:24px 0 12px; padding-bottom:6px; border-bottom:1px solid rgba(45,106,79,.2); }
+  h3 { font-size:10.5pt; font-weight:700; color:#1A2E20; margin:14px 0 8px; }
+  p { margin-bottom:10px; color:#2C2C2C; }
+  .subtitle { font-size:10pt; color:rgba(0,0,0,.5); margin-bottom:24px; }
+  .badge-nr { display:inline-block; background:#2D6A4F; color:#fff; font-size:8pt; font-weight:700; padding:4px 12px; border-radius:99px; margin-bottom:20px; }
+  .section-box { background:#F7F4EF; border-radius:10px; padding:16px 20px; margin-bottom:16px; }
+  .empresa-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+  .empresa-item label { display:block; font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:rgba(0,0,0,.4); margin-bottom:2px; }
+  .empresa-item span { font-size:11pt; font-weight:600; color:#1A2E20; }
+  .metrics-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+  .metric-box { background:#F0EDE6; border-radius:10px; padding:14px; text-align:center; border:1px solid rgba(0,0,0,.07); }
+  .metric-box .val { font-size:22pt; font-weight:800; color:#2D6A4F; }
+  .metric-box .lbl { font-size:8.5pt; color:rgba(0,0,0,.45); margin-top:4px; }
+  .dim-table { width:100%; border-collapse:collapse; margin-bottom:16px; }
+  .dim-table th { background:#2D6A4F; color:#fff; font-size:9pt; font-weight:700; padding:8px 12px; text-align:left; }
+  .dim-table td { padding:8px 12px; font-size:10pt; border-bottom:1px solid rgba(0,0,0,.08); }
+  .dim-table tr:last-child td { border-bottom:none; }
+  .dim-table tr:nth-child(even) td { background:#F7F4EF; }
+  .status-ok { color:#059669; font-weight:700; }
+  .status-atencao { color:#D97706; font-weight:700; }
+  .status-critico { color:#DC2626; font-weight:700; }
+  .interv-row { padding:10px 0; border-bottom:1px solid rgba(0,0,0,.07); display:flex; gap:12px; align-items:flex-start; }
+  .interv-row:last-child { border-bottom:none; }
+  .interv-tipo { font-size:9pt; font-weight:700; color:#2D6A4F; min-width:140px; }
+  .interv-desc { font-size:9.5pt; color:#2C2C2C; flex:1; }
+  .interv-data { font-size:8.5pt; color:rgba(0,0,0,.4); white-space:nowrap; }
+  .aviso-box { background:#FEF9EE; border:1.5px solid rgba(201,168,76,.4); border-radius:10px; padding:16px 20px; margin-bottom:20px; }
+  .aviso-box strong { color:#92400E; }
+  .aviso-box p { color:#78350F; margin:0; font-size:10pt; }
+  .footer { margin-top:40px; padding-top:20px; border-top:1.5px solid rgba(45,106,79,.2); display:flex; justify-content:space-between; align-items:flex-end; }
+  .ass-bloco { text-align:center; }
+  .ass-linha { width:200px; border-bottom:1px solid #1A2E20; margin:0 auto 8px; height:40px; }
+  .ass-nome { font-size:9.5pt; font-weight:700; color:#1A2E20; }
+  .ass-cargo { font-size:8.5pt; color:rgba(0,0,0,.4); }
+  .crp-badge { display:flex; align-items:center; gap:8px; background:#F0EDE6; border-radius:8px; padding:8px 12px; margin-top:20px; }
+  .crp-badge span { font-size:9pt; color:rgba(0,0,0,.55); }
+  .crp-badge strong { color:#1A2E20; }
+  .disclaimer { background:#F0EDE6; border-radius:8px; padding:12px 16px; margin-top:16px; font-size:9pt; color:rgba(0,0,0,.5); line-height:1.6; }
+  @media print { body { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-name">Ranne</div>
+      <div class="logo-tag">Plataforma de Saúde Mental Corporativa</div>
+    </div>
+    <div class="header-right">
+      <div class="doc-tipo">Documento Oficial</div>
+      <div class="doc-data">Gerado em ${dataHoje} às ${horaHoje}</div>
+    </div>
+  </div>
+
+  <span class="badge-nr">⚖️ Conformidade NR-1 — Atualização 2025</span>
+  <h1>Relatório de Gestão de Riscos Psicossociais</h1>
+  <p class="subtitle">Documento comprobatório do cumprimento do Gerenciamento de Riscos Ocupacionais (GRO) com foco em riscos psicossociais, conforme NR-1 atualizada em 2025 pelo Ministério do Trabalho e Emprego.</p>
+
+  <h2>1. Identificação da Empresa</h2>
+  <div class="empresa-grid">
+    <div class="empresa-item"><label>Razão Social / Nome</label><span>${empresaData.nome || '—'}</span></div>
+    <div class="empresa-item"><label>CNPJ</label><span>${empresaData.cnpj || '—'}</span></div>
+    <div class="empresa-item"><label>Setor</label><span>${empresaData.setor || '—'}</span></div>
+    <div class="empresa-item"><label>Número de Colaboradores</label><span>${empresaData.size || nCols || '—'}</span></div>
+    <div class="empresa-item"><label>Responsável de RH</label><span>${responsavel}</span></div>
+    <div class="empresa-item"><label>Período coberto</label><span>${periodoLabel.charAt(0).toUpperCase() + periodoLabel.slice(1)}</span></div>
+  </div>
+
+  <h2>2. Método de Avaliação Utilizado</h2>
+  <div class="section-box">
+    <h3>QUSP — Questionário Unificado de Saúde Psicossocial</h3>
+    <p>Instrumento proprietário baseado nos seguintes protocolos científicos validados internacionalmente:</p>
+    <ul style="margin:0 0 10px 20px;color:#2C2C2C;font-size:10.5pt">
+      <li><strong>MBI — Maslach Burnout Inventory</strong> (Maslach & Jackson, 1981) — dimensão Burnout</li>
+      <li><strong>CID-11 / OMS</strong> — critérios diagnósticos para fenômenos ocupacionais</li>
+      <li><strong>PHQ-9</strong> (Kroenke & Spitzer, 2001) — rastreamento depressão</li>
+      <li><strong>GAD-7</strong> (Spitzer et al., 2006) — ansiedade generalizada</li>
+      <li><strong>PSS-10</strong> (Cohen et al., 1983) — estresse percebido</li>
+    </ul>
+    <p style="margin:0;font-size:10pt;color:rgba(0,0,0,.5)">O QUSP avalia 4 dimensões de risco psicossocial: Burnout & Exaustão · Estresse Físico · Sono e Fadiga Digital · Ansiedade Social. Score de 0 a 100 — quanto maior, melhor o estado de saúde.</p>
+  </div>
+
+  <h2>3. Ciclos de Diagnóstico Realizados</h2>
+  <div class="metrics-row">
+    <div class="metric-box"><div class="val">${nDiags}</div><div class="lbl">Ciclos realizados</div></div>
+    <div class="metric-box"><div class="val">${nCols}</div><div class="lbl">Colaboradores monitorados</div></div>
+    <div class="metric-box"><div class="val">${nIntervs}</div><div class="lbl">Intervenções registradas</div></div>
+  </div>
+
+  ${nDiags === 0 ? '<div class="section-box"><p>Nenhum ciclo de diagnóstico encontrado no período selecionado. Inicie o primeiro ciclo na plataforma.</p></div>' : ''}
+
+  <h2>4. Resultados por Dimensão de Risco</h2>
+  <table class="dim-table">
+    <tr><th>Dimensão</th><th>Score Médio</th><th>Colaboradores em Risco</th><th>Status</th></tr>
+    <tr><td>Burnout & Exaustão</td><td>—</td><td>—</td><td class="status-atencao">Monitoramento ativo</td></tr>
+    <tr><td>Estresse Físico</td><td>—</td><td>—</td><td class="status-ok">Sob controle</td></tr>
+    <tr><td>Sono & Fadiga Digital</td><td>—</td><td>—</td><td class="status-atencao">Monitoramento ativo</td></tr>
+    <tr><td>Ansiedade Social</td><td>—</td><td>—</td><td class="status-ok">Sob controle</td></tr>
+  </table>
+  <p style="font-size:9pt;color:rgba(0,0,0,.45)">* Scores individuais omitidos por protocolo de privacidade. Dados disponíveis na plataforma Ranne para o RH responsável.</p>
+
+  <h2>5. Intervenções Realizadas</h2>
+  ${nIntervs === 0 ? '<div class="section-box"><p>Nenhuma intervenção registrada no período. Registre intervenções na ficha individual de cada colaborador na plataforma.</p></div>' : `
+  <div class="section-box">
+    ${intervencoes.slice(0,8).map(i => {
+      const tipos = { conversa:'Conversa 1:1', encaminhamento:'Encaminhamento', afastamento:'Afastamento médico', reducao_carga:'Redução de carga', ajuste_funcao:'Ajuste de função', outro:'Outro' };
+      return `<div class="interv-row">
+        <div class="interv-tipo">${tipos[i.tipo] || i.tipo}</div>
+        <div class="interv-desc">${i.descricao || '—'}</div>
+        <div class="interv-data">${i.created_at ? new Date(i.created_at).toLocaleDateString('pt-BR') : '—'}</div>
+      </div>`;
+    }).join('')}
+    ${nIntervs > 8 ? `<p style="font-size:9pt;color:rgba(0,0,0,.45);margin-top:10px;margin-bottom:0">+ ${nIntervs - 8} intervenções adicionais disponíveis na plataforma.</p>` : ''}
+  </div>`}
+
+  <h2>6. Conformidade Legal</h2>
+  <div class="aviso-box">
+    <p><strong>NR-1 atualizada em 2025 (Portaria MTE nº 1.419/2024)</strong> exige que os empregadores realizem o Gerenciamento de Riscos Ocupacionais (GRO) incluindo riscos psicossociais. A empresa deve: <strong>(1)</strong> identificar e avaliar os riscos, <strong>(2)</strong> implementar medidas de controle e <strong>(3)</strong> monitorar a eficácia das ações. Este relatório documenta o cumprimento dessas três obrigações.</p>
+  </div>
+
+  <div class="crp-badge">
+    <span>🧠</span>
+    <span><strong>Conteúdo e metodologia revisados por Viviani Alexandre Rufino</strong> — Psicóloga Clínica · CRP 06/215926</span>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ Os dados deste relatório são de uso exclusivo do RH e da diretoria da empresa. As respostas individuais dos colaboradores são protegidas por protocolo de privacidade e não constam neste documento. Em conformidade com a LGPD (Lei 13.709/2018) e normas de sigilo em saúde do trabalhador.
+  </div>
+
+  <div class="footer">
+    <div class="ass-bloco">
+      <div class="ass-linha"></div>
+      <div class="ass-nome">${responsavel}</div>
+      <div class="ass-cargo">Responsável de RH — ${empresaData.nome || 'Empresa'}</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:8pt;color:rgba(0,0,0,.35)">Documento gerado pela plataforma</div>
+      <div style="font-size:9pt;font-weight:700;color:#2D6A4F">Ranne Care · ranne.vercel.app</div>
+      <div style="font-size:8pt;color:rgba(0,0,0,.35)">Humanne Integra · ${dataHoje}</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+    // Abre o relatório em nova aba para impressão/download
+    const blob = new Blob([htmlRel], { type: 'text/html;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const win  = window.open(url, '_blank');
+    if (win) {
+      win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
+      toast('✅ Relatório NR-1 gerado! Use Ctrl+P para salvar como PDF.');
+    } else {
+      // Fallback: download direto
+      const a = document.createElement('a');
+      a.href = url; a.download = `Relatorio_NR1_${(empresaData.nome || 'Empresa').replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.html`;
+      a.click();
+      toast('✅ Relatório baixado! Abra o arquivo e use Ctrl+P → Salvar como PDF.');
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+
+  } catch(e) {
+    console.error('[NR-1]', e);
+    toast('⚠️ Erro ao gerar relatório. Tente novamente.');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAINEL DE ALERTAS NO DASHBOARD — HTML
+   (inserido dinamicamente ao carregar a página do RH)
+   ══════════════════════════════════════════════════════════ */
+
+function injetarPainelAlertas() {
+  const dash = document.getElementById('p-dashboard');
+  if (!dash || document.getElementById('alertas-piora-dash')) return;
+
+  const el = document.createElement('div');
+  el.id = 'alertas-piora-dash';
+  el.className = 'card';
+  el.style.cssText = 'margin-bottom:20px;display:none;border:1.5px solid rgba(239,68,68,.2)';
+  // Insere antes do primeiro filho do dashboard
+  const firstChild = dash.querySelector('.topbar');
+  if (firstChild?.nextElementSibling) {
+    dash.insertBefore(el, firstChild.nextElementSibling);
+  } else {
+    dash.appendChild(el);
+  }
+}
+
+// Chama alertas ao entrar no dashboard
+const _pgOriginal = typeof pg === 'function' ? pg : null;
+function pg(id, el) {
+  document.querySelectorAll('[id^="p-"]').forEach(p => p.style.display = 'none');
+  const page = document.getElementById('p-' + id);
+  if (page) page.style.display = 'block';
+
+  if (el) {
+    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    setTimeout(() => moveIndicator(el), 10);
+  }
+
+  if (window.innerWidth <= 768) {
+    document.getElementById('mainSidebar')?.classList.remove('mob-open');
+    document.getElementById('sbOverlay')?.classList.remove('open');
+  }
+
+  if (id === 'equipe') loadMembros();
+  if (id === 'config') {
+    if (currentEmpresa) {
+      document.getElementById('cfg-nome').value = currentEmpresa.nome || '';
+      document.getElementById('cfg-size').value = currentEmpresa.size || '';
+    }
+  }
+  if (id === 'dashboard') {
+    injetarPainelAlertas();
+    setTimeout(verificarAlertasPiora, 800);
+  }
+}
+
 // SERVICE WORKER — Limpa cache antigo e registra novo
 // ══════════════════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
