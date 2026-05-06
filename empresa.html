@@ -79,6 +79,8 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
+  --green-mid: #52B788;
+  --nav-h: 64px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:14px; -webkit-font-smoothing:antialiased; }
@@ -1472,21 +1474,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 /* ══ COLLAB SPECIFIC ══ */
 
 /* ══════ RESET & VARS ══════ */
-:root {
-  --bg: #F2EDE6;
-  --white: #FFFCF8;
-  --green: #2D6A4F;
-  --green-light: #E8F2EC;
-  --green-mid: #52B788;
-  --amber: #D97706;
-  --red: #DC2626;
-  --text: #1A2E20;
-  --muted: rgba(26,46,32,0.45);
-  --border: rgba(26,46,32,0.1);
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --nav-h: 64px;
-}
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family:'Inter',sans-serif; background:var(--bg);
@@ -1846,21 +1834,7 @@ body {
 /* ══ COLABORADOR APP ══ */
 
 /* ══════ RESET & VARS ══════ */
-:root {
-  --bg: #F2EDE6;
-  --white: #FFFCF8;
-  --green: #2D6A4F;
-  --green-light: #E8F2EC;
-  --green-mid: #52B788;
-  --amber: #D97706;
-  --red: #DC2626;
-  --text: #1A2E20;
-  --muted: rgba(26,46,32,0.45);
-  --border: rgba(26,46,32,0.1);
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --nav-h: 64px;
-}
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family:'Inter',sans-serif; background:var(--bg);
@@ -3040,24 +3014,24 @@ body {
           <div class="metrics" style="margin-bottom:20px;">
             <div class="metric m-amber">
               <div class="metric-label">Score Geral</div>
-              <div class="metric-value v-amber" style="font-size:38px;letter-spacing:-2px"><span class="count-up" data-target="68">0</span></div>
+              <div class="metric-value v-amber" style="font-size:38px;letter-spacing:-2px"><span class="count-up" id="metric-score" data-target="68">0</span></div>
               <div class="metric-sub">de 100 pontos</div>
               <span class="chip chip-amber">⚠ Atenção</span>
             </div>
             <div class="metric m-blue">
               <div class="metric-label">Colaboradores Ativos</div>
-              <div class="metric-value"><span class="count-up" data-target="48">0</span></div>
+              <div class="metric-value"><span class="count-up" id="metric-colabs" data-target="48">0</span></div>
               <div class="metric-sub" id="taxa-sub">responderam ao QUSP</div>
             </div>
             <div class="metric m-red">
               <div class="metric-label">Em Risco Elevado</div>
-              <div class="metric-value v-red"><span class="count-up" data-target="3">0</span></div>
+              <div class="metric-value v-red"><span class="count-up" id="metric-risco" data-target="3">0</span></div>
               <div class="metric-sub">intervenção imediata</div>
               <span class="chip chip-red">Crítico</span>
             </div>
             <div class="metric m-green">
               <div class="metric-label">Taxa de Resposta</div>
-              <div class="metric-value v-green"><span class="count-up" data-target="84" data-suffix="%">0%</span></div>
+              <div class="metric-value v-green"><span class="count-up" id="metric-taxa" data-target="84" data-suffix="%">0%</span></div>
               <div class="metric-sub">equipe engajada</div>
             </div>
           </div>
@@ -3125,7 +3099,7 @@ body {
                   <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#2D6A4F" style="stroke-dashoffset:132"/>
                 </svg>
                 <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-isa geral" style="color:#2D5A4E">—</span>
+                  <span class="isa-ring-val" id="isa-isa-geral" style="color:#2D5A4E">—</span>
                 </div>
               </div>
               <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
@@ -4591,7 +4565,7 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let currentEmpresa = null;
-window.ciState = {}; // Estado do check-in do colaborador
+
 
 // checkinState — alias para compatibilidade com código da empresa
 var checkinState = {};
@@ -4599,7 +4573,7 @@ let currentRole = 'empresa';
 let currentDiagId = null;
 let acoesState = {};
 let ciState = {};
-let deferredInstall = null;
+let deferredInstallPrompt = null;
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -4736,7 +4710,7 @@ async function setupEmpresa() {
   const errEl  = document.getElementById('setup-error');
   const btn    = document.getElementById('setup-btn');
   const email  = document.getElementById('login-email').value.trim();
-  const senha  = document.getElementById('cad-senha-field')?.value || document.getElementById('login-senha-field')?.value || '';
+  const senha  = document.getElementById('cad-senha')?.value || document.getElementById('login-senha-field')?.value || '';
   
   if (!nome) { showAuthErr(errEl,'Informe o nome da empresa.'); return; }
   btn.disabled = true; btn.textContent = 'Criando...';
@@ -4838,7 +4812,7 @@ async function loadDashboardData() {
     }
     
 // Garante que ISA cards mostram — no estado vazio
-['isa-burnout','isa-estresse','isa-sono','isa-social','isa-isa geral'].forEach(id => {
+['isa-burnout','isa-estresse','isa-sono','isa-social','isa-isa-geral'].forEach(id => {
   const el = document.getElementById(id);
   if (el && el.textContent === '') el.textContent = '—';
 });
@@ -4858,7 +4832,15 @@ async function loadDashboardData() {
 
 // Atualiza um card de métrica pelo data-target
 function _setMetricNum(attr, val) {
-  const el = document.querySelector(`[${attr}]`);
+  const idMap = {
+    'data-target="68"': 'metric-score',
+    'data-target="48"': 'metric-colabs',
+    'data-target="3"':  'metric-risco',
+    'data-target="84"': 'metric-taxa',
+  };
+  const el = idMap[attr]
+    ? document.getElementById(idMap[attr])
+    : document.querySelector(`[${attr}]`);
   if (el) {
     el.textContent = val;
     el.removeAttribute('data-target');
@@ -5494,7 +5476,7 @@ function closeModal() {
    ───────────────────────────────────── */
 function toast(msg) {
   const t = document.getElementById('toast');
-  t.innerHTML = msg;
+  t.textContent = msg;
   t.classList.add('show');
   clearTimeout(t._t);
   t._t = setTimeout(() => t.classList.remove('show'), 3500);
