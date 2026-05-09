@@ -3753,7 +3753,7 @@ body {
           </div>
           <div class="sb-brand">Ranne</div>
         </div>
-        <div class="sb-tagline">Saúde Mental Corporativa</div>
+        <div class="sb-tagline">Saúde Organizacional</div>
         <div class="sb-plan-badge" id="sb-plan-badge" style="display:none">
           <div class="sb-plan-dot free" id="sb-plan-dot"></div>
           <span class="sb-plan-text free" id="sb-plan-text">Plano Free</span>
@@ -9140,13 +9140,300 @@ const TESTES = {
       { min:28, max:35, nivel:'Alta Segurança', cor:'#10B981', tipo:'baixo', desc:'Você se sente seguro para se expressar, errar e pedir ajuda. Excelente ambiente de aprendizagem.' },
       { min:21, max:27, nivel:'Segurança Moderada', cor:'#52B788', tipo:'baixo', desc:'Nível razoável, mas há espaço para melhorar a confiança e abertura na equipe.' },
       { min:14, max:20, nivel:'Segurança Baixa', cor:'#F59E0B', tipo:'medio', desc:'Baixa segurança pode estar limitando sua contribuição e bem-estar no trabalho.' },
-      { min:7,  max:13, nivel:'Ambiente Inseguro', cor:'#EF4444', tipo:'alto', desc:'Ambiente com baixa segurança psicológica. Isso impacta diretamente saúde mental e performance.' }
+      { min:7,  max:13, nivel:'Ambiente Inseguro', cor:'#EF4444', tipo:'alto', desc:'Ambiente com baixa segurança psicológica. Isso impacta diretamente o clima organizacional e a performance.' }
     ],
     prescricao_por_nivel: {
       baixo: ['Continue contribuindo ativamente — sua presença fortalece o clima do time', 'Seja um multiplicador de segurança psicológica com seus colegas'],
       medio: ['Identifique com quem você se sente mais seguro e fortaleça essas relações', 'Contribua gradualmente com opiniões em contextos de menor risco', 'Converse com seu gestor sobre como melhorar a dinâmica do time'],
       alto: ['Registre situações específicas que geraram insegurança', 'Converse com RH ou um profissional de confiança sobre o ambiente', 'Considere que alta insegurança psicológica é um fator de risco para burnout e ansiedade', 'Avalie se o problema é sistêmico (cultura da empresa) ou localizado (gestor específico)'],
       critico: ['Situação de trabalho hostil pode configurar assédio moral — documente', 'Busque orientação de RH ou canal de denúncia da empresa', 'Considere avaliação psicológica — ambientes tóxicos causam danos reais à saúde']
+    }
+  }
+,
+
+  burnout_ranne: {
+    id: 'burnout_ranne',
+    nome: 'Risco de Burnout',
+    titulo: 'Risco de Burnout',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Demerouti et al. (2001/2003) · Journal of Applied Psychology',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Ao final do dia de trabalho, sinto-me emocionalmente esgotado(a).',
+      'Tenho dificuldade para recuperar minhas energias após o trabalho.',
+      'Sinto-me cansado(a) mesmo antes de iniciar minhas atividades profissionais.',
+      'A carga emocional do meu trabalho tem sido difícil de suportar.',
+      'Tenho me sentido desmotivado(a) em relação às minhas atividades profissionais.',
+      'Percebo que estou me envolvendo menos com meu trabalho do que anteriormente.',
+      'Tenho realizado minhas atividades de forma automática, sem interesse genuíno.',
+      'Sinto dificuldade em perceber sentido ou satisfação no meu trabalho.'
+    ],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Baixo Risco', cor:'#10B981', tipo:'baixo', desc:'Sinais de burnout mínimos. Continue monitorando seu equilíbrio emocional.' },
+      { min:17, max:24, nivel:'Risco Moderado', cor:'#F59E0B', tipo:'medio', desc:'Indícios de fadiga acumulada. Atenção preventiva é recomendada.' },
+      { min:25, max:32, nivel:'Alto Risco', cor:'#EF4444', tipo:'alto', desc:'Sinais importantes de esgotamento. Buscar apoio profissional é fortemente recomendado.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Mantenha pausas regulares ao longo do dia', 'Preserve tempo para atividades de prazer fora do trabalho', 'Monitore seu nível de energia semanalmente'],
+      medio: ['Revise sua carga de trabalho com seu gestor', 'Pratique micro-pausas ao longo do dia (5 min a cada hora)', 'Busque atividades de recuperação emocional: exercício, convívio social, lazer'],
+      alto: ['Consulte um psicólogo ou médico do trabalho', 'Avalie a necessidade de afastamento temporário', 'Não ignore os sinais — burnout sem tratamento se agrava progressivamente', 'Ative o suporte de saúde da empresa se disponível']
+    }
+  },
+
+  ansiedade_ranne: {
+    id: 'ansiedade_ranne',
+    nome: 'Ansiedade no Trabalho',
+    titulo: 'Nível de Ansiedade no Trabalho',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Lovibond & Lovibond (1995) · Karasek (1979) · Siegrist (1996)',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Sinto preocupação excessiva relacionada às minhas atividades profissionais.',
+      'Tenho dificuldade para relaxar mesmo após o término do expediente.',
+      'Sinto tensão ou nervosismo ao pensar nas demandas do trabalho.',
+      'Percebo aceleração dos pensamentos ou dificuldade de concentração durante o trabalho.',
+      'Sinto medo de cometer erros ou ser excessivamente cobrado(a).',
+      'Tenho dificuldade para desligar minha mente das questões profissionais.',
+      'Percebo sintomas físicos relacionados ao estresse no trabalho (tensão muscular, palpitação, inquietação ou sudorese).',
+      'Sinto que a pressão no trabalho tem impactado meu bem-estar emocional.'
+    ],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Baixo', cor:'#10B981', tipo:'baixo', desc:'Nível de ansiedade ocupacional baixo. Seus mecanismos de regulação estão funcionando bem.' },
+      { min:17, max:24, nivel:'Moderado', cor:'#F59E0B', tipo:'medio', desc:'Ansiedade moderada relacionada ao trabalho. Intervenções preventivas são recomendadas.' },
+      { min:25, max:32, nivel:'Alto', cor:'#EF4444', tipo:'alto', desc:'Ansiedade elevada com impacto no bem-estar. Busque apoio especializado.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Continue com práticas de respiração consciente', 'Preserve seus momentos de descanso e lazer'],
+      medio: ['Pratique respiração diafragmática diariamente', 'Reduza consumo de cafeína e telas à noite', 'Identifique os principais gatilhos de ansiedade no trabalho'],
+      alto: ['Consulte psicólogo — TCC tem excelente resultado para ansiedade ocupacional', 'Converse com médico sobre opções de manejo', 'Reduza sobrecarga de trabalho temporariamente']
+    }
+  },
+
+  lider_ranne: {
+    id: 'lider_ranne',
+    nome: 'Estilo de Liderança',
+    titulo: 'Que Tipo de Líder Você É?',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Bass & Avolio (1995) · MLQ Multifactor Leadership Questionnaire',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Incentivo minha equipe a desenvolver novas ideias e soluções.',
+      'Costumo reconhecer e valorizar o esforço dos colaboradores.',
+      'Dou orientações claras sobre metas e expectativas.',
+      'Procuro ouvir minha equipe antes de tomar decisões importantes.',
+      'Tenho dificuldade em lidar com conflitos entre colaboradores.',
+      'Acompanho o desempenho da equipe oferecendo feedbacks construtivos.',
+      'Costumo evitar decisões difíceis ou conversas delicadas.',
+      'Promovo um ambiente de trabalho respeitoso e colaborativo.'
+    ],
+    invertidas: [4, 6],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Em Desenvolvimento', cor:'#F59E0B', tipo:'medio', desc:'Há oportunidades importantes de desenvolvimento na sua liderança.' },
+      { min:17, max:24, nivel:'Liderança Moderada', cor:'#52B788', tipo:'baixo', desc:'Boa base de liderança com espaço para evoluir em algumas dimensões.' },
+      { min:25, max:32, nivel:'Liderança Desenvolvida', cor:'#10B981', tipo:'baixo', desc:'Você demonstra práticas de liderança transformacional consolidadas.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Busque mentoria ou programa de desenvolvimento de liderança', 'Solicite feedback estruturado da sua equipe', 'Trabalhe especialmente escuta ativa e gestão de conflitos'],
+      medio: ['Fortaleça as dimensões em que teve menor pontuação', 'Pratique feedbacks mais frequentes e estruturados', 'Invista em autoconhecimento como base da liderança'],
+      alto: ['Continue sendo referência para sua equipe', 'Compartilhe suas práticas com outros líderes', 'Monitore sua equipe para manter o clima positivo']
+    }
+  },
+
+  equipe_ranne: {
+    id: 'equipe_ranne',
+    nome: 'Trabalho em Equipe',
+    titulo: 'Seu Estilo de Trabalho em Equipe',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Belbin (1981) · Pejttersen et al. (2010) · Robbins & Judge (2014)',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Costumo colaborar espontaneamente com colegas quando necessário.',
+      'Consigo ouvir opiniões diferentes sem reagir de forma defensiva.',
+      'Prefiro resolver problemas em conjunto ao invés de trabalhar isoladamente.',
+      'Procuro manter uma comunicação respeitosa mesmo em situações de pressão.',
+      'Tenho dificuldade em aceitar sugestões ou críticas da equipe.',
+      'Contribuo para manter um ambiente colaborativo e positivo.',
+      'Costumo participar ativamente das decisões e atividades do grupo.',
+      'Quando surgem conflitos, procuro buscar soluções equilibradas para todos.'
+    ],
+    invertidas: [4],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Em Desenvolvimento', cor:'#F59E0B', tipo:'medio', desc:'Há oportunidades de melhora no trabalho colaborativo.' },
+      { min:17, max:24, nivel:'Colaboração Moderada', cor:'#52B788', tipo:'baixo', desc:'Boa capacidade colaborativa com oscilações em algumas situações.' },
+      { min:25, max:32, nivel:'Alta Colaboração', cor:'#10B981', tipo:'baixo', desc:'Você demonstra forte espírito de equipe e contribui para um ambiente positivo.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Pratique escuta ativa em reuniões de equipe', 'Busque entender diferentes perspectivas antes de concluir'],
+      medio: ['Fortaleça sua comunicação assertiva', 'Proponha-se a liderar uma iniciativa colaborativa'],
+      alto: ['Continue sendo um agente de colaboração no time', 'Ajude colegas a desenvolverem habilidades colaborativas']
+    }
+  },
+
+  sono_ranne: {
+    id: 'sono_ranne',
+    nome: 'Qualidade do Sono',
+    titulo: 'Qualidade do Seu Sono',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Buysse et al. (1989) · AASM (2014) · Müller & Guimarães (2007)',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Tenho dificuldade para adormecer ao deitar.',
+      'Acordo durante a noite e tenho dificuldade para voltar a dormir.',
+      'Acordo sentindo-me cansado(a) ou sem disposição.',
+      'Meu sono é prejudicado por preocupações ou pensamentos relacionados ao trabalho.',
+      'Consigo manter uma rotina regular de horários para dormir.',
+      'Durante o dia, sinto sonolência ou dificuldade de concentração devido ao sono.',
+      'Tenho sensação de que meu sono não é reparador.',
+      'Consigo relaxar mentalmente antes de dormir.'
+    ],
+    invertidas: [4, 7],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Sono Adequado', cor:'#10B981', tipo:'baixo', desc:'Seu padrão de sono está razoavelmente preservado.' },
+      { min:17, max:24, nivel:'Sono Comprometido', cor:'#F59E0B', tipo:'medio', desc:'Sinais de comprometimento do sono que merecem atenção.' },
+      { min:25, max:32, nivel:'Sono Prejudicado', cor:'#EF4444', tipo:'alto', desc:'Seu sono está significativamente prejudicado. Isso impacta sua saúde e desempenho.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Mantenha horários regulares de dormir e acordar', 'Evite telas 45 min antes de dormir'],
+      medio: ['Crie uma rotina de desaceleração antes de dormir', 'Reduza cafeína após as 14h', 'Pratique relaxamento muscular progressivo'],
+      alto: ['Consulte médico — distúrbios de sono têm tratamento eficaz', 'Avalie se o estresse ocupacional é o principal fator', 'Considere técnicas de TCC para insônia']
+    }
+  },
+
+  estresse_ranne: {
+    id: 'estresse_ranne',
+    nome: 'Nível de Estresse',
+    titulo: 'Nível de Estresse Atual',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Cohen, Kamarck & Mermelstein (1983) · Lovibond & Lovibond (1995) · Selye (1956)',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Tenho me sentido sobrecarregado(a) pelas demandas do dia a dia.',
+      'Sinto dificuldade para relaxar mesmo em momentos de descanso.',
+      'Tenho percebido irritação ou impaciência com maior frequência.',
+      'Sinto tensão física, como dores musculares, aperto no corpo ou inquietação.',
+      'Tenho dificuldade para organizar pensamentos ou manter a concentração.',
+      'Sinto que minhas responsabilidades estão além da minha capacidade atual.',
+      'Tenho conseguido lidar bem com situações difíceis.',
+      'Percebo impacto do estresse no meu bem-estar emocional ou físico.'
+    ],
+    invertidas: [6],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Estresse Baixo', cor:'#10B981', tipo:'baixo', desc:'Maior equilíbrio emocional e funcional.' },
+      { min:17, max:24, nivel:'Estresse Moderado', cor:'#F59E0B', tipo:'medio', desc:'Indícios de tensão frequente e necessidade de atenção preventiva.' },
+      { min:25, max:32, nivel:'Estresse Alto', cor:'#EF4444', tipo:'alto', desc:'Possível impacto significativo no bem-estar, desempenho e saúde emocional.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Mantenha as práticas que estão funcionando', 'Fortaleça sua rede de apoio social'],
+      medio: ['Implemente pausas estruturadas ao longo do dia', 'Estabeleça limites claros entre trabalho e vida pessoal', 'Delegue tarefas onde for possível'],
+      alto: ['Avalie redistribuição de demandas com seu gestor', 'Busque acompanhamento psicológico focado em gestão do estresse', 'Solicite Day-Off ou férias para regulação do sistema nervoso']
+    }
+  },
+
+  emocional_ranne: {
+    id: 'emocional_ranne',
+    nome: 'Inteligência Emocional',
+    titulo: 'Inteligência Emocional no Trabalho',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Goleman (1995) · Mayer & Salovey (1997) · Bar-On (2006)',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Consigo reconhecer minhas emoções durante situações de pressão no trabalho.',
+      'Mantenho o controle emocional mesmo diante de conflitos ou críticas.',
+      'Procuro compreender os sentimentos e perspectivas das outras pessoas.',
+      'Consigo me comunicar de forma respeitosa mesmo em situações difíceis.',
+      'Tenho dificuldade para lidar com frustrações no ambiente de trabalho.',
+      'Percebo como minhas emoções influenciam minhas decisões profissionais.',
+      'Consigo manter relações profissionais saudáveis e colaborativas.',
+      'Procuro resolver conflitos de forma equilibrada e construtiva.'
+    ],
+    invertidas: [4],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Em Desenvolvimento', cor:'#F59E0B', tipo:'medio', desc:'Possíveis dificuldades em controle emocional, relações interpessoais e tolerância à frustração.' },
+      { min:17, max:24, nivel:'IE Moderada', cor:'#52B788', tipo:'baixo', desc:'Boa adaptação emocional com oscilações em situações de pressão.' },
+      { min:25, max:32, nivel:'IE Desenvolvida', cor:'#10B981', tipo:'baixo', desc:'Maior capacidade de autorregulação, empatia, comunicação saudável e manejo de conflitos.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Pratique identificação e nomeação de emoções diariamente', 'Busque psicoterapia focada em regulação emocional'],
+      medio: ['Trabalhe sua escuta empática em conversas difíceis', 'Pratique pausas antes de reagir em situações de pressão'],
+      alto: ['Continue desenvolvendo sua autoconsciência emocional', 'Compartilhe práticas de gestão emocional com sua equipe']
+    }
+  },
+
+  limites_ranne: {
+    id: 'limites_ranne',
+    nome: 'Estabelecer Limites',
+    titulo: 'Você Sabe Estabelecer Limites?',
+    instrucao: 'Com que frequência você se identifica com as situações abaixo?',
+    fonte: 'Alberti & Emmons (2017) · Del Prette & Del Prette (1999) · Goleman (1995)',
+    escala: [
+      { label:'Nunca', pts:1 },
+      { label:'Raramente', pts:2 },
+      { label:'Frequentemente', pts:3 },
+      { label:'Sempre', pts:4 }
+    ],
+    perguntas: [
+      'Consigo dizer "não" quando percebo que uma demanda ultrapassa meus limites.',
+      'Tenho dificuldade em recusar tarefas por medo de desagradar pessoas.',
+      'Consigo expressar minhas opiniões de forma respeitosa e clara.',
+      'Percebo quando estou assumindo responsabilidades além do que consigo administrar.',
+      'Sinto culpa ao priorizar minhas necessidades pessoais ou emocionais.',
+      'Consigo estabelecer equilíbrio entre trabalho, descanso e vida pessoal.',
+      'Tenho facilidade para comunicar desconfortos ou excessos no ambiente de trabalho.',
+      'Respeito meus limites físicos e emocionais mesmo em períodos de pressão.'
+    ],
+    invertidas: [1, 4],
+    max: 32,
+    niveis: [
+      { min:8,  max:16, nivel:'Dificuldade em Limites', cor:'#EF4444', tipo:'alto', desc:'Possíveis dificuldades com sobrecarga, culpa e dificuldade em dizer não.' },
+      { min:17, max:24, nivel:'Capacidade Moderada', cor:'#F59E0B', tipo:'medio', desc:'Oscilações em comunicação assertiva, manejo de pressão e priorização pessoal.' },
+      { min:25, max:32, nivel:'Boa Capacidade', cor:'#10B981', tipo:'baixo', desc:'Maior tendência à assertividade, autocuidado, equilíbrio emocional e prevenção de sobrecarga.' }
+    ],
+    prescricao_por_nivel: {
+      baixo: ['Pratique assertividade — comece com situações de menor risco', 'Trabalhe com psicólogo a dificuldade de dizer não', 'Identifique padrões de sobrecarga recorrentes'],
+      medio: ['Estabeleça limites claros de horário de trabalho', 'Pratique comunicar desconfortos antes de acumular'],
+      alto: ['Continue praticando assertividade no dia a dia', 'Seja referência de equilíbrio para sua equipe']
     }
   }
 };
@@ -10346,7 +10633,7 @@ async function gerarRelatorioNR1() {
   <div class="header">
     <div class="logo-area">
       <div class="logo-name">Ranne</div>
-      <div class="logo-tag">Plataforma de Saúde Mental Corporativa</div>
+      <div class="logo-tag">Plataforma de Saúde Organizacional</div>
     </div>
     <div class="header-right">
       <div class="doc-tipo">Documento Oficial</div>
