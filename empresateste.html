@@ -3301,6 +3301,21 @@ body {
 /* ══════ UTILITÁRIOS ══════ */
 .card-base { background:var(--white); border-radius:16px; padding:20px; border:1px solid var(--border); box-shadow:0 1px 6px rgba(0,0,0,.04); margin-bottom:12px; }
 
+/* ── Meu Diário ── */
+.diario-humor-btn { display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:20px;transition:all .2s;font-family:'Inter',sans-serif; }
+.diario-humor-btn span { font-size:10.5px;color:var(--muted);font-weight:600; }
+.diario-humor-btn:hover,.diario-humor-btn.sel { border-color:var(--mint);background:rgba(61,122,98,.08); }
+.diario-humor-btn.sel span { color:var(--mint); }
+.diario-tag { font-size:11.5px;padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif; }
+.diario-tag:hover,.diario-tag.sel { background:var(--mint);color:#fff;border-color:var(--mint); }
+.diario-entrada { padding:14px;border-radius:12px;border:1.5px solid var(--border);margin-bottom:10px;background:var(--surface); }
+.diario-entrada-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:8px; }
+.diario-entrada-data { font-size:11.5px;font-weight:600;color:var(--muted); }
+.diario-entrada-humor { font-size:18px; }
+.diario-entrada-texto { font-size:13px;color:var(--text);line-height:1.6;white-space:pre-wrap; }
+.diario-entrada-tags { display:flex;gap:6px;flex-wrap:wrap;margin-top:8px; }
+.diario-entrada-tag { font-size:10.5px;padding:3px 9px;border-radius:99px;background:rgba(61,122,98,.1);color:var(--mint);font-weight:600; } 
+  
 </style>
 
 </head>
@@ -3767,8 +3782,10 @@ body {
         <div class="sb-item" onclick="pg('plano',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span> Plano de Ação <span class="sb-badge" id="badge-acoes">0</span></div>
         <div class="sb-item" onclick="pg('progresso',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span> Progresso</div>
         <div class="sb-section">Conteúdo</div>
+        <div class="sb-item" onclick="pg('feminina',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span> Saúde Feminina</div>
         <div class="sb-item" onclick="pg('biblioteca',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span> Biblioteca</div>
         <div class="sb-item" onclick="pg('checkin',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span> Check-in Semanal</div>
+        <div class="sb-item" onclick="pg('diario',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span> Meu Diário</div>
         <div class="sb-section">Gestão</div>
         <div class="sb-item" onclick="pg('formularios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Kit Formulários</div>
         <div class="sb-item" onclick="pg('colaboradores',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span> Colaboradores</div>
@@ -4710,7 +4727,7 @@ body {
               <div class="fk-grid-checks" style="margin-bottom:12px;">
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s1"><label for="fk4-s1">Sessão de psicologia individual</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s2"><label for="fk4-s2">Sessão de psicologia em grupo</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk4-s3"><label for="fk4-s3">Workshop de saúde menta</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s3"><label for="fk4-s3">Workshop de Saúde Organizacional</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s4"><label for="fk4-s4">Palestra para equipe</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s5"><label for="fk4-s5">Treinamento de liderança emocional</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s6"><label for="fk4-s6">Consultoria estratégica de RH</label></div>
@@ -4971,6 +4988,88 @@ body {
       <!-- CONFIG -->
       <div id="p-config" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Configurações</div><div class="page-sub">Como sua conta está configurada</div></div></div>
+        <!-- ══ PERFIL DO USUÁRIO ══ -->
+<div class="card" style="max-width:480px;margin-bottom:20px">
+  <div class="card-hdr"><span class="card-title">Meu Perfil</span></div>
+
+  <!-- Avatar -->
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+    <div id="cfg-avatar-circle" style="width:56px;height:56px;border-radius:50%;background:var(--mint);color:#fff;font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Inter',sans-serif">--</div>
+    <div>
+      <div id="cfg-avatar-nome" style="font-size:14px;font-weight:700;color:var(--text)">Carregando...</div>
+      <div id="cfg-avatar-email" style="font-size:12px;color:var(--muted);margin-top:2px"></div>
+    </div>
+  </div>
+
+  <div class="fi-row">
+    <div class="fi-group"><label class="fi-label">Nome completo</label><input class="fi-input" id="cfg-user-nome" placeholder="Seu nome"></div>
+    <div class="fi-group"><label class="fi-label">Cargo / Função</label><input class="fi-input" id="cfg-user-cargo" placeholder="Ex: Analista de RH"></div>
+  </div>
+  <div class="fi-group"><label class="fi-label">E-mail</label><input class="fi-input" id="cfg-user-email" type="email" placeholder="seu@email.com"></div>
+
+  <div style="border-top:1px solid var(--border);margin:16px 0 14px"></div>
+  <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Alterar senha</div>
+
+  <div class="fi-group"><label class="fi-label">Nova senha</label><input class="fi-input" id="cfg-user-senha" type="password" placeholder="Mínimo 6 caracteres"></div>
+  <div class="fi-group"><label class="fi-label">Confirmar nova senha</label><input class="fi-input" id="cfg-user-senha2" type="password" placeholder="Repita a senha"></div>
+
+  <button class="btn btn-primary btn-sm" onclick="salvarPerfil()">Salvar Perfil</button>
+</div>
+
+<!-- ══ PREFERÊNCIAS ══ -->
+<div class="card" style="max-width:480px;margin-bottom:20px">
+  <div class="card-hdr"><span class="card-title">Preferências</span></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+
+    <!-- Notificações -->
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Notificações por e-mail</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:2px">Receber resumos e alertas por e-mail</div>
+      </div>
+      <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
+        <input type="checkbox" id="pref-email-notif" style="opacity:0;width:0;height:0" checked>
+        <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;salvarPreferencias()" style="position:absolute;cursor:pointer;inset:0;background:var(--mint);border-radius:99px;transition:.3s"></span>
+      </label>
+    </div>
+
+    <!-- Resumo semanal -->
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Resumo semanal</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:2px">Receber relatório toda segunda-feira</div>
+      </div>
+      <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
+        <input type="checkbox" id="pref-resumo-semanal" style="opacity:0;width:0;height:0" checked>
+        <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;salvarPreferencias()" style="position:absolute;cursor:pointer;inset:0;background:var(--mint);border-radius:99px;transition:.3s"></span>
+      </label>
+    </div>
+
+    <!-- Alertas críticos -->
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Alertas de risco crítico</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:2px">Notificar imediatamente ao detectar risco alto</div>
+      </div>
+      <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
+        <input type="checkbox" id="pref-alerta-critico" style="opacity:0;width:0;height:0" checked>
+        <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;salvarPreferencias()" style="position:absolute;cursor:pointer;inset:0;background:var(--mint);border-radius:99px;transition:.3s"></span>
+      </label>
+    </div>
+
+    <!-- Idioma -->
+    <div>
+      <label class="fi-label">Idioma da plataforma</label>
+      <select class="fi-input fi-select" id="pref-idioma" onchange="salvarPreferencias()">
+        <option value="pt">Português (Brasil)</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+
+  </div>
+</div>
         <div class="card" style="max-width:480px;margin-bottom:20px">
           <div class="card-hdr"><span class="card-title">Perfil da Empresa</span></div>
           <div class="fi-group"><label class="fi-label">Nome da empresa</label><input class="fi-input" id="cfg-nome"></div>
@@ -5035,7 +5134,274 @@ body {
 
       </div><!-- /p-config -->
 
+      <!-- ══ SAÚDE FEMININA ══ -->
+<div id="p-feminina" style="display:none">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div>
+        <div class="page-title">Saúde Feminina</div>
+        <div class="page-sub">Espaço seguro · privado · exclusivo para você</div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Banner -->
+  <div style="background:linear-gradient(135deg,var(--mint) 0%,#2D5E4A 100%);border-radius:16px;padding:20px 22px;margin-bottom:20px;color:#fff">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.75;margin-bottom:6px">Ranne Care · Saúde Feminina</div>
+    <div style="font-size:20px;font-weight:700;font-family:'Fraunces',serif;margin-bottom:6px">Um espaço só seu</div>
+    <div style="font-size:13px;opacity:.85;line-height:1.6">Apoio à saúde emocional e bem-estar feminino no trabalho. Tudo aqui é confidencial e nunca compartilhado com a empresa.</div>
+    <div style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:rgba(255,255,255,.15);border-radius:99px;padding:5px 12px;font-size:11px;font-weight:600">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Espaço seguro e privado
+    </div>
+  </div>
+
+  <!-- Check-in Feminino -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr">
+      <span class="card-title">Check-in Feminino</span>
+      <span style="font-size:11px;color:var(--muted)">Como você está hoje?</span>
+    </div>
+
+    <!-- Sono, energia, humor, foco -->
+    <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Sono · Energia · Humor · Foco</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Qualidade do sono</label>
+        <div style="display:flex;gap:6px" id="fem-sono">
+          <button onclick="femSelect('sono',1,this)" class="fem-opt-btn">😴 Ruim</button>
+          <button onclick="femSelect('sono',2,this)" class="fem-opt-btn">😐 Ok</button>
+          <button onclick="femSelect('sono',3,this)" class="fem-opt-btn">😊 Boa</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Nível de energia</label>
+        <div style="display:flex;gap:6px" id="fem-energia">
+          <button onclick="femSelect('energia',1,this)" class="fem-opt-btn">🪫 Baixa</button>
+          <button onclick="femSelect('energia',2,this)" class="fem-opt-btn">⚡ Ok</button>
+          <button onclick="femSelect('energia',3,this)" class="fem-opt-btn">🔋 Alta</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Humor hoje</label>
+        <div style="display:flex;gap:6px" id="fem-humor">
+          <button onclick="femSelect('humor',1,this)" class="fem-opt-btn">😔 Baixo</button>
+          <button onclick="femSelect('humor',2,this)" class="fem-opt-btn">😐 Neutro</button>
+          <button onclick="femSelect('humor',3,this)" class="fem-opt-btn">😄 Ótimo</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Foco e concentração</label>
+        <div style="display:flex;gap:6px" id="fem-foco">
+          <button onclick="femSelect('foco',1,this)" class="fem-opt-btn">😵 Difícil</button>
+          <button onclick="femSelect('foco',2,this)" class="fem-opt-btn">🙂 Razoável</button>
+          <button onclick="femSelect('foco',3,this)" class="fem-opt-btn">🎯 Ótimo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dor / desconforto -->
+    <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:14px">
+      <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Dor física ou desconforto hormonal hoje?</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="fem-dor">
+        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Sem dor</button>
+        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Cólica</button>
+        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Enxaqueca</button>
+        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Tensão muscular</button>
+        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Inchaço</button>
+        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Fadiga intensa</button>
+      </div>
+    </div>
+
+    <!-- Fase do ciclo -->
+    <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:14px">
+      <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Fase do ciclo menstrual <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Esta informação é 100% privada e nunca compartilhada.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="fem-ciclo">
+        <button onclick="femSelect('ciclo',1,this)" class="fem-tag-btn">Menstruação</button>
+        <button onclick="femSelect('ciclo',2,this)" class="fem-tag-btn">Fase folicular</button>
+        <button onclick="femSelect('ciclo',3,this)" class="fem-tag-btn">Ovulação</button>
+        <button onclick="femSelect('ciclo',4,this)" class="fem-tag-btn">Fase lútea</button>
+        <button onclick="femSelect('ciclo',5,this)" class="fem-tag-btn">Prefiro não informar</button>
+      </div>
+    </div>
+
+    <!-- TPM -->
+    <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:16px">
+      <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Nível de tensão pré-menstrual (TPM)</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="fem-tpm">
+        <button onclick="femSelect('tpm',0,this)" class="fem-opt-btn">Sem TPM</button>
+        <button onclick="femSelect('tpm',1,this)" class="fem-opt-btn">Leve</button>
+        <button onclick="femSelect('tpm',2,this)" class="fem-opt-btn">Moderada</button>
+        <button onclick="femSelect('tpm',3,this)" class="fem-opt-btn">Intensa</button>
+      </div>
+    </div>
+
+    <!-- Como me sinto hoje -->
+    <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:16px">
+      <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Como me sinto hoje</label>
+      <textarea id="fem-sinto" placeholder="Um registro rápido e pessoal… como você chegou hoje?" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);resize:none;min-height:72px;box-sizing:border-box;outline:none" onfocus="this.style.borderColor='var(--mint)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    </div>
+
+    <button onclick="salvarCheckinFeminino()" class="btn btn-primary" style="width:100%">Salvar meu check-in</button>
+  </div>
+
+  <!-- Trilhas de Cuidado -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr"><span class="card-title">Trilhas de Cuidado</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <div onclick="femAbrirTrilha('ciclo-emocoes')" style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;cursor:pointer;border:1.5px solid var(--border);transition:border-color .2s" onmouseover="this.style.borderColor='var(--mint)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(61,122,98,.12);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌙</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Ciclo e emoções</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Autoconhecimento e acolhimento</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0;color:var(--muted)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <div onclick="femAbrirTrilha('menopausa')" style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;cursor:pointer;border:1.5px solid var(--border);transition:border-color .2s" onmouseover="this.style.borderColor='var(--mint)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(201,168,124,.15);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌸</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Menopausa e perimenopausa</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Transição e qualidade de vida no trabalho</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0;color:var(--muted)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <div onclick="femAbrirTrilha('equilibrio')" style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;cursor:pointer;border:1.5px solid var(--border);transition:border-color .2s" onmouseover="this.style.borderColor='var(--mint)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(99,102,241,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">⚖️</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Equilíbrio emocional</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Ferramentas práticas do dia a dia</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0;color:var(--muted)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <div onclick="femAbrirTrilha('limites')" style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;cursor:pointer;border:1.5px solid var(--border);transition:border-color .2s" onmouseover="this.style.borderColor='var(--mint)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(239,68,68,.08);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🛡️</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text)">Limites e descanso</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Cuidar de si sem culpa</div>
+        </div>
+        <svg style="margin-left:auto;flex-shrink:0;color:var(--muted)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Apoio Confidencial -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr"><span class="card-title">Apoio Confidencial</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <div style="padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;border:1.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">💡 Dicas de bem-estar</div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.6" id="fem-dica-texto">Hidrate-se bem ao longo do dia — a desidratação leve já impacta humor e concentração, especialmente nas fases do ciclo.</div>
+        <button onclick="femNovaDica()" style="margin-top:10px;font-size:11.5px;color:var(--mint);font-weight:600;background:none;border:none;cursor:pointer;padding:0">Ver outra dica →</button>
+      </div>
+
+      <div style="padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;border:1.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">🌬️ Respiração e calma</div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:10px">Técnica 4-7-8: inspire por 4s, segure por 7s, expire por 8s. Reduz cortisol em minutos — útil nos picos de TPM ou tensão.</div>
+        <button onclick="femIniciarRespiracao()" class="btn btn-primary btn-sm">Iniciar respiração guiada</button>
+      </div>
+
+      <div style="padding:14px;background:var(--surface-alt,#F8FAF9);border-radius:12px;border:1.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">🥗 Alimentação e energia</div>
+        <div style="font-size:12.5px;color:var(--muted);line-height:1.6">Durante a fase lútea, aumente consumo de magnésio (banana, sementes, chocolate amargo) — reduz cólica e melhora humor. Reduza cafeína e açúcar refinado.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Aviso de privacidade -->
+  <div style="background:rgba(61,122,98,.06);border:1px solid rgba(61,122,98,.2);border-left:3px solid var(--mint);border-radius:12px;padding:14px 16px;margin-bottom:24px;font-size:12px;color:var(--muted);line-height:1.6">
+    🔒 <strong>Privacidade garantida:</strong> Todas as informações desta área são pessoais e confidenciais. Nunca são compartilhadas com a empresa, gestor ou qualquer terceiro.<br>
+    <span style="font-size:11px;opacity:.8">Conteúdo revisado por Viviani Alexandre Rufino — Psicóloga CRP 06/215926</span>
+  </div>
+
+</div><!-- /p-feminina -->
+      
+<!-- ══ MEU DIÁRIO ══ -->
+<div id="p-diario" style="display:none">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div>
+        <div class="page-title">Meu Diário</div>
+        <div class="page-sub" id="diario-data-hoje"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="diarioSalvar()">Salvar →</button>
+  </div>
+
+  <!-- Pergunta do dia -->
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--mint),#2D5E4A);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Pergunta do dia</div>
+        <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:2px" id="diario-pergunta-texto">Como foi o seu dia hoje?</div>
+      </div>
+    </div>
+
+    <!-- Humor rápido -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:500">Como você se sentiu hoje no geral?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="diario-humor-opts">
+        <button onclick="diarioHumor(1,this)" class="diario-humor-btn" title="Muito difícil">😔<span>Difícil</span></button>
+        <button onclick="diarioHumor(2,this)" class="diario-humor-btn" title="Mais ou menos">😐<span>Neutro</span></button>
+        <button onclick="diarioHumor(3,this)" class="diario-humor-btn" title="Ok">🙂<span>Ok</span></button>
+        <button onclick="diarioHumor(4,this)" class="diario-humor-btn" title="Bom">😊<span>Bom</span></button>
+        <button onclick="diarioHumor(5,this)" class="diario-humor-btn" title="Ótimo">🌟<span>Ótimo</span></button>
+      </div>
+    </div>
+
+    <!-- Área de escrita -->
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:500">Escreva livremente — este espaço é só seu</div>
+      <textarea id="diario-texto" placeholder="O que aconteceu hoje? O que você sentiu? O que foi bom, o que foi difícil? Não precisa fazer sentido — é só para você…" style="width:100%;min-height:160px;border:1.5px solid var(--border);border-radius:12px;padding:14px;font-size:14px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);resize:none;box-sizing:border-box;outline:none;line-height:1.7;transition:border-color .2s" onfocus="this.style.borderColor='var(--mint)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      <div style="display:flex;justify-content:space-between;margin-top:6px">
+        <div style="font-size:11px;color:var(--muted)" id="diario-char-count">0 palavras</div>
+        <div style="font-size:11px;color:var(--muted)">🔒 Privado · nunca compartilhado</div>
+      </div>
+    </div>
+
+    <!-- Tags de sentimento -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:500">Palavras que descrevem seu dia (opcional)</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="diario-tags">
+        <button onclick="diarioTag(this)" class="diario-tag">produtivo</button>
+        <button onclick="diarioTag(this)" class="diario-tag">cansativo</button>
+        <button onclick="diarioTag(this)" class="diario-tag">estressante</button>
+        <button onclick="diarioTag(this)" class="diario-tag">tranquilo</button>
+        <button onclick="diarioTag(this)" class="diario-tag">inspirador</button>
+        <button onclick="diarioTag(this)" class="diario-tag">frustrante</button>
+        <button onclick="diarioTag(this)" class="diario-tag">gratificante</button>
+        <button onclick="diarioTag(this)" class="diario-tag">ansioso</button>
+        <button onclick="diarioTag(this)" class="diario-tag">focado</button>
+        <button onclick="diarioTag(this)" class="diario-tag">desanimado</button>
+      </div>
+    </div>
+
+    <button onclick="diarioSalvar()" class="btn btn-primary" style="width:100%">Salvar entrada de hoje</button>
+  </div>
+
+  <!-- Histórico -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr">
+      <span class="card-title">Entradas anteriores</span>
+      <button onclick="diarioLimparTudo()" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer">Limpar tudo</button>
+    </div>
+    <div id="diario-historico">
+      <div style="text-align:center;padding:24px 0;color:var(--muted);font-size:13px">Nenhuma entrada ainda.<br>Comece escrevendo sobre o seu dia!</div>
+    </div>
+  </div>
+
+</div><!-- /p-diario -->
       <!-- AJUDA & TOUR -->
       <div id="p-ajuda" style="display:none">
         <div class="topbar">
@@ -10573,6 +10939,11 @@ async function gerarRelatorioNR1() {
 <head>
 <meta charset="UTF-8">
 <title>Relatório de Conformidade NR-1 — ${empresaData.nome || 'Empresa'}</title>
+/* ── Saúde Feminina ── */
+.fem-opt-btn { font-size:11.5px;padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;white-space:nowrap; }
+.fem-opt-btn:hover,.fem-opt-btn.sel { background:var(--mint);color:#fff;border-color:var(--mint); }
+.fem-tag-btn { font-size:11.5px;padding:6px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif; }
+.fem-tag-btn:hover,.fem-tag-btn.sel { background:var(--mint);color:#fff;border-color:var(--mint); }
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -10798,11 +11169,14 @@ function pg(id, el) {
   }
 
   if (id === 'equipe') loadMembros();
+  if (id === 'diario') diarioInit();
   if (id === 'ajuda') document.querySelectorAll('.ajuda-modulo').forEach(m => m.classList.remove('open'));
   if (id === 'formularios') { document.querySelectorAll('.form-kit-card.open').forEach(c=>c.classList.remove('open')); _initFormularios(); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
+    carregarPerfil();
+carregarPreferencias();
     if (currentEmpresa) {
       document.getElementById('cfg-nome').value = currentEmpresa.nome || '';
       document.getElementById('cfg-size').value = currentEmpresa.size || '';
@@ -10875,7 +11249,64 @@ if ('serviceWorker' in navigator) {
     document.addEventListener('DOMContentLoaded', run);
   } else { run(); }
 })();
+/* ── Carregar dados do perfil na tela de config ── */
+function carregarPerfil() {
+  const nome  = currentUser?.user_metadata?.nome || currentEmpresa?.nome || '';
+  const email = currentUser?.email || '';
+  const cargo = currentUser?.user_metadata?.cargo || '';
+  const ini   = nome ? nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase() : '?';
+  const el    = id => document.getElementById(id);
+  if (el('cfg-avatar-circle')) el('cfg-avatar-circle').textContent = ini || '?';
+  if (el('cfg-avatar-nome'))   el('cfg-avatar-nome').textContent   = nome || 'Usuário';
+  if (el('cfg-avatar-email'))  el('cfg-avatar-email').textContent  = email;
+  if (el('cfg-user-nome'))     el('cfg-user-nome').value           = nome;
+  if (el('cfg-user-email'))    el('cfg-user-email').value          = email;
+  if (el('cfg-user-cargo'))    el('cfg-user-cargo').value          = cargo;
+}
 
+/* ── Salvar perfil ── */
+async function salvarPerfil() {
+  const nome   = document.getElementById('cfg-user-nome')?.value.trim();
+  const cargo  = document.getElementById('cfg-user-cargo')?.value.trim();
+  const senha  = document.getElementById('cfg-user-senha')?.value;
+  const senha2 = document.getElementById('cfg-user-senha2')?.value;
+  if (senha && senha !== senha2) { toast('❌ As senhas não coincidem.'); return; }
+  if (senha && senha.length < 6) { toast('❌ Senha deve ter no mínimo 6 caracteres.'); return; }
+  try {
+    const updates = { data: { nome, cargo } };
+    if (senha) updates.password = senha;
+    const { error } = await db.auth.updateUser(updates);
+    if (error) throw error;
+    if (document.getElementById('cfg-user-senha')) document.getElementById('cfg-user-senha').value = '';
+    if (document.getElementById('cfg-user-senha2')) document.getElementById('cfg-user-senha2').value = '';
+    toast('✅ Perfil atualizado com sucesso!');
+  } catch(e) {
+    toast('❌ Erro ao salvar: ' + (e.message || 'tente novamente'));
+  }
+}
+
+/* ── Salvar preferências (localStorage) ── */
+function salvarPreferencias() {
+  const prefs = {
+    emailNotif:    document.getElementById('pref-email-notif')?.checked,
+    resumoSemanal: document.getElementById('pref-resumo-semanal')?.checked,
+    alertaCritico: document.getElementById('pref-alerta-critico')?.checked,
+    idioma:        document.getElementById('pref-idioma')?.value
+  };
+  try { localStorage.setItem('ranne_prefs', JSON.stringify(prefs)); } catch(e) {}
+  toast('✅ Preferências salvas!');
+}
+
+/* ── Carregar preferências salvas ── */
+function carregarPreferencias() {
+  try {
+    const prefs = JSON.parse(localStorage.getItem('ranne_prefs') || '{}');
+    if (prefs.emailNotif    !== undefined && document.getElementById('pref-email-notif'))    document.getElementById('pref-email-notif').checked    = prefs.emailNotif;
+    if (prefs.resumoSemanal !== undefined && document.getElementById('pref-resumo-semanal')) document.getElementById('pref-resumo-semanal').checked = prefs.resumoSemanal;
+    if (prefs.alertaCritico !== undefined && document.getElementById('pref-alerta-critico')) document.getElementById('pref-alerta-critico').checked = prefs.alertaCritico;
+    if (prefs.idioma && document.getElementById('pref-idioma')) document.getElementById('pref-idioma').value = prefs.idioma;
+  } catch(e) {}
+}
 </script>
 
 
@@ -10945,6 +11376,191 @@ if ('serviceWorker' in navigator) {
     setTimeout(function() { el.textContent = frases[fi]; el.style.opacity = '1'; }, 300);
   }, 2200);
 })();
+  /* ══ SAÚDE FEMININA ══ */
+const femState = {};
+const femDicas = [
+  'Hidrate-se bem ao longo do dia — a desidratação leve já impacta humor e concentração.',
+  'Pequenas pausas de 5 minutos a cada hora reduzem o cortisol e melhoram o foco.',
+  'Movimento leve (alongamento, caminhada) alivia cólica e tensão muscular no trabalho.',
+  'Priorize proteína no café da manhã para manter energia estável pela manhã.',
+  'Dormir antes da meia-noite melhora significativamente a regulação hormonal.',
+  'Expor-se à luz natural nos primeiros 30 minutos do dia regula o ciclo circadiano.',
+  'Magnésio (banana, sementes, cacau) reduz sintomas de TPM em estudos clínicos.'
+];
+let femDicaIdx = 0;
+
+function femSelect(campo, val, btn) {
+  const container = btn.closest('[id^="fem-"]') || btn.parentElement;
+  container.querySelectorAll('.fem-opt-btn,.fem-tag-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  femState[campo] = val;
+}
+
+function femToggle(campo, btn) {
+  btn.classList.toggle('sel');
+  if (!femState[campo]) femState[campo] = [];
+  const txt = btn.textContent.trim();
+  if (btn.classList.contains('sel')) {
+    femState[campo].push(txt);
+  } else {
+    femState[campo] = femState[campo].filter(v => v !== txt);
+  }
+}
+
+function femNovaDica() {
+  femDicaIdx = (femDicaIdx + 1) % femDicas.length;
+  const el = document.getElementById('fem-dica-texto');
+  if (el) el.textContent = femDicas[femDicaIdx];
+}
+
+function femAbrirTrilha(id) {
+  const nomes = {
+    'ciclo-emocoes': 'Ciclo e emoções',
+    'menopausa': 'Menopausa e perimenopausa',
+    'equilibrio': 'Equilíbrio emocional',
+    'limites': 'Limites e descanso'
+  };
+  toast('🌿 Trilha "' + (nomes[id] || id) + '" — em breve disponível!');
+}
+
+function femIniciarRespiracao() {
+  toast('🌬️ Respiração guiada iniciando... (use a área de Check-in Semanal para exercícios completos)');
+}
+
+function salvarCheckinFeminino() {
+  const sinto = document.getElementById('fem-sinto')?.value.trim();
+  if (!femState.sono && !femState.energia && !femState.humor && !femState.foco && !sinto) {
+    toast('Preencha pelo menos um campo antes de salvar.');
+    return;
+  }
+  try {
+    const registro = { ...femState, sinto, data: new Date().toISOString() };
+    const historico = JSON.parse(localStorage.getItem('ranne_fem_checkin') || '[]');
+    historico.unshift(registro);
+    localStorage.setItem('ranne_fem_checkin', JSON.stringify(historico.slice(0, 30)));
+  } catch(e) {}
+  toast('✅ Check-in salvo! Cuide-se bem hoje.');
+}
+  /* ══ MEU DIÁRIO ══ */
+const DIARIO_PERGUNTAS = [
+  'Como foi o seu dia hoje?',
+  'O que foi mais desafiador hoje?',
+  'O que você aprendeu hoje?',
+  'O que te deixou com energia hoje?',
+  'O que você faria diferente hoje?',
+  'Qual foi o momento mais significativo do seu dia?',
+  'O que você está deixando para amanhã — e tudo bem nisso?',
+  'Como está seu nível de energia ao final do dia?',
+  'O que você fez hoje que foi bom para você?',
+  'Se hoje fosse um capítulo de livro, qual seria o título?'
+];
+
+let diarioHumorSel = null;
+let diarioTagsSel  = [];
+
+function diarioInit() {
+  const hoje = new Date();
+  const opts  = { weekday:'long', day:'numeric', month:'long', year:'numeric' };
+  const dataEl = document.getElementById('diario-data-hoje');
+  if (dataEl) dataEl.textContent = hoje.toLocaleDateString('pt-BR', opts);
+
+  const idx = hoje.getDay() + hoje.getDate() % DIARIO_PERGUNTAS.length;
+  const pergEl = document.getElementById('diario-pergunta-texto');
+  if (pergEl) pergEl.textContent = DIARIO_PERGUNTAS[idx % DIARIO_PERGUNTAS.length];
+
+  // Contador de palavras
+  const textarea = document.getElementById('diario-texto');
+  const contador = document.getElementById('diario-char-count');
+  if (textarea && contador) {
+    textarea.addEventListener('input', () => {
+      const words = textarea.value.trim().split(/\s+/).filter(w => w).length;
+      contador.textContent = words + (words === 1 ? ' palavra' : ' palavras');
+    });
+  }
+
+  diarioRenderHistorico();
+}
+
+function diarioHumor(val, btn) {
+  document.querySelectorAll('#diario-humor-opts .diario-humor-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  diarioHumorSel = val;
+}
+
+function diarioTag(btn) {
+  btn.classList.toggle('sel');
+  const tag = btn.textContent.trim();
+  if (btn.classList.contains('sel')) {
+    diarioTagsSel.push(tag);
+  } else {
+    diarioTagsSel = diarioTagsSel.filter(t => t !== tag);
+  }
+}
+
+function diarioSalvar() {
+  const texto = document.getElementById('diario-texto')?.value.trim();
+  if (!texto && diarioHumorSel === null) {
+    toast('Escreva algo ou selecione como foi seu dia antes de salvar.');
+    return;
+  }
+  const humores = ['','😔','😐','🙂','😊','🌟'];
+  const entrada = {
+    id: Date.now(),
+    data: new Date().toISOString(),
+    humor: diarioHumorSel,
+    humorEmoji: humores[diarioHumorSel] || '',
+    texto,
+    tags: [...diarioTagsSel]
+  };
+  try {
+    const hist = JSON.parse(localStorage.getItem('ranne_diario') || '[]');
+    hist.unshift(entrada);
+    localStorage.setItem('ranne_diario', JSON.stringify(hist.slice(0, 60)));
+  } catch(e) {}
+
+  // Reset
+  document.getElementById('diario-texto').value = '';
+  document.getElementById('diario-char-count').textContent = '0 palavras';
+  document.querySelectorAll('#diario-humor-opts .diario-humor-btn').forEach(b => b.classList.remove('sel'));
+  document.querySelectorAll('#diario-tags .diario-tag').forEach(b => b.classList.remove('sel'));
+  diarioHumorSel = null;
+  diarioTagsSel  = [];
+
+  toast('✅ Entrada salva no seu diário!');
+  diarioRenderHistorico();
+}
+
+function diarioRenderHistorico() {
+  const el = document.getElementById('diario-historico');
+  if (!el) return;
+  let hist = [];
+  try { hist = JSON.parse(localStorage.getItem('ranne_diario') || '[]'); } catch(e) {}
+  if (!hist.length) {
+    el.innerHTML = '<div style="text-align:center;padding:24px 0;color:var(--muted);font-size:13px">Nenhuma entrada ainda.<br>Comece escrevendo sobre o seu dia!</div>';
+    return;
+  }
+  el.innerHTML = hist.map(e => {
+    const d = new Date(e.data);
+    const dataStr = d.toLocaleDateString('pt-BR', { weekday:'short', day:'numeric', month:'short' });
+    const tags = (e.tags||[]).map(t => `<span class="diario-entrada-tag">${t}</span>`).join('');
+    const texto = e.texto ? `<div class="diario-entrada-texto">${e.texto.substring(0,200)}${e.texto.length>200?'…':''}</div>` : '';
+    return `<div class="diario-entrada">
+      <div class="diario-entrada-header">
+        <span class="diario-entrada-data">${dataStr}</span>
+        <span class="diario-entrada-humor">${e.humorEmoji||''}</span>
+      </div>
+      ${texto}
+      ${tags ? `<div class="diario-entrada-tags">${tags}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function diarioLimparTudo() {
+  if (!confirm('Apagar todas as entradas do diário? Esta ação não pode ser desfeita.')) return;
+  try { localStorage.removeItem('ranne_diario'); } catch(e) {}
+  diarioRenderHistorico();
+  toast('Diário limpo.');
+}
 </script>
 </body>
 </html>
