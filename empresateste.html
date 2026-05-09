@@ -1907,18 +1907,6 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .trilha-card.t5::before { background:#D97706; opacity:.8; }
 .trilha-card.t5:hover { border-color:rgba(217,119,6,.25); }
 .trilha-card.t5 .tc-prog-fill { background:#D97706; }
-/* Trilha 6: Autocuidado — esmeralda */
-.trilha-card.t6::before { background:#059669; opacity:.8; }
-.trilha-card.t6:hover { border-color:rgba(5,150,105,.25); }
-.trilha-card.t6 .tc-prog-fill { background:#059669; }
-/* Trilha 7: Propósito — índigo */
-.trilha-card.t7::before { background:#6366F1; opacity:.8; }
-.trilha-card.t7:hover { border-color:rgba(99,102,241,.25); }
-.trilha-card.t7 .tc-prog-fill { background:#6366F1; }
-/* Trilha 8: Saúde Física — vermelho */
-.trilha-card.t8::before { background:#DC2626; opacity:.8; }
-.trilha-card.t8:hover { border-color:rgba(220,38,38,.25); }
-.trilha-card.t8 .tc-prog-fill { background:#DC2626; }
 
 /* ── Lista de aulas dentro de uma trilha ── */
 .trilha-detalhe-hero {
@@ -4524,153 +4512,11 @@ body {
         </div>
 
         <!-- FORMULÁRIO 01 -->
-        <div class="form-kit-card" id="fk1">
-          <div class="form-kit-header" onclick="toggleFK('fk1')">
-            <div class="form-kit-num">01</div>
-            <div class="form-kit-info">
-              <div class="form-kit-title">Cadastro de Empresa Cliente</div>
-              <div class="form-kit-sub">Preenchimento pelo responsável comercial ou RH na contratação</div>
-            </div>
-            <span class="form-kit-chevron">▾</span>
-          </div>
-          <div class="form-kit-body">
-            <div class="fk-section">
-              <div class="fk-section-title">1. Dados da Empresa</div>
-              <div class="fk-row-1 fk-group">
-                <label class="fk-label">Razão Social <span class="fk-req">*</span></label>
-                <input class="fk-input" type="text" placeholder="Ex: Empresa Tecnologia LTDA">
-              </div>
-              <div class="fk-row-1 fk-group">
-                <label class="fk-label">Nome Fantasia</label>
-                <input class="fk-input" type="text" placeholder="Ex: TechCorp">
-              </div>
-              <div class="fk-row">
-                <div class="fk-group">
-                  <label class="fk-label">CNPJ <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="text" placeholder="00.000.000/0001-00">
-                </div>
-                <div class="fk-group">
-                  <label class="fk-label">Data de Fundação</label>
-                  <input class="fk-input" type="date">
-                </div>
-              </div>
-              <div class="fk-row">
-                <div class="fk-group">
-                  <label class="fk-label">Segmento / Setor <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="text" placeholder="Ex: Tecnologia">
-                </div>
-                <div class="fk-group">
-                  <label class="fk-label">Nº de Colaboradores <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="number" placeholder="Ex: 50">
-                </div>
-              </div>
-              <div class="fk-row-1 fk-group">
-                <label class="fk-label">Site / LinkedIn</label>
-                <input class="fk-input" type="url" placeholder="https://">
-              </div>
-              <div class="fk-row-1 fk-group">
-                <label class="fk-label">Endereço Completo</label>
-                <input class="fk-input" type="text" placeholder="Rua, número, bairro, cidade, estado, CEP">
-              </div>
-            </div>
-
-            <div class="fk-section">
-              <div class="fk-section-title">2. Responsável pelo Contrato (RH / Gestor)</div>
-              <div class="fk-row">
-                <div class="fk-group">
-                  <label class="fk-label">Nome Completo <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="text">
-                </div>
-                <div class="fk-group">
-                  <label class="fk-label">Cargo <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="text">
-                </div>
-              </div>
-              <div class="fk-row">
-                <div class="fk-group">
-                  <label class="fk-label">E-mail <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="email">
-                </div>
-                <div class="fk-group">
-                  <label class="fk-label">WhatsApp / Telefone <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="tel">
-                </div>
-              </div>
-            </div>
-
-            <div class="fk-section">
-              <div class="fk-section-title">3. Perfil da Empresa</div>
-              <div class="fk-row-1 fk-group" style="margin-bottom:10px;">
-                <label class="fk-label">Principal desafio de clima organizacional hoje <span class="fk-req">*</span></label>
-                <textarea class="fk-textarea" placeholder="Descreva brevemente..."></textarea>
-              </div>
-              <label class="fk-label" style="margin-bottom:6px;">Iniciativas anteriores de saúde mental?</label>
-              <div class="fk-checks">
-                <div class="fk-check-row"><input type="radio" name="fk1-init" id="fk1-sim"><label for="fk1-sim">Sim – qual? <input class="fk-input" type="text" style="display:inline;width:140px;padding:2px 6px;margin-left:6px;" placeholder="Qual?"></label></div>
-                <div class="fk-check-row"><input type="radio" name="fk1-init" id="fk1-nao"><label for="fk1-nao">Não</label></div>
-                <div class="fk-check-row"><input type="radio" name="fk1-init" id="fk1-aval"><label for="fk1-aval">Está em avaliação</label></div>
-              </div>
-              <label class="fk-label" style="margin-bottom:6px;">Expectativa com a Ranne</label>
-              <div class="fk-grid-checks">
-                <div class="fk-check-row"><input type="checkbox" id="fk1-e1"><label for="fk1-e1">Diagnóstico de clima / burnout</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk1-e2"><label for="fk1-e2">Programa contínuo de bem-estar</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk1-e3"><label for="fk1-e3">Suporte psicológico para equipe</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk1-e4"><label for="fk1-e4">Treinamento de liderança</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk1-e5"><label for="fk1-e5">Dashboard e relatórios para RH</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk1-e6"><label for="fk1-e6">Outro</label></div>
-              </div>
-            </div>
-
-            <div class="fk-section">
-              <div class="fk-section-title">4. Plano Contratado</div>
-              <div class="fk-grid-checks">
-                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p1"><label for="fk1-p1">☆ Starter</label></div>
-                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p2"><label for="fk1-p2">↑ Growth</label></div>
-                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p3"><label for="fk1-p3">⬡ Enterprise</label></div>
-                <div class="fk-check-row"><input type="radio" name="fk1-plano" id="fk1-p4"><label for="fk1-p4">✦ Personalizado</label></div>
-              </div>
-              <div class="fk-row">
-                <div class="fk-group">
-                  <label class="fk-label">Data de Início <span class="fk-req">*</span></label>
-                  <input class="fk-input" type="date">
-                </div>
-                <div class="fk-group">
-                  <label class="fk-label">Vigência do Contrato</label>
-                  <input class="fk-input" type="text" placeholder="Ex: 12 meses">
-                </div>
-              </div>
-              <div class="fk-row-1 fk-group">
-                <label class="fk-label">Observações / Condições Especiais</label>
-                <textarea class="fk-textarea" placeholder="Informações adicionais sobre o contrato..."></textarea>
-              </div>
-            </div>
-
-            <div class="fk-section">
-              <div class="fk-section-title">5. Assinatura</div>
-              <div class="fk-row">
-                <div>
-                  <div class="fk-assin-box">Assinatura do Responsável</div>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px;">Data: _____ / _____ / _______</div>
-                </div>
-                <div>
-                  <div class="fk-assin-box">Assinatura Ranne Care</div>
-                  <div style="font-size:11px;color:var(--muted);margin-top:4px;">Data: _____ / _____ / _______</div>
-                </div>
-              </div>
-            </div>
-            <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir formulário</button>
-              <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk1')">↺ Limpar</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- FORMULÁRIO 02 -->
         <div class="form-kit-card" id="fk2">
           <div class="form-kit-header" onclick="toggleFK('fk2')">
             <div class="form-kit-num">02</div>
             <div class="form-kit-info">
-              <div class="form-kit-title">Diagnóstico de Saúde Mental</div>
+              <div class="form-kit-title">Diagnóstico de Clima Organizacional</div>
               <div class="form-kit-sub">Preenchido pelo gestor ou RH — anônimo e confidencial</div>
             </div>
             <span class="form-kit-chevron">▾</span>
@@ -4711,7 +4557,7 @@ body {
             </div>
             <div class="fk-section">
               <div class="fk-section-title">6. Questões Abertas</div>
-              <div class="fk-group" style="margin-bottom:10px;"><label class="fk-label">Maior desafio de saúde mental que você percebe na equipe?</label><textarea class="fk-textarea" placeholder="Descreva com suas palavras..."></textarea></div>
+              <div class="fk-group" style="margin-bottom:10px;"><label class="fk-label">Maior desafio de clima organizacional que você percebe na equipe?</label><textarea class="fk-textarea" placeholder="Descreva com suas palavras..."></textarea></div>
               <div class="fk-group" style="margin-bottom:10px;"><label class="fk-label">O que poderia melhorar o bem-estar da equipe?</label><textarea class="fk-textarea" placeholder="Sugestões, ideias, observações..."></textarea></div>
               <div class="fk-group"><label class="fk-label">Há algo que a liderança poderia fazer diferente?</label><textarea class="fk-textarea"></textarea></div>
             </div>
@@ -4722,7 +4568,7 @@ body {
           </div>
         </div>
 
-        <!-- FORMULÁRIO 03 -->
+        <!-- FORMULÁRIO 02 -->
         <div class="form-kit-card" id="fk3">
           <div class="form-kit-header" onclick="toggleFK('fk3')">
             <div class="form-kit-num">03</div>
@@ -4767,6 +4613,14 @@ body {
                 <div class="fk-check-row"><input type="checkbox" id="fk3-s8"><label for="fk3-s8">Dores físicas no trabalho</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk3-s9"><label for="fk3-s9">Isolamento social</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk3-s10"><label for="fk3-s10">Nenhum dos acima</label></div>
+                <label class="fk-label" style="margin-bottom:6px;margin-top:12px;">Há quanto tempo você sente esses sintomas?</label>
+                <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                <div class="fk-check-row"><input type="radio" name="fk3-tempo" id="fk3-t1"><label for="fk3-t1">Menos de 1 mês</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-tempo" id="fk3-t2"><label for="fk3-t2">1 a 3 meses</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-tempo" id="fk3-t3"><label for="fk3-t3">3 a 6 meses</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-tempo" id="fk3-t4"><label for="fk3-t4">Mais de 6 meses</label></div>
+                <div class="fk-check-row"><input type="radio" name="fk3-tempo" id="fk3-t5"><label for="fk3-t5">Não se aplica</label></div>
+                </div>
               </div>
             </div>
             <div class="fk-section">
@@ -4824,7 +4678,7 @@ body {
           </div>
         </div>
 
-        <!-- FORMULÁRIO 04 -->
+        <!-- FORMULÁRIO 03 -->
         <div class="form-kit-card" id="fk4">
           <div class="form-kit-header" onclick="toggleFK('fk4')">
             <div class="form-kit-num">04</div>
@@ -4854,16 +4708,17 @@ body {
               <div class="fk-section-title">2. Serviço Solicitado</div>
               <label class="fk-label" style="margin-bottom:6px;">Tipo de Serviço <span class="fk-req">*</span></label>
               <div class="fk-grid-checks" style="margin-bottom:12px;">
-                <div class="fk-check-row"><input type="checkbox" id="fk4-s1"><label for="fk4-s1">Orientação individual de bem-estar</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk4-s2"><label for="fk4-s2">Orientação coletiva de bem-estar</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk4-s3"><label for="fk4-s3">Workshop de gestão do estresse e bem-estar</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s1"><label for="fk4-s1">Sessão de psicologia individual</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s2"><label for="fk4-s2">Sessão de psicologia em grupo</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s3"><label for="fk4-s3">Workshop de saúde menta</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s4"><label for="fk4-s4">Palestra para equipe</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s5"><label for="fk4-s5">Treinamento de liderança emocional</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s6"><label for="fk4-s6">Consultoria estratégica de RH</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s7"><label for="fk4-s7">Diagnóstico psicossocial</label></div>
-                <div class="fk-check-row"><input type="checkbox" id="fk4-s8"><label for="fk4-s8">Nutrição comportamental</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s8"><label for="fk4-s8">Programa de nutrição comportamental</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s9"><label for="fk4-s9">Atividade de movimento / corpo</label></div>
                 <div class="fk-check-row"><input type="checkbox" id="fk4-s10"><label for="fk4-s10">Terapia integrativa</label></div>
+                <div class="fk-check-row"><input type="checkbox" id="fk4-s11"><label for="fk4-s11">Outro</label></div>
               </div>
               <label class="fk-label" style="margin-bottom:6px;">Destinado a <span class="fk-req">*</span></label>
               <div class="fk-checks" style="flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
@@ -4908,7 +4763,7 @@ body {
   ⚠️ Os serviços de orientação individual e coletiva são conduzidos por profissionais parceiros habilitados. A Ranne Care atua como plataforma de gestão e encaminhamento — não como prestadora de serviços clínicos diretamente.
 </div>
         
-        <!-- FORMULÁRIO 05 -->
+        <!-- FORMULÁRIO 04 -->
         <div class="form-kit-card" id="fk5">
           <div class="form-kit-header" onclick="toggleFK('fk5')">
             <div class="form-kit-num">05</div>
@@ -4966,7 +4821,7 @@ body {
           </div>
         </div>
 
-        <!-- FORMULÁRIO 06 -->
+        <!-- FORMULÁRIO 05 -->
         <div class="form-kit-card" id="fk6">
           <div class="form-kit-header" onclick="toggleFK('fk6')">
             <div class="form-kit-num" style="background:#C9A84C;">06</div>
@@ -5877,9 +5732,9 @@ body {
       <div class="th-title">Trilhas de<br>Bem-estar</div>
       <div class="th-sub">Conteúdo desenvolvido com base clínica e revisado por psicóloga especializada em saúde mental ocupacional.</div>
       <div class="th-stats">
-        <div class="th-stat"><div class="th-stat-dot"></div>8 trilhas</div>
-        <div class="th-stat"><div class="th-stat-dot"></div>41 aulas</div>
-        <div class="th-stat"><div class="th-stat-dot"></div>~3h30 de conteúdo</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>5 trilhas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>26 aulas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>~2h de conteúdo</div>
       </div>
     </div>
 
@@ -5991,67 +5846,6 @@ body {
       </div>
       <div class="tc-arr">›</div>
     </div>
-
-    <!-- Trilha 6 -->
-    <div class="trilha-card t6" onclick="abrirTrilha(6)">
-      <div class="tc-emoji">🌱</div>
-      <div class="tc-body">
-        <div class="tc-num">Trilha 6</div>
-        <div class="tc-titulo">Autocuidado no Trabalho</div>
-        <div class="tc-desc">Pequenas práticas diárias que protegem sua saúde mental antes que ela precise de cuidado.</div>
-        <div class="tc-meta">
-          <span class="tc-pill">5 aulas</span>
-          <span class="tc-pill">~24 min</span>
-          <span class="tc-pill">Neff · 2011</span>
-        </div>
-        <div class="tc-progress">
-          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t6-pct">0%</span></div>
-          <div class="tc-prog-track"><div class="tc-prog-fill" id="t6-fill" style="width:0%"></div></div>
-        </div>
-      </div>
-      <div class="tc-arr">›</div>
-    </div>
-
-    <!-- Trilha 7 -->
-    <div class="trilha-card t7" onclick="abrirTrilha(7)">
-      <div class="tc-emoji">🧩</div>
-      <div class="tc-body">
-        <div class="tc-num">Trilha 7</div>
-        <div class="tc-titulo">Identidade e Propósito Profissional</div>
-        <div class="tc-desc">Reconecte-se com o que dá sentido ao seu trabalho e construa uma carreira alinhada a quem você é.</div>
-        <div class="tc-meta">
-          <span class="tc-pill">5 aulas</span>
-          <span class="tc-pill">~28 min</span>
-          <span class="tc-pill">Frankl · Deci & Ryan</span>
-        </div>
-        <div class="tc-progress">
-          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t7-pct">0%</span></div>
-          <div class="tc-prog-track"><div class="tc-prog-fill" id="t7-fill" style="width:0%"></div></div>
-        </div>
-      </div>
-      <div class="tc-arr">›</div>
-    </div>
-
-    <!-- Trilha 8 -->
-    <div class="trilha-card t8" onclick="abrirTrilha(8)">
-      <div class="tc-emoji">💪</div>
-      <div class="tc-body">
-        <div class="tc-num">Trilha 8</div>
-        <div class="tc-titulo">Saúde Física & Mental: a conexão</div>
-        <div class="tc-desc">Entenda como corpo e mente se afetam mutuamente — e use isso a seu favor no trabalho.</div>
-        <div class="tc-meta">
-          <span class="tc-pill">5 aulas</span>
-          <span class="tc-pill">~23 min</span>
-          <span class="tc-pill">Ratey · Kabat-Zinn</span>
-        </div>
-        <div class="tc-progress">
-          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t8-pct">0%</span></div>
-          <div class="tc-prog-track"><div class="tc-prog-fill" id="t8-fill" style="width:0%"></div></div>
-        </div>
-      </div>
-      <div class="tc-arr">›</div>
-    </div>
-
   </div>
 
   <!-- ── DETALHE DA TRILHA (lista de aulas) ── -->
@@ -6291,6 +6085,134 @@ body {
     </div>
 
   </div>
+
+  <!-- RISCO DE BURNOUT (Ranne) -->
+    <div class="test-card" onclick="iniciarTeste('burnout_ranne')" id="tc-burnout_ranne">
+      <div class="test-card-badge" style="background:#FEF2F2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 017 7c0 4-3 6-4 9H9c-1-3-4-5-4-9a7 7 0 017-7z"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Demerouti et al. (2001) · OLBI</div>
+        <div class="test-card-title">Risco de Burnout</div>
+        <div class="test-card-desc">Avalia sinais de exaustão emocional e distanciamento do trabalho — dois pilares centrais do Burnout segundo a OMS.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">OMS · OLBI</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- NÍVEL DE ANSIEDADE NO TRABALHO -->
+    <div class="test-card" onclick="iniciarTeste('ansiedade_ranne')" id="tc-ansiedade_ranne">
+      <div class="test-card-badge" style="background:#FFFBEB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Lovibond & Lovibond (1995) · Karasek (1979)</div>
+        <div class="test-card-title">Nível de Ansiedade no Trabalho</div>
+        <div class="test-card-desc">Mede preocupação, tensão e dificuldade de desligar relacionadas especificamente ao contexto profissional.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">DASS · Karasek</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- QUE TIPO DE LÍDER VOCÊ É -->
+    <div class="test-card" onclick="iniciarTeste('lider_ranne')" id="tc-lider_ranne">
+      <div class="test-card-badge" style="background:#EFF6FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Bass & Avolio (1995) · MLQ</div>
+        <div class="test-card-title">Que Tipo de Líder Você É?</div>
+        <div class="test-card-desc">Avalia seu estilo de liderança com base em reconhecimento, comunicação, gestão de conflitos e construção de ambiente colaborativo.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">MLQ · Bass & Avolio</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- ESTILO DE TRABALHO EM EQUIPE -->
+    <div class="test-card" onclick="iniciarTeste('equipe_ranne')" id="tc-equipe_ranne">
+      <div class="test-card-badge" style="background:#ECFDF5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6"/><circle cx="18" cy="7" r="2.5"/><path d="M22 20c0-2.5-2-4.5-4.5-4.5"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Belbin (1981) · COPSOQ II · Robbins & Judge (2014)</div>
+        <div class="test-card-title">Seu Estilo de Trabalho em Equipe</div>
+        <div class="test-card-desc">Avalia colaboração, comunicação sob pressão, abertura a críticas e contribuição para um ambiente positivo.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">Belbin · COPSOQ II</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- QUALIDADE DO SONO -->
+    <div class="test-card" onclick="iniciarTeste('sono_ranne')" id="tc-sono_ranne">
+      <div class="test-card-badge" style="background:#F5F3FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Buysse et al. (1989) · PSQI · AASM (2014)</div>
+        <div class="test-card-title">Qualidade do Seu Sono</div>
+        <div class="test-card-desc">Avalia dificuldades para adormecer, qualidade do descanso e impacto do trabalho na sua rotina noturna.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">PSQI · AASM</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- NÍVEL DE ESTRESSE ATUAL -->
+    <div class="test-card" onclick="iniciarTeste('estresse_ranne')" id="tc-estresse_ranne">
+      <div class="test-card-badge" style="background:#FEF2F2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Cohen et al. (1983) · Selye (1956) · Lazarus & Folkman (1984)</div>
+        <div class="test-card-title">Nível de Estresse Atual</div>
+        <div class="test-card-desc">Mede sobrecarga, irritação, dificuldade de concentração e impacto do estresse no bem-estar emocional e físico.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">Cohen · Selye · Lazarus</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- INTELIGÊNCIA EMOCIONAL -->
+    <div class="test-card" onclick="iniciarTeste('ie_ranne')" id="tc-ie_ranne">
+      <div class="test-card-badge" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D5E4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Goleman (1995) · Mayer & Salovey (1997) · Bar-On (2006)</div>
+        <div class="test-card-title">Inteligência Emocional no Trabalho</div>
+        <div class="test-card-desc">Avalia reconhecimento emocional, controle sob pressão, empatia, comunicação e manejo de conflitos no ambiente profissional.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">Goleman · Mayer & Salovey</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
+
+    <!-- ESTABELECER LIMITES -->
+    <div class="test-card" onclick="iniciarTeste('limites_ranne')" id="tc-limites_ranne">
+      <div class="test-card-badge" style="background:#FEF9EF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A87C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <div class="test-card-body">
+        <div class="test-card-fonte">Alberti & Emmons (2017) · Smith (1975) · Goleman (1995)</div>
+        <div class="test-card-title">Você Sabe Estabelecer Limites?</div>
+        <div class="test-card-desc">Avalia assertividade, capacidade de dizer não, gestão de culpa e equilíbrio entre trabalho, descanso e vida pessoal.</div>
+        <div class="test-card-meta">
+          <span class="test-card-pill">8 perguntas</span>
+          <span class="test-card-pill">~3 min</span>
+          <span class="test-card-pill">Alberti · Goleman</span>
+        </div>
+      </div>
+      <div class="test-card-arr">›</div>
+    </div>
 
   <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
   <div class="col-page" id="cp-clin-teste">
@@ -9752,48 +9674,6 @@ const TRILHAS = [
     ]
   }
 ];
-
-const TRILHAS_EXTRAS = [
-  // ── CONTEÚDO EXTRA (expandindo trilhas existentes com mais aulas) ──────────
-
-  {
-    id:6, emoji:'🌱', cor:'#059669',
-    titulo:'Autocuidado no Trabalho',
-    desc:'Pequenas práticas diárias que protegem sua saúde mental antes que ela precise de cuidado.',
-    ref:'Neff, K. (2011). Self-Compassion: The Proven Power of Being Kind to Yourself. · WHO (2022). World Mental Health Report.',
-    aulas:[
-      {num:1, titulo:'O que é autocuidado de verdade', tipo:'Leitura', tempo:'4 min', corpo:[
-        {t:'p', c:'Autocuidado não é bolha de banho nem dia de spa (embora possam fazer parte). É qualquer prática intencional que preserva ou restaura sua capacidade de funcionar bem — fisicamente, mentalmente e emocionalmente.'},
-        {t:'p', c:'A pesquisadora Kristin Neff, da Universidade do Texas, identificou que a <strong>autocompaixão</strong> — tratar a si mesmo com a mesma gentileza que você teria com um amigo — é um dos preditores mais poderosos de bem-estar psicológico e resiliência ao estresse.'},
-        {t:'q', c:'"Você não pode cuidar de ninguém de um copo vazio. Autocuidado não é egoísmo — é a condição para que você continue contribuindo."'},
-        {t:'caixa', titulo:'Os 4 pilares do autocuidado ocupacional:', items:['Físico: sono, movimento, alimentação, pausas regulares.','Emocional: processar sentimentos em vez de suprimi-los.','Mental: períodos de descanso cognitivo, aprendizado prazeroso.','Social: conexões genuínas, pedir e oferecer ajuda.']},
-        {t:'levar', c:'Autocuidado é estratégia, não luxo. Comece com o mínimo: uma prática pequena, consistente, toda semana.'}
-      ]},
-      {num:2, titulo:'A ciência da autocompaixão no trabalho', tipo:'Leitura + Prática', tempo:'5 min', corpo:[
-        {t:'p', c:'Pesquisas mostram que pessoas com alta autocompaixão lidam melhor com fracassos profissionais, têm menos medo de errar e, paradoxalmente, são mais motivadas a melhorar — não por autocrítica, mas por genuíno desejo de cuidado consigo mesmas.'},
-        {t:'p', c:'A autocrítica crônica ativa o sistema de ameaça do cérebro (amígdala), gerando ansiedade e bloqueio criativo. A autocompaixão ativa o sistema de segurança — o mesmo que se ativa quando você consola um amigo — permitindo aprender com erros sem se destruir.'},
-        {t:'caixa', titulo:'Exercício: A carta do amigo:', items:['Pense em uma situação recente que te fez se sentir inadequado(a) no trabalho.','Escreva sobre ela como se estivesse consolando um amigo querido que passou pelo mesmo.','Use as mesmas palavras gentis e encorajadoras que você usaria com ele/ela.','Leia o que escreveu em voz alta — para você mesmo(a).']},
-        {t:'levar', c:'Você merece a mesma gentileza que oferece aos outros. Isso não é fraqueza — é a base da resiliência.'}
-      ]},
-      {num:3, titulo:'Microhábitos que transformam o dia', tipo:'Prática', tempo:'4 min', corpo:[
-        {t:'p', c:'Grandes mudanças de estilo de vida raramente acontecem de uma vez. O que funciona são <strong>microhábitos</strong> — ações tão pequenas que resistência quase não existe, mas que acumulam impacto enorme ao longo do tempo.'},
-        {t:'q', c:'"Um hábito de 2 minutos feito todos os dias vale mais do que uma rotina perfeita feita uma vez na semana." — James Clear, Hábitos Atômicos'},
-        {t:'caixa', titulo:'5 microhábitos de autocuidado para o trabalho:', items:['☀️ Manhã: 2 minutos de respiração antes de abrir o celular.','🕛 Meio-dia: sair para comer longe da tela (mesmo que por 10 min).','⏰ A cada hora: 1 minuto de alongamento ou olhar para longe.','🌙 Final do expediente: escrever 1 coisa que foi bem hoje.','🚶 No trajeto: caminhar pelo menos parte do percurso sem fone/celular.']},
-        {t:'levar', c:'Escolha apenas 1 desses hábitos para esta semana. Só 1. Consistência supera perfeição.'}
-      ]},
-      {num:4, titulo:'Dizer não como ato de autocuidado', tipo:'Leitura + Scripts', tempo:'5 min', corpo:[
-        {t:'p', c:'A incapacidade de dizer não é uma das principais causas de esgotamento profissional. Mas dizer não não é sobre ser difícil ou pouco colaborativo — é sobre saber o que você pode oferecer com qualidade sem comprometer sua saúde.'},
-        {t:'p', c:'Pesquisas em neurociência mostram que toda vez que dizemos sim quando queremos dizer não, ativamos uma pequena resposta de estresse. Acumulada ao longo do tempo, essa resposta se transforma em ressentimento, exaustão e queda de performance.'},
-        {t:'caixa', titulo:'Scripts para dizer não com respeito e firmeza:', items:['"Agradeço pela confiança, mas minha capacidade está no limite. Posso ajudar com X — mas não com tudo isso agora."','"Preciso de um tempo para avaliar minha agenda antes de confirmar. Posso te responder até amanhã?"','"Prefiro ser honesto(a) agora do que entregar algo abaixo do que você merece. Não consigo fazer isso bem neste prazo."']},
-        {t:'levar', c:'Cada não que você diz ao que é demais é um sim para o que realmente importa — sua saúde e seu melhor trabalho.'}
-      ]},
-      {num:5, titulo:'Construindo sua rotina de autocuidado', tipo:'Plano prático', tempo:'6 min', corpo:[
-        {t:'p', c:'Autocuidado sem planejamento vira intenção. Intenção sem ação vira culpa. A solução é criar uma rotina mínima viável — simples o suficiente para ser sustentável, consistente o suficiente para gerar resultado.'},
-        {t:'caixa', titulo:'Template: Sua semana de autocuidado:', items:['Segunda: Defina 3 prioridades absolutas (não mais) para a semana.','Terça/Quinta: Pratique uma técnica de regulação emocional por 5 min.','Quarta: Conecte-se com alguém que te energiza (mesmo que por mensagem).','Sexta: Revise a semana — o que funcionou? O que me custou energia?','Fim de semana: 1 atividade que você faz puramente pelo prazer, sem produtividade.']},
-        {t:'levar', c:'Parabéns por concluir a Trilha de Autocuidado! Cuidar de si é o ato mais profissional que existe.'}
-      ]}
-    ]
-  },
 
   {
     id:7, emoji:'🧩', cor:'#6366F1',
