@@ -153,6 +153,7 @@ body.dark .alert-crit { background:#2D1515; border-color:#5A2020; }
 body.dark .alert-warn { background:#2D2010; border-color:#5A4010; }
 body.dark .alert-info { background:#101D2D; border-color:#1E3A5A; }
 body.dark .perm-table th, body.dark .perm-table td { border-color:#1E3344; }
+  
 /* ══════════════════════════════════════
    ACESSIBILIDADE — FOCO VISÍVEL
    ══════════════════════════════════════ */
@@ -7582,7 +7583,7 @@ function copyLink() {
    ───────────────────────────────────── */
 function toggleDark() {
   const on = document.body.classList.toggle('dark');
-  document.getElementById('darkBtn').textContent = on ? '○' : '●';
+  document.getElementById('darkBtn').textContent = on ? '☀︎' : '☾';
   localStorage.setItem('ranne-dark', on ? '1' : '');
 }
 
