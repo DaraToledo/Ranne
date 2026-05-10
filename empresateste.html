@@ -205,6 +205,124 @@ body.dark .page-sub { color: rgba(255,255,255,0.65) !important; }
 /* Botão ghost no dark */
 body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,255,.65); }
 /* ══ fim contraste ══ */
+
+/* ══════════════════════════════════════════════════
+   CORREÇÃO GLOBAL DE CONTRASTE — v3 fix
+   Garante que textos dentro de cards/superfícies claras
+   sempre usem as variáveis semânticas corretas.
+   ══════════════════════════════════════════════════ */
+
+/* Elementos de superfície clara — força cor de texto legível */
+.card .metric-label,
+.card .metric-sub,
+.card .card-title,
+.metric .metric-label,
+.metric .metric-sub,
+.metric .metric-value {
+  color: var(--card-text) !important;
+}
+
+/* Dashboard — textos de seção que usam var(--muted) incorretamente */
+[style*="color:var(--muted)"] {
+  /* Não sobrescreve globalmente — feito por contexto abaixo */
+}
+
+/* Dentro de cards: forçar cor legível em elementos com var(--muted) inline */
+.card [style*="color:var(--muted)"],
+.metric [style*="color:var(--muted)"],
+.res-card [style*="color:var(--muted)"],
+.dim-card [style*="color:var(--muted)"],
+.lib-card [style*="color:var(--muted)"],
+.form-kit-card [style*="color:var(--muted)"],
+.diag-item [style*="color:var(--muted)"],
+.st-row [style*="color:var(--muted)"],
+.modal-box [style*="color:var(--muted)"],
+.auth-box [style*="color:var(--muted)"] {
+  color: var(--card-text-muted) !important;
+}
+
+/* Tabs dentro do app empresa — fundo claro */
+.tabs {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+}
+.tab { color: rgba(255,255,255,0.65); }
+.tab.active { background: rgba(255,255,255,0.22); color: #fff; }
+
+/* Override para tabs dentro de cards (fundo bege) */
+.card .tabs { background: #F1F5F9; }
+.card .tab { color: var(--card-text-muted); }
+.card .tab.active { background: var(--white); color: var(--card-text); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+/* Tabs biblioteca — dentro do page (fundo verde) */
+#p-biblioteca .tabs { background: rgba(255,255,255,0.15); }
+#p-biblioteca .tab { color: rgba(255,255,255,0.65); }
+#p-biblioteca .tab.active { background: rgba(255,255,255,0.22); color: #fff; }
+
+/* Textos de seção fora de card (fundo verde escuro) */
+.page-content > [style*="color:var(--muted)"],
+#p-dashboard > [style*="color:var(--muted)"],
+#p-biblioteca > [style*="color:var(--muted)"] {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Métrica cards — garantir legibilidade */
+.m-amber, .m-blue, .m-red, .m-green {
+  color: var(--card-text);
+}
+.m-amber .metric-label,
+.m-blue .metric-label,
+.m-red .metric-label,
+.m-green .metric-label { color: var(--card-text-muted) !important; }
+.m-amber .metric-sub,
+.m-blue .metric-sub,
+.m-red .metric-sub,
+.m-green .metric-sub { color: var(--card-text-muted) !important; }
+
+/* isa-card label */
+.isa-card-lbl { color: var(--card-text-muted) !important; }
+
+/* Diário: textos internos */
+.diario-entrada { color: var(--card-text); }
+.diario-entrada-data { color: var(--card-text-muted); }
+.diario-entrada-texto { color: var(--card-text); font-size: 12px; line-height: 1.5; margin-top: 4px; }
+.diario-entrada-tag { display: inline-block; padding: 2px 8px; border-radius: 99px; background: rgba(45,94,74,.08); color: var(--card-text-muted); font-size: 10px; font-weight: 600; margin: 2px 2px 0 0; }
+
+/* Formulários — campos internos */
+.fk-nps-btn { color: var(--card-text-muted); }
+.fk-likert-table td:first-child { color: var(--card-text); }
+.fk-check-row label { color: var(--card-text); }
+
+/* Filter chips RH — legibilidade no fundo verde */
+.filter-chip-rh {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.75);
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .15s;
+  font-family: 'Inter', sans-serif;
+}
+.filter-chip-rh.active,
+.filter-chip-rh:hover { background: rgba(255,255,255,0.22); color: #fff; border-color: rgba(255,255,255,.35); }
+
+/* colab-row: texto legível */
+.colab-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.colab-row:hover { background: rgba(45,94,74,.04); }
+
+/* ══ fim correção global ══ */
 body { font-family:'Inter',sans-serif; background:var(--bg); color:#FFFFFF; font-size:14px; -webkit-font-smoothing:antialiased; }
 
 /* ══════════ DARK MODE ══════════ */
@@ -1465,7 +1583,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .isa-card:hover { transform:translateY(-2px); }
 .isa-card-icon { font-size:20px; margin-bottom:6px; }
 .isa-card-val { font-size:20px; font-weight:900; letter-spacing:-1px; margin-bottom:2px; }
-.isa-card-lbl { font-size:9px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+.isa-card-lbl { font-size:9px; font-weight:600; color:var(--card-text-muted); text-transform:uppercase; letter-spacing:.4px; }
 
 /* ══ STATUS TIME ══ */
 .status-team { display:flex; flex-direction:column; gap:8px; }
@@ -1574,7 +1692,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 
 /* BIBLIOTECA */
 .search-wrap { position:relative; margin-bottom:16px; }
-.search-wrap input { width:100%; padding:10px 16px 10px 40px; border:1.5px solid var(--border); border-radius:10px; font-size:13px; outline:none; font-family:'Inter',sans-serif; transition:border 0.2s; background:var(--white); color:var(--text); }
+.search-wrap input { width:100%; padding:10px 16px 10px 40px; border:1.5px solid var(--border); border-radius:10px; font-size:13px; outline:none; font-family:'Inter',sans-serif; transition:border 0.2s; background:var(--white); color:var(--card-text); }
 .search-wrap input:focus { border-color:var(--mint); }
 .search-wrap::before { content:'⌕'; position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:13px; }
 .lib-feat { background:linear-gradient(135deg,#1F4435,#1A3A4A); border-radius:16px; padding:24px; display:flex; gap:20px; align-items:center; margin-bottom:20px; }
@@ -1588,6 +1706,8 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .lib-card h4 { font-size:13px; font-weight:700; line-height:1.4; margin-bottom:6px; color:var(--card-text); }
 .lib-card p { font-size:11px; color:var(--card-text-muted); line-height:1.5; }
 .lib-foot { display:flex; justify-content:space-between; align-items:center; margin-top:12px; }
+.lib-foot span[style*="color:var(--muted)"] { color: var(--card-text-muted) !important; }
+.lib-foot > span:first-child { color: var(--card-text-muted) !important; font-size: 11px; }
 
 /* CHECK-IN */
 .ci-dark { background:linear-gradient(135deg,#1F4435,#1A3A4A); border-radius:16px; padding:24px; margin-bottom:16px; }
@@ -1600,7 +1720,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .em-btn .el { font-size:9px; color:rgba(255,255,255,0.4); margin-top:4px; display:block; }
 .em-btn-lt { background:#F8FAFC; border:1.5px solid var(--border); }
 .em-btn-lt:hover, .em-btn-lt.sel { background:var(--mint-light); border-color:var(--mint); }
-.em-btn-lt .el { color:var(--muted); }
+.em-btn-lt .el { color: var(--card-text-muted); }
 
 /* RESPOSTA PÚBLICA (COLABORADOR) */
 .pub-header { background:linear-gradient(135deg,#1F4435,#1A3A4A); padding:28px 36px; }
@@ -1690,7 +1810,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .overlay.open { display:flex; }
 .modal { background:var(--white); border-radius:20px; padding:28px; max-width:400px; width:100%; }
 .modal h3 { font-size:17px; font-weight:800; margin-bottom:10px; }
-.modal p { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:24px; }
+.modal p { font-size:13px; color:var(--card-text-muted); line-height:1.6; margin-bottom:24px; }
 .modal-btns { display:flex; gap:10px; justify-content:flex-end; }
 
 /* TRANSITIONS */
@@ -4517,16 +4637,16 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
             <div class="lib-cat lc-burnout" style="margin-bottom:6px">DESTAQUE · BURNOUT</div>
             <h3>Guia Completo: Como Prevenir Burnout na sua Equipe</h3>
             <p>7 sinais de alerta, 5 práticas preventivas e um checklist para líderes e RH.</p>
-            <button class="btn btn-primary btn-sm" onclick="abrirArtigo(this.closest('.lib-card')?.querySelector('h4')?.textContent || 'Artigo')">Ler agora →</button>
+            <button class="btn btn-primary btn-sm" onclick="abrirArtigo('Guia Completo: Como Prevenir Burnout na sua Equipe')">Ler agora →</button>
           </div>
         </div>
         <div class="lib-grid" id="bib-grid">
-          <div class="lib-card" data-cat="lideranca"><div class="lib-cat lc-lid">Liderança</div><h4>O guia do feedback que funciona</h4><p>Estrutura SBI para conversas difíceis e construtivas.</p><div class="lib-foot"><span style="font-size:11px;color:var(--muted)">⏱ 8 min</span><span class="tag t-gray">Artigo</span></div></div>
-          <div class="lib-card" data-cat="cultura"><div class="lib-cat lc-cult">Cultura</div><h4>Rituais de equipe que criam pertencimento</h4><p>5 rituais que empresas de alto desempenho usam toda semana.</p><div class="lib-foot"><span style="font-size:11px;color:var(--muted)">⏱ 6 min</span><span class="tag t-gray">Checklist</span></div></div>
-          <div class="lib-card" data-cat="bem-estar"><div class="lib-cat lc-bem">Bem-estar</div><h4>Política de desconexão digital</h4><p>Como criar regras saudáveis de comunicação fora do horário.</p><div class="lib-foot"><span style="font-size:11px;color:var(--muted)">⏱ 4 min</span><span class="tag t-gray">Ferramenta</span></div></div>
-          <div class="lib-card" data-cat="lideranca"><div class="lib-cat lc-lid">Liderança</div><h4>Como conduzir 1:1s que importam</h4><p>Roteiro completo para reuniões individuais que geram confiança.</p><div class="lib-foot"><span style="font-size:11px;color:var(--muted)">⏱ 7 min</span><span class="tag t-gray">Guia</span></div></div>
-          <div class="lib-card" data-cat="burnout"><div class="lib-cat lc-burnout">Burnout</div><h4>Redistribuição de demandas: passo a passo</h4><p>Framework para mapear sobrecarga e redistribuir tarefas.</p><div class="lib-foot"><span style="font-size:11px;color:var(--muted)">⏱ 10 min</span><span class="tag t-gray">Ferramenta</span></div></div>
-          <div class="lib-card" data-cat="comunicacao"><div class="lib-cat lc-gest">Gestão</div><h4>ROI em saúde mental: dados para o CEO</h4><p>Estudos e métricas para embasar decisões estratégicas.</p><div class="lib-foot"><span style="font-size:11px;color:var(--muted)">⏱ 12 min</span><span class="tag t-gray">Artigo</span></div></div>
+          <div class="lib-card" data-cat="lideranca" onclick="abrirArtigo('O guia do feedback que funciona')"><div class="lib-cat lc-lid">Liderança</div><h4>O guia do feedback que funciona</h4><p>Estrutura SBI para conversas difíceis e construtivas.</p><div class="lib-foot"><span style="font-size:11px;color:var(--card-text-muted)">⏱ 8 min</span><span class="tag t-gray">Artigo</span></div></div>
+          <div class="lib-card" data-cat="cultura" onclick="abrirArtigo('Rituais de equipe que criam pertencimento')"><div class="lib-cat lc-cult">Cultura</div><h4>Rituais de equipe que criam pertencimento</h4><p>5 rituais que empresas de alto desempenho usam toda semana.</p><div class="lib-foot"><span style="font-size:11px;color:var(--card-text-muted)">⏱ 6 min</span><span class="tag t-gray">Checklist</span></div></div>
+          <div class="lib-card" data-cat="bem-estar" onclick="abrirArtigo('Política de desconexão digital')"><div class="lib-cat lc-bem">Bem-estar</div><h4>Política de desconexão digital</h4><p>Como criar regras saudáveis de comunicação fora do horário.</p><div class="lib-foot"><span style="font-size:11px;color:var(--card-text-muted)">⏱ 4 min</span><span class="tag t-gray">Ferramenta</span></div></div>
+          <div class="lib-card" data-cat="lideranca" onclick="abrirArtigo('Como conduzir 1:1s que importam')"><div class="lib-cat lc-lid">Liderança</div><h4>Como conduzir 1:1s que importam</h4><p>Roteiro completo para reuniões individuais que geram confiança.</p><div class="lib-foot"><span style="font-size:11px;color:var(--card-text-muted)">⏱ 7 min</span><span class="tag t-gray">Guia</span></div></div>
+          <div class="lib-card" data-cat="burnout" onclick="abrirArtigo('Redistribuição de demandas: passo a passo')"><div class="lib-cat lc-burnout">Burnout</div><h4>Redistribuição de demandas: passo a passo</h4><p>Framework para mapear sobrecarga e redistribuir tarefas.</p><div class="lib-foot"><span style="font-size:11px;color:var(--card-text-muted)">⏱ 10 min</span><span class="tag t-gray">Ferramenta</span></div></div>
+          <div class="lib-card" data-cat="comunicacao" onclick="abrirArtigo('ROI em saúde mental: dados para o CEO')"><div class="lib-cat lc-gest">Gestão</div><h4>ROI em saúde mental: dados para o CEO</h4><p>Estudos e métricas para embasar decisões estratégicas.</p><div class="lib-foot"><span style="font-size:11px;color:var(--card-text-muted)">⏱ 12 min</span><span class="tag t-gray">Artigo</span></div></div>
         </div>
       </div>
 
@@ -7781,11 +7901,131 @@ function selEm(btn, group) {
 /* ─────────────────────────────────────
    COPIAR LINK
    ───────────────────────────────────── */
-// Biblioteca empresa — abrir artigo
-function abrirArtigo(titulo, tempo, tipo) {
-  // Redireciona para a seção de trilhas do colaborador se disponível
-  // ou exibe modal com informação do conteúdo
-  toast('📖 ' + titulo + (tempo ? ' · ' + tempo : '') + ' — Disponível na seção Trilhas do colaborador.');
+// Biblioteca empresa — abrir artigo em modal
+const ARTIGOS_CONTEUDO = {
+  'Guia Completo: Como Prevenir Burnout na sua Equipe': {
+    emoji:'⭐', cat:'Burnout', tempo:'15 min',
+    intro:'Burnout não aparece do nada — ele se acumula em silêncio por meses. Este guia reúne os 7 sinais de alerta mais importantes, 5 práticas preventivas comprovadas e um checklist prático para líderes e RH.',
+    topicos:[
+      { titulo:'7 sinais de alerta precoce', desc:'1) Queda na qualidade do trabalho sem mudança de esforço. 2) Distanciamento emocional dos colegas. 3) Cinismo crescente sobre o trabalho. 4) Dificuldade de concentração persistente. 5) Adoecimento frequente. 6) Presenteísmo (presente físico, ausente mentalmente). 7) Resistência a novos projetos.' },
+      { titulo:'5 práticas preventivas', desc:'1) Check-ins regulares de bem-estar (não só de tarefas). 2) Política clara de desconexão fora do horário. 3) Redistribuição ativa de demandas a cada trimestre. 4) Reconhecimento frequente e específico. 5) Acesso facilitado a suporte de saúde mental.' },
+      { titulo:'Checklist para o RH', desc:'✓ Mapeamento de sobrecarga por setor? ✓ Política de férias sendo cumprida? ✓ Feedbacks 360° estruturados? ✓ Canais anônimos de escuta? ✓ Dados de afastamento por causa sendo monitorados?' },
+    ],
+    dica:'Burnout custa em média 34 semanas de produtividade por colaborador afetado. Prevenir é 6x mais barato do que tratar.'
+  },
+  'O guia do feedback que funciona': {
+    emoji:'💬', cat:'Liderança', tempo:'8 min',
+    intro:'O feedback eficaz não é sobre criticar — é sobre construir. A estrutura SBI (Situação, Comportamento, Impacto) é o padrão de ouro usado pelas melhores lideranças do mundo.',
+    topicos:[
+      { titulo:'S — Situação', desc:'Descreva o contexto específico. "Na reunião de segunda-feira..." em vez de "você sempre..."' },
+      { titulo:'B — Comportamento', desc:'Fale do comportamento observável, não da personalidade. "Você interrompeu o colega 3 vezes" vs "você é desrespeitoso".' },
+      { titulo:'I — Impacto', desc:'Explique o efeito real. "Isso fez com que a reunião se estendesse 20 min e o time saiu sem consenso."' },
+    ],
+    dica:'Pratique o SBI em situações positivas também — reconhecimento específico vale muito mais do que elogios genéricos.'
+  },
+  'Rituais de equipe que criam pertencimento': {
+    emoji:'🤝', cat:'Cultura', tempo:'6 min',
+    intro:'Pertencimento não é acidente — é construído com intencionalidade. Empresas de alto desempenho usam rituais simples e consistentes para criar conexão real.',
+    topicos:[
+      { titulo:'Check-in de 5 min', desc:'Comece toda reunião perguntando: "como cada um está chegando hoje?" Uma palavra ou emoji já basta.' },
+      { titulo:'Vitória da semana', desc:'Toda sexta, cada membro compartilha uma pequena conquista. Reconhecimento frequente = engajamento real.' },
+      { titulo:'1:1 quinzenal', desc:'30 minutos a cada duas semanas com cada liderado. Pauta do liderado, não do líder.' },
+    ],
+    dica:'Consistência é mais importante do que perfeição. Um ritual simples feito toda semana supera grandes eventos anuais.'
+  },
+  'Política de desconexão digital': {
+    emoji:'📵', cat:'Bem-estar', tempo:'4 min',
+    intro:'A hiperconectividade é um dos maiores fatores de burnout moderno. Uma política clara de desconexão protege a saúde do time e aumenta a produtividade real.',
+    topicos:[
+      { titulo:'Janela de comunicação', desc:'Defina horários em que mensagens de trabalho são esperadas. Ex: 9h–18h nos dias úteis.' },
+      { titulo:'Urgência real vs urgência percebida', desc:'Crie um protocolo para emergências reais. Se não usa o protocolo, não é urgência.' },
+      { titulo:'Lidere pelo exemplo', desc:'Se o gestor manda mensagens às 23h, o time sente obrigação de responder. O tom vem do topo.' },
+    ],
+    dica:'Coloque no contrato psicológico: descanso não é preguiça — é parte do trabalho de alta performance.'
+  },
+  'Como conduzir 1:1s que importam': {
+    emoji:'🎯', cat:'Liderança', tempo:'7 min',
+    intro:'1:1 não é reunião de status. É o principal investimento que um líder pode fazer em sua equipe. Feito bem, previne problemas, retém talentos e acelera desenvolvimento.',
+    topicos:[
+      { titulo:'A pauta é do liderado', desc:'Antes da reunião, pergunte: "O que você precisa conversar?" Isso muda o poder da dinâmica.' },
+      { titulo:'Pergunta obrigatória', desc:'"Tem algo que eu, como líder, poderia fazer diferente para te ajudar?" Humildade que gera confiança.' },
+      { titulo:'Anote e siga', desc:'Documente o que foi discutido e retome na próxima reunião. Compromisso que não volta = desconfiança.' },
+    ],
+    dica:'Frequência importa mais do que duração. 30 minutos quinzenais valem mais que 2 horas semestrais.'
+  },
+  'Redistribuição de demandas: passo a passo': {
+    emoji:'⚖️', cat:'Burnout', tempo:'10 min',
+    intro:'Sobrecarga crônica é um sinal de falha sistêmica, não de fraqueza individual. Mapear e redistribuir demandas é responsabilidade da liderança, não do colaborador sobrecarregado.',
+    topicos:[
+      { titulo:'Mapeamento visual', desc:'Liste todas as tarefas da equipe por pessoa. Torne a sobrecarga visível — o que não se mede não se gerencia.' },
+      { titulo:'Prioridade vs urgência', desc:'Use a Matriz de Eisenhower. Elimine tarefas que não são nem urgentes nem importantes antes de redistribuir.' },
+      { titulo:'Conversa individual', desc:'Pergunte diretamente: "O que está consumindo mais energia e poderia ser delegado ou eliminado?"' },
+    ],
+    dica:'Redistribuição sem remoção é só transferência de problema. Sempre questione: essa tarefa precisa existir?'
+  },
+  'ROI em saúde mental: dados para o CEO': {
+    emoji:'📊', cat:'Gestão', tempo:'12 min',
+    intro:'Saúde mental não é custo — é investimento com ROI mensurável. Estes dados transformam a conversa de "cuidado com as pessoas" em "estratégia de negócio".',
+    topicos:[
+      { titulo:'Custo do presenteísmo', desc:'A OMS estima que depressão e ansiedade custam US$ 1 trilhão/ano em produtividade perdida globalmente. No Brasil, são 30% do custo de absenteísmo.' },
+      { titulo:'ROI da prevenção', desc:'Para cada R$ 1 investido em saúde mental, há retorno de R$ 4–6 em produtividade (London School of Economics, 2019).' },
+      { titulo:'Retenção de talentos', desc:'Colaboradores com alta satisfação de bem-estar têm 87% menos probabilidade de sair (Gallup, 2023).' },
+    ],
+    dica:'Leve dados internos também: calcule o custo de substituição de um colaborador (média: 150% do salário anual) e compare com o custo de programas preventivos.'
+  }
+};
+
+function abrirArtigo(titulo) {
+  const conteudo = ARTIGOS_CONTEUDO[titulo];
+  
+  // Remove modal anterior se existir
+  const existente = document.getElementById('modal-artigo-bib');
+  if (existente) existente.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'modal-artigo-bib';
+  modal.className = 'modal open';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center;padding:20px;';
+  
+  if (!conteudo) {
+    modal.innerHTML = `
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);" onclick="document.getElementById('modal-artigo-bib').remove()"></div>
+      <div class="modal-box" style="position:relative;z-index:1;max-width:480px;width:100%;border-radius:20px;padding:28px;">
+        <div style="font-size:32px;margin-bottom:12px;">📖</div>
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;color:var(--card-text)">${titulo}</h3>
+        <p style="font-size:13px;color:var(--card-text-muted);line-height:1.6;margin-bottom:20px;">Este conteúdo está sendo preparado pela equipe Ranne com curadoria especializada. Em breve disponível completo na plataforma.</p>
+        <button onclick="document.getElementById('modal-artigo-bib').remove()" class="btn btn-primary btn-sm" style="width:100%">Fechar</button>
+      </div>`;
+  } else {
+    const topicosHTML = conteudo.topicos.map(t => `
+      <div style="padding:12px 14px;border-radius:10px;background:rgba(45,94,74,.05);border:1px solid rgba(45,94,74,.1);margin-bottom:8px;">
+        <div style="font-size:12px;font-weight:700;color:var(--card-text);margin-bottom:4px;">${t.titulo}</div>
+        <div style="font-size:12px;color:var(--card-text-muted);line-height:1.55;">${t.desc}</div>
+      </div>`).join('');
+    modal.innerHTML = `
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);" onclick="document.getElementById('modal-artigo-bib').remove()"></div>
+      <div class="modal-box" style="position:relative;z-index:1;max-width:500px;width:100%;border-radius:20px;padding:28px;max-height:88vh;overflow-y:auto;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:12px;background:rgba(45,94,74,.1);display:flex;align-items:center;justify-content:center;font-size:20px;">${conteudo.emoji}</div>
+            <div>
+              <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mint);">${conteudo.cat} · ${conteudo.tempo}</div>
+            </div>
+          </div>
+          <button onclick="document.getElementById('modal-artigo-bib').remove()" style="width:28px;height:28px;border-radius:8px;border:none;background:rgba(0,0,0,.06);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+        <h3 style="font-size:17px;font-weight:700;color:var(--card-text);margin-bottom:10px;line-height:1.3;">${titulo}</h3>
+        <p style="font-size:13px;color:var(--card-text-muted);line-height:1.6;margin-bottom:16px;">${conteudo.intro}</p>
+        ${topicosHTML}
+        <div style="padding:12px 14px;border-radius:10px;background:linear-gradient(135deg,rgba(45,94,74,.08),rgba(61,122,98,.05));border-left:3px solid var(--mint);margin-top:12px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mint);margin-bottom:4px;">💡 Dica prática</div>
+          <div style="font-size:12px;color:var(--card-text);line-height:1.55;">${conteudo.dica}</div>
+        </div>
+        <button onclick="document.getElementById('modal-artigo-bib').remove()" class="btn btn-primary btn-sm" style="width:100%;margin-top:18px;">Fechar</button>
+      </div>`;
+  }
+  
+  document.body.appendChild(modal);
 }
 
 function copyLink() {
@@ -11292,21 +11532,26 @@ async function gerarRelatorioNR1() {
 </body>
 </html>`;
 
-    // Abre o relatório em nova aba para impressão/download
+    // Download direto sem depender de window.open (evita bloqueio de popup)
     const blob = new Blob([htmlRel], { type: 'text/html;charset=utf-8' });
     const url  = URL.createObjectURL(blob);
-    const win  = window.open(url, '_blank');
+    
+    // Tenta abrir em nova aba; se bloqueado, faz download direto
+    const win = window.open(url, '_blank');
     if (win) {
-      win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
-      toast('✅ Relatório NR-1 gerado! Use Ctrl+P para salvar como PDF.');
+      win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 500); };
+      toast('✅ Relatório NR-1 aberto! Use Ctrl+P → "Salvar como PDF" para exportar.');
     } else {
-      // Fallback: download direto
+      // Popup bloqueado — download direto do HTML
       const a = document.createElement('a');
-      a.href = url; a.download = `Relatorio_NR1_${(empresaData.nome || 'Empresa').replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.html`;
+      a.href = url;
+      a.download = `Relatorio_NR1_${(empresaData.nome || 'Empresa').replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.html`;
+      document.body.appendChild(a);
       a.click();
-      toast('✅ Relatório baixado! Abra o arquivo e use Ctrl+P → Salvar como PDF.');
+      document.body.removeChild(a);
+      toast('✅ Relatório baixado! Abra o arquivo no navegador e use Ctrl+P → "Salvar como PDF".');
     }
-    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
 
   } catch(e) {
     console.error('[NR-1]', e);
