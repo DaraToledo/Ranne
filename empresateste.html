@@ -555,7 +555,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 
 
 
-/* S3 sub-steps 
+/* S3 sub-steps */
 /* ══════════ KIT FORMULÁRIOS ══════════ */
 .form-kit-card {
   background: var(--white);
@@ -1175,6 +1175,56 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
 @media (min-width: 600px) and (max-width: 899px) {
   .ob-hero { height: 52vh; max-height: 420px; }
   .ob-card { padding: 36px 32px; }
+}
+
+/* ══════════════════════════════════════
+   MOBILE — CORREÇÕES iOS / ANDROID
+   ══════════════════════════════════════ */
+
+/* Fix 1 — 100vh no iOS Safari não desconta a barra de endereços.
+   Usamos min-height com fallback para -webkit-fill-available. */
+#onboarding {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+.ob-page {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+/* Fix 2 — fullpage (tela de steps/login) também sofre do mesmo problema.
+   Adicionamos padding de safe area correto no iOS com notch. */
+.fullpage {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  padding-top: max(env(safe-area-inset-top, 0px), 28px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 40px);
+}
+
+/* Fix 3 — quando a imagem do hero falha (onerror), o container
+   colapsaria e deixaria espaço vazio. Garantimos altura mínima
+   e fundo decente no estado .no-image */
+@media (max-width: 899px) {
+  .ob-hero.no-image {
+    height: 180px;
+    min-height: 180px;
+  }
+  .ob-hero.no-image img {
+    display: none;
+  }
+}
+
+/* Fix 4 — delay de ~300ms no toque (iOS Safari) em botões interativos.
+   touch-action: manipulation elimina o double-tap zoom e o delay.
+   -webkit-tap-highlight-color: transparent remove o flash cinza no toque. */
+.ob-btn,
+.btn-cta,
+.role-card,
+.ob-links a,
+.field-input,
+.auth-box button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ══════════ APP LAYOUT ══════════ */
@@ -7436,6 +7486,8 @@ async function enviarRespostas() {
     if (diagId) {
       await db.from('respostas').insert({
         diagnostico_id: diagId,
+        colaborador_id: currentUser?.id || null,
+        empresa_id: currentEmpresa?.id || null,
         respostas_json: respostas,
         resposta_aberta: resposta_aberta || null,
         scores_json: scores,
@@ -8215,28 +8267,7 @@ function filtroRisco(filtro, btn) {
   renderColabs();
 }
 
-function abrirFicha(id) {
-  // Abrir ficha do colaborador existente
-  const colab = _todosColabs.find(c => c.id === id);
-  if (!colab) return;
-  // Preenche nome/cargo para a ficha existente
-  fichaColaboradorId = id;
-  const nomeEl = document.getElementById('ficha-nome');
-  const cargoEl = document.getElementById('ficha-cargo');
-  const nomeHdrEl = document.getElementById('ficha-nome-hdr');
-  const infoHdrEl = document.getElementById('ficha-info-hdr');
-  const avatarEl = document.getElementById('ficha-avatar');
-  if (nomeEl) nomeEl.textContent = colab.nome || '—';
-  if (cargoEl) cargoEl.textContent = colab.cargo || '—';
-  if (nomeHdrEl) nomeHdrEl.textContent = colab.nome || '—';
-  if (infoHdrEl) infoHdrEl.textContent = `${colab.cargo || ''} · ${colab.setor || ''}`;
-  if (avatarEl) {
-    const initials = colab.initials || (colab.nome ? colab.nome.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase() : '?');
-    avatarEl.textContent = initials;
-  }
-  window._fichaFrom = 'colaboradores';
-  pg('ficha', null);
-}
+/* abrirFicha (segunda declaração removida — função assíncrona completa acima é a única) */
 
 /* ══════════ RELATÓRIOS ══════════ */
 function carregarDadosRelatorio() {
@@ -8820,7 +8851,8 @@ const TOUR_STEPS = [
 let _tourStep = 0;
 let _tourHighlightEl = null;
 
-function iniciarTour() {
+/* _iniciarTourSimples — versão antiga substituída por iniciarTour+renderTourStep abaixo */
+function _iniciarTourSimples() {
   if (localStorage.getItem(TOUR_KEY)) return;
   _tourStep = 0;
   _tourMostrarCard();
@@ -8979,7 +9011,7 @@ function reiniciarTour() {
 
 
 
-/* S3 sub-steps 
+/* S3 sub-steps */
 /* ══════════ KIT FORMULÁRIOS ══════════ */
 
 function toggleFK(id) {
