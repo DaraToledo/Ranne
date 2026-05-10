@@ -233,6 +233,25 @@ body.dark {
   --shadow-md: 0 4px 16px rgba(0,0,0,.3), 0 1px 4px rgba(0,0,0,.2);
   --shadow-lg: 0 8px 32px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.25);
 }
+/* ── Dark mode: restaura variáveis do painel empresa no tema escuro ── */
+body.dark #app-empresa {
+  --text:   #FFFFFF;
+  --muted:  rgba(255,255,255,0.65);
+  --bg:     #1A3528;
+  --white:  #243D30;
+  --border: rgba(255,255,255,0.12);
+}
+
+/* ── Dark mode: variáveis do app colaborador no tema escuro ── */
+body.dark #app-colaborador {
+  --text:   #E8F4F0;
+  --muted:  rgba(232,244,240,0.65);
+  --bg:     #1A3528;
+  --white:  #1F3D2E;
+  --border: rgba(255,255,255,0.10);
+  --green:  #4ECBA0;
+}
+
 body.dark .sidebar { background:#1A3D2D; }
 body.dark .card { box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 body.dark .field-input { background:rgba(255,255,255,0.04); color:#fff; }
