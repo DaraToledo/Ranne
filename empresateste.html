@@ -45,7 +45,7 @@
   --border: rgba(255,255,255,0.18);
   --card-border: rgba(45,94,74,0.14);
 
-  /* ── Texto dentro de cards (bege claro → texto escuro) ── */
+/* ── Texto dentro de cards (bege claro → texto escuro) ── */
   --card-text:       #1A2E20;
   --card-text-muted: #4D6B5C;
   --card-text-faint: #7A9A8B;
@@ -87,6 +87,16 @@
   --radius-xl: 20px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
+
+/* ── Escopo do painel empresa: garante variáveis corretas no tema claro,
+   sem risco de herdar overrides do app-colaborador ── */
+#app-empresa {
+  --text:  #FFFFFF;
+  --muted: rgba(255,255,255,0.80);
+  --bg:    #2D5E4A;
+  --white: #F0EDE6;
+  --border: rgba(255,255,255,0.18);
+}
 
 /* ══════════════════════════════════════════════════
    SISTEMA DE CONTRASTE — Ranne Care
@@ -2323,8 +2333,8 @@ body.dark .sector-ok   { background:rgba(5,150,105,.14); border-color:rgba(5,150
 
 /* ══ COLLAB SPECIFIC ══ */
 
-/* ══════ RESET & VARS ══════ */
-:root {
+/* ══════ VARS COLABORADOR — escopadas para não vazar no painel empresa ══════ */
+#app-colaborador {
   --bg: #F2EDE6;
   --white: #FFFCF8;
   --green: #2D5E4A;
@@ -2338,13 +2348,11 @@ body.dark .sector-ok   { background:rgba(5,150,105,.14); border-color:rgba(5,150
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --nav-h: 64px;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family:'Inter',sans-serif; background:var(--bg);
-  color:var(--text); min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-  padding-bottom:calc(var(--nav-h) + var(--safe-bottom));
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ══════ LOADING ══════ */
@@ -2697,8 +2705,8 @@ body {
 
 /* ══ COLABORADOR APP ══ */
 
-/* ══════ RESET & VARS ══════ */
-:root {
+/* ══════ VARS COLABORADOR (duplicata removida — ver bloco acima) ══════ */
+#app-colaborador {
   --bg: #F2EDE6;
   --white: #FFFCF8;
   --green: #2D5E4A;
@@ -2712,13 +2720,6 @@ body {
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --nav-h: 64px;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family:'Inter',sans-serif; background:var(--bg);
-  color:var(--text); min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-  padding-bottom:calc(var(--nav-h) + var(--safe-bottom));
 }
 
 /* ══════ LOADING ══════ */
