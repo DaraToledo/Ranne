@@ -40,7 +40,7 @@
   --bg: #2D5E4A;
   --white: #E8E4DC;
   --text: #FFFFFF;
-  --muted: rgba(255,255,255,0.65);
+--muted: rgba(255,255,255,0.85);
   --muted-dark: rgba(255,255,255,0.5);
   --border: rgba(255,255,255,0.18);
 
@@ -1120,7 +1120,7 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
 }
 .sb-logo-mark img { width:32px; height:32px; object-fit:contain; }
 .sb-brand { color:#fff; font-size:15px; font-weight:700; letter-spacing:-.3px; }
-.sb-tagline { color:rgba(255,255,255,0.22); font-size:9.5px; font-weight:500; letter-spacing:.4px; text-transform:uppercase; margin-left:40px; }
+.sb-tagline { color:rgba(255,255,255,0.60); font-size:9.5px; font-weight:500; letter-spacing:.4px; text-transform:uppercase; margin-left:40px; }
 .sb-plan-badge {
   display:inline-flex; align-items:center; gap:5px; margin-top:8px;
   background:rgba(78,203,160,.08); border:1px solid rgba(78,203,160,.18);
@@ -1169,13 +1169,13 @@ body.dark .tour-arrow-bottom { border-top-color: #132030; }
 .cav-gray { background:#F2EEE8; color:#6B645D; }
 .cav-teal { background:var(--green-light); color:var(--teal); }
 
-.sb-section { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.4px; color:rgba(255,255,255,0.18); padding:4px 10px 6px; margin-top:12px; position:relative; z-index:1; }
+.sb-section { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:1.4px; color:rgba(255,255,255,0.50); padding:4px 10px 6px; margin-top:12px; position:relative; z-index:1; }
 .sb-item {
   display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px;
   color:rgba(255,255,255,0.4); cursor:pointer; font-size:12.5px; font-weight:500;
   transition:all 0.15s; margin-bottom:1px; position:relative; z-index:1;
 }
-.sb-item:hover { background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.8); }
+.sb-item:hover { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.95); }
 .sb-item.active { color:#4ECBA0; font-weight:600; }
 .sb-item .ic { width:18px; text-align:center; font-size:14px; flex-shrink:0; }
 .sb-badge { margin-left:auto; background:var(--red); color:#fff; font-size:9px; font-weight:700; padding:2px 6px; border-radius:99px; }
@@ -2174,7 +2174,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
   --amber: #D97706;
   --red: #DC2626;
   --text: #1A2E20;
-  --muted: rgba(26,46,32,0.45);
+  --muted: rgba(26,46,32,0.65);
   --border: rgba(26,46,32,0.1);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -2548,7 +2548,7 @@ body {
   --amber: #D97706;
   --red: #DC2626;
   --text: #1A2E20;
-  --muted: rgba(26,46,32,0.45);
+  --muted: rgba(26,46,32,0.65);
   --border: rgba(26,46,32,0.1);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -10403,8 +10403,6 @@ const TRILHAS = [
 ];
 
 // Adicionar as novas trilhas ao array principal
-TRILHAS.push(...TRILHAS_EXTRAS);
-
 
 /* ── Estado das trilhas (salvo em localStorage) ── */
 function _trilhaKey() {
