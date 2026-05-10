@@ -85,6 +85,10 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
+
+  /* ── Superfícies de card (light mode: tons bege/creme) ── */
+  --surface:     #F7F4EE;
+  --surface-alt: #F0EDE6;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -445,6 +449,36 @@ body.dark #p-feminina .fem-tag-btn.sel {
   border-color: var(--mint) !important;
 }
 
+/* dark mode — todos os textos na área feminina usam cores claras */
+body.dark #p-feminina .card [style*="color:var(--text)"],
+body.dark #p-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"],
+body.dark #p-feminina .card [style*="font-weight:700"] {
+  color: #E8F4F0 !important;
+}
+body.dark #p-feminina .card [style*="color:var(--muted)"],
+body.dark #p-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"],
+body.dark #p-feminina .card label,
+body.dark #p-feminina #fem-dica-texto {
+  color: rgba(232,244,240,0.65) !important;
+}
+body.dark #p-feminina .card .card-title,
+body.dark #p-feminina .card-title {
+  color: #E8F4F0 !important;
+}
+body.dark #p-feminina .card .card-hdr span {
+  color: rgba(232,244,240,0.55) !important;
+}
+body.dark #p-feminina #fem-sinto {
+  color: #E8F4F0 !important;
+  background: rgba(255,255,255,0.06) !important;
+}
+body.dark #p-feminina > div[style*="background:rgba(61"] {
+  color: rgba(232,244,240,0.70) !important;
+}
+body.dark #p-feminina > div[style*="background:rgba(61"] strong {
+  color: #E8F4F0 !important;
+}
+
 /* Score num "—" invisível dentro de cards */
 .card .score-num[style*="color:var(--muted)"] {
   color: var(--card-text-muted) !important;
@@ -477,6 +511,10 @@ body.dark {
   --card-text:       #E8F4F0;
   --card-text-muted: rgba(232,244,240,0.65);
   --card-text-faint: rgba(232,244,240,0.40);
+
+  /* Superfícies de card (dark mode: tons escuros) */
+  --surface:     #132030;
+  --surface-alt: #1A2A3A;
   --shadow-sm: 0 1px 3px rgba(0,0,0,.25), 0 1px 8px rgba(0,0,0,.15);
   --shadow-md: 0 4px 16px rgba(0,0,0,.3), 0 1px 4px rgba(0,0,0,.2);
   --shadow-lg: 0 8px 32px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.25);
