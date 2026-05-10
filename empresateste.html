@@ -83,30 +83,36 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 /* ══ CONTRASTE VERDE/BEGE — Ranne Care paleta oficial ══ */
-/* Cards, modais, formulários = fundo bege, texto escuro */
+
+/* ── Modo Claro: cards/métricas com fundo bege, texto escuro ── */
 .card, .auth-box, .modal, .form-section, .res-card, .dim-card,
 .lib-card, .metric, .form-kit-card, .ajuda-modulo,
-.ob-card, .role-card, .ob-disclaimer, .fk-input, .fk-textarea,
-.fk-select, .field-input, .fi-input, .fk-nps-btn {
-  color: #1F3528 !important;
+.ob-card, .role-card, .ob-disclaimer {
+  color: #1F3528;
 }
-.card p, .card span, .card div, .card label,
-.modal p, .modal span, .modal h3,
-.field-label, .fk-label, .auth-form h2, .auth-eyebrow,
-.auth-sub, .ob-sub, .ob-h2, .rc-label, .rc-sub,
+
+/* Textos específicos dentro de cards no modo claro */
+.card-title, .metric-label, .metric-sub,
 .form-kit-title, .form-kit-sub, .fk-section-title,
-.ajuda-item-title, .ajuda-item-desc, .ob-disclaimer p {
-  color: #1F3528 !important;
+.ajuda-item-title, .ajuda-item-desc,
+.auth-form h2, .auth-eyebrow, .auth-sub,
+.ob-h2, .rc-label, .rc-sub,
+.field-label, .fk-label,
+.ob-disclaimer p, .ob-disclaimer-text {
+  color: #1F3528;
 }
+
 /* Sidebar texto branco sobre verde escuro */
 .sidebar, .sidebar .sb-item, .sidebar .sb-label,
 .sidebar .sb-section-label, .topbar {
   color: #FFFFFF;
 }
+
 /* Textos gerais fora de cards = brancos */
 .page-title, .page-sub, .section-title {
   color: #FFFFFF !important;
 }
+
 /* Inputs: fundo bege creme, texto escuro */
 input, select, textarea,
 .field-input, .fi-input, .fk-input, .fk-textarea, .fk-select {
@@ -115,6 +121,53 @@ input, select, textarea,
   border-color: rgba(45,94,74,0.25) !important;
 }
 input::placeholder, textarea::placeholder { color: rgba(31,53,40,0.40) !important; }
+
+/* ── Modo Escuro: cards com fundo escuro, texto claro ── */
+body.dark .card, body.dark .modal, body.dark .form-section,
+body.dark .res-card, body.dark .dim-card,
+body.dark .lib-card, body.dark .metric, body.dark .form-kit-card,
+body.dark .ajuda-modulo, body.dark .ob-card {
+  color: #E8F4F0;
+}
+
+body.dark .card-title, body.dark .metric-label, body.dark .metric-sub,
+body.dark .form-kit-title, body.dark .form-kit-sub, body.dark .fk-section-title,
+body.dark .ajuda-item-title, body.dark .ajuda-item-desc,
+body.dark .field-label, body.dark .fk-label,
+body.dark .score-name, body.dark .card-hdr span,
+body.dark .isa-card-lbl, body.dark .lib-foot,
+body.dark .alert-body span {
+  color: rgba(232,244,240,0.75);
+}
+
+body.dark .metric-value, body.dark .card p {
+  color: #E8F4F0;
+}
+
+/* Valores coloridos (score verde, amber, red) mantêm cor no dark */
+body.dark .v-green { color: #4ECBA0 !important; }
+body.dark .v-amber { color: #F8BE57 !important; }
+body.dark .v-red   { color: #F87171 !important; }
+
+/* Chips no dark mode */
+body.dark .chip-green { background: rgba(16,185,129,.18); color: #34D399; }
+body.dark .chip-amber { background: rgba(245,158,11,.18); color: #F8BE57; }
+body.dark .chip-red   { background: rgba(239,68,68,.18);  color: #F87171; }
+body.dark .chip-gray  { background: rgba(148,163,184,.12); color: #94A3B8; }
+
+/* Cards de setor no dark */
+body.dark .sector-card { background: #1E3A2D; border-color: rgba(78,203,160,.15); }
+
+/* Inputs no dark */
+body.dark input, body.dark select, body.dark textarea,
+body.dark .fk-input, body.dark .fk-textarea, body.dark .fk-select {
+  background: #132030 !important;
+  color: #E8F4F0 !important;
+  border-color: rgba(78,203,160,.2) !important;
+}
+body.dark input::placeholder, body.dark textarea::placeholder {
+  color: rgba(232,244,240,0.30) !important;
+}
 /* ══ fim contraste ══ */
 body { font-family:'Inter',sans-serif; background:var(--bg); color:#FFFFFF; font-size:14px; -webkit-font-smoothing:antialiased; }
 
@@ -1605,6 +1658,62 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
   display:flex; gap:6px; flex-wrap:wrap; padding:10px 0 14px;
   border-bottom:1px solid var(--border); margin-bottom:20px;
 }
+
+/* ══ SECTOR CARDS — heatmap por setor ══ */
+.sector-card {
+  border-radius:12px; padding:14px 12px;
+  border:1px solid transparent;
+  transition:transform .18s, box-shadow .18s;
+}
+.sector-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.08); }
+.sector-name { font-size:11.5px; font-weight:700; margin-bottom:4px; }
+.sector-score { font-size:26px; font-weight:800; letter-spacing:-1px; margin:4px 0; }
+.sector-meta { font-size:10px; font-weight:500; opacity:.75; }
+.sector-crit { background:#FEF2F2; border-color:#FECACA; }
+.sector-warn { background:#FFFBEB; border-color:#FDE68A; }
+.sector-ok   { background:#ECFDF5; border-color:#A7F3D0; }
+.sector-crit .sector-name { color:#991B1B; }
+.sector-warn .sector-name { color:#92400E; }
+.sector-ok   .sector-name { color:#065F46; }
+.sector-crit .sector-meta { color:#B91C1C; }
+.sector-warn .sector-meta { color:#B45309; }
+.sector-ok   .sector-meta { color:#059669; }
+.s-crit { color:#DC2626; }
+.s-warn { color:#D97706; }
+.s-ok   { color:#059669; }
+body.dark .sector-crit { background:rgba(220,38,38,.14); border-color:rgba(220,38,38,.3); }
+body.dark .sector-warn { background:rgba(217,119,6,.14); border-color:rgba(217,119,6,.3); }
+body.dark .sector-ok   { background:rgba(5,150,105,.14); border-color:rgba(5,150,105,.3); }
+body.dark .sector-crit .sector-name { color:#F87171; }
+body.dark .sector-warn .sector-name { color:#F8BE57; }
+body.dark .sector-ok   .sector-name { color:#34D399; }
+body.dark .sector-crit .sector-meta { color:rgba(248,113,113,.7); }
+body.dark .sector-warn .sector-meta { color:rgba(248,190,87,.7); }
+body.dark .sector-ok   .sector-meta { color:rgba(52,211,153,.7); }
+body.dark .s-crit { color:#F87171; }
+body.dark .s-warn { color:#F8BE57; }
+body.dark .s-ok   { color:#34D399; }
+/* ══ METRIC VALUE dark mode ══ */
+.metric-value { color:#1F3528; }
+body.dark .metric-value { color:#E8F4F0; }
+.metric-label { color:#5A7568; }
+body.dark .metric-label { color:rgba(232,244,240,.6); }
+.card-title { color:#1F3528; }
+body.dark .card-title { color:#E8F4F0; }
+body.dark .isa-card { background:#1E3A2D; border-color:rgba(78,203,160,.15); }
+body.dark .isa-card-lbl { color:rgba(232,244,240,.55); }
+body.dark .score-name { color:#E8F4F0; }
+body.dark .metric-sub { color:rgba(232,244,240,.6); }
+body.dark .diag-info h3 { color:#E8F4F0; }
+body.dark .diag-info p  { color:rgba(232,244,240,.55); }
+body.dark .lib-card h4  { color:#E8F4F0; }
+body.dark .lib-card p   { color:rgba(232,244,240,.55); }
+body.dark .lib-foot     { color:rgba(232,244,240,.45); }
+body.dark .st-setor     { color:#E8F4F0; }
+body.dark .st-status    { color:rgba(232,244,240,.55); }
+body.dark .acomp-name   { color:#E8F4F0; }
+body.dark .acomp-sub    { color:rgba(232,244,240,.55); }
+
 
 /* Rodapé científico */
 .sci-footer {
@@ -4006,27 +4115,28 @@ body {
                 <button class="btn btn-outline btn-sm" onclick="pg('colaboradores',null)">Ver equipe →</button>
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="heatmap-setores">
-                <div style="border-radius:10px;padding:12px;background:#FDECEA;">
-                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">Comercial</div>
-                  <div style="font-size:24px;font-weight:700;color:#C0392B;margin:4px 0;">54</div>
-                  <div style="font-size:10px;color:var(--muted);">12 pessoas · Crítico</div>
+                <div class="sector-card sector-crit">
+                  <div class="sector-name">Comercial</div>
+                  <div class="sector-score s-crit">54</div>
+                  <div class="sector-meta">12 pessoas · Crítico</div>
                 </div>
-                <div style="border-radius:10px;padding:12px;background:#E8F5EC;">
-                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">TI</div>
-                  <div style="font-size:24px;font-weight:700;color:#2D5E4A;margin:4px 0;">83</div>
-                  <div style="font-size:10px;color:var(--muted);">9 pessoas · Saudável</div>
+                <div class="sector-card sector-ok">
+                  <div class="sector-name">TI</div>
+                  <div class="sector-score s-ok">83</div>
+                  <div class="sector-meta">9 pessoas · Saudável</div>
                 </div>
-                <div style="border-radius:10px;padding:12px;background:#FEF5E7;">
-                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">Financeiro</div>
-                  <div style="font-size:24px;font-weight:700;color:#D4891A;margin:4px 0;">67</div>
-                  <div style="font-size:10px;color:var(--muted);">8 pessoas · Atenção</div>
+                <div class="sector-card sector-warn">
+                  <div class="sector-name">Financeiro</div>
+                  <div class="sector-score s-warn">67</div>
+                  <div class="sector-meta">8 pessoas · Atenção</div>
                 </div>
-                <div style="border-radius:10px;padding:12px;background:#E8F5EC;">
-                  <div style="font-size:11.5px;font-weight:600;color:var(--text);">Operações</div>
-                  <div style="font-size:24px;font-weight:700;color:#2D5E4A;margin:4px 0;">79</div>
-                  <div style="font-size:10px;color:var(--muted);">18 pessoas · Saudável</div>
+                <div class="sector-card sector-ok">
+                  <div class="sector-name">Operações</div>
+                  <div class="sector-score s-ok">79</div>
+                  <div class="sector-meta">18 pessoas · Saudável</div>
                 </div>
               </div>
+
               <div style="margin-top:10px;padding:8px 10px;background:rgba(111,158,147,.07);border:1px solid rgba(111,158,147,.2);border-radius:8px;font-size:11px;color:var(--muted);">
                 Setores com menos de 3 colaboradores não exibem score individual — LGPD compliant
               </div>
