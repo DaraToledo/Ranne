@@ -545,6 +545,7 @@ function showApp(email) {
   document.getElementById('admin-name').textContent = email.split('@')[0];
   document.getElementById('dash-date').textContent = new Date().toLocaleDateString('pt-BR', {weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   loadData();
+  ranneChat.show();
 }
 
 
@@ -781,5 +782,290 @@ function doLogout() { db.auth.signOut().catch(()=>{}); document.getElementById('
 function closeModal() { document.getElementById('modal-action').classList.remove('open'); }
 function toast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200); }
 </script>
+
+<!-- ══════════════════════════════════════
+     RANNE CHATBOT ADM — Botão flutuante IA
+     ════════════════════════════════════ -->
+
+<style>
+#ranne-chat-btn {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1A2E20, #2D5E4A);
+  color: #fff;
+  border: none; cursor: pointer;
+  z-index: 999;
+  display: none;
+  align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(26,46,32,.35);
+  transition: transform .2s, box-shadow .2s;
+  font-size: 22px;
+}
+#ranne-chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(26,46,32,.45); }
+
+#ranne-chat-window {
+  position: fixed;
+  bottom: 96px; right: 28px;
+  width: 340px; max-height: 520px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.15);
+  display: none; flex-direction: column;
+  z-index: 998; overflow: hidden;
+  border: 1px solid rgba(0,0,0,.08);
+  animation: chatIn .25s cubic-bezier(.16,1,.3,1);
+}
+@keyframes chatIn {
+  from { opacity:0; transform: translateY(12px) scale(.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+#ranne-chat-window.open { display: flex; }
+
+.chat-header {
+  background: linear-gradient(135deg, #1A2E20, #2D5E4A);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.chat-header-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.chat-header-info { flex: 1; }
+.chat-header-name { color: #fff; font-size: 13px; font-weight: 700; }
+.chat-header-status { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 1px; }
+.chat-header-close {
+  background: none; border: none; color: rgba(255,255,255,.7);
+  font-size: 18px; cursor: pointer; padding: 4px; line-height: 1;
+  transition: color .15s;
+}
+.chat-header-close:hover { color: #fff; }
+
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  scroll-behavior: smooth;
+}
+.chat-msg {
+  max-width: 85%; padding: 10px 13px;
+  border-radius: 14px; font-size: 13px; line-height: 1.55;
+  animation: msgIn .2s ease;
+}
+@keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; } }
+.chat-msg.bot {
+  background: #F5F5F3; color: #1A2E20;
+  border-bottom-left-radius: 4px; align-self: flex-start;
+  border: 1px solid rgba(0,0,0,.07);
+}
+.chat-msg.user {
+  background: #1A2E20; color: #fff;
+  border-bottom-right-radius: 4px; align-self: flex-end;
+}
+.chat-msg.typing { background: #F5F5F3; border: 1px solid rgba(0,0,0,.07); align-self: flex-start; padding: 12px 16px; }
+.typing-dots { display: flex; gap: 4px; align-items: center; }
+.typing-dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #6B7F76; animation: dot .9s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .15s; }
+.typing-dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes dot { 0%,60%,100% { transform:translateY(0);opacity:.4; } 30% { transform:translateY(-5px);opacity:1; } }
+
+.chat-suggestions {
+  padding: 0 14px 10px;
+  display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0;
+}
+.chat-sugg {
+  background: #F0F0EE; border: 1px solid rgba(0,0,0,.08);
+  color: #4A6040; font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 99px;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.chat-sugg:hover { background: #1A2E20; color: #fff; border-color: #1A2E20; }
+
+.chat-input-row {
+  padding: 10px 12px; border-top: 1px solid rgba(0,0,0,.07);
+  display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0;
+}
+.chat-input-row textarea {
+  flex: 1; border: 1.5px solid rgba(0,0,0,.12); border-radius: 12px;
+  padding: 9px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+  resize: none; outline: none; line-height: 1.45;
+  background: #F8F8F6; color: #1A2E20;
+  max-height: 90px; transition: border-color .15s;
+}
+.chat-input-row textarea:focus { border-color: #2D5E4A; }
+.chat-input-row textarea::placeholder { color: #A0A8A0; }
+.chat-send-btn {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: #1A2E20; color: #fff; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: opacity .15s; font-size: 16px;
+}
+.chat-send-btn:hover { opacity: .85; }
+.chat-send-btn:disabled { opacity: .4; cursor: default; }
+</style>
+
+<button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Assistente Ranne ADM">
+  🌿
+</button>
+
+<div id="ranne-chat-window">
+  <div class="chat-header">
+    <div class="chat-header-avatar">🌿</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Assistente Ranne</div>
+      <div class="chat-header-status" id="chat-status">Pronto para ajudar</div>
+    </div>
+    <button class="chat-header-close" onclick="ranneChat.toggle()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-suggestions" id="chat-suggestions"></div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Digite sua mensagem…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ranneChat.send();}"
+      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <button class="chat-send-btn" id="chat-send-btn" onclick="ranneChat.send()">➤</button>
+  </div>
+</div>
+
+<script>
+const ranneChat = (() => {
+  let history = [];
+  let isOpen = false;
+  let isLoading = false;
+
+  const SUGGESTIONS = [
+    '📊 Como analisar churn de empresas?',
+    '💡 Boas práticas de onboarding de clientes',
+    '⚠️ Sinais de risco em uma conta',
+    '📈 Como aumentar engajamento na plataforma?',
+  ];
+
+  const SYSTEM_PROMPT = `Você é o Assistente Ranne para a área administrativa da plataforma Ranne Care.
+A plataforma Ranne Care é um SaaS B2B de saúde mental e bem-estar organizacional. Empresas contratam a plataforma para monitorar o bem-estar de seus colaboradores através de diagnósticos, check-ins e planos de ação.
+Você apoia a equipe administrativa da Ranne a:
+- Gerenciar e monitorar a base de clientes (empresas contratantes)
+- Analisar métricas de uso, engajamento e saúde da plataforma
+- Identificar riscos de churn e oportunidades de expansão
+- Configurar e manter o sistema
+- Entender boas práticas de Customer Success em SaaS de saúde
+Diretrizes:
+- Seja objetivo, estratégico e direto
+- Use linguagem profissional e de negócios
+- Sugira ações concretas baseadas em dados
+- Responda em português do Brasil
+- Seja conciso (máx. 3 parágrafos por resposta)
+- Quando relevante, mencione métricas como MRR, churn, NPS, DAU/MAU`;
+
+  function renderMsg(text, type) {
+    const el = document.createElement('div');
+    el.className = `chat-msg ${type}`;
+    el.textContent = text;
+    document.getElementById('chat-messages').appendChild(el);
+    scrollBottom();
+    return el;
+  }
+
+  function renderTyping() {
+    const el = document.createElement('div');
+    el.className = 'chat-msg typing'; el.id = 'chat-typing';
+    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    document.getElementById('chat-messages').appendChild(el);
+    scrollBottom();
+  }
+
+  function removeTyping() { document.getElementById('chat-typing')?.remove(); }
+  function scrollBottom() { const el = document.getElementById('chat-messages'); if (el) el.scrollTop = el.scrollHeight; }
+  function setStatus(txt) { const el = document.getElementById('chat-status'); if (el) el.textContent = txt; }
+
+  function renderSuggestions(show = true) {
+    const el = document.getElementById('chat-suggestions');
+    if (!el) return;
+    if (!show) { el.innerHTML = ''; return; }
+    el.innerHTML = SUGGESTIONS.map(s =>
+      `<button class="chat-sugg" onclick="ranneChat.sendText('${s.replace(/'/g,"\'")}')">${s}</button>`
+    ).join('');
+  }
+
+  async function callAI(userMsg) {
+    const msgs = history.map(m => ({ role: m.role, content: m.content }));
+    msgs.push({ role: 'user', content: userMsg });
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: msgs
+      })
+    });
+    if (!res.ok) throw new Error('Erro na API');
+    const data = await res.json();
+    return data.content?.[0]?.text || 'Desculpe, não consegui processar sua mensagem.';
+  }
+
+  return {
+    toggle() {
+      isOpen = !isOpen;
+      const win = document.getElementById('ranne-chat-window');
+      if (isOpen) {
+        win.classList.add('open');
+        if (history.length === 0) {
+          renderMsg('Olá! Sou o Assistente Ranne 🌿
+
+Estou aqui para ajudar na gestão da plataforma — análise de clientes, métricas, configurações e estratégias de Customer Success. Como posso ajudar?', 'bot');
+          renderSuggestions(true);
+        }
+        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);
+      } else {
+        win.classList.remove('open');
+      }
+    },
+
+    show() { document.getElementById('ranne-chat-btn').style.display = 'flex'; },
+
+    async send() {
+      const input = document.getElementById('chat-input');
+      const text = input?.value.trim();
+      if (!text || isLoading) return;
+      this.sendText(text);
+      input.value = ''; input.style.height = 'auto';
+    },
+
+    async sendText(text) {
+      if (isLoading) return;
+      isLoading = true;
+      renderSuggestions(false);
+      renderMsg(text, 'user');
+      history.push({ role: 'user', content: text });
+      document.getElementById('chat-send-btn').disabled = true;
+      setStatus('Digitando…');
+      renderTyping();
+      try {
+        const reply = await callAI(text);
+        removeTyping();
+        renderMsg(reply, 'bot');
+        history.push({ role: 'assistant', content: reply });
+        if (history.length > 40) history = history.slice(-40);
+        setStatus('Pronto para ajudar');
+      } catch(e) {
+        removeTyping();
+        renderMsg('Ops, tive um problema de conexão. Tente novamente.', 'bot');
+        setStatus('Pronto para ajudar');
+      } finally {
+        isLoading = false;
+        document.getElementById('chat-send-btn').disabled = false;
+        renderSuggestions(true);
+      }
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
