@@ -93,6 +93,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 
+
 /* ══════════════════════════════════════════════════
    SISTEMA DE CONTRASTE — Ranne Care
    Usa variáveis semânticas --card-text / --card-text-muted
@@ -497,14 +498,6 @@ body.dark #p-feminina > div[style*="background:rgba(61"] strong {
 /* ── fim correção global ── */
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:14px; -webkit-font-smoothing:antialiased; }
 
-/* ══ Isolamento de áreas — evitar vazamento visual ══ */
-#app-empresa   { position: relative; z-index: 1; }
-#app-colaborador { position: relative; z-index: 1; }
-#app-empresa[style*="display: block"] ~ #app-colaborador,
-#app-empresa[style*="display:block"]  ~ #app-colaborador { display: none !important; }
-#app-colaborador[style*="display: block"] ~ #app-empresa,
-#app-colaborador[style*="display:block"]  ~ #app-empresa { display: none !important; }
-
 /* ══════════ DARK MODE ══════════ */
 body.dark {
   --bg:     #2D3625;
@@ -584,6 +577,8 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 .ob-sub { color:rgba(0,0,0,.55) !important; }
 .ob-stat-lbl { color:rgba(0,0,0,.50) !important; }
 .ob-p-body span { color:rgba(0,0,0,.55) !important; }
+
+
 
 
 /* ════════════════════════════════════════
@@ -854,6 +849,9 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 .auth-form { width: 100%; }
 .step { display: none; }
 .step.active { display: block; }
+
+
+
 
 
 /* S3 sub-steps */
@@ -2827,52 +2825,36 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   display: flex; align-items: stretch;
   box-shadow: 0 -4px 24px rgba(45,54,37,.06);
 }
-body.dark .col-nav {
-  background: rgba(30,42,24,.97);
-  border-top-color: rgba(255,255,255,.08);
-}
+body.dark .col-nav { background: rgba(30,42,24,.97); border-top-color: rgba(255,255,255,.08); }
 .cn-item {
   flex: 1; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 3px;
-  cursor: pointer; padding: 6px 2px 4px;
-  border-radius: 12px; margin: 0 2px;
-  transition: background .2s, transform .15s;
+  justify-content: center; gap: 3px; cursor: pointer; padding: 6px 2px 4px;
+  border-radius: 12px; margin: 0 2px; transition: background .2s, transform .15s;
   position: relative; min-width: 0;
 }
 .cn-item:active { transform: scale(.93); }
 .cn-icon {
-  width: 42px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  transition: background .2s, transform .2s;
-  position: relative;
+  width: 42px; height: 32px; display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; transition: background .2s, transform .2s;
 }
 .cn-icon svg { width: 18px; height: 18px; stroke: rgba(45,54,37,.45); transition: stroke .2s; }
 .cn-label {
-  font-size: 10px; font-weight: 600;
-  color: rgba(45,54,37,.45); letter-spacing: .2px;
-  transition: color .2s; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+  font-size: 10px; font-weight: 600; color: rgba(45,54,37,.45); letter-spacing: .2px;
+  transition: color .2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
-/* Estado ativo */
 .cn-item.active .cn-icon {
   background: linear-gradient(135deg, #2D3625, #3A6B4A);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(45,54,37,.25);
+  transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45,54,37,.25);
 }
 .cn-item.active .cn-icon svg { stroke: #fff; }
 .cn-item.active .cn-label { color: #2D3625; font-weight: 700; }
-body.dark .cn-item.active .cn-icon { box-shadow: 0 4px 12px rgba(0,0,0,.35); }
 body.dark .cn-item.active .cn-label { color: #7EC8A0; }
 body.dark .cn-icon svg { stroke: rgba(255,255,255,.35); }
 body.dark .cn-label { color: rgba(255,255,255,.35); }
-/* Badge de notificação */
 .cn-badge {
-  position: absolute; top: -2px; right: -2px;
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #EF4444; border: 2px solid var(--bg);
-  font-size: 8px; font-weight: 800; color: #fff;
-  display: flex; align-items: center; justify-content: center;
+  position: absolute; top: -2px; right: -2px; width: 14px; height: 14px;
+  border-radius: 50%; background: #EF4444; border: 2px solid var(--bg);
+  font-size: 8px; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center;
 }
 
 /* ══════ INÍCIO ══════ */
@@ -3895,7 +3877,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .diario-entrada-tag { font-size: 12px;padding:3px 9px;border-radius:99px;background:rgba(61,122,98,.1);color:var(--mint);font-weight:600; } 
   
 
-/* ══ AEP — Avaliação de Risco Psicossocial ══ */
+/* ══ AEP ══ */
 .aep-intro { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:20px; display:flex; align-items:flex-start; gap:14px; }
 .aep-intro-icon { width:42px; height:42px; border-radius:10px; background:linear-gradient(135deg,var(--teal),var(--mint)); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:20px; }
 .aep-intro h3 { font-size:14px; font-weight:700; color:var(--card-text); margin-bottom:4px; }
@@ -3981,6 +3963,41 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .fem-opt-btn.selected.fem-good { background: #22C55E; }
 
 /* ══ Canal de Escuta Permanente ══ */
+
+/* ══ Canal de Escuta ══ */
+
+/* ══ Check-in Feminino ══ */
+.fem-grupo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.fem-grupo-label {
+  font-size: 13px; font-weight: 600; color: var(--card-text);
+  margin-bottom: 10px;
+}
+.fem-opts {
+  display: flex; gap: 8px;
+}
+.fem-opt-btn {
+  flex: 1; padding: 9px 6px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif; color: var(--card-text-muted);
+  transition: all .15s; text-align: center;
+}
+.fem-opt-btn:hover { border-color: var(--teal); color: var(--card-text); }
+.fem-opt-btn.sel { color: #fff !important; border-color: transparent !important; }
+.fem-opt-btn.sel.fem-bad  { background: #EF4444; }
+.fem-opt-btn.sel.fem-mid  { background: #F59E0B; }
+.fem-opt-btn.sel.fem-good { background: #22C55E; }
+.fem-opt-btn.selected { color: #fff !important; border-color: transparent !important; }
+.fem-opt-btn.selected.fem-bad  { background: #EF4444; }
+.fem-opt-btn.selected.fem-mid  { background: #F59E0B; }
+.fem-opt-btn.selected.fem-good { background: #22C55E; }
+
+/* ══ Canal de Escuta Permanente ══ */
 .escuta-hero { background:linear-gradient(135deg,#2D5E4A,#1A3528); border-radius:16px; padding:24px; margin-bottom:20px; position:relative; overflow:hidden; }
 .escuta-hero::after { content:'🤫'; position:absolute; right:20px; top:50%; transform:translateY(-50%); font-size:52px; opacity:.15; }
 .escuta-hero h3 { font-size:16px; font-weight:700; color:#fff; margin-bottom:6px; }
@@ -4027,6 +4044,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
 /* ══ Resultado QUSP — Linguagem Acessível ══ */
+
+/* ══ Resultado QUSP ══ */
 .qr-acolhimento {
   border-radius:20px; padding:28px 24px; margin-bottom:20px;
   position:relative; overflow:hidden; text-align:center;
@@ -4069,44 +4088,66 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
 /* ══ F4: Data de Revisão NR-1 ══ */
-.nr1-revisao-box {
-  background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.25);
-  border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-}
-.nr1-revisao-box label { font-size: 12px; font-weight: 700; color: var(--card-text); white-space: nowrap; }
-.nr1-revisao-box input[type="date"] {
-  padding: 8px 12px; border: 1.5px solid rgba(201,168,76,.35); border-radius: 8px;
-  font-size: 13px; font-family: 'Inter', sans-serif; background: var(--white);
-  color: var(--card-text); outline: none; transition: border-color .15s;
-}
-.nr1-revisao-box input[type="date"]:focus { border-color: #C9A87C; }
-.nr1-revisao-note { font-size: 11px; color: var(--muted); margin-top: 4px; flex-basis: 100%; }
 
-/* ══ F5: Log de Capacitações ══ */
-.cap-form { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
-.cap-form h4 { font-size: 13px; font-weight: 700; color: var(--card-text); margin-bottom: 14px; }
-.cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.cap-grid-full { grid-column: 1 / -1; }
-.cap-field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 5px; }
-.cap-field input, .cap-field select {
-  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 9px;
-  font-size: 13px; font-family: 'Inter', sans-serif; background: var(--surface);
-  color: var(--card-text); outline: none; transition: border-color .15s; box-sizing: border-box;
-}
-.cap-field input:focus, .cap-field select:focus { border-color: var(--teal); }
+/* ══ NR-1 / Capacitações ══ */
 
-.cap-lista-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
-.cap-lista-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.cap-lista-hdr h4 { font-size: 13px; font-weight: 700; color: var(--card-text); }
-.cap-item { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; padding: 12px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); margin-bottom: 8px; }
-.cap-item:last-child { margin-bottom: 0; }
-.cap-item-data { font-size: 11px; font-weight: 700; color: var(--teal); white-space: nowrap; padding-top: 2px; }
-.cap-item-body strong { display: block; font-size: 13px; font-weight: 600; color: var(--card-text); margin-bottom: 3px; }
-.cap-item-body span { font-size: 12px; color: var(--card-text-muted); }
-.cap-item-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1; }
-.cap-item-del:hover { color: var(--red); }
-.cap-vazio { text-align: center; padding: 28px; color: var(--muted); font-size: 13px; }
+
+/* ══ Canal de Escuta Colaborador ══ */
+.escuta-hero { background:linear-gradient(135deg,#2D5E4A,#1A3528); border-radius:16px; padding:20px 22px; margin-bottom:16px; position:relative; overflow:hidden; color:#fff; }
+.escuta-hero h3 { font-size:16px; font-weight:700; margin-bottom:6px; }
+.escuta-hero p  { font-size:13px; color:rgba(255,255,255,.7); line-height:1.6; }
+.escuta-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:99px; padding:4px 12px; font-size:11px; font-weight:600; color:rgba(255,255,255,.85); margin-bottom:12px; }
+.escuta-dot { width:6px; height:6px; border-radius:50%; background:#52C995; }
+.escuta-form { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
+.escuta-form h4 { font-size:14px; font-weight:700; color:var(--card-text); margin-bottom:14px; }
+.escuta-campo { margin-bottom:14px; }
+.escuta-campo label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:5px; }
+.escuta-campo select, .escuta-campo textarea { width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:9px; font-size:13px; font-family:'Inter',sans-serif; background:var(--surface); color:var(--card-text); outline:none; box-sizing:border-box; }
+.escuta-campo textarea { resize:vertical; min-height:90px; }
+.escuta-anonimo-aviso { display:flex; align-items:center; gap:10px; background:rgba(82,201,149,.08); border:1px solid rgba(82,201,149,.2); border-radius:10px; padding:12px; margin-bottom:14px; font-size:12px; color:var(--card-text-muted); line-height:1.5; }
+.escuta-confirmacao { display:none; text-align:center; padding:32px 20px; background:var(--white); border:1px solid var(--border); border-radius:14px; }
+.escuta-confirmacao.show { display:block; }
+.escuta-confirmacao .conf-icon { font-size:48px; margin-bottom:12px; }
+.escuta-confirmacao h3 { font-size:15px; font-weight:700; color:var(--card-text); margin-bottom:8px; }
+.escuta-confirmacao p  { font-size:13px; color:var(--card-text-muted); line-height:1.6; margin-bottom:18px; }
+/* RH */
+.escuta-rh-filtros { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.escuta-rh-chip { padding:5px 13px; border-radius:99px; border:1.5px solid var(--border); font-size:12px; font-weight:600; cursor:pointer; background:transparent; color:var(--card-text-muted); transition:all .15s; }
+.escuta-rh-chip.active { background:var(--teal); border-color:var(--teal); color:#fff; }
+.escuta-relato-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:8px; }
+.escuta-relato-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.escuta-relato-cat { padding:3px 10px; border-radius:6px; font-size:11px; font-weight:700; }
+.cat-assedio { background:rgba(239,68,68,.1); color:#EF4444; }
+.cat-sobrecarga { background:rgba(245,158,11,.1); color:#D97706; }
+.cat-conflito { background:rgba(99,102,241,.1); color:#6366F1; }
+.cat-outro { background:rgba(107,114,128,.1); color:#6B7280; }
+.escuta-relato-data { font-size:11px; color:var(--muted); margin-left:auto; }
+.escuta-relato-texto { font-size:13px; color:var(--card-text); line-height:1.6; }
+.escuta-relato-anonimo { font-size:11px; color:var(--muted); margin-top:6px; }
+.escuta-vazio { text-align:center; padding:32px 20px; color:var(--muted); font-size:13px; }
+
+
+/* ══ NR-1 / Capacitações ══ */
+.nr1-revisao-box { background:rgba(201,168,76,.06); border:1px solid rgba(201,168,76,.25); border-radius:10px; padding:14px 16px; margin-bottom:14px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.nr1-revisao-box label { font-size:12px; font-weight:700; color:var(--card-text); white-space:nowrap; }
+.nr1-revisao-box input[type="date"] { padding:8px 12px; border:1.5px solid rgba(201,168,76,.35); border-radius:8px; font-size:13px; font-family:'Inter',sans-serif; background:var(--white); color:var(--card-text); outline:none; }
+.nr1-revisao-note { font-size:11px; color:var(--muted); margin-top:4px; flex-basis:100%; }
+.cap-form { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:14px; }
+.cap-form h4 { font-size:13px; font-weight:700; color:var(--card-text); margin-bottom:12px; }
+.cap-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.cap-grid-full { grid-column:1/-1; }
+.cap-field label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:4px; }
+.cap-field input, .cap-field select { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:9px; font-size:13px; font-family:'Inter',sans-serif; background:var(--surface); color:var(--card-text); outline:none; box-sizing:border-box; }
+.cap-lista-wrap { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px; }
+.cap-lista-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.cap-lista-hdr h4 { font-size:13px; font-weight:700; color:var(--card-text); }
+.cap-item { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:start; padding:10px 12px; border-radius:10px; background:var(--surface); border:1px solid var(--border); margin-bottom:7px; }
+.cap-item-data { font-size:11px; font-weight:700; color:var(--teal); white-space:nowrap; }
+.cap-item-body strong { display:block; font-size:13px; font-weight:600; color:var(--card-text); margin-bottom:2px; }
+.cap-item-body span { font-size:12px; color:var(--card-text-muted); }
+.cap-item-del { background:none; border:none; color:var(--muted); cursor:pointer; font-size:15px; }
+.cap-item-del:hover { color:var(--red); }
+.cap-vazio { text-align:center; padding:24px; color:var(--muted); font-size:13px; }
 
 </style>
 
@@ -4190,7 +4231,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 <main class="ob-page" id="ob-page">
 
   <div class="ob-hero" role="img" aria-label="Profissional de RH trabalhando">
-    <canvas id="ob-canvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.45"></canvas>
     <img
       src="https://cdn.jsdelivr.net/gh/DaraToledo/Ranne@main/xk94y.jpg"
       alt="Profissional sorrindo ao usar a plataforma Ranne Care"
@@ -4283,8 +4323,9 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       </div>
 
       <div class="ob-crp" aria-label="Conteúdo revisado por profissional de saúde">
+        <div class="ob-crp-avatar" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2a4.5 4.5 0 014.5 4.5v.5h1A3.5 3.5 0 0118.5 10.5v.5a3 3 0 010 6H14v1a2 2 0 01-4 0v-1H6a3 3 0 010-6v-.5A3.5 3.5 0 019.5 7V6.5A4.5 4.5 0 019.5 2z"/></svg></div>
         <div class="ob-crp-text">
-          <strong>🧠 Conteúdo revisado por profissional de saúde</strong>
+          <strong>Conteúdo revisado por profissional de saúde</strong>
         </div>
       </div>
     </div>
@@ -4563,16 +4604,16 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
         <div id="nav-indicator"></div>
         <div class="sb-section">Principal</div>
         <div class="sb-item active" onclick="pg('dashboard',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg></span> Dashboard</div>
+        <div class="sb-item" onclick="pg('aep',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span> AEP — Riscos NR-1</div>
         <div class="sb-item" onclick="pg('diagnosticos',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> Diagnósticos</div>
-        <div class="sb-item" onclick="pg('aep',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span> AEP — Riscos NR-1 <span class="sb-badge" id="badge-aep" style="display:none">!</span></div>
         <div class="sb-item" onclick="pg('plano',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span> Plano de Ação <span class="sb-badge" id="badge-acoes">0</span></div>
         <div class="sb-item" onclick="pg('progresso',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span> Progresso</div>
         <div class="sb-section">Conteúdo</div>
         <div class="sb-item" onclick="pg('biblioteca',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span> Biblioteca</div>
         <div class="sb-section">Gestão</div>
         <div class="sb-item" onclick="pg('formularios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Kit Formulários</div>
-        <div class="sb-item" onclick="pg('colaboradores',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span> Colaboradores</div>
-        <div class="sb-item" onclick="pg('escuta-rh',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span> Canal de Escuta <span class="sb-badge" id="badge-escuta" style="display:none">0</span></div>
+        <div class="sb-item" onclick="pg('colaboradores',this)"
+        <div class="sb-item" onclick="pg('escuta-rh',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span> Canal de Escuta <span id="badge-escuta" style="display:none;background:#EF4444;color:#fff;border-radius:99px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">0</span></div>><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span> Colaboradores</div>
         <div class="sb-item" onclick="pg('equipe',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6"/><circle cx="18" cy="7" r="2.5"/><path d="M22 20c0-2.5-2-4.5-4.5-4.5"/></svg></span> Equipe</div>
         <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span> Relatórios & NR-1</div>
         <div class="sb-item" onclick="pg('config',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span> Configurações</div>
@@ -4840,6 +4881,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           </div>
 
 
+
           <!-- ══ PAINEL DE SOLUÇÕES RH ══ -->
           <div class="card" style="margin-bottom:16px">
             <div class="card-hdr">
@@ -4895,7 +4937,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       </div>
 
       <!-- DIAGNÓSTICOS -->
-
       <!-- ══ AEP — AVALIAÇÃO DE RISCOS PSICOSSOCIAIS ══ -->
       <div id="p-aep" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div><div class="page-title">AEP — Avaliação de Risco Psicossocial</div><div class="page-sub">Checklist NR-1 · Identificação de perigos antes do diagnóstico</div></div></div></div>
@@ -5311,6 +5352,191 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       </div>
 
       <!-- CHECK-IN -->
+      <div id="p-checkin" style="display:none">
+        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Check-in Semanal</div><div class="page-sub">Como o time chegou essa semana?</div></div></div>
+        <div style="max-width:560px">
+          <div class="ci-dark">
+            <h3>Como está seu humor hoje?</h3>
+            <p>Resposta privada — só você vê o seu score individual</p>
+            <div class="em-row" id="checkin-humor">
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😐</span><span class="el">Neutro</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">🙂</span><span class="el">Bem</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😄</span><span class="el">Ótimo</span></div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Nível de energia</span></div>
+            <div class="em-row" id="checkin-energia">
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">⚡</span><span class="el">Muito alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">🔋</span><span class="el">Alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😴</span><span class="el">Baixa</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😪</span><span class="el">Esgotado</span></div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Carga de trabalho</span></div>
+            <div class="em-row" id="checkin-carga">
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😌</span><span class="el">Tranquila</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">👍</span><span class="el">Razoável</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😰</span><span class="el">Pesada</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">🔥</span><span class="el">Excessiva</span></div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg" style="width:100%" onclick="salvarCheckin()">Enviar Check-in ✓</button>
+        </div>
+      </div>
+
+      <!-- FICHA INDIVIDUAL DO COLABORADOR -->
+
+<!-- Nota ética NR-1 -->
+<div id="ficha-nota-etica" style="display:flex;gap:10px;align-items:flex-start;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.18);border-radius:12px;padding:12px 15px;margin-bottom:16px;font-size:11.5px;color:var(--muted);line-height:1.55">
+  <span style="display:flex;align-items:center;flex-shrink:0;color:var(--teal)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 9l9-6 9 6M5 20h14"/><path d="M4 9l4 8M20 9l-4 8"/></svg></span>
+  <span><strong style="color:var(--text)">Dados de mapeamento organizacional — não diagnóstico clínico.</strong> Esta ficha exibe indicadores de bem-estar coletivo. Não substitui avaliação psicológica individual. Acesso exclusivo do RH.</span>
+</div>
+      
+<div id="p-ficha" style="display:none">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div>
+        <div class="page-title" id="ficha-nome">—</div>
+        <div class="page-sub" id="ficha-cargo">—</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="window._fichaFrom==='colaboradores' ? pg('colaboradores',null) : pg('equipe',null)">← Voltar</button>
+      <button class="btn btn-primary btn-sm" onclick="abrirModalIntervencao()">+ Registrar Intervenção</button>
+    </div>
+  </div>
+
+  <!-- Cabeçalho da ficha -->
+  <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#071A22,#0D2B1E);border:1px solid rgba(78,203,160,.15)">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div id="ficha-avatar" style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2D3625,#4ECBA0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0">--</div>
+      <div style="flex:1">
+        <div style="color:var(--card-text);font-size:17px;font-weight:800;margin-bottom:4px" id="ficha-nome-hdr">—</div>
+        <div style="color:rgba(255,255,255,.45);font-size:12px" id="ficha-info-hdr">—</div>
+      </div>
+      <div id="ficha-risco-badge" style="padding:6px 16px;border-radius:99px;font-size:12px;font-weight:700">—</div>
+    </div>
+  </div>
+
+  <!-- Métricas rápidas -->
+  <div class="metrics" style="margin-bottom:16px" id="ficha-metrics">
+    <div class="metric m-green">
+      <div class="metric-label">Score Atual</div>
+      <div class="metric-value" id="ficha-score-atual">—</div>
+      <div class="metric-sub">último diagnóstico</div>
+    </div>
+    <div class="metric m-blue">
+      <div class="metric-label">Diagnósticos</div>
+      <div class="metric-value" id="ficha-total-diags">—</div>
+      <div class="metric-sub">respondidos</div>
+    </div>
+    <div class="metric m-amber">
+      <div class="metric-label">Última Resposta</div>
+      <div class="metric-value" style="font-size:16px" id="ficha-ultima-resp">—</div>
+      <div class="metric-sub">data</div>
+    </div>
+    <div class="metric m-purple">
+      <div class="metric-label">Intervenções</div>
+      <div class="metric-value" id="ficha-total-interv">0</div>
+      <div class="metric-sub">registradas</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+
+    <!-- Score por dimensão -->
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Score por Dimensão</span><span style="font-size:11px;color:var(--muted)">último QUSP</span></div>
+      <div id="ficha-dimensoes">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Nenhum diagnóstico respondido ainda.</div>
+      </div>
+    </div>
+
+    <!-- Histórico de scores -->
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Evolução do Score</span></div>
+      <div id="ficha-historico">
+        <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Histórico aparece após 2+ diagnósticos.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Intervenções registradas -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-hdr">
+      <span class="card-title">Intervenções do RH</span>
+      <button class="btn btn-primary btn-sm" onclick="abrirModalIntervencao()">+ Nova</button>
+    </div>
+    <div id="ficha-intervencoes">
+      <div style="text-align:center;padding:24px;color:var(--muted);font-size:12px">
+        <div style="margin-bottom:8px;display:flex;justify-content:center;color:var(--teal)"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div>
+        Nenhuma intervenção registrada ainda.
+      </div>
+    </div>
+  </div>
+
+  <!-- Observações internas -->
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Observações Internas</span><span style="font-size:11px;color:var(--muted)">Visível apenas ao RH</span></div>
+    <textarea id="ficha-obs" placeholder="Anotações confidenciais sobre este colaborador..." style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;height:100px;outline:none;resize:none;font-family:'Inter',sans-serif;background:#F7F4EF;color:var(--text);transition:border .2s" onfocus="this.style.borderColor='#4ECBA0'" onblur="salvarObservacao()"></textarea>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">Salvo automaticamente ao sair do campo.</div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRAR INTERVENÇÃO -->
+<div class="overlay" id="modal-intervencao">
+  <div class="modal" style="max-width:480px">
+    <h3>Registrar Intervenção</h3>
+    <p>Documente a ação tomada com este colaborador. Registro visível apenas ao RH.</p>
+    <div class="fi-group">
+      <label class="fi-label">Tipo de intervenção</label>
+      <select class="fi-input fi-select" id="interv-tipo">
+        <option value="conversa">Conversa 1:1</option>
+        <option value="encaminhamento">Encaminhamento para psicólogo/psiquiatra</option>
+        <option value="afastamento">Afastamento médico</option>
+        <option value="reducao_carga">Redução de carga temporária</option>
+        <option value="ajuste_funcao">Ajuste de função</option>
+        <option value="outro">Outro</option>
+      </select>
+    </div>
+    <div class="fi-group">
+      <label class="fi-label">Descrição</label>
+      <textarea class="fi-input" id="interv-desc" placeholder="O que foi discutido, combinado ou observado..." style="height:80px;resize:none"></textarea>
+    </div>
+    <div class="fi-row">
+      <div class="fi-group">
+        <label class="fi-label">Responsável</label>
+        <input class="fi-input" id="interv-resp" placeholder="Nome do RH ou gestor">
+      </div>
+      <div class="fi-group">
+        <label class="fi-label">Status</label>
+        <select class="fi-input fi-select" id="interv-status">
+          <option value="em_andamento">Em andamento</option>
+          <option value="concluido">Concluído</option>
+          <option value="aguardando">Aguardando retorno</option>
+        </select>
+      </div>
+    </div>
+    <div class="fi-group">
+      <label class="fi-label">Data de follow-up (opcional)</label>
+      <input class="fi-input" type="date" id="interv-followup">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-intervencao').classList.remove('open')">Cancelar</button>
+      <button class="btn btn-primary btn-sm" onclick="salvarIntervencao()">Salvar Intervenção →</button>
+    </div>
+  </div>
+</div>
+      
+
+
+      <!-- KIT FORMULÁRIOS -->
       <div id="p-formularios" style="display:none">
         <div class="topbar">
           <div style="display:flex;align-items:center;gap:12px;">
@@ -5727,7 +5953,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       </div>
 
       <!-- COLABORADORES -->
-
       <!-- ══ CANAL DE ESCUTA — VISÃO RH ══ -->
       <div id="p-escuta-rh" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div><div class="page-title">Canal de Escuta</div><div class="page-sub">Relatos anônimos · Somente o RH tem acesso</div></div></div>
@@ -5908,6 +6133,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
     </div>
 
 
+
   </div>
 </div>
         <div class="card" style="max-width:480px;margin-bottom:20px">
@@ -5967,71 +6193,9 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
               <input class="fi-input" id="nr1-responsavel" placeholder="Nome completo do RH">
             </div>
           </div>
-          <div class="nr1-revisao-box">
-            <label>📅 Próxima revisão obrigatória:</label>
-            <input type="date" id="nr1-data-revisao" oninput="nr1SalvarRevisao()">
-            <span class="nr1-revisao-note">Preenchido automaticamente com +12 meses · editável conforme necessário</span>
-          </div>
           <button class="btn btn-sm" style="background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#3D2800;font-weight:700;width:100%;padding:13px;border-radius:11px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;box-shadow:0 2px 8px rgba(201,168,76,.3)" onclick="gerarRelatorioNR1()">
             Gerar Relatório NR-1 — PDF
           </button>
-        </div>
-
-
-        <!-- ══ LOG DE CAPACITAÇÕES ══ -->
-        <div class="card" style="max-width:480px;margin-bottom:20px;">
-          <div class="card-hdr">
-            <span class="card-title">📚 Log de Capacitações</span>
-            <span class="chip" style="background:rgba(45,94,74,.08);color:var(--teal)">NR-1 Evidência</span>
-          </div>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6">
-            Registre os treinamentos realizados. Esses dados compõem o Relatório NR-1 como evidência de capacitação exigida pela norma.
-          </p>
-
-          <div class="cap-form">
-            <h4>Registrar novo treinamento</h4>
-            <div class="cap-grid">
-              <div class="cap-field">
-                <label>Data</label>
-                <input type="date" id="cap-data">
-              </div>
-              <div class="cap-field">
-                <label>Nº de Participantes</label>
-                <input type="number" id="cap-participantes" placeholder="Ex: 24" min="1">
-              </div>
-              <div class="cap-field cap-grid-full">
-                <label>Tema / Título</label>
-                <input type="text" id="cap-tema" placeholder="Ex: Prevenção de Burnout e Gestão do Estresse">
-              </div>
-              <div class="cap-field">
-                <label>Responsável</label>
-                <input type="text" id="cap-responsavel" placeholder="Nome do facilitador">
-              </div>
-              <div class="cap-field">
-                <label>Formato</label>
-                <select id="cap-formato">
-                  <option value="Presencial">Presencial</option>
-                  <option value="Online">Online (ao vivo)</option>
-                  <option value="EAD">EAD / Gravado</option>
-                  <option value="Workshop">Workshop</option>
-                  <option value="Palestra">Palestra</option>
-                </select>
-              </div>
-            </div>
-            <button class="btn btn-primary btn-sm" style="width:100%" onclick="capRegistrar()">
-              + Registrar Capacitação
-            </button>
-          </div>
-
-          <div class="cap-lista-wrap">
-            <div class="cap-lista-hdr">
-              <h4>Histórico de Capacitações</h4>
-              <span id="cap-total-badge" style="font-size:11px;color:var(--muted)">0 registros</span>
-            </div>
-            <div id="cap-lista">
-              <div class="cap-vazio">Nenhuma capacitação registrada ainda.</div>
-            </div>
-          </div>
         </div>
 
       </div><!-- /p-config -->
@@ -6534,14 +6698,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       </div>
 
       <!-- Pausa -->
-      <div class="acao-card" style="background:linear-gradient(135deg,rgba(45,94,74,.08),rgba(45,94,74,.04));border:1.5px solid rgba(45,94,74,.15);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:12px;" onclick="cpg('escuta')">
-        <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#2D5E4A,#3A6B4A);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;">🤫</div>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:var(--card-text)">Canal de Escuta</div>
-          <div style="font-size:12px;color:var(--card-text-muted)">Reporte situações de forma anônima</div>
-        </div>
-      </div>
-      <div class="pausa-card" onclick="cpg('decomp')" >
+      <div class="pausa-card" onclick="cpg('decomp')">
         <div class="pausa-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22c0 0 4-2 8-8 4-6 12-8 12-8s-2 8-8 12c-6 4-12 4-12 4z"/><path d="M12 14c-2-4 0-10 0-10"/></svg></div>
         <div class="pausa-card-body">
           <strong>Momento de pausa</strong>
@@ -6883,6 +7040,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
   </div>
 
 
+
+
   <!-- ── QUSP ── -->
   <div class="col-page" id="cp-qusp">
     <div class="qusp-hero">
@@ -6926,55 +7085,25 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
   <!-- ── RESULTADO QUSP ── -->
   <div class="col-page" id="cp-qusp-resultado">
-    <div style="padding:20px 16px 0">
-
-      <!-- ── BLOCO ACOLHIMENTO (linguagem acessível) ── -->
-      <div class="qr-acolhimento nivel-ok" id="qr-acolhimento">
-        <span class="qr-acolh-emoji" id="qr-acolh-emoji">🌱</span>
-        <div class="qr-acolh-titulo" id="qr-acolh-titulo">Obrigado por responder!</div>
-        <div class="qr-acolh-msg" id="qr-acolh-msg">Estamos analisando suas respostas...</div>
-        <div class="qr-acolh-nivel" id="qr-acolh-nivel">Calculando...</div>
-      </div>
-
-      <!-- ── ORIENTAÇÕES PERSONALIZADAS ── -->
-      <div class="qr-orientacoes">
-        <h4>💡 O que isso significa para você</h4>
-        <div id="qr-orientacoes-lista"></div>
-      </div>
-
-      <!-- ── PRÓXIMOS PASSOS ── -->
-      <div class="qr-proximos">
-        <h4>O que você pode fazer agora</h4>
-        <div id="qr-proximos-lista"></div>
-      </div>
-
-      <!-- ── TOGGLE DETALHES TÉCNICOS ── -->
-      <div class="qr-detalhes-toggle">
-        <button onclick="qrToggleDetalhes()">Ver detalhes técnicos do resultado ↓</button>
-      </div>
-      <div class="qr-detalhes-tecnico" id="qr-detalhes-tecnico">
-
-        <!-- Conteúdo técnico original (preservado) -->
-        <div class="qusp-result-hero">
-          <div class="qr-eye" id="qr-eye">QUSP — Resultado Detalhado</div>
-          <div class="qr-name" id="qr-name">Perfil Técnico</div>
-          <div class="qr-perfil" id="qr-perfil">Baseado em protocolos clínicos validados</div>
-          <div class="qr-ring-wrap">
-            <svg viewBox="0 0 100 100">
-              <circle class="qr-track" cx="50" cy="50" r="40"/>
-              <circle class="qr-fill" id="qr-ring-fill" cx="50" cy="50" r="40" stroke="#52B788"/>
-            </svg>
-            <div class="qr-inner">
-              <div class="qr-score" id="qr-score-val" style="color:#52B788">—</div>
-              <div class="qr-score-lbl">/ 80</div>
-            </div>
-          </div>
-          <div class="qr-risk-badge" id="qr-risk-badge" style="display:none"></div>
+    <div class="qusp-result-hero">
+      <div class="qr-eye" id="qr-eye">QUSP — Seu Resultado Personalizado</div>
+      <div class="qr-name" id="qr-name">Seu Perfil foi analisado</div>
+      <div class="qr-perfil" id="qr-perfil">Baseado em protocolos clínicos validados</div>
+      <div class="qr-ring-wrap">
+        <svg viewBox="0 0 100 100">
+          <circle class="qr-track" cx="50" cy="50" r="40"/>
+          <circle class="qr-fill" id="qr-ring-fill" cx="50" cy="50" r="40" stroke="#52B788"/>
+        </svg>
+        <div class="qr-inner">
+          <div class="qr-score" id="qr-score-val" style="color:#52B788">—</div>
+          <div class="qr-score-lbl">/ 80</div>
         </div>
-        <!-- Blocos técnicos -->
-        <div id="qr-blocos"></div>
+      </div>
+      <div class="qr-risk-badge" id="qr-risk-badge" style="display:none"></div>
+    </div>
 
-      </div><!-- /qr-detalhes-tecnico -->
+    <!-- Blocos de resultado -->
+    <div id="qr-blocos"></div>
 
     <!-- Disclaimer QUSP -->
     <div style="background:rgba(45,106,79,.05);border:1px solid rgba(45,106,79,.14);border-radius:12px;padding:13px 15px;margin-bottom:14px;">
@@ -6994,10 +7123,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       <button class="btn btn-pro btn-sm" onclick="toast('Upgrade Pro — em breve!')">Desbloquear relatório completo</button>
     </div>
 
-      <button onclick="cpg('inicio')" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;">Voltar ao início</button>
-
-    </div><!-- /padding wrap -->
-  </div><!-- /cp-qusp-resultado -->
+    <button onclick="cpg('inicio')" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;">Voltar ao início</button>
+  </div>
 
 
   <!-- ══════════════════════════════════════
@@ -7358,14 +7485,14 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
   <!-- Check-in Feminino -->
   <div class="card" style="margin-bottom:16px">
-    <div class="card-hdr" style="margin-bottom:16px">
+    <div class="card-hdr">
       <span class="card-title">Check-in Feminino</span>
       <span style="font-size:11px;color:var(--muted)">Como você está hoje?</span>
     </div>
 
-    <!-- Grid de perguntas em cards -->
+    <!-- Sono, energia, humor, foco -->
+    <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Sono · Energia · Humor · Foco</div>
     <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:16px">
-
       <div class="fem-grupo">
         <div class="fem-grupo-label">😴 Qualidade do sono</div>
         <div class="fem-opts" id="fem-sono">
@@ -7374,7 +7501,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           <button onclick="femSelect('sono',3,this)" class="fem-opt-btn fem-good">Boa</button>
         </div>
       </div>
-
       <div class="fem-grupo">
         <div class="fem-grupo-label">⚡ Nível de energia</div>
         <div class="fem-opts" id="fem-energia">
@@ -7383,7 +7509,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           <button onclick="femSelect('energia',3,this)" class="fem-opt-btn fem-good">Alta</button>
         </div>
       </div>
-
       <div class="fem-grupo">
         <div class="fem-grupo-label">💭 Humor hoje</div>
         <div class="fem-opts" id="fem-humor">
@@ -7526,13 +7651,10 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
   <div class="col-page" id="cp-diario">
-    <div style="padding:20px 16px 0">
-
-      <!-- Header com data -->
-      <div style="margin-bottom:20px">
-        <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Meu Diário</div>
-        <div style="font-size:15px;font-weight:700;color:var(--card-text);text-transform:capitalize" id="diario-data-hoje">—</div>
-      </div>
+  
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="diarioSalvar()">Salvar →</button>
+  </div>
 
   <!-- Pergunta do dia -->
   <div class="card" style="margin-bottom:16px">
@@ -7603,7 +7725,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
   <!-- NAV INFERIOR -->
-    <!-- ══ CANAL DE ESCUTA — COLABORADOR ══ -->
+
+  <!-- ══ CANAL DE ESCUTA — COLABORADOR ══ -->
   <div class="col-page" id="cp-escuta">
     <div style="padding:20px 16px 0">
       <div class="escuta-hero">
@@ -7611,10 +7734,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
         <h3>Canal de Escuta</h3>
         <p>Este é um espaço seguro e sigiloso. Você pode reportar situações de risco sem se identificar. O RH recebe o relato, mas nunca sabe quem enviou.</p>
       </div>
-
       <div class="escuta-form" id="escuta-form-wrap">
         <h4>Reportar uma situação</h4>
-
         <div class="escuta-campo">
           <label>Categoria</label>
           <select id="escuta-categoria">
@@ -7625,30 +7746,27 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
             <option value="outro">Outro</option>
           </select>
         </div>
-
         <div class="escuta-campo">
           <label>Descreva a situação</label>
-          <textarea id="escuta-texto" placeholder="Descreva o que aconteceu, quando e como você se sentiu. Não precisa se identificar nem identificar colegas pelo nome."></textarea>
+          <textarea id="escuta-texto" placeholder="Descreva o que aconteceu de forma anônima..."></textarea>
         </div>
-
         <div class="escuta-anonimo-aviso">
           <span>🔒</span>
-          <span>Seu relato é completamente anônimo. Nenhuma informação que identifique você será enviada ou armazenada.</span>
+          <span>Seu relato é completamente anônimo. Nenhuma informação que identifique você será enviada.</span>
         </div>
-
         <button class="btn btn-primary" style="width:100%" onclick="escutaEnviar()">Enviar relato anonimamente</button>
       </div>
-
       <div class="escuta-confirmacao" id="escuta-confirmacao">
         <div class="conf-icon">✅</div>
         <h3>Relato enviado com sucesso</h3>
-        <p>Obrigado por compartilhar. O RH foi notificado e analisará a situação com sigilo absoluto. Seu anonimato está garantido.</p>
+        <p>Obrigado por compartilhar. O RH foi notificado e analisará a situação com sigilo absoluto.</p>
         <button class="btn btn-outline" style="width:100%;margin-bottom:10px" onclick="escutaNovo()">Enviar outro relato</button>
         <button class="btn btn-primary" style="width:100%" onclick="cpg('inicio')">Voltar ao início</button>
       </div>
     </div>
   </div>
   <!-- /cp-escuta -->
+
 
   <nav class="col-nav">
     <div class="cn-item active" id="cn-inicio" onclick="cpg('inicio')">
@@ -7676,12 +7794,17 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       <span class="cn-label">Diário</span>
     </div>
     <div class="cn-item" id="cn-feminina" onclick="cpg('feminina')">
-      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
-      <span class="cn-label">Saúde ♀</span>
+    <div class="cn-item" id="cn-escuta" onclick="cpg('escuta')">
+      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+      <span class="cn-label">Escuta</span>
     </div>
     <div class="cn-item" id="cn-escuta" onclick="cpg('escuta')">
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
       <span class="cn-label">Escuta</span>
+    </div>
+    
+      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
+      <span class="cn-label">Saúde ♀</span>
     </div>
   </nav>
 
@@ -7699,6 +7822,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
     <button class="btn-close-sheet" onclick="closeTipBtn()">Entendido ✓</button>
   </div>
 </div>
+
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -7802,9 +7927,7 @@ function showEmpresa() {
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'block';
-  document.getElementById('app-empresa').style.visibility = 'visible';
   document.getElementById('app-colaborador').style.display = 'none';
-  document.getElementById('app-colaborador').style.visibility = 'hidden';
   const nome = currentEmpresa?.nome || 'Empresa';
   const ini  = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
   document.getElementById('sb-empresa-nome').textContent = nome;
@@ -7828,9 +7951,7 @@ function showColaborador(nome) {
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'none';
-  document.getElementById('app-empresa').style.visibility = 'hidden';
   document.getElementById('app-colaborador').style.display = 'block';
-  document.getElementById('app-colaborador').style.visibility = 'visible';
   const nameEl = document.getElementById('collab-user-name');
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
@@ -8059,6 +8180,7 @@ async function loadDashboardData() {
     
   } catch(e) {
     document.getElementById('dash-sub').textContent = 'Sem conexão com o banco de dados';
+    console.warn('[Ranne] loadDashboardData erro:', e);
   }
 
   // Mostra métricas
@@ -8228,6 +8350,7 @@ async function criarDiagnostico() {
     }
   } catch {
     // Continua em modo demo — diagnóstico aparece na lista localmente
+    console.warn('[Ranne] Diagnóstico salvo apenas localmente.');
   }
 
   currentDiagId = diagId;
@@ -8895,6 +9018,7 @@ document.getElementById('install-close')?.addEventListener('click', () => {
 
 // App instalado
 window.addEventListener('appinstalled', () => {
+  console.log('[PWA] App instalado!');
   document.getElementById('install-banner').classList.remove('show');
 });
 
@@ -9035,6 +9159,7 @@ if (notaEl) notaEl.style.display = 'flex';
     document.getElementById('ficha-obs').value = obs?.observacoes || '';
 
   } catch(e) {
+    console.warn('[Ficha]', e);
     toast('⚠️ Erro ao carregar ficha.');
   }
 }
@@ -9103,6 +9228,7 @@ async function salvarIntervencao() {
     document.getElementById('interv-followup').value = '';
   } catch(e) {
     toast('⚠️ Erro ao salvar. Crie a tabela intervencoes_rh no Supabase.');
+    console.warn(e);
   }
 }
 
@@ -9402,6 +9528,7 @@ function goS(n) {
 }
 
 
+
 /* ── CÓDIGO DE ACESSO COLABORADOR ── */
 function gerarCodigo() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -9422,6 +9549,7 @@ function resetModalInvite() {
   document.getElementById('invite-nome').value = '';
   document.getElementById('invite-email').value = '';
 }
+
 
 
 /* ── NAVEGAÇÃO COLABORADOR ── */
@@ -9676,107 +9804,7 @@ if (currentUser) {
   } catch {}
 }
   
-  // ── RESULTADO ACESSÍVEL ──────────────────────────────────────
-  var nivelTextos = {
-    ok: {
-      nivel:   'nivel-ok',
-      emoji:   '\uD83C\uDF31',
-      titulo:  'Voc\u00ea est\u00e1 se cuidando bem!',
-      msg:     'Suas respostas indicam que voc\u00ea est\u00e1 equilibrado(a) no momento. Continue investindo em h\u00e1bitos saud\u00e1veis e autocuidado \u2014 eles fazem toda a diferen\u00e7a.',
-      badge:   '\u2705 Equil\u00edbrio saud\u00e1vel',
-      orient: [
-        { icon:'\uD83D\uDCAA', forte:'Seu ponto forte agora', texto:'Voc\u00ea est\u00e1 conseguindo lidar bem com as demandas do dia a dia. Isso \u00e9 algo para celebrar e manter.' },
-        { icon:'\uD83D\uDCC5', forte:'Continue monitorando', texto:'Mesmo estando bem, fazer o check-in semanal ajuda a identificar mudan\u00e7as antes que se tornem problemas.' },
-        { icon:'\uD83E\uDDEA', forte:'Prevenção é o melhor caminho', texto:'Aproveite este momento positivo para explorar as trilhas de bem-estar e refor\u00e7ar sua resili\u00eancia.' },
-      ],
-      proximos: [
-        { icon:'\uD83C\uDF3F', texto:'Explorar trilhas de bem-estar', sub:'Conte\u00fado para manter e ampliar seu equil\u00edbrio', acao:"cpg('biblioteca')" },
-        { icon:'\u2705', texto:'Fazer check-in semanal', sub:'Acompanhe como voc\u00ea evolui ao longo do tempo', acao:"cpg('checkin')" },
-      ]
-    },
-    medio: {
-      nivel:   'nivel-medio',
-      emoji:   '\uD83C\uDF3C',
-      titulo:  'Voc\u00ea merece um momento de pausa.',
-      msg:     'Suas respostas mostram que voc\u00ea est\u00e1 carregando mais do que o habitual. N\u00e3o est\u00e1 em crise, mas seu corpo e mente est\u00e3o pedindo aten\u00e7\u00e3o. Isso \u00e9 normal \u2014 e reconhecer \u00e9 o primeiro passo.',
-      badge:   '\u26A0\uFE0F Aten\u00e7\u00e3o recomendada',
-      orient: [
-        { icon:'\uD83D\uDE34', forte:'Seu corpo est\u00e1 avisando', texto:'Sinais como cansa\u00e7o, irrita\u00e7\u00e3o ou dificuldade de concentra\u00e7\u00e3o s\u00e3o formas do seu organismo pedir cuidado.' },
-        { icon:'\u23F8\uFE0F', forte:'Pequenas pausas t\u00eam grande impacto', texto:'Mesmo 5 minutos de pausa consciente ao longo do dia reduzem significativamente o estresse acumulado.' },
-        { icon:'\uD83D\uDDE3\uFE0F', forte:'Voc\u00ea n\u00e3o precisa resolver sozinho(a)', texto:'Conversar com algu\u00e9m de confian\u00e7a ou usar o canal de escuta da empresa pode ajudar muito.' },
-      ],
-      proximos: [
-        { icon:'\uD83E\uDDD8', texto:'Praticar uma pausa agora', sub:'T\u00e9cnicas r\u00e1pidas de respira\u00e7\u00e3o e mindfulness', acao:"cpg('decomp')" },
-        { icon:'\uD83D\uDCD6', texto:'Trilha: Gest\u00e3o do Estresse', sub:'Aprenda a identificar e reduzir gatilhos', acao:"cpg('biblioteca')" },
-        { icon:'\uD83D\uDCAC', texto:'Canal de Escuta An\u00f4nimo', sub:'Compartilhe o que est\u00e1 sentindo com seguran\u00e7a', acao:"cpg('escuta')" },
-      ]
-    },
-    alto: {
-      nivel:   'nivel-alto',
-      emoji:   '\uD83E\uDD7A',
-      titulo:  'Estamos aqui com voc\u00ea.',
-      msg:     'Suas respostas indicam um n\u00edvel alto de sobrecarga. Isso n\u00e3o \u00e9 fraqueza \u2014 \u00e9 um sinal importante que merece aten\u00e7\u00e3o. Voc\u00ea n\u00e3o precisa passar por isso sozinho(a).',
-      badge:   '\uD83D\uDEA8 Apoio recomendado',
-      orient: [
-        { icon:'\uD83D\uDC99', forte:'Isso tem tratamento', texto:'O que voc\u00ea est\u00e1 sentindo pode ser muito desconfortante, mas com apoio adequado \u00e9 poss\u00edvel melhorar. Burnout \u00e9 reconhecido pela OMS como fen\u00f4meno ocupacional.' },
-        { icon:'\uD83D\uDEBB', forte:'Priorize pausas reais', texto:'Neste momento, descanso n\u00e3o \u00e9 luxo \u2014 \u00e9 necessidade. Tente proteger pelo menos 30 minutos do seu dia s\u00f3 para voc\u00ea.' },
-        { icon:'\uD83E\uDDD1\u200D\u2695\uFE0F', forte:'Considere buscar apoio profissional', texto:'Um psic\u00f3logo ou m\u00e9dico pode ajudar a entender o que est\u00e1 acontecendo e tra\u00e7ar um caminho de recupera\u00e7\u00e3o.' },
-      ],
-      proximos: [
-        { icon:'\uD83E\uDDD8', texto:'Pausa guiada agora', sub:'Um momento s\u00f3 para voc\u00ea, aqui e agora', acao:"cpg('decomp')" },
-        { icon:'\uD83D\uDCAC', texto:'Canal de Escuta An\u00f4nimo', sub:'Fale sobre o que est\u00e1 sentindo com total seguran\u00e7a', acao:"cpg('escuta')" },
-        { icon:'\uD83D\uDCDD', texto:'Registrar no Di\u00e1rio', sub:'Escrever pode ajudar a organizar os pensamentos', acao:"cpg('diario')" },
-      ]
-    }
-  };
-
-  var nivelKey = total <= 30 ? 'ok' : total <= 55 ? 'medio' : 'alto';
-  var n = nivelTextos[nivelKey];
-
-  // Preencher bloco de acolhimento
-  var acolhDiv = document.getElementById('qr-acolhimento');
-  if (acolhDiv) {
-    acolhDiv.className = 'qr-acolhimento ' + n.nivel;
-    document.getElementById('qr-acolh-emoji').textContent  = n.emoji;
-    document.getElementById('qr-acolh-titulo').textContent = n.titulo;
-    document.getElementById('qr-acolh-msg').textContent    = n.msg;
-    document.getElementById('qr-acolh-nivel').textContent  = n.badge;
-  }
-
-  // Preencher orientações
-  var orientDiv = document.getElementById('qr-orientacoes-lista');
-  if (orientDiv) {
-    orientDiv.innerHTML = n.orient.map(function(o) {
-      return '<div class="qr-orient-item">'
-        + '<div class="qr-orient-icon">' + o.icon + '</div>'
-        + '<div class="qr-orient-texto"><strong>' + o.forte + '</strong><span>' + o.texto + '</span></div>'
-        + '</div>';
-    }).join('');
-  }
-
-  // Preencher próximos passos
-  var proximosDiv = document.getElementById('qr-proximos-lista');
-  if (proximosDiv) {
-    proximosDiv.innerHTML = n.proximos.map(function(p) {
-      return '<button class="qr-proximo-btn" onclick="' + p.acao + '">'
-        + '<span class="qpb-icon">' + p.icon + '</span>'
-        + '<span class="qpb-texto"><strong>' + p.texto + '</strong><span>' + p.sub + '</span></span>'
-        + '<span class="qpb-arr">›</span>'
-        + '</button>';
-    }).join('');
-  }
-
   cpg('qusp-resultado');
-}
-
-function qrToggleDetalhes() {
-  var el = document.getElementById('qr-detalhes-tecnico');
-  var btn = document.querySelector('.qr-detalhes-toggle button');
-  if (!el) return;
-  el.classList.toggle('show');
-  if (btn) btn.textContent = el.classList.contains('show')
-    ? 'Ocultar detalhes técnicos ↑'
-    : 'Ver detalhes técnicos do resultado ↓';
 }
 
 function _qusp_insight(tipo, score) {
@@ -10062,6 +10090,7 @@ function reiniciarTour() {
   pg('dashboard', dashItem);
   setTimeout(iniciarTour, 500);
 }
+
 
 
 /* S3 sub-steps */
@@ -10477,6 +10506,7 @@ async function carregarDadosHomeColaborador() {
       if (chipEl) { chipEl.textContent = 'Faça seu primeiro check-in'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
     }
   } catch(e) {
+    console.warn('[home collab]', e);
   }
 }
 
@@ -12024,6 +12054,7 @@ async function verificarAlertasPiora() {
 
     renderAlertasPiora(alertas);
   } catch(e) {
+    console.warn('[Alertas]', e);
   }
 }
 
@@ -12270,10 +12301,6 @@ async function gerarRelatorioNR1() {
     ⚠️ Os dados deste relatório são de uso exclusivo do RH e da diretoria da empresa. As respostas individuais dos colaboradores são protegidas por protocolo de privacidade e não constam neste documento. Em conformidade com a LGPD (Lei 13.709/2018) e normas de sigilo em saúde do trabalhador.
   </div>
 
-  \${secaoCapacitacoes}
-
-  \${secaoRevisao}
-
   <div class="footer">
     <div class="ass-bloco">
       <div class="ass-linha"></div>
@@ -12290,20 +12317,15 @@ async function gerarRelatorioNR1() {
 </div>
 
 
+
+
 </body>
 </html>`;
 
     // Download direto sem depender de window.open (evita bloqueio de popup)
-    // Injetar seções F4 e F5 no HTML do relatório
-    const secaoCapacitacoes = capGerarSecaoPDF();
-    const secaoRevisao      = nr1GerarSecaoRevisao();
-    const htmlRelFinal = htmlRel
-      .replace('${secaoCapacitacoes}', secaoCapacitacoes)
-      .replace('${secaoRevisao}', secaoRevisao);
-
-    const blob = new Blob([htmlRelFinal], { type: 'text/html;charset=utf-8' });
+    const blob = new Blob([htmlRel], { type: 'text/html;charset=utf-8' });
     const url  = URL.createObjectURL(blob);
-
+    
     // Tenta abrir em nova aba; se bloqueado, faz download direto
     const win = window.open(url, '_blank');
     if (win) {
@@ -12376,8 +12398,6 @@ function pg(id, el) {
   if (id === 'config') {
     carregarPerfil();
 carregarPreferencias();
-    nr1IniciarDataRevisao();
-    capRenderLista();
     if (currentEmpresa) {
       document.getElementById('cfg-nome').value = currentEmpresa.nome || '';
       document.getElementById('cfg-size').value = currentEmpresa.size || '';
@@ -12385,6 +12405,7 @@ carregarPreferencias();
   }
   if (id === 'aep') aepCarregarSalvo();
   if (id === 'escuta-rh') escutaCarregarRH();
+  if (id === 'config') { if(typeof nr1IniciarDataRevisao==='function') nr1IniciarDataRevisao(); if(typeof capRenderLista==='function') capRenderLista(); }
   if (id === 'dashboard') {
     injetarPainelAlertas();
     setTimeout(verificarAlertasPiora, 800);
@@ -12400,14 +12421,17 @@ if ('serviceWorker' in navigator) {
       const cacheKeys = await caches.keys();
       if (cacheKeys.length > 0) {
         await Promise.all(cacheKeys.map(key => {
+          console.log('[PWA] Apagando cache antigo:', key);
           return caches.delete(key);
         }));
+        console.log('[PWA] Cache limpo com sucesso.');
       }
 
       // 2. Desregistrar qualquer SW antigo que possa estar cacheando HTML
       const registrations = await navigator.serviceWorker.getRegistrations();
       for (const reg of registrations) {
         await reg.unregister();
+        console.log('[PWA] SW antigo desregistrado.');
       }
 
       // 3. Registrar o novo SW com updateViaCache: 'none'
@@ -12415,8 +12439,10 @@ if ('serviceWorker' in navigator) {
       const reg = await navigator.serviceWorker.register('/sw.js', {
         updateViaCache: 'none'
       });
+      console.log('[PWA] Novo SW registrado:', reg.scope);
 
     } catch(err) {
+      console.log('[PWA] Erro SW:', err);
     }
   });
 }
@@ -12590,14 +12616,6 @@ function femSelect(campo, val, btn) {
   container.querySelectorAll('.fem-opt-btn,.fem-tag-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
   femState[campo] = val;
-  const grupo = btn.closest('.fem-grupo');
-  if (grupo) {
-    grupo.style.borderColor = val === 1
-      ? 'rgba(239,68,68,.35)'
-      : val === 2
-      ? 'rgba(245,158,11,.35)'
-      : 'rgba(34,197,94,.35)';
-  }
 }
 
 function femToggle(campo, btn) {
@@ -12776,8 +12794,8 @@ function diarioLimparTudo() {
 /* ── Botão flutuante ── */
 #ranne-chat-btn {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: calc(72px + var(--safe-bottom, 0px));
+  right: 20px;
   width: 52px; height: 52px;
   border-radius: 50%;
   background: linear-gradient(135deg, #2D3625, #3A6B4A);
@@ -12803,10 +12821,10 @@ function diarioLimparTudo() {
 /* ── Janela do chat ── */
 #ranne-chat-window {
   position: fixed;
-  bottom: 90px;
-  right: 24px;
-  width: 360px;
-  max-height: 560px;
+  bottom: calc(136px + var(--safe-bottom, 0px));
+  right: 20px;
+  width: 340px;
+  max-height: 520px;
   background: var(--white);
   border-radius: 20px;
   box-shadow: 0 8px 40px rgba(0,0,0,.18);
@@ -12935,26 +12953,17 @@ body.dark .chat-msg.bot { background: var(--surface); border-color: var(--border
 body.dark .chat-input-row textarea { background: var(--surface); }
 body.dark .chat-sugg { background: var(--surface); border-color: var(--border); }
 
-/* Mobile: tela cheia — acima da navbar */
+/* Mobile: acima da navbar */
 @media (max-width: 480px) {
   #ranne-chat-window {
     bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-    right: 0; left: 0;
-    width: 100%;
-    max-height: calc(85vh - 64px);
-    border-radius: 20px 20px 0 0;
+    right: 0; left: 0; width: 100%;
+    max-height: calc(85vh - 64px); border-radius: 20px 20px 0 0;
   }
-  #ranne-chat-btn {
-    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-    right: 16px;
-  }
+  #ranne-chat-btn { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); right: 16px; }
 }
-/* Desktop */
 @media (min-width: 481px) {
-  #ranne-chat-window {
-    bottom: 90px; right: 24px;
-    width: 360px; max-height: 560px;
-  }
+  #ranne-chat-window { bottom: 90px; right: 24px; width: 360px; max-height: 560px; }
   #ranne-chat-btn { bottom: 28px; right: 28px; }
 }
 </style>
@@ -12995,99 +13004,179 @@ const ranneChat = (() => {
   let isLoading = false;
 
   const SUGGESTIONS_RH = [
-    '📊 Como interpretar o ISA?',\n    '🚨 O que fazer com alertas críticos?',\n    '📋 Como criar um plano de ação?',\n    '👥 Como engajar a equipe nos testes?',\n  ];
+    '📊 Como interpretar o ISA?',
+    '🚨 O que fazer com alertas críticos?',
+    '📋 Como criar um plano de ação?',
+    '👥 Como engajar a equipe nos testes?',
+  ];
   const SUGGESTIONS_COLAB = [
-    '😰 Estou me sentindo sobrecarregado',\n    '😴 Tenho dormido mal',\n    '💡 Dicas para reduzir o estresse',\n    '🧘 Como praticar autocuidado?',\n  ];
+    '😰 Estou me sentindo sobrecarregado',
+    '😴 Tenho dormido mal',
+    '💡 Dicas para reduzir o estresse',
+    '🧘 Como praticar autocuidado?',
+  ];
 
   function getSystemPrompt() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    const isRH = role === 'empresa';\n    if (isRH) {
-      return 'Voc\u00ea \u00e9 o Assistente Ranne, especialista em sa\u00fade organizacional e bem-estar no trabalho. '\n        + 'Voc\u00ea apoia gestores e profissionais de RH a interpretar dados de clima organizacional, identificar sinais de burnout e sobrecarga nas equipes, e criar planos de a\u00e7\u00e3o eficazes. '\n        + 'Diretrizes: '\n        + '- Seja objetivo, emp\u00e1tico e profissional. '\n        + '- Use dados e evid\u00eancias quando poss\u00edvel. '\n        + '- Sugira a\u00e7\u00f5es concretas e pr\u00e1ticas. '\n        + '- Lembre sempre que o app \u00e9 uma ferramenta de apoio, n\u00e3o substitui avalia\u00e7\u00e3o cl\u00ednica profissional. '\n        + '- Responda em portugu\u00eas do Brasil. '\n        + '- Seja conciso (m\u00e1x. 3 par\u00e1grafos por resposta). '\n        + '- Nunca fa\u00e7a diagn\u00f3sticos de sa\u00fade mental individuais.';\n    } else {
-      return 'Voc\u00ea \u00e9 o Assistente Ranne, um apoio amig\u00e1vel de sa\u00fade mental e bem-estar no trabalho. '\n        + 'Voc\u00ea ajuda colaboradores a entender seus pr\u00f3prios sentimentos, lidar com estresse, burnout e sobrecarga, e adotar pr\u00e1ticas de autocuidado no dia a dia. '\n        + 'Diretrizes: '\n        + '- Seja caloroso, acolhedor e sem julgamentos. '\n        + '- Use linguagem simples e acess\u00edvel. '\n        + '- Ofere\u00e7a dicas pr\u00e1ticas baseadas em evid\u00eancias. '\n        + '- Valide os sentimentos da pessoa antes de dar sugest\u00f5es. '\n        + '- Lembre sempre que voc\u00ea \u00e9 um apoio, n\u00e3o substitui profissionais de sa\u00fade mental. '\n        + '- Se a pessoa demonstrar sofrimento intenso, encoraje buscar apoio profissional. '\n        + '- Responda em portugu\u00eas do Brasil. '\n        + '- Seja conciso e humano (m\u00e1x. 3 par\u00e1grafos). '\n        + '- Nunca fa\u00e7a diagn\u00f3sticos.';\n    }
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
+    const isRH = role === 'empresa';
+    if (isRH) {
+      return 'Voc\u00ea \u00e9 o Assistente Ranne, especialista em sa\u00fade organizacional e bem-estar no trabalho. '
+        + 'Voc\u00ea apoia gestores e profissionais de RH a interpretar dados de clima organizacional, identificar sinais de burnout e sobrecarga nas equipes, e criar planos de a\u00e7\u00e3o eficazes. '
+        + 'Diretrizes: '
+        + '- Seja objetivo, emp\u00e1tico e profissional. '
+        + '- Use dados e evid\u00eancias quando poss\u00edvel. '
+        + '- Sugira a\u00e7\u00f5es concretas e pr\u00e1ticas. '
+        + '- Lembre sempre que o app \u00e9 uma ferramenta de apoio, n\u00e3o substitui avalia\u00e7\u00e3o cl\u00ednica profissional. '
+        + '- Responda em portugu\u00eas do Brasil. '
+        + '- Seja conciso (m\u00e1x. 3 par\u00e1grafos por resposta). '
+        + '- Nunca fa\u00e7a diagn\u00f3sticos de sa\u00fade mental individuais.';
+    } else {
+      return 'Voc\u00ea \u00e9 o Assistente Ranne, um apoio amig\u00e1vel de sa\u00fade mental e bem-estar no trabalho. '
+        + 'Voc\u00ea ajuda colaboradores a entender seus pr\u00f3prios sentimentos, lidar com estresse, burnout e sobrecarga, e adotar pr\u00e1ticas de autocuidado no dia a dia. '
+        + 'Diretrizes: '
+        + '- Seja caloroso, acolhedor e sem julgamentos. '
+        + '- Use linguagem simples e acess\u00edvel. '
+        + '- Ofere\u00e7a dicas pr\u00e1ticas baseadas em evid\u00eancias. '
+        + '- Valide os sentimentos da pessoa antes de dar sugest\u00f5es. '
+        + '- Lembre sempre que voc\u00ea \u00e9 um apoio, n\u00e3o substitui profissionais de sa\u00fade mental. '
+        + '- Se a pessoa demonstrar sofrimento intenso, encoraje buscar apoio profissional. '
+        + '- Responda em portugu\u00eas do Brasil. '
+        + '- Seja conciso e humano (m\u00e1x. 3 par\u00e1grafos). '
+        + '- Nunca fa\u00e7a diagn\u00f3sticos.';
+    }
   }
 
   function getSuggestions() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    return role === 'empresa' ? SUGGESTIONS_RH : SUGGESTIONS_COLAB;\n  }
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
+    return role === 'empresa' ? SUGGESTIONS_RH : SUGGESTIONS_COLAB;
+  }
 
   function getWelcome() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    if (role === 'empresa') {\n      return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para ajudar voc\u00ea a entender os dados da sua equipe e criar estrat\u00e9gias de bem-estar organizacional. Como posso ajudar?';\n    }
-    return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para te apoiar com dicas de bem-estar, lidar com o estresse do dia a dia e cuidar da sua sa\u00fade mental. Como voc\u00ea est\u00e1 se sentindo hoje?';\n  }
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
+    if (role === 'empresa') {
+      return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para ajudar voc\u00ea a entender os dados da sua equipe e criar estrat\u00e9gias de bem-estar organizacional. Como posso ajudar?';
+    }
+    return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para te apoiar com dicas de bem-estar, lidar com o estresse do dia a dia e cuidar da sua sa\u00fade mental. Como voc\u00ea est\u00e1 se sentindo hoje?';
+  }
 
   function renderMsg(text, type) {
-    const el = document.createElement('div');\n    el.className = 'chat-msg ' + type;\n    el.textContent = text;
-    document.getElementById('chat-messages').appendChild(el);\n    scrollBottom();
+    const el = document.createElement('div');
+    el.className = 'chat-msg ' + type;
+    el.textContent = text;
+    document.getElementById('chat-messages').appendChild(el);
+    scrollBottom();
     return el;
   }
 
   function renderTyping() {
-    const el = document.createElement('div');\n    el.className = 'chat-msg typing';\n    el.id = 'chat-typing';\n    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';\n    document.getElementById('chat-messages').appendChild(el);\n    scrollBottom();
+    const el = document.createElement('div');
+    el.className = 'chat-msg typing';
+    el.id = 'chat-typing';
+    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    document.getElementById('chat-messages').appendChild(el);
+    scrollBottom();
   }
 
   function removeTyping() {
-    document.getElementById('chat-typing')?.remove();\n  }
+    document.getElementById('chat-typing')?.remove();
+  }
 
   function scrollBottom() {
-    const el = document.getElementById('chat-messages');\n    if (el) el.scrollTop = el.scrollHeight;
+    const el = document.getElementById('chat-messages');
+    if (el) el.scrollTop = el.scrollHeight;
   }
 
   function renderSuggestions(show = true) {
-    const el = document.getElementById('chat-suggestions');\n    if (!el) return;
-    if (!show) { el.innerHTML = ''; return; }\n    el.innerHTML = getSuggestions().map(function(s) {
-      return '<button class="chat-sugg" onclick="ranneChat.sendText(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '</button>';\n    }).join('');\n  }
+    const el = document.getElementById('chat-suggestions');
+    if (!el) return;
+    if (!show) { el.innerHTML = ''; return; }
+    el.innerHTML = getSuggestions().map(function(s) {
+      return '<button class="chat-sugg" onclick="ranneChat.sendText(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '</button>';
+    }).join('');
+  }
 
   function setStatus(txt) {
-    const el = document.getElementById('chat-status');\n    if (el) el.textContent = txt;
+    const el = document.getElementById('chat-status');
+    if (el) el.textContent = txt;
   }
 
   async function callAI(userMsg) {
-    const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
-    msgs.push({ role: 'user', content: userMsg });\n
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    const context = role === 'empresa' ? 'empresa' : 'colaborador';\n
-    const res = await fetch('/api/chat', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({
-        context: context,
+    const msgs = history.map(m => ({ role: m.role, content: m.content }));
+    msgs.push({ role: 'user', content: userMsg });
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: getSystemPrompt(),
         messages: msgs
       })
     });
 
-    if (!res.ok) throw new Error('Erro na API');\n    const data = await res.json();
-    return data.reply || 'Desculpe, não consegui processar sua mensagem.';\n  }
+    if (!res.ok) throw new Error('Erro na API');
+    const data = await res.json();
+    return data.content?.[0]?.text || 'Desculpe, não consegui processar sua mensagem.';
+  }
 
   return {
     toggle() {
       isOpen = !isOpen;
-      const win = document.getElementById('ranne-chat-window');\n      const badge = document.getElementById('chat-badge');\n      if (isOpen) {
-        win.classList.add('open');\n        badge.style.display = 'none';\n        if (history.length === 0) {
-          renderMsg(getWelcome(), 'bot');\n          renderSuggestions(true);
+      const win = document.getElementById('ranne-chat-window');
+      const badge = document.getElementById('chat-badge');
+      if (isOpen) {
+        win.classList.add('open');
+        badge.style.display = 'none';
+        if (history.length === 0) {
+          renderMsg(getWelcome(), 'bot');
+          renderSuggestions(true);
         }
-        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);\n      } else {
-        win.classList.remove('open');\n      }
+        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);
+      } else {
+        win.classList.remove('open');
+      }
     },
 
     show() {
-      document.getElementById('ranne-chat-btn').style.display = 'flex';\n    },
+      document.getElementById('ranne-chat-btn').style.display = 'flex';
+    },
 
     async send() {
-      const input = document.getElementById('chat-input');\n      const text = input?.value.trim();
+      const input = document.getElementById('chat-input');
+      const text = input?.value.trim();
       if (!text || isLoading) return;
       this.sendText(text);
-      input.value = '';\n      input.style.height = 'auto';\n    },
+      input.value = '';
+      input.style.height = 'auto';
+    },
 
     async sendText(text) {
       if (isLoading) return;
       isLoading = true;
 
       renderSuggestions(false);
-      renderMsg(text, 'user');\n      history.push({ role: 'user', content: text });\n
-      const sendBtn = document.getElementById('chat-send-btn');\n      if (sendBtn) sendBtn.disabled = true;
-      setStatus('Digitando…');\n      renderTyping();
+      renderMsg(text, 'user');
+      history.push({ role: 'user', content: text });
+
+      const sendBtn = document.getElementById('chat-send-btn');
+      if (sendBtn) sendBtn.disabled = true;
+      setStatus('Digitando…');
+      renderTyping();
 
       try {
         const reply = await callAI(text);
         removeTyping();
-        renderMsg(reply, 'bot');\n        history.push({ role: 'assistant', content: reply });\n        // Manter histórico em no máx 20 trocas
+        renderMsg(reply, 'bot');
+        history.push({ role: 'assistant', content: reply });
+        // Manter histórico em no máx 20 trocas
         if (history.length > 40) history = history.slice(-40);
-        setStatus('Pronto para ajudar');\n      } catch(e) {
+        setStatus('Pronto para ajudar');
+      } catch(e) {
         removeTyping();
-        renderMsg('Ops, tive um problema de conexão. Tente novamente em instantes.', 'bot');\n        setStatus('Pronto para ajudar');\n      } finally {
+        renderMsg('Ops, tive um problema de conexão. Tente novamente em instantes.', 'bot');
+        setStatus('Pronto para ajudar');
+      } finally {
         isLoading = false;
         if (sendBtn) sendBtn.disabled = false;
         renderSuggestions(true);
@@ -13096,12 +13185,224 @@ const ranneChat = (() => {
   };
 })();
 
+/* Mostrar botão após login (chama ranneChat.show() nas funções de entrada) */
+</script>
+
+
+<!-- ══════════════════════════════════════
+     RANNE CHATBOT — Botão flutuante IA
+     Aparece nas áreas empresa e colaborador
+     ════════════════════════════════════ -->
+
+<style>
+/* ── Botão flutuante ── */
+#ranne-chat-btn {
+  position: fixed;
+  bottom: calc(72px + var(--safe-bottom, 0px));
+  right: 20px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2D3625, #3A6B4A);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 999;
+  display: none; /* shown via JS after login */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(45,54,37,.35);
+  transition: transform .2s, box-shadow .2s;
+  font-size: 22px;
+}
+#ranne-chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(45,54,37,.45); }
+#ranne-chat-btn .chat-badge {
+  position: absolute; top: -2px; right: -2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #C9A87C; border: 2px solid var(--bg);
+  display: none;
+}
+
+/* ── Janela do chat ── */
+#ranne-chat-window {
+  position: fixed;
+  bottom: calc(136px + var(--safe-bottom, 0px));
+  right: 20px;
+  width: 340px;
+  max-height: 520px;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  display: none;
+  flex-direction: column;
+  z-index: 998;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  animation: chatIn .25s cubic-bezier(.16,1,.3,1);
+}
+@keyframes chatIn {
+  from { opacity:0; transform: translateY(12px) scale(.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+#ranne-chat-window.open { display: flex; }
+
+/* Header */
+.chat-header {
+  background: linear-gradient(135deg, #2D3625, #3A6B4A);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.chat-header-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.chat-header-info { flex: 1; }
+.chat-header-name { color: #fff; font-size: 13px; font-weight: 700; }
+.chat-header-status { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 1px; }
+.chat-header-close {
+  background: none; border: none; color: rgba(255,255,255,.7);
+  font-size: 18px; cursor: pointer; padding: 4px; line-height: 1;
+  transition: color .15s;
+}
+.chat-header-close:hover { color: #fff; }
+
+/* Mensagens */
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 14px;
+  display: flex; flex-direction: column; gap: 10px;
+  scroll-behavior: smooth;
+}
+.chat-msg {
+  max-width: 85%; padding: 10px 13px;
+  border-radius: 14px; font-size: 13px; line-height: 1.55;
+  animation: msgIn .2s ease;
+}
+@keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+.chat-msg.bot {
+  background: var(--surface);
+  color: var(--card-text);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  border: 1px solid var(--border);
+}
+.chat-msg.user {
+  background: #2D3625;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+.chat-msg.typing {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  padding: 12px 16px;
+}
+.typing-dots { display: flex; gap: 4px; align-items: center; }
+.typing-dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--card-text-muted);
+  animation: dot .9s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .15s; }
+.typing-dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes dot { 0%,60%,100% { transform: translateY(0); opacity:.4; } 30% { transform: translateY(-5px); opacity:1; } }
+
+/* Sugestões rápidas */
+.chat-suggestions {
+  padding: 0 14px 10px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+  flex-shrink: 0;
+}
+.chat-sugg {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--card-text-muted);
+  font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 99px;
+  cursor: pointer; transition: all .15s;
+  white-space: nowrap;
+}
+.chat-sugg:hover { background: #2D3625; color: #fff; border-color: #2D3625; }
+
+/* Input */
+.chat-input-row {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; align-items: flex-end;
+  flex-shrink: 0;
+}
+.chat-input-row textarea {
+  flex: 1; border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 9px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+  resize: none; outline: none; line-height: 1.45;
+  background: var(--surface); color: var(--card-text);
+  max-height: 90px; transition: border-color .15s;
+}
+.chat-input-row textarea:focus { border-color: #3A6B4A; }
+.chat-input-row textarea::placeholder { color: var(--card-text-faint); }
+.chat-send-btn {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: #2D3625; color: #fff; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: opacity .15s; font-size: 16px;
+}
+.chat-send-btn:hover { opacity: .85; }
+.chat-send-btn:disabled { opacity: .4; cursor: default; }
+
+/* Dark mode */
+body.dark #ranne-chat-window { background: var(--white); border-color: var(--border); }
+body.dark .chat-msg.bot { background: var(--surface); border-color: var(--border); }
+body.dark .chat-input-row textarea { background: var(--surface); }
+body.dark .chat-sugg { background: var(--surface); border-color: var(--border); }
+
+/* Mobile: acima da navbar */
+@media (max-width: 480px) {
+  #ranne-chat-window {
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    right: 0; left: 0; width: 100%;
+    max-height: calc(85vh - 64px); border-radius: 20px 20px 0 0;
+  }
+  #ranne-chat-btn { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); right: 16px; }
+}
+@media (min-width: 481px) {
+  #ranne-chat-window { bottom: 90px; right: 24px; width: 360px; max-height: 560px; }
+  #ranne-chat-btn { bottom: 28px; right: 28px; }
+}
+</style>
+
+<!-- Botão flutuante -->
+<button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Assistente Ranne">
+  🌿
+  <span class="chat-badge" id="chat-badge"></span>
+</button>
+
+<!-- Janela do chat -->
+<div id="ranne-chat-window">
+  <div class="chat-header">
+    <div class="chat-header-avatar">🌿</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Assistente Ranne</div>
+      <div class="chat-header-status" id="chat-status">Pronto para ajudar</div>
+    </div>
+    <button class="chat-header-close" onclick="ranneChat.toggle()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-suggestions" id="chat-suggestions"></div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Digite sua mensagem…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ranneChat.send();}"
+      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <button class="chat-send-btn" id="chat-send-btn" onclick="ranneChat.send()">➤</button>
+  </div>
+</div>
+
+<script>
 
 /* Mostrar botão após login (chama ranneChat.show() nas funções de entrada) */
 
-/* ══════════════════════════════════════
-   AEP — Avaliação de Risco Psicossocial
-   ════════════════════════════════════ */
+
 const AEP_PERGUNTAS = {
   q1:  { texto: 'Metas e pressão por produtividade',      grupo: 'Organização do Trabalho' },\n  q2:  { texto: 'Jornada excessiva de trabalho',          grupo: 'Organização do Trabalho' },\n  q3:  { texto: 'Trabalho noturno e em turnos',           grupo: 'Organização do Trabalho' },\n  q4:  { texto: 'Falta de autonomia sobre o trabalho',    grupo: 'Organização do Trabalho' },\n  q5:  { texto: 'Relatos de ass\u00e9dio moral ou sexual', grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q6:  { texto: 'Conflitos interpessoais recorrentes',    grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q7:  { texto: 'Falta de suporte da lideran\u00e7a',     grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q8:  { texto: 'Alta rotatividade (turnover)',            grupo: 'Indicadores Organizacionais' },\n  q9:  { texto: 'Absenteísmo elevado',                    grupo: 'Indicadores Organizacionais' },\n  q10: { texto: 'Falta de clareza de pap\u00e9is',        grupo: 'Indicadores Organizacionais' },\n  q11: { texto: 'Sinais de burnout ou esgotamento',       grupo: 'Sa\u00fade Mental' },\n  q12: { texto: 'Aus\u00eancia de programas de bem-estar', grupo: 'Sa\u00fade Mental' },\n};
 
@@ -13246,6 +13547,8 @@ function aepCarregarSalvo() {
 }
 
 
+
+
 /* ══════════════════════════════════════
    Canal de Escuta Permanente
    ════════════════════════════════════ */
@@ -13334,6 +13637,22 @@ function escutaRhExportar() {
    ════════════════════════════════════ */
 
 // ── F4: Data de revisão ──────────────────────────────────────────
+
+
+
+
+function qrToggleDetalhes() {
+  var el = document.getElementById('qr-detalhes-tecnico');
+  var btn = document.querySelector('.qr-detalhes-toggle button');
+  if (!el) return;
+  el.classList.toggle('show');
+  if (btn) btn.textContent = el.classList.contains('show')
+    ? 'Ocultar detalhes técnicos ↑'
+    : 'Ver detalhes técnicos do resultado ↓';
+}
+
+
+
 function nr1IniciarDataRevisao() {
   var input = document.getElementById('nr1-data-revisao');\n  if (!input) return;
   // Tentar carregar data salva
@@ -13405,12 +13724,6 @@ function nr1GerarSecaoRevisao() {
   return '<div style="background:#FEF9EC;border:1.5px solid rgba(201,168,76,.35);border-radius:10px;padding:16px 20px;margin-bottom:20px;">'\n    + '<div style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#92660A;margin-bottom:6px;">\uD83D\uDCC5 Pr\u00f3xima Revis\u00e3o Obrigat\u00f3ria — NR-1</div>'\n    + '<div style="font-size:14pt;font-weight:800;color:#1A2E20">' + dataFmt + '</div>'\n    + '<div style="font-size:9pt;color:rgba(0,0,0,.5);margin-top:4px">Conforme NR-1 (2025), a avalia\u00e7\u00e3o de riscos psicossociais deve ser revisada anualmente ou ap\u00f3s evento cr\u00edtico.</div>'\n    + '</div>';
 }
 
-
-/* Mostrar botão após login (chama ranneChat.show() nas funções de entrada) */
-
-
 </script>
-
-
 </body>
 </html>
