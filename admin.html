@@ -449,8 +449,8 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 </div>
 
 <script>
-const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
-const SUPABASE_KEY = 'sua-anon-key-aqui';
+const SUPABASE_URL = 'https://htpmmkkuwmotdgocqpqf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0cG1ta2t1d21vdGRnb2NxcHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MDQ4NDUsImV4cCI6MjA5Mjk4MDg0NX0.lgn0ze2Qk4p57elTYvUYYjhBgRwWABmDHxHMvJ3w39o';
 const ADMIN_EMAIL  = 'admin@ranne.app'; // altere para o e-mail da cliente
 
 const { createClient } = supabase;
@@ -939,10 +939,7 @@ const ranneChat = (() => {
   let isLoading = false;
 
   const SUGGESTIONS = [
-    '📊 Como analisar churn de empresas?',
-    '💡 Boas práticas de onboarding de clientes',
-    '⚠️ Sinais de risco em uma conta',
-    '📈 Como aumentar engajamento na plataforma?',
+    '📊 Como analisar churn de empresas?',\n    '💡 Boas práticas de onboarding de clientes',\n    '⚠️ Sinais de risco em uma conta',\n    '📈 Como aumentar engajamento na plataforma?',
   ];
 
   const SYSTEM_PROMPT = `Você é o Assistente Ranne para a área administrativa da plataforma Ranne Care.
@@ -965,99 +962,64 @@ Diretrizes:
     const el = document.createElement('div');
     el.className = `chat-msg ${type}`;
     el.textContent = text;
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
+    document.getElementById('chat-messages').appendChild(el);\n    scrollBottom();
     return el;
   }
 
   function renderTyping() {
-    const el = document.createElement('div');
-    el.className = 'chat-msg typing'; el.id = 'chat-typing';
-    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
+    const el = document.createElement('div');\n    el.className = 'chat-msg typing'; el.id = 'chat-typing';\n    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';\n    document.getElementById('chat-messages').appendChild(el);\n    scrollBottom();
   }
 
-  function removeTyping() { document.getElementById('chat-typing')?.remove(); }
-  function scrollBottom() { const el = document.getElementById('chat-messages'); if (el) el.scrollTop = el.scrollHeight; }
-  function setStatus(txt) { const el = document.getElementById('chat-status'); if (el) el.textContent = txt; }
-
+  function removeTyping() { document.getElementById('chat-typing')?.remove(); }\n  function scrollBottom() { const el = document.getElementById('chat-messages'); if (el) el.scrollTop = el.scrollHeight; }\n  function setStatus(txt) { const el = document.getElementById('chat-status'); if (el) el.textContent = txt; }\n
   function renderSuggestions(show = true) {
-    const el = document.getElementById('chat-suggestions');
-    if (!el) return;
+    const el = document.getElementById('chat-suggestions');\n    if (!el) return;
     if (!show) { el.innerHTML = ''; return; }
     el.innerHTML = SUGGESTIONS.map(s =>
       `<button class="chat-sugg" onclick="ranneChat.sendText('${s.replace(/'/g,"\'")}')">${s}</button>`
-    ).join('');
-  }
+    ).join('');\n  }
 
   async function callAI(userMsg) {
-    const msgs = history.map(m => ({ role: m.role, content: m.content }));
-    msgs.push({ role: 'user', content: userMsg });
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: msgs
+    const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
+    msgs.push({ role: 'user', content: userMsg });\n
+    const res = await fetch('/api/chat', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({
+        context: 'admin',\n        messages: msgs
       })
     });
-    if (!res.ok) throw new Error('Erro na API');
-    const data = await res.json();
-    return data.content?.[0]?.text || 'Desculpe, não consegui processar sua mensagem.';
-  }
+    if (!res.ok) throw new Error('Erro na API');\n    const data = await res.json();
+    return data.reply || 'Desculpe, não consegui processar sua mensagem.';\n  }
 
   return {
     toggle() {
       isOpen = !isOpen;
-      const win = document.getElementById('ranne-chat-window');
-      if (isOpen) {
-        win.classList.add('open');
-        if (history.length === 0) {
+      const win = document.getElementById('ranne-chat-window');\n      if (isOpen) {
+        win.classList.add('open');\n        if (history.length === 0) {
           renderMsg('Olá! Sou o Assistente Ranne 🌿
 
-Estou aqui para ajudar na gestão da plataforma — análise de clientes, métricas, configurações e estratégias de Customer Success. Como posso ajudar?', 'bot');
-          renderSuggestions(true);
+Estou aqui para ajudar na gestão da plataforma — análise de clientes, métricas, configurações e estratégias de Customer Success. Como posso ajudar?', 'bot');\n          renderSuggestions(true);
         }
-        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);
-      } else {
-        win.classList.remove('open');
-      }
+        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);\n      } else {
+        win.classList.remove('open');\n      }
     },
 
-    show() { document.getElementById('ranne-chat-btn').style.display = 'flex'; },
-
+    show() { document.getElementById('ranne-chat-btn').style.display = 'flex'; },\n
     async send() {
-      const input = document.getElementById('chat-input');
-      const text = input?.value.trim();
+      const input = document.getElementById('chat-input');\n      const text = input?.value.trim();
       if (!text || isLoading) return;
       this.sendText(text);
-      input.value = ''; input.style.height = 'auto';
-    },
+      input.value = ''; input.style.height = 'auto';\n    },
 
     async sendText(text) {
       if (isLoading) return;
       isLoading = true;
       renderSuggestions(false);
-      renderMsg(text, 'user');
-      history.push({ role: 'user', content: text });
-      document.getElementById('chat-send-btn').disabled = true;
-      setStatus('Digitando…');
-      renderTyping();
+      renderMsg(text, 'user');\n      history.push({ role: 'user', content: text });\n      document.getElementById('chat-send-btn').disabled = true;\n      setStatus('Digitando…');\n      renderTyping();
       try {
         const reply = await callAI(text);
         removeTyping();
-        renderMsg(reply, 'bot');
-        history.push({ role: 'assistant', content: reply });
-        if (history.length > 40) history = history.slice(-40);
-        setStatus('Pronto para ajudar');
-      } catch(e) {
+        renderMsg(reply, 'bot');\n        history.push({ role: 'assistant', content: reply });\n        if (history.length > 40) history = history.slice(-40);
+        setStatus('Pronto para ajudar');\n      } catch(e) {
         removeTyping();
-        renderMsg('Ops, tive um problema de conexão. Tente novamente.', 'bot');
-        setStatus('Pronto para ajudar');
-      } finally {
+        renderMsg('Ops, tive um problema de conexão. Tente novamente.', 'bot');\n        setStatus('Pronto para ajudar');\n      } finally {
         isLoading = false;
         document.getElementById('chat-send-btn').disabled = false;
         renderSuggestions(true);
