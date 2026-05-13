@@ -497,6 +497,14 @@ body.dark #p-feminina > div[style*="background:rgba(61"] strong {
 /* ── fim correção global ── */
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); font-size:14px; -webkit-font-smoothing:antialiased; }
 
+/* ══ Isolamento de áreas — evitar vazamento visual ══ */
+#app-empresa   { position: relative; z-index: 1; }
+#app-colaborador { position: relative; z-index: 1; }
+#app-empresa[style*="display: block"] ~ #app-colaborador,
+#app-empresa[style*="display:block"]  ~ #app-colaborador { display: none !important; }
+#app-colaborador[style*="display: block"] ~ #app-empresa,
+#app-colaborador[style*="display:block"]  ~ #app-empresa { display: none !important; }
+
 /* ══════════ DARK MODE ══════════ */
 body.dark {
   --bg:     #2D3625;
@@ -7722,7 +7730,9 @@ function showEmpresa() {
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'block';
+  document.getElementById('app-empresa').style.visibility = 'visible';
   document.getElementById('app-colaborador').style.display = 'none';
+  document.getElementById('app-colaborador').style.visibility = 'hidden';
   const nome = currentEmpresa?.nome || 'Empresa';
   const ini  = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
   document.getElementById('sb-empresa-nome').textContent = nome;
@@ -7746,7 +7756,9 @@ function showColaborador(nome) {
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'none';
+  document.getElementById('app-empresa').style.visibility = 'hidden';
   document.getElementById('app-colaborador').style.display = 'block';
+  document.getElementById('app-colaborador').style.visibility = 'visible';
   const nameEl = document.getElementById('collab-user-name');
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
@@ -12890,180 +12902,99 @@ const ranneChat = (() => {
   let isLoading = false;
 
   const SUGGESTIONS_RH = [
-    '📊 Como interpretar o ISA?',
-    '🚨 O que fazer com alertas críticos?',
-    '📋 Como criar um plano de ação?',
-    '👥 Como engajar a equipe nos testes?',
-  ];
+    '📊 Como interpretar o ISA?',\n    '🚨 O que fazer com alertas críticos?',\n    '📋 Como criar um plano de ação?',\n    '👥 Como engajar a equipe nos testes?',\n  ];
   const SUGGESTIONS_COLAB = [
-    '😰 Estou me sentindo sobrecarregado',
-    '😴 Tenho dormido mal',
-    '💡 Dicas para reduzir o estresse',
-    '🧘 Como praticar autocuidado?',
-  ];
+    '😰 Estou me sentindo sobrecarregado',\n    '😴 Tenho dormido mal',\n    '💡 Dicas para reduzir o estresse',\n    '🧘 Como praticar autocuidado?',\n  ];
 
   function getSystemPrompt() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    const isRH = role === 'empresa';
-    if (isRH) {
-      return 'Voc\u00ea \u00e9 o Assistente Ranne, especialista em sa\u00fade organizacional e bem-estar no trabalho. '
-        + 'Voc\u00ea apoia gestores e profissionais de RH a interpretar dados de clima organizacional, identificar sinais de burnout e sobrecarga nas equipes, e criar planos de a\u00e7\u00e3o eficazes. '
-        + 'Diretrizes: '
-        + '- Seja objetivo, emp\u00e1tico e profissional. '
-        + '- Use dados e evid\u00eancias quando poss\u00edvel. '
-        + '- Sugira a\u00e7\u00f5es concretas e pr\u00e1ticas. '
-        + '- Lembre sempre que o app \u00e9 uma ferramenta de apoio, n\u00e3o substitui avalia\u00e7\u00e3o cl\u00ednica profissional. '
-        + '- Responda em portugu\u00eas do Brasil. '
-        + '- Seja conciso (m\u00e1x. 3 par\u00e1grafos por resposta). '
-        + '- Nunca fa\u00e7a diagn\u00f3sticos de sa\u00fade mental individuais.';
-    } else {
-      return 'Voc\u00ea \u00e9 o Assistente Ranne, um apoio amig\u00e1vel de sa\u00fade mental e bem-estar no trabalho. '
-        + 'Voc\u00ea ajuda colaboradores a entender seus pr\u00f3prios sentimentos, lidar com estresse, burnout e sobrecarga, e adotar pr\u00e1ticas de autocuidado no dia a dia. '
-        + 'Diretrizes: '
-        + '- Seja caloroso, acolhedor e sem julgamentos. '
-        + '- Use linguagem simples e acess\u00edvel. '
-        + '- Ofere\u00e7a dicas pr\u00e1ticas baseadas em evid\u00eancias. '
-        + '- Valide os sentimentos da pessoa antes de dar sugest\u00f5es. '
-        + '- Lembre sempre que voc\u00ea \u00e9 um apoio, n\u00e3o substitui profissionais de sa\u00fade mental. '
-        + '- Se a pessoa demonstrar sofrimento intenso, encoraje buscar apoio profissional. '
-        + '- Responda em portugu\u00eas do Brasil. '
-        + '- Seja conciso e humano (m\u00e1x. 3 par\u00e1grafos). '
-        + '- Nunca fa\u00e7a diagn\u00f3sticos.';
-    }
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    const isRH = role === 'empresa';\n    if (isRH) {
+      return 'Voc\u00ea \u00e9 o Assistente Ranne, especialista em sa\u00fade organizacional e bem-estar no trabalho. '\n        + 'Voc\u00ea apoia gestores e profissionais de RH a interpretar dados de clima organizacional, identificar sinais de burnout e sobrecarga nas equipes, e criar planos de a\u00e7\u00e3o eficazes. '\n        + 'Diretrizes: '\n        + '- Seja objetivo, emp\u00e1tico e profissional. '\n        + '- Use dados e evid\u00eancias quando poss\u00edvel. '\n        + '- Sugira a\u00e7\u00f5es concretas e pr\u00e1ticas. '\n        + '- Lembre sempre que o app \u00e9 uma ferramenta de apoio, n\u00e3o substitui avalia\u00e7\u00e3o cl\u00ednica profissional. '\n        + '- Responda em portugu\u00eas do Brasil. '\n        + '- Seja conciso (m\u00e1x. 3 par\u00e1grafos por resposta). '\n        + '- Nunca fa\u00e7a diagn\u00f3sticos de sa\u00fade mental individuais.';\n    } else {
+      return 'Voc\u00ea \u00e9 o Assistente Ranne, um apoio amig\u00e1vel de sa\u00fade mental e bem-estar no trabalho. '\n        + 'Voc\u00ea ajuda colaboradores a entender seus pr\u00f3prios sentimentos, lidar com estresse, burnout e sobrecarga, e adotar pr\u00e1ticas de autocuidado no dia a dia. '\n        + 'Diretrizes: '\n        + '- Seja caloroso, acolhedor e sem julgamentos. '\n        + '- Use linguagem simples e acess\u00edvel. '\n        + '- Ofere\u00e7a dicas pr\u00e1ticas baseadas em evid\u00eancias. '\n        + '- Valide os sentimentos da pessoa antes de dar sugest\u00f5es. '\n        + '- Lembre sempre que voc\u00ea \u00e9 um apoio, n\u00e3o substitui profissionais de sa\u00fade mental. '\n        + '- Se a pessoa demonstrar sofrimento intenso, encoraje buscar apoio profissional. '\n        + '- Responda em portugu\u00eas do Brasil. '\n        + '- Seja conciso e humano (m\u00e1x. 3 par\u00e1grafos). '\n        + '- Nunca fa\u00e7a diagn\u00f3sticos.';\n    }
   }
 
   function getSuggestions() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    return role === 'empresa' ? SUGGESTIONS_RH : SUGGESTIONS_COLAB;
-  }
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    return role === 'empresa' ? SUGGESTIONS_RH : SUGGESTIONS_COLAB;\n  }
 
   function getWelcome() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    if (role === 'empresa') {
-      return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para ajudar voc\u00ea a entender os dados da sua equipe e criar estrat\u00e9gias de bem-estar organizacional. Como posso ajudar?';
-    }
-    return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para te apoiar com dicas de bem-estar, lidar com o estresse do dia a dia e cuidar da sua sa\u00fade mental. Como voc\u00ea est\u00e1 se sentindo hoje?';
-  }
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    if (role === 'empresa') {\n      return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para ajudar voc\u00ea a entender os dados da sua equipe e criar estrat\u00e9gias de bem-estar organizacional. Como posso ajudar?';\n    }
+    return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para te apoiar com dicas de bem-estar, lidar com o estresse do dia a dia e cuidar da sua sa\u00fade mental. Como voc\u00ea est\u00e1 se sentindo hoje?';\n  }
 
   function renderMsg(text, type) {
-    const el = document.createElement('div');
-    el.className = 'chat-msg ' + type;
-    el.textContent = text;
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
+    const el = document.createElement('div');\n    el.className = 'chat-msg ' + type;\n    el.textContent = text;
+    document.getElementById('chat-messages').appendChild(el);\n    scrollBottom();
     return el;
   }
 
   function renderTyping() {
-    const el = document.createElement('div');
-    el.className = 'chat-msg typing';
-    el.id = 'chat-typing';
-    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
+    const el = document.createElement('div');\n    el.className = 'chat-msg typing';\n    el.id = 'chat-typing';\n    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';\n    document.getElementById('chat-messages').appendChild(el);\n    scrollBottom();
   }
 
   function removeTyping() {
-    document.getElementById('chat-typing')?.remove();
-  }
+    document.getElementById('chat-typing')?.remove();\n  }
 
   function scrollBottom() {
-    const el = document.getElementById('chat-messages');
-    if (el) el.scrollTop = el.scrollHeight;
+    const el = document.getElementById('chat-messages');\n    if (el) el.scrollTop = el.scrollHeight;
   }
 
   function renderSuggestions(show = true) {
-    const el = document.getElementById('chat-suggestions');
-    if (!el) return;
-    if (!show) { el.innerHTML = ''; return; }
-    el.innerHTML = getSuggestions().map(function(s) {
-      return '<button class="chat-sugg" onclick="ranneChat.sendText(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '</button>';
-    }).join('');
-  }
+    const el = document.getElementById('chat-suggestions');\n    if (!el) return;
+    if (!show) { el.innerHTML = ''; return; }\n    el.innerHTML = getSuggestions().map(function(s) {
+      return '<button class="chat-sugg" onclick="ranneChat.sendText(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '</button>';\n    }).join('');\n  }
 
   function setStatus(txt) {
-    const el = document.getElementById('chat-status');
-    if (el) el.textContent = txt;
+    const el = document.getElementById('chat-status');\n    if (el) el.textContent = txt;
   }
 
   async function callAI(userMsg) {
     const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
-    msgs.push({ role: 'user', content: userMsg });
-
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    const context = role === 'empresa' ? 'empresa' : 'colaborador';
-
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    msgs.push({ role: 'user', content: userMsg });\n
+    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';\n    const context = role === 'empresa' ? 'empresa' : 'colaborador';\n
+    const res = await fetch('/api/chat', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({
         context: context,
         messages: msgs
       })
     });
 
-    if (!res.ok) throw new Error('Erro na API');
-    const data = await res.json();
-    return data.reply || 'Desculpe, não consegui processar sua mensagem.';
-  }
+    if (!res.ok) throw new Error('Erro na API');\n    const data = await res.json();
+    return data.reply || 'Desculpe, não consegui processar sua mensagem.';\n  }
 
   return {
     toggle() {
       isOpen = !isOpen;
-      const win = document.getElementById('ranne-chat-window');
-      const badge = document.getElementById('chat-badge');
-      if (isOpen) {
-        win.classList.add('open');
-        badge.style.display = 'none';
-        if (history.length === 0) {
-          renderMsg(getWelcome(), 'bot');
-          renderSuggestions(true);
+      const win = document.getElementById('ranne-chat-window');\n      const badge = document.getElementById('chat-badge');\n      if (isOpen) {
+        win.classList.add('open');\n        badge.style.display = 'none';\n        if (history.length === 0) {
+          renderMsg(getWelcome(), 'bot');\n          renderSuggestions(true);
         }
-        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);
-      } else {
-        win.classList.remove('open');
-      }
+        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);\n      } else {
+        win.classList.remove('open');\n      }
     },
 
     show() {
-      document.getElementById('ranne-chat-btn').style.display = 'flex';
-    },
+      document.getElementById('ranne-chat-btn').style.display = 'flex';\n    },
 
     async send() {
-      const input = document.getElementById('chat-input');
-      const text = input?.value.trim();
+      const input = document.getElementById('chat-input');\n      const text = input?.value.trim();
       if (!text || isLoading) return;
       this.sendText(text);
-      input.value = '';
-      input.style.height = 'auto';
-    },
+      input.value = '';\n      input.style.height = 'auto';\n    },
 
     async sendText(text) {
       if (isLoading) return;
       isLoading = true;
 
       renderSuggestions(false);
-      renderMsg(text, 'user');
-      history.push({ role: 'user', content: text });
-
-      const sendBtn = document.getElementById('chat-send-btn');
-      if (sendBtn) sendBtn.disabled = true;
-      setStatus('Digitando…');
-      renderTyping();
+      renderMsg(text, 'user');\n      history.push({ role: 'user', content: text });\n
+      const sendBtn = document.getElementById('chat-send-btn');\n      if (sendBtn) sendBtn.disabled = true;
+      setStatus('Digitando…');\n      renderTyping();
 
       try {
         const reply = await callAI(text);
         removeTyping();
-        renderMsg(reply, 'bot');
-        history.push({ role: 'assistant', content: reply });
-        // Manter histórico em no máx 20 trocas
+        renderMsg(reply, 'bot');\n        history.push({ role: 'assistant', content: reply });\n        // Manter histórico em no máx 20 trocas
         if (history.length > 40) history = history.slice(-40);
-        setStatus('Pronto para ajudar');
-      } catch(e) {
+        setStatus('Pronto para ajudar');\n      } catch(e) {
         removeTyping();
-        renderMsg('Ops, tive um problema de conexão. Tente novamente em instantes.', 'bot');
-        setStatus('Pronto para ajudar');
-      } finally {
+        renderMsg('Ops, tive um problema de conexão. Tente novamente em instantes.', 'bot');\n        setStatus('Pronto para ajudar');\n      } finally {
         isLoading = false;
         if (sendBtn) sendBtn.disabled = false;
         renderSuggestions(true);
@@ -13079,19 +13010,7 @@ const ranneChat = (() => {
    AEP — Avaliação de Risco Psicossocial
    ════════════════════════════════════ */
 const AEP_PERGUNTAS = {
-  q1:  { texto: 'Metas e pressão por produtividade',      grupo: 'Organização do Trabalho' },
-  q2:  { texto: 'Jornada excessiva de trabalho',          grupo: 'Organização do Trabalho' },
-  q3:  { texto: 'Trabalho noturno e em turnos',           grupo: 'Organização do Trabalho' },
-  q4:  { texto: 'Falta de autonomia sobre o trabalho',    grupo: 'Organização do Trabalho' },
-  q5:  { texto: 'Relatos de ass\u00e9dio moral ou sexual', grupo: 'Rela\u00e7\u00f5es Interpessoais' },
-  q6:  { texto: 'Conflitos interpessoais recorrentes',    grupo: 'Rela\u00e7\u00f5es Interpessoais' },
-  q7:  { texto: 'Falta de suporte da lideran\u00e7a',     grupo: 'Rela\u00e7\u00f5es Interpessoais' },
-  q8:  { texto: 'Alta rotatividade (turnover)',            grupo: 'Indicadores Organizacionais' },
-  q9:  { texto: 'Absenteísmo elevado',                    grupo: 'Indicadores Organizacionais' },
-  q10: { texto: 'Falta de clareza de pap\u00e9is',        grupo: 'Indicadores Organizacionais' },
-  q11: { texto: 'Sinais de burnout ou esgotamento',       grupo: 'Sa\u00fade Mental' },
-  q12: { texto: 'Aus\u00eancia de programas de bem-estar', grupo: 'Sa\u00fade Mental' },
-};
+  q1:  { texto: 'Metas e pressão por produtividade',      grupo: 'Organização do Trabalho' },\n  q2:  { texto: 'Jornada excessiva de trabalho',          grupo: 'Organização do Trabalho' },\n  q3:  { texto: 'Trabalho noturno e em turnos',           grupo: 'Organização do Trabalho' },\n  q4:  { texto: 'Falta de autonomia sobre o trabalho',    grupo: 'Organização do Trabalho' },\n  q5:  { texto: 'Relatos de ass\u00e9dio moral ou sexual', grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q6:  { texto: 'Conflitos interpessoais recorrentes',    grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q7:  { texto: 'Falta de suporte da lideran\u00e7a',     grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q8:  { texto: 'Alta rotatividade (turnover)',            grupo: 'Indicadores Organizacionais' },\n  q9:  { texto: 'Absenteísmo elevado',                    grupo: 'Indicadores Organizacionais' },\n  q10: { texto: 'Falta de clareza de pap\u00e9is',        grupo: 'Indicadores Organizacionais' },\n  q11: { texto: 'Sinais de burnout ou esgotamento',       grupo: 'Sa\u00fade Mental' },\n  q12: { texto: 'Aus\u00eancia de programas de bem-estar', grupo: 'Sa\u00fade Mental' },\n};
 
 let aepRespostas = {};
 
@@ -13099,46 +13018,33 @@ function aepResponder(qid, resp, btnEl) {
   aepRespostas[qid] = resp;
 
   // Atualizar visual do item
-  const item = document.getElementById('aep-' + qid);
-  if (item) {
-    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');
-    item.classList.add('aep-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));
-  }
+  const item = document.getElementById('aep-' + qid);\n  if (item) {
+    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');\n    item.classList.add('aep-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n  }
 
   // Atualizar botões
-  const btns = item ? item.querySelectorAll('.aep-btn') : [];
-  btns.forEach(function(b) {
-    b.classList.remove('sel-sim', 'sel-nao', 'sel-parc');
-  });
+  const btns = item ? item.querySelectorAll('.aep-btn') : [];\n  btns.forEach(function(b) {
+    b.classList.remove('sel-sim', 'sel-nao', 'sel-parc');\n  });
   if (btnEl) {
-    btnEl.classList.add('sel-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));
-  }
+    btnEl.classList.add('sel-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n  }
 
   // Atualizar progresso
   const total = Object.keys(AEP_PERGUNTAS).length;
   const resp_count = Object.keys(aepRespostas).length;
   const pct = Math.round((resp_count / total) * 100);
 
-  const countEl = document.getElementById('aep-resp-count');
-  const fillEl  = document.getElementById('aep-prog-fill');
-  const btnFin  = document.getElementById('aep-btn-finalizar');
-
+  const countEl = document.getElementById('aep-resp-count');\n  const fillEl  = document.getElementById('aep-prog-fill');\n  const btnFin  = document.getElementById('aep-btn-finalizar');\n
   if (countEl) countEl.textContent = resp_count;
-  if (fillEl)  fillEl.style.width = pct + '%';
-  if (btnFin) {
+  if (fillEl)  fillEl.style.width = pct + '%';\n  if (btnFin) {
     if (resp_count === total) {
       btnFin.disabled = false;
-      btnFin.style.opacity = '1';
-      btnFin.style.cursor = 'pointer';
-    }
+      btnFin.style.opacity = '1';\n      btnFin.style.cursor = 'pointer';\n    }
   }
 }
 
 function aepFinalizar() {
   const total = Object.keys(AEP_PERGUNTAS).length;
   if (Object.keys(aepRespostas).length < total) {
-    toast('Responda todas as perguntas antes de finalizar.');
-    return;
+    toast('Responda todas as perguntas antes de finalizar.');\n    return;
   }
 
   // Calcular riscos
@@ -13149,70 +13055,44 @@ function aepFinalizar() {
   Object.keys(aepRespostas).forEach(function(qid) {
     const r = aepRespostas[qid];
     const p = AEP_PERGUNTAS[qid];
-    if (r === 'sim')  riscos_altos.push(p.texto);
-    if (r === 'parc') riscos_medios.push(p.texto);
-    if (r === 'nao')  riscos_baixos.push(p.texto);
-  });
+    if (r === 'sim')  riscos_altos.push(p.texto);\n    if (r === 'parc') riscos_medios.push(p.texto);\n    if (r === 'nao')  riscos_baixos.push(p.texto);\n  });
 
   // Renderizar lista
-  const lista = document.getElementById('aep-resumo-lista');
-  if (!lista) return;
-  let html = '';
-
+  const lista = document.getElementById('aep-resumo-lista');\n  if (!lista) return;
+  let html = '';\n
   if (riscos_altos.length > 0) {
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#EF4444;margin-bottom:8px;margin-top:4px">Alto Risco (' + riscos_altos.length + ')</div>';
-    riscos_altos.forEach(function(t) {
-      html += '<div class="aep-risco-item aep-risco-alto"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">IDENTIFICADO</span></div>';
-    });
+    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#EF4444;margin-bottom:8px;margin-top:4px">Alto Risco (' + riscos_altos.length + ')</div>';\n    riscos_altos.forEach(function(t) {
+      html += '<div class="aep-risco-item aep-risco-alto"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">IDENTIFICADO</span></div>';\n    });
   }
   if (riscos_medios.length > 0) {
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#F59E0B;margin-bottom:8px;margin-top:12px">Risco Parcial (' + riscos_medios.length + ')</div>';
-    riscos_medios.forEach(function(t) {
-      html += '<div class="aep-risco-item aep-risco-medio"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">PARCIAL</span></div>';
-    });
+    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#F59E0B;margin-bottom:8px;margin-top:12px">Risco Parcial (' + riscos_medios.length + ')</div>';\n    riscos_medios.forEach(function(t) {
+      html += '<div class="aep-risco-item aep-risco-medio"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">PARCIAL</span></div>';\n    });
   }
   if (riscos_baixos.length > 0) {
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#22C55E;margin-bottom:8px;margin-top:12px">Controlado (' + riscos_baixos.length + ')</div>';
-    riscos_baixos.forEach(function(t) {
-      html += '<div class="aep-risco-item aep-risco-baixo"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">OK</span></div>';
-    });
+    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#22C55E;margin-bottom:8px;margin-top:12px">Controlado (' + riscos_baixos.length + ')</div>';\n    riscos_baixos.forEach(function(t) {
+      html += '<div class="aep-risco-item aep-risco-baixo"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">OK</span></div>';\n    });
   }
   lista.innerHTML = html;
 
   // Ações recomendadas
   const acoes = [];
   if (riscos_altos.length > 0) {
-    acoes.push('Iniciar diagnóstico QUSP imediatamente para as áreas de maior risco');
-    acoes.push('Registrar riscos identificados no PGR (Programa de Gerenciamento de Riscos)');
-  }
-  if (aepRespostas.q5 === 'sim' || aepRespostas.q5 === 'parc') {
-    acoes.push('Ativar canal de escuta permanente e revisar política de prevenção de assédio');
-  }
-  if (aepRespostas.q2 === 'sim' || aepRespostas.q2 === 'parc') {
-    acoes.push('Auditar banco de horas e controle de jornada conforme NR-1');
-  }
+    acoes.push('Iniciar diagnóstico QUSP imediatamente para as áreas de maior risco');\n    acoes.push('Registrar riscos identificados no PGR (Programa de Gerenciamento de Riscos)');\n  }
+  if (aepRespostas.q5 === 'sim' || aepRespostas.q5 === 'parc') {\n    acoes.push('Ativar canal de escuta permanente e revisar política de prevenção de assédio');\n  }
+  if (aepRespostas.q2 === 'sim' || aepRespostas.q2 === 'parc') {\n    acoes.push('Auditar banco de horas e controle de jornada conforme NR-1');\n  }
   if (riscos_altos.length === 0 && riscos_medios.length === 0) {
-    acoes.push('Manter monitoramento trimestral e revisar em caso de mudanças organizacionais');
-  }
-  acoes.push('Agendar revisão desta AEP em 12 meses ou após evento crítico');
-
-  const acoesLista = document.getElementById('aep-resumo-acoes-lista');
-  if (acoesLista) {
-    acoesLista.innerHTML = acoes.map(function(a) { return '<li>' + a + '</li>'; }).join('');
-  }
+    acoes.push('Manter monitoramento trimestral e revisar em caso de mudanças organizacionais');\n  }
+  acoes.push('Agendar revisão desta AEP em 12 meses ou após evento crítico');\n
+  const acoesLista = document.getElementById('aep-resumo-acoes-lista');\n  if (acoesLista) {
+    acoesLista.innerHTML = acoes.map(function(a) { return '<li>' + a + '</li>'; }).join('');\n  }
 
   // Mostrar resumo
-  const resumo = document.getElementById('aep-resumo');
-  if (resumo) {
-    resumo.classList.add('show');
-    resumo.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  const resumo = document.getElementById('aep-resumo');\n  if (resumo) {
+    resumo.classList.add('show');\n    resumo.scrollIntoView({ behavior: 'smooth', block: 'start' });\n  }
 
   // Badge no sidebar
-  const badge = document.getElementById('badge-aep');
-  if (badge && riscos_altos.length > 0) {
-    badge.style.display = 'inline';
-    badge.textContent = riscos_altos.length;
+  const badge = document.getElementById('badge-aep');\n  if (badge && riscos_altos.length > 0) {
+    badge.style.display = 'inline';\n    badge.textContent = riscos_altos.length;
   }
 
   // Salvar no localStorage
@@ -13223,97 +13103,52 @@ function aepFinalizar() {
     riscos_medios: riscos_medios,
     riscos_baixos: riscos_baixos,
   };
-  try { localStorage.setItem('ranne_aep', JSON.stringify(dadosAEP)); } catch(e) {}
-
-  toast('\u2705 AEP salva! ' + riscos_altos.length + ' risco(s) alto(s) identificado(s).');
-}
+  try { localStorage.setItem('ranne_aep', JSON.stringify(dadosAEP)); } catch(e) {}\n
+  toast('\u2705 AEP salva! ' + riscos_altos.length + ' risco(s) alto(s) identificado(s).');\n}
 
 function aepNovo() {
   aepRespostas = {};
   // Limpar visual
   for (let i = 1; i <= 12; i++) {
-    const item = document.getElementById('aep-q' + i);
-    if (item) {
-      item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');
-      item.querySelectorAll('.aep-btn').forEach(function(b) {
-        b.classList.remove('sel-sim', 'sel-nao', 'sel-parc');
-      });
+    const item = document.getElementById('aep-q' + i);\n    if (item) {
+      item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');\n      item.querySelectorAll('.aep-btn').forEach(function(b) {\n        b.classList.remove('sel-sim', 'sel-nao', 'sel-parc');\n      });
     }
   }
-  const countEl = document.getElementById('aep-resp-count');
-  const fillEl  = document.getElementById('aep-prog-fill');
-  const btnFin  = document.getElementById('aep-btn-finalizar');
-  const resumo  = document.getElementById('aep-resumo');
-  if (countEl) countEl.textContent = '0';
-  if (fillEl)  fillEl.style.width = '0%';
-  if (btnFin)  { btnFin.disabled = true; btnFin.style.opacity = '.4'; btnFin.style.cursor = 'not-allowed'; }
-  if (resumo)  resumo.classList.remove('show');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+  const countEl = document.getElementById('aep-resp-count');\n  const fillEl  = document.getElementById('aep-prog-fill');\n  const btnFin  = document.getElementById('aep-btn-finalizar');\n  const resumo  = document.getElementById('aep-resumo');\n  if (countEl) countEl.textContent = '0';\n  if (fillEl)  fillEl.style.width = '0%';\n  if (btnFin)  { btnFin.disabled = true; btnFin.style.opacity = '.4'; btnFin.style.cursor = 'not-allowed'; }\n  if (resumo)  resumo.classList.remove('show');\n  window.scrollTo({ top: 0, behavior: 'smooth' });\n}
 
 function aepSalvarPDF() {
-  const dados = JSON.parse(localStorage.getItem('ranne_aep') || '{}');
-  if (!dados.data) { toast('Nenhuma AEP salva. Finalize a avaliação primeiro.'); return; }
-
-  const dataFormatada = new Date(dados.data).toLocaleDateString('pt-BR');
-  const empresa = (typeof currentEmpresa !== 'undefined' && currentEmpresa) ? currentEmpresa.nome : 'Empresa';
-
-  const linhas_altos  = (dados.riscos_altos  || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#EF4444;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">ALTO</span></td></tr>'; }).join('');
-  const linhas_medios = (dados.riscos_medios || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#F59E0B;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">PARCIAL</span></td></tr>'; }).join('');
-  const linhas_baixos = (dados.riscos_baixos || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#22C55E;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">OK</span></td></tr>'; }).join('');
-
-  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>AEP — ' + empresa + '</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1a1a1a}h1{color:#2D5E4A;font-size:20px}h2{color:#2D5E4A;font-size:14px;margin-top:28px}table{width:100%;border-collapse:collapse;margin-top:12px}th{background:#2D5E4A;color:#fff;padding:10px 12px;text-align:left;font-size:12px}td{font-size:13px}.rodape{margin-top:40px;padding-top:16px;border-top:2px solid #2D5E4A;font-size:11px;color:#666}</style></head><body>'
-    + '<h1>AEP — Avaliação de Risco Psicossocial</h1>'
-    + '<p style="font-size:13px;color:#666"><strong>Empresa:</strong> ' + empresa + ' &nbsp;|&nbsp; <strong>Data:</strong> ' + dataFormatada + ' &nbsp;|&nbsp; <strong>Referência:</strong> NR-1 (2025)</p>'
-    + '<h2>Riscos Identificados</h2>'
-    + '<table><thead><tr><th>Fator de Risco</th><th style="width:120px;text-align:center">Classificação</th></tr></thead><tbody>' + linhas_altos + linhas_medios + linhas_baixos + '</tbody></table>'
-    + '<div class="rodape">Gerado por Ranne Care &middot; Documento para composição do PGR/NR-1</div>'
-    + '</body></html>';
-
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const win  = window.open(url, '_blank');
-  if (win) { win.onload = function() { setTimeout(function() { win.print(); }, 400); }; }
+  const dados = JSON.parse(localStorage.getItem('ranne_aep') || '{}');\n  if (!dados.data) { toast('Nenhuma AEP salva. Finalize a avaliação primeiro.'); return; }\n
+  const dataFormatada = new Date(dados.data).toLocaleDateString('pt-BR');\n  const empresa = (typeof currentEmpresa !== 'undefined' && currentEmpresa) ? currentEmpresa.nome : 'Empresa';\n
+  const linhas_altos  = (dados.riscos_altos  || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#EF4444;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">ALTO</span></td></tr>'; }).join('');\n  const linhas_medios = (dados.riscos_medios || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#F59E0B;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">PARCIAL</span></td></tr>'; }).join('');\n  const linhas_baixos = (dados.riscos_baixos || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#22C55E;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">OK</span></td></tr>'; }).join('');\n
+  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>AEP — ' + empresa + '</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1a1a1a}h1{color:#2D5E4A;font-size:20px}h2{color:#2D5E4A;font-size:14px;margin-top:28px}table{width:100%;border-collapse:collapse;margin-top:12px}th{background:#2D5E4A;color:#fff;padding:10px 12px;text-align:left;font-size:12px}td{font-size:13px}.rodape{margin-top:40px;padding-top:16px;border-top:2px solid #2D5E4A;font-size:11px;color:#666}</style></head><body>'\n    + '<h1>AEP — Avaliação de Risco Psicossocial</h1>'\n    + '<p style="font-size:13px;color:#666"><strong>Empresa:</strong> ' + empresa + ' &nbsp;|&nbsp; <strong>Data:</strong> ' + dataFormatada + ' &nbsp;|&nbsp; <strong>Referência:</strong> NR-1 (2025)</p>'\n    + '<h2>Riscos Identificados</h2>'\n    + '<table><thead><tr><th>Fator de Risco</th><th style="width:120px;text-align:center">Classificação</th></tr></thead><tbody>' + linhas_altos + linhas_medios + linhas_baixos + '</tbody></table>'\n    + '<div class="rodape">Gerado por Ranne Care &middot; Documento para composição do PGR/NR-1</div>'\n    + '</body></html>';\n
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });\n  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url, '_blank');\n  if (win) { win.onload = function() { setTimeout(function() { win.print(); }, 400); }; }
   else {
-    const a = document.createElement('a');
-    a.href = url; a.download = 'AEP-' + empresa + '-' + dataFormatada + '.html';
-    a.click();
+    const a = document.createElement('a');\n    a.href = url; a.download = 'AEP-' + empresa + '-' + dataFormatada + '.html';\n    a.click();
   }
 }
 
 // Carregar AEP salva ao abrir a página
 function aepCarregarSalvo() {
   try {
-    const dados = JSON.parse(localStorage.getItem('ranne_aep') || '{}');
-    if (!dados.respostas) return;
+    const dados = JSON.parse(localStorage.getItem('ranne_aep') || '{}');\n    if (!dados.respostas) return;
     Object.keys(dados.respostas).forEach(function(qid) {
       const resp = dados.respostas[qid];
       aepRespostas[qid] = resp;
-      const item = document.getElementById('aep-' + qid);
-      if (!item) return;
-      item.classList.add('aep-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));
-      const btns = item.querySelectorAll('.aep-btn');
-      btns.forEach(function(b) {
+      const item = document.getElementById('aep-' + qid);\n      if (!item) return;
+      item.classList.add('aep-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n      const btns = item.querySelectorAll('.aep-btn');\n      btns.forEach(function(b) {
         const label = b.textContent.trim().toLowerCase();
-        if ((resp === 'sim' && label === 'sim') || (resp === 'nao' && label === 'não') || (resp === 'parc' && label === 'parcial')) {
-          b.classList.add('sel-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));
-        }
+        if ((resp === 'sim' && label === 'sim') || (resp === 'nao' && label === 'não') || (resp === 'parc' && label === 'parcial')) {\n          b.classList.add('sel-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n        }
       });
     });
     // Atualizar progresso
     const total = Object.keys(AEP_PERGUNTAS).length;
     const count = Object.keys(aepRespostas).length;
     const pct   = Math.round((count / total) * 100);
-    const countEl = document.getElementById('aep-resp-count');
-    const fillEl  = document.getElementById('aep-prog-fill');
-    const btnFin  = document.getElementById('aep-btn-finalizar');
-    if (countEl) countEl.textContent = count;
-    if (fillEl)  fillEl.style.width = pct + '%';
-    if (btnFin && count === total) {
+    const countEl = document.getElementById('aep-resp-count');\n    const fillEl  = document.getElementById('aep-prog-fill');\n    const btnFin  = document.getElementById('aep-btn-finalizar');\n    if (countEl) countEl.textContent = count;
+    if (fillEl)  fillEl.style.width = pct + '%';\n    if (btnFin && count === total) {
       btnFin.disabled = false;
-      btnFin.style.opacity = '1';
-      btnFin.style.cursor = 'pointer';
-    }
+      btnFin.style.opacity = '1';\n      btnFin.style.cursor = 'pointer';\n    }
   } catch(e) {}
 }
 
@@ -13323,12 +13158,8 @@ function aepCarregarSalvo() {
    ════════════════════════════════════ */
 
 function escutaEnviar() {
-  var categoria = document.getElementById('escuta-categoria').value;
-  var texto     = (document.getElementById('escuta-texto').value || '').trim();
-
-  if (!categoria) { toast('Selecione uma categoria.'); return; }
-  if (texto.length < 20) { toast('Descreva a situa\u00e7\u00e3o com pelo menos 20 caracteres.'); return; }
-
+  var categoria = document.getElementById('escuta-categoria').value;\n  var texto     = (document.getElementById('escuta-texto').value || '').trim();\n
+  if (!categoria) { toast('Selecione uma categoria.'); return; }\n  if (texto.length < 20) { toast('Descreva a situa\u00e7\u00e3o com pelo menos 20 caracteres.'); return; }\n
   var relato = {
     id:        Date.now(),
     categoria: categoria,
@@ -13338,131 +13169,70 @@ function escutaEnviar() {
   };
 
   try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');
-    lista.unshift(relato);
-    localStorage.setItem('ranne_escuta', JSON.stringify(lista));
-  } catch(e) {}
+    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    lista.unshift(relato);
+    localStorage.setItem('ranne_escuta', JSON.stringify(lista));\n  } catch(e) {}
 
   // Mostrar confirmação
-  var form = document.getElementById('escuta-form-wrap');
-  var conf = document.getElementById('escuta-confirmacao');
-  if (form) form.style.display = 'none';
-  if (conf) conf.classList.add('show');
-
+  var form = document.getElementById('escuta-form-wrap');\n  var conf = document.getElementById('escuta-confirmacao');\n  if (form) form.style.display = 'none';\n  if (conf) conf.classList.add('show');\n
   // Limpar campos
-  document.getElementById('escuta-categoria').value = '';
-  document.getElementById('escuta-texto').value     = '';
-}
+  document.getElementById('escuta-categoria').value = '';\n  document.getElementById('escuta-texto').value     = '';\n}
 
 function escutaNovo() {
-  var form = document.getElementById('escuta-form-wrap');
-  var conf = document.getElementById('escuta-confirmacao');
-  if (form) form.style.display = 'block';
-  if (conf) conf.classList.remove('show');
-}
+  var form = document.getElementById('escuta-form-wrap');\n  var conf = document.getElementById('escuta-confirmacao');\n  if (form) form.style.display = 'block';\n  if (conf) conf.classList.remove('show');\n}
 
 /* ── Lado RH ── */
-var escutaFiltroAtivo = 'todos';
-
+var escutaFiltroAtivo = 'todos';\n
 function escutaCarregarRH() {
   try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');
-    var agora = new Date();
+    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    var agora = new Date();
     var set7  = new Date(agora - 7 * 24 * 60 * 60 * 1000);
 
     // Métricas
     var novos   = lista.filter(function(r) { return new Date(r.data) >= set7; }).length;
-    var assedio = lista.filter(function(r) { return r.categoria === 'assedio'; }).length;
-
-    var totalEl   = document.getElementById('escuta-total');
-    var novosEl   = document.getElementById('escuta-novos');
-    var assedioEl = document.getElementById('escuta-assedio');
-    if (totalEl)   totalEl.textContent   = lista.length;
+    var assedio = lista.filter(function(r) { return r.categoria === 'assedio'; }).length;\n
+    var totalEl   = document.getElementById('escuta-total');\n    var novosEl   = document.getElementById('escuta-novos');\n    var assedioEl = document.getElementById('escuta-assedio');\n    if (totalEl)   totalEl.textContent   = lista.length;
     if (novosEl)   novosEl.textContent   = novos;
     if (assedioEl) assedioEl.textContent = assedio;
 
     // Badge sidebar
-    var badge = document.getElementById('badge-escuta');
-    if (badge) {
-      if (novos > 0) { badge.style.display = 'inline'; badge.textContent = novos; }
-      else           { badge.style.display = 'none'; }
-    }
+    var badge = document.getElementById('badge-escuta');\n    if (badge) {
+      if (novos > 0) { badge.style.display = 'inline'; badge.textContent = novos; }\n      else           { badge.style.display = 'none'; }\n    }
 
     escutaRenderLista(lista);
   } catch(e) {}
 }
 
 function escutaRenderLista(lista) {
-  var container = document.getElementById('escuta-rh-lista');
-  if (!container) return;
+  var container = document.getElementById('escuta-rh-lista');\n  if (!container) return;
 
-  var filtrada = escutaFiltroAtivo === 'todos'
-    ? lista
+  var filtrada = escutaFiltroAtivo === 'todos'\n    ? lista
     : lista.filter(function(r) { return r.categoria === escutaFiltroAtivo; });
 
   if (filtrada.length === 0) {
-    container.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato' + (escutaFiltroAtivo !== 'todos' ? ' nesta categoria' : '') + '.<br>Os relatos aparecer\u00e3o aqui.</p></div>';
-    return;
+    container.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato' + (escutaFiltroAtivo !== 'todos' ? ' nesta categoria' : '') + '.<br>Os relatos aparecer\u00e3o aqui.</p></div>';\n    return;
   }
 
-  var catLabels = { assedio:'Ass\u00e9dio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };
-  var catClasses = { assedio:'cat-assedio', sobrecarga:'cat-sobrecarga', conflito:'cat-conflito', outro:'cat-outro' };
-
+  var catLabels = { assedio:'Ass\u00e9dio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };\n  var catClasses = { assedio:'cat-assedio', sobrecarga:'cat-sobrecarga', conflito:'cat-conflito', outro:'cat-outro' };\n
   container.innerHTML = filtrada.map(function(r) {
-    var data = new Date(r.data).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
-    var catLabel = catLabels[r.categoria] || r.categoria;
-    var catClass = catClasses[r.categoria] || 'cat-outro';
-    return '<div class="escuta-relato-card">'
-      + '<div class="escuta-relato-header">'
-      + '<span class="escuta-relato-cat ' + catClass + '">' + catLabel + '</span>'
-      + '<span class="escuta-relato-data">' + data + '</span>'
-      + '</div>'
-      + '<div class="escuta-relato-texto">' + r.texto.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'
-      + '<div class="escuta-relato-anonimo">🔒 Relato an\u00f4nimo · ID #' + String(r.id).slice(-6) + '</div>'
-      + '</div>';
-  }).join('');
-}
+    var data = new Date(r.data).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });\n    var catLabel = catLabels[r.categoria] || r.categoria;
+    var catClass = catClasses[r.categoria] || 'cat-outro';\n    return '<div class="escuta-relato-card">'\n      + '<div class="escuta-relato-header">'\n      + '<span class="escuta-relato-cat ' + catClass + '">' + catLabel + '</span>'\n      + '<span class="escuta-relato-data">' + data + '</span>'\n      + '</div>'\n      + '<div class="escuta-relato-texto">' + r.texto.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'\n      + '<div class="escuta-relato-anonimo">🔒 Relato an\u00f4nimo · ID #' + String(r.id).slice(-6) + '</div>'\n      + '</div>';\n  }).join('');\n}
 
 function escutaFiltrar(cat, btnEl) {
   escutaFiltroAtivo = cat;
-  document.querySelectorAll('.escuta-rh-chip').forEach(function(b) { b.classList.remove('active'); });
-  if (btnEl) btnEl.classList.add('active');
-  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');
-    escutaRenderLista(lista);
+  document.querySelectorAll('.escuta-rh-chip').forEach(function(b) { b.classList.remove('active'); });\n  if (btnEl) btnEl.classList.add('active');\n  try {
+    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    escutaRenderLista(lista);
   } catch(e) {}
 }
 
 function escutaRhExportar() {
   try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');
-    if (lista.length === 0) { toast('Nenhum relato para exportar.'); return; }
-
-    var catLabels = { assedio:'Ass\u00e9dio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };
-    var linhas = lista.map(function(r) {
-      var data = new Date(r.data).toLocaleDateString('pt-BR');
-      return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + data + '</td>'
-        + '<td style="padding:8px 12px;border-bottom:1px solid #eee">' + (catLabels[r.categoria]||r.categoria) + '</td>'
-        + '<td style="padding:8px 12px;border-bottom:1px solid #eee">' + r.texto.replace(/</g,'&lt;') + '</td></tr>';
-    }).join('');
-
-    var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Canal de Escuta</title>'
-      + '<style>body{font-family:Arial,sans-serif;padding:40px}h1{color:#2D5E4A}table{width:100%;border-collapse:collapse}th{background:#2D5E4A;color:#fff;padding:10px 12px;text-align:left;font-size:12px}td{font-size:13px}.rodape{margin-top:32px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:12px}</style>'
-      + '</head><body>'
-      + '<h1>Canal de Escuta — Relatos An\u00f4nimos</h1>'
-      + '<p style="font-size:12px;color:#666">Exportado em ' + new Date().toLocaleDateString('pt-BR') + ' &middot; ' + lista.length + ' relato(s)</p>'
-      + '<table><thead><tr><th>Data</th><th>Categoria</th><th>Relato</th></tr></thead><tbody>' + linhas + '</tbody></table>'
-      + '<div class="rodape">Documento confidencial &middot; Ranne Care &middot; Somente para uso interno do RH</div>'
-      + '</body></html>';
-
-    var blob = new Blob([html], { type:'text/html;charset=utf-8' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'canal-escuta-' + new Date().toISOString().slice(0,10) + '.html';
-    a.click();
-    toast('\u2705 Exportado com sucesso!');
-  } catch(e) { toast('Erro ao exportar.'); }
-}
+    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    if (lista.length === 0) { toast('Nenhum relato para exportar.'); return; }\n
+    var catLabels = { assedio:'Ass\u00e9dio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };\n    var linhas = lista.map(function(r) {
+      var data = new Date(r.data).toLocaleDateString('pt-BR');\n      return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + data + '</td>'\n        + '<td style="padding:8px 12px;border-bottom:1px solid #eee">' + (catLabels[r.categoria]||r.categoria) + '</td>'\n        + '<td style="padding:8px 12px;border-bottom:1px solid #eee">' + r.texto.replace(/</g,'&lt;') + '</td></tr>';\n    }).join('');\n
+    var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Canal de Escuta</title>'\n      + '<style>body{font-family:Arial,sans-serif;padding:40px}h1{color:#2D5E4A}table{width:100%;border-collapse:collapse}th{background:#2D5E4A;color:#fff;padding:10px 12px;text-align:left;font-size:12px}td{font-size:13px}.rodape{margin-top:32px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:12px}</style>'\n      + '</head><body>'\n      + '<h1>Canal de Escuta — Relatos An\u00f4nimos</h1>'\n      + '<p style="font-size:12px;color:#666">Exportado em ' + new Date().toLocaleDateString('pt-BR') + ' &middot; ' + lista.length + ' relato(s)</p>'\n      + '<table><thead><tr><th>Data</th><th>Categoria</th><th>Relato</th></tr></thead><tbody>' + linhas + '</tbody></table>'\n      + '<div class="rodape">Documento confidencial &middot; Ranne Care &middot; Somente para uso interno do RH</div>'\n      + '</body></html>';\n
+    var blob = new Blob([html], { type:'text/html;charset=utf-8' });\n    var a = document.createElement('a');\n    a.href = URL.createObjectURL(blob);
+    a.download = 'canal-escuta-' + new Date().toISOString().slice(0,10) + '.html';\n    a.click();
+    toast('\u2705 Exportado com sucesso!');\n  } catch(e) { toast('Erro ao exportar.'); }\n}
 
 
 /* ══════════════════════════════════════
@@ -13472,132 +13242,74 @@ function escutaRhExportar() {
 
 // ── F4: Data de revisão ──────────────────────────────────────────
 function nr1IniciarDataRevisao() {
-  var input = document.getElementById('nr1-data-revisao');
-  if (!input) return;
+  var input = document.getElementById('nr1-data-revisao');\n  if (!input) return;
   // Tentar carregar data salva
-  var salvo = '';
-  try { salvo = localStorage.getItem('ranne_nr1_revisao') || ''; } catch(e) {}
-  if (salvo) {
+  var salvo = '';\n  try { salvo = localStorage.getItem('ranne_nr1_revisao') || ''; } catch(e) {}\n  if (salvo) {
     input.value = salvo;
   } else {
     // Preencher com +12 meses
     var d = new Date();
     d.setFullYear(d.getFullYear() + 1);
     input.value = d.toISOString().slice(0,10);
-    try { localStorage.setItem('ranne_nr1_revisao', input.value); } catch(e) {}
-  }
+    try { localStorage.setItem('ranne_nr1_revisao', input.value); } catch(e) {}\n  }
 }
 
 function nr1SalvarRevisao() {
-  var input = document.getElementById('nr1-data-revisao');
-  if (!input) return;
-  try { localStorage.setItem('ranne_nr1_revisao', input.value); } catch(e) {}
-}
+  var input = document.getElementById('nr1-data-revisao');\n  if (!input) return;
+  try { localStorage.setItem('ranne_nr1_revisao', input.value); } catch(e) {}\n}
 
 // ── F5: Log de Capacitações ──────────────────────────────────────
 function capRegistrar() {
-  var data         = document.getElementById('cap-data').value;
-  var tema         = (document.getElementById('cap-tema').value || '').trim();
-  var responsavel  = (document.getElementById('cap-responsavel').value || '').trim();
-  var participantes= parseInt(document.getElementById('cap-participantes').value) || 0;
-  var formato      = document.getElementById('cap-formato').value;
-
-  if (!data)         { toast('Informe a data da capacita\u00e7\u00e3o.'); return; }
-  if (!tema)         { toast('Informe o tema do treinamento.'); return; }
-  if (!responsavel)  { toast('Informe o nome do respons\u00e1vel.'); return; }
-  if (participantes < 1) { toast('Informe o n\u00famero de participantes.'); return; }
-
+  var data         = document.getElementById('cap-data').value;\n  var tema         = (document.getElementById('cap-tema').value || '').trim();\n  var responsavel  = (document.getElementById('cap-responsavel').value || '').trim();\n  var participantes= parseInt(document.getElementById('cap-participantes').value) || 0;\n  var formato      = document.getElementById('cap-formato').value;\n
+  if (!data)         { toast('Informe a data da capacita\u00e7\u00e3o.'); return; }\n  if (!tema)         { toast('Informe o tema do treinamento.'); return; }\n  if (!responsavel)  { toast('Informe o nome do respons\u00e1vel.'); return; }\n  if (participantes < 1) { toast('Informe o n\u00famero de participantes.'); return; }\n
   var registro = { id: Date.now(), data, tema, responsavel, participantes, formato };
 
   try {
-    var lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]');
-    lista.unshift(registro);
-    localStorage.setItem('ranne_capacitacoes', JSON.stringify(lista));
-  } catch(e) {}
+    var lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]');\n    lista.unshift(registro);
+    localStorage.setItem('ranne_capacitacoes', JSON.stringify(lista));\n  } catch(e) {}
 
   // Limpar campos
-  document.getElementById('cap-data').value          = '';
-  document.getElementById('cap-tema').value          = '';
-  document.getElementById('cap-responsavel').value   = '';
-  document.getElementById('cap-participantes').value = '';
-
+  document.getElementById('cap-data').value          = '';\n  document.getElementById('cap-tema').value          = '';\n  document.getElementById('cap-responsavel').value   = '';\n  document.getElementById('cap-participantes').value = '';\n
   capRenderLista();
-  toast('\u2705 Capacita\u00e7\u00e3o registrada com sucesso!');
-}
+  toast('\u2705 Capacita\u00e7\u00e3o registrada com sucesso!');\n}
 
 function capRenderLista() {
-  var container = document.getElementById('cap-lista');
-  var badge     = document.getElementById('cap-total-badge');
-  if (!container) return;
+  var container = document.getElementById('cap-lista');\n  var badge     = document.getElementById('cap-total-badge');\n  if (!container) return;
 
   var lista = [];
-  try { lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]'); } catch(e) {}
-
-  if (badge) badge.textContent = lista.length + ' registro' + (lista.length !== 1 ? 's' : '');
-
+  try { lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]'); } catch(e) {}\n
+  if (badge) badge.textContent = lista.length + ' registro' + (lista.length !== 1 ? 's' : '');\n
   if (lista.length === 0) {
-    container.innerHTML = '<div class="cap-vazio">Nenhuma capacita\u00e7\u00e3o registrada ainda.</div>';
-    return;
+    container.innerHTML = '<div class="cap-vazio">Nenhuma capacita\u00e7\u00e3o registrada ainda.</div>';\n    return;
   }
 
   container.innerHTML = lista.map(function(r) {
-    var dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
-    return '<div class="cap-item">'
-      + '<div class="cap-item-data">' + dataFmt + '</div>'
-      + '<div class="cap-item-body">'
-      + '<strong>' + r.tema + '</strong>'
-      + '<span>' + r.responsavel + ' &middot; ' + r.formato + ' &middot; ' + r.participantes + ' participante' + (r.participantes !== 1 ? 's' : '') + '</span>'
-      + '</div>'
-      + '<button class="cap-item-del" onclick="capExcluir(' + r.id + ')" title="Remover">&#x2715;</button>'
-      + '</div>';
-  }).join('');
-}
+    var dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });\n    return '<div class="cap-item">'\n      + '<div class="cap-item-data">' + dataFmt + '</div>'\n      + '<div class="cap-item-body">'\n      + '<strong>' + r.tema + '</strong>'\n      + '<span>' + r.responsavel + ' &middot; ' + r.formato + ' &middot; ' + r.participantes + ' participante' + (r.participantes !== 1 ? 's' : '') + '</span>'\n      + '</div>'\n      + '<button class="cap-item-del" onclick="capExcluir(' + r.id + ')" title="Remover">&#x2715;</button>'\n      + '</div>';\n  }).join('');\n}
 
 function capExcluir(id) {
   try {
-    var lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]');
-    lista = lista.filter(function(r) { return r.id !== id; });
-    localStorage.setItem('ranne_capacitacoes', JSON.stringify(lista));
-  } catch(e) {}
+    var lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]');\n    lista = lista.filter(function(r) { return r.id !== id; });
+    localStorage.setItem('ranne_capacitacoes', JSON.stringify(lista));\n  } catch(e) {}
   capRenderLista();
-  toast('Registro removido.');
-}
+  toast('Registro removido.');\n}
 
 function capGerarSecaoPDF() {
   var lista = [];
-  try { lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]'); } catch(e) {}
-  if (lista.length === 0) return '';
-
+  try { lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]'); } catch(e) {}\n  if (lista.length === 0) return '';\n
   var linhas = lista.map(function(r) {
-    var dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR');
-    return '<tr><td>' + dataFmt + '</td><td>' + r.tema + '</td><td>' + r.responsavel + '</td><td style="text-align:center">' + r.participantes + '</td><td>' + r.formato + '</td></tr>';
-  }).join('');
-
-  return '<h2>Evidências de Capacita\u00e7\u00e3o</h2>'
-    + '<p style="font-size:10pt;color:rgba(0,0,0,.55);margin-bottom:12px">Treinamentos realizados em sa\u00fade mental e bem-estar organizacional conforme exig\u00eancia NR-1 (2025).</p>'
-    + '<table class="dim-table"><thead><tr>'
-    + '<th>Data</th><th>Tema</th><th>Respons\u00e1vel</th><th style="text-align:center">Partic.</th><th>Formato</th>'
-    + '</tr></thead><tbody>' + linhas + '</tbody></table>';
-}
+    var dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR');\n    return '<tr><td>' + dataFmt + '</td><td>' + r.tema + '</td><td>' + r.responsavel + '</td><td style="text-align:center">' + r.participantes + '</td><td>' + r.formato + '</td></tr>';\n  }).join('');\n
+  return '<h2>Evidências de Capacita\u00e7\u00e3o</h2>'\n    + '<p style="font-size:10pt;color:rgba(0,0,0,.55);margin-bottom:12px">Treinamentos realizados em sa\u00fade mental e bem-estar organizacional conforme exig\u00eancia NR-1 (2025).</p>'\n    + '<table class="dim-table"><thead><tr>'\n    + '<th>Data</th><th>Tema</th><th>Respons\u00e1vel</th><th style="text-align:center">Partic.</th><th>Formato</th>'\n    + '</tr></thead><tbody>' + linhas + '</tbody></table>';\n}
 
 function nr1GerarSecaoRevisao() {
-  var dataRevisao = '';
-  try { dataRevisao = localStorage.getItem('ranne_nr1_revisao') || ''; } catch(e) {}
-  var inputEl = document.getElementById('nr1-data-revisao');
-  if (inputEl && inputEl.value) dataRevisao = inputEl.value;
+  var dataRevisao = '';\n  try { dataRevisao = localStorage.getItem('ranne_nr1_revisao') || ''; } catch(e) {}\n  var inputEl = document.getElementById('nr1-data-revisao');\n  if (inputEl && inputEl.value) dataRevisao = inputEl.value;
 
   if (!dataRevisao) {
     var d = new Date(); d.setFullYear(d.getFullYear() + 1);
     dataRevisao = d.toISOString().slice(0,10);
   }
 
-  var dataFmt = new Date(dataRevisao + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
-
-  return '<div style="background:#FEF9EC;border:1.5px solid rgba(201,168,76,.35);border-radius:10px;padding:16px 20px;margin-bottom:20px;">'
-    + '<div style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#92660A;margin-bottom:6px;">\uD83D\uDCC5 Pr\u00f3xima Revis\u00e3o Obrigat\u00f3ria — NR-1</div>'
-    + '<div style="font-size:14pt;font-weight:800;color:#1A2E20">' + dataFmt + '</div>'
-    + '<div style="font-size:9pt;color:rgba(0,0,0,.5);margin-top:4px">Conforme NR-1 (2025), a avalia\u00e7\u00e3o de riscos psicossociais deve ser revisada anualmente ou ap\u00f3s evento cr\u00edtico.</div>'
-    + '</div>';
+  var dataFmt = new Date(dataRevisao + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });\n
+  return '<div style="background:#FEF9EC;border:1.5px solid rgba(201,168,76,.35);border-radius:10px;padding:16px 20px;margin-bottom:20px;">'\n    + '<div style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#92660A;margin-bottom:6px;">\uD83D\uDCC5 Pr\u00f3xima Revis\u00e3o Obrigat\u00f3ria — NR-1</div>'\n    + '<div style="font-size:14pt;font-weight:800;color:#1A2E20">' + dataFmt + '</div>'\n    + '<div style="font-size:9pt;color:rgba(0,0,0,.5);margin-top:4px">Conforme NR-1 (2025), a avalia\u00e7\u00e3o de riscos psicossociais deve ser revisada anualmente ou ap\u00f3s evento cr\u00edtico.</div>'\n    + '</div>';
 }
 
 
