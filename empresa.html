@@ -2819,20 +2819,61 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 
 /* ══════ NAV INFERIOR ══════ */
 .col-nav {
-  position:fixed; bottom:0; left:0; right:0; z-index:50;
-  background:rgba(242,237,230,.95); backdrop-filter:blur(16px);
-  border-top:1px solid var(--border);
-  padding:10px 0 calc(10px + var(--safe-bottom));
-  display:flex;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,246,240,.97);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(45,54,37,.08);
+  padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: stretch;
+  box-shadow: 0 -4px 24px rgba(45,54,37,.06);
+}
+body.dark .col-nav {
+  background: rgba(30,42,24,.97);
+  border-top-color: rgba(255,255,255,.08);
 }
 .cn-item {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
-  cursor:pointer; padding:4px 0; transition:all .2s;
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 3px;
+  cursor: pointer; padding: 6px 2px 4px;
+  border-radius: 12px; margin: 0 2px;
+  transition: background .2s, transform .15s;
+  position: relative; min-width: 0;
 }
-.cn-icon { font-size:20px; line-height:1; }
-.cn-label { font-size: 11px; font-weight:600; color:rgba(26,46,32,0.65); letter-spacing:.3px; }
-.cn-item.active .cn-label { color:var(--green); }
-.cn-item.active .cn-icon { transform:scale(1.1); }
+.cn-item:active { transform: scale(.93); }
+.cn-icon {
+  width: 42px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  transition: background .2s, transform .2s;
+  position: relative;
+}
+.cn-icon svg { width: 18px; height: 18px; stroke: rgba(45,54,37,.45); transition: stroke .2s; }
+.cn-label {
+  font-size: 10px; font-weight: 600;
+  color: rgba(45,54,37,.45); letter-spacing: .2px;
+  transition: color .2s; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+/* Estado ativo */
+.cn-item.active .cn-icon {
+  background: linear-gradient(135deg, #2D3625, #3A6B4A);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45,54,37,.25);
+}
+.cn-item.active .cn-icon svg { stroke: #fff; }
+.cn-item.active .cn-label { color: #2D3625; font-weight: 700; }
+body.dark .cn-item.active .cn-icon { box-shadow: 0 4px 12px rgba(0,0,0,.35); }
+body.dark .cn-item.active .cn-label { color: #7EC8A0; }
+body.dark .cn-icon svg { stroke: rgba(255,255,255,.35); }
+body.dark .cn-label { color: rgba(255,255,255,.35); }
+/* Badge de notificação */
+.cn-badge {
+  position: absolute; top: -2px; right: -2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #EF4444; border: 2px solid var(--bg);
+  font-size: 8px; font-weight: 800; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
 
 /* ══════ INÍCIO ══════ */
 .greeting { margin-bottom:24px; }
@@ -3907,6 +3948,37 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 .aep-resumo-acoes li { font-size:13px; color:var(--card-text-muted); margin-bottom:6px; padding-left:16px; position:relative; line-height:1.5; }
 .aep-resumo-acoes li::before { content:'→'; position:absolute; left:0; color:var(--teal); font-weight:700; }
 
+
+/* ══ Check-in Feminino — redesign ══ */
+.fem-grupo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.fem-grupo-label {
+  font-size: 13px; font-weight: 600; color: var(--card-text);
+  margin-bottom: 10px;
+}
+.fem-opts {
+  display: flex; gap: 8px;
+}
+.fem-opt-btn {
+  flex: 1; padding: 9px 6px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif; color: var(--card-text-muted);
+  transition: all .15s; text-align: center;
+}
+.fem-opt-btn:hover { border-color: var(--teal); color: var(--card-text); }
+.fem-opt-btn.sel { color: #fff !important; border-color: transparent !important; }
+.fem-opt-btn.sel.fem-bad  { background: #EF4444; }
+.fem-opt-btn.sel.fem-mid  { background: #F59E0B; }
+.fem-opt-btn.sel.fem-good { background: #22C55E; }
+.fem-opt-btn.selected { color: #fff !important; border-color: transparent !important; }
+.fem-opt-btn.selected.fem-bad  { background: #EF4444; }
+.fem-opt-btn.selected.fem-mid  { background: #F59E0B; }
+.fem-opt-btn.selected.fem-good { background: #22C55E; }
 
 /* ══ Canal de Escuta Permanente ══ */
 .escuta-hero { background:linear-gradient(135deg,#2D5E4A,#1A3528); border-radius:16px; padding:24px; margin-bottom:20px; position:relative; overflow:hidden; }
@@ -7286,44 +7358,46 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 
   <!-- Check-in Feminino -->
   <div class="card" style="margin-bottom:16px">
-    <div class="card-hdr">
+    <div class="card-hdr" style="margin-bottom:16px">
       <span class="card-title">Check-in Feminino</span>
       <span style="font-size:11px;color:var(--muted)">Como você está hoje?</span>
     </div>
 
-    <!-- Sono, energia, humor, foco -->
-    <div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Sono · Energia · Humor · Foco</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      <div>
-        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Qualidade do sono</label>
-        <div style="display:flex;gap:6px" id="fem-sono">
-          <button onclick="femSelect('sono',1,this)" class="fem-opt-btn">😴 Ruim</button>
-          <button onclick="femSelect('sono',2,this)" class="fem-opt-btn">😐 Ok</button>
-          <button onclick="femSelect('sono',3,this)" class="fem-opt-btn">😊 Boa</button>
+    <!-- Grid de perguntas em cards -->
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:16px">
+
+      <div class="fem-grupo">
+        <div class="fem-grupo-label">😴 Qualidade do sono</div>
+        <div class="fem-opts" id="fem-sono">
+          <button onclick="femSelect('sono',1,this)" class="fem-opt-btn fem-bad">Ruim</button>
+          <button onclick="femSelect('sono',2,this)" class="fem-opt-btn fem-mid">Ok</button>
+          <button onclick="femSelect('sono',3,this)" class="fem-opt-btn fem-good">Boa</button>
         </div>
       </div>
-      <div>
-        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Nível de energia</label>
-        <div style="display:flex;gap:6px" id="fem-energia">
-          <button onclick="femSelect('energia',1,this)" class="fem-opt-btn">🪫 Baixa</button>
-          <button onclick="femSelect('energia',2,this)" class="fem-opt-btn">⚡ Ok</button>
-          <button onclick="femSelect('energia',3,this)" class="fem-opt-btn">🔋 Alta</button>
+
+      <div class="fem-grupo">
+        <div class="fem-grupo-label">⚡ Nível de energia</div>
+        <div class="fem-opts" id="fem-energia">
+          <button onclick="femSelect('energia',1,this)" class="fem-opt-btn fem-bad">Baixa</button>
+          <button onclick="femSelect('energia',2,this)" class="fem-opt-btn fem-mid">Ok</button>
+          <button onclick="femSelect('energia',3,this)" class="fem-opt-btn fem-good">Alta</button>
         </div>
       </div>
-      <div>
-        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Humor hoje</label>
-        <div style="display:flex;gap:6px" id="fem-humor">
-          <button onclick="femSelect('humor',1,this)" class="fem-opt-btn">😔 Baixo</button>
-          <button onclick="femSelect('humor',2,this)" class="fem-opt-btn">😐 Neutro</button>
-          <button onclick="femSelect('humor',3,this)" class="fem-opt-btn">😄 Ótimo</button>
+
+      <div class="fem-grupo">
+        <div class="fem-grupo-label">💭 Humor hoje</div>
+        <div class="fem-opts" id="fem-humor">
+          <button onclick="femSelect('humor',1,this)" class="fem-opt-btn fem-bad">Baixo</button>
+          <button onclick="femSelect('humor',2,this)" class="fem-opt-btn fem-mid">Neutro</button>
+          <button onclick="femSelect('humor',3,this)" class="fem-opt-btn fem-good">Ótimo</button>
         </div>
       </div>
-      <div>
-        <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:4px">Foco e concentração</label>
-        <div style="display:flex;gap:6px" id="fem-foco">
-          <button onclick="femSelect('foco',1,this)" class="fem-opt-btn">😵 Difícil</button>
-          <button onclick="femSelect('foco',2,this)" class="fem-opt-btn">🙂 Razoável</button>
-          <button onclick="femSelect('foco',3,this)" class="fem-opt-btn">🎯 Ótimo</button>
+      <div class="fem-grupo">
+        <div class="fem-grupo-label">🎯 Foco e concentração</div>
+        <div class="fem-opts" id="fem-foco">
+          <button onclick="femSelect('foco',1,this)" class="fem-opt-btn fem-bad">Difícil</button>
+          <button onclick="femSelect('foco',2,this)" class="fem-opt-btn fem-mid">Razoável</button>
+          <button onclick="femSelect('foco',3,this)" class="fem-opt-btn fem-good">Ótimo</button>
         </div>
       </div>
     </div>
@@ -7529,9 +7603,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 
 
   <!-- NAV INFERIOR -->
-  <nav class="col-nav">
-
-  <!-- ══ CANAL DE ESCUTA — COLABORADOR ══ -->
+    <!-- ══ CANAL DE ESCUTA — COLABORADOR ══ -->
   <div class="col-page" id="cp-escuta">
     <div style="padding:20px 16px 0">
       <div class="escuta-hero">
@@ -12518,6 +12590,14 @@ function femSelect(campo, val, btn) {
   container.querySelectorAll('.fem-opt-btn,.fem-tag-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
   femState[campo] = val;
+  const grupo = btn.closest('.fem-grupo');
+  if (grupo) {
+    grupo.style.borderColor = val === 1
+      ? 'rgba(239,68,68,.35)'
+      : val === 2
+      ? 'rgba(245,158,11,.35)'
+      : 'rgba(34,197,94,.35)';
+  }
 }
 
 function femToggle(campo, btn) {
@@ -12696,8 +12776,8 @@ function diarioLimparTudo() {
 /* ── Botão flutuante ── */
 #ranne-chat-btn {
   position: fixed;
-  bottom: calc(72px + var(--safe-bottom, 0px));
-  right: 20px;
+  bottom: 28px;
+  right: 28px;
   width: 52px; height: 52px;
   border-radius: 50%;
   background: linear-gradient(135deg, #2D3625, #3A6B4A);
@@ -12723,10 +12803,10 @@ function diarioLimparTudo() {
 /* ── Janela do chat ── */
 #ranne-chat-window {
   position: fixed;
-  bottom: calc(136px + var(--safe-bottom, 0px));
-  right: 20px;
-  width: 340px;
-  max-height: 520px;
+  bottom: 90px;
+  right: 24px;
+  width: 360px;
+  max-height: 560px;
   background: var(--white);
   border-radius: 20px;
   box-shadow: 0 8px 40px rgba(0,0,0,.18);
@@ -12855,14 +12935,27 @@ body.dark .chat-msg.bot { background: var(--surface); border-color: var(--border
 body.dark .chat-input-row textarea { background: var(--surface); }
 body.dark .chat-sugg { background: var(--surface); border-color: var(--border); }
 
-/* Mobile: tela cheia */
+/* Mobile: tela cheia — acima da navbar */
 @media (max-width: 480px) {
   #ranne-chat-window {
-    bottom: 0; right: 0; left: 0;
-    width: 100%; max-height: 90vh;
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    right: 0; left: 0;
+    width: 100%;
+    max-height: calc(85vh - 64px);
     border-radius: 20px 20px 0 0;
   }
-  #ranne-chat-btn { bottom: calc(76px + var(--safe-bottom, 0px)); right: 16px; }
+  #ranne-chat-btn {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
+  }
+}
+/* Desktop */
+@media (min-width: 481px) {
+  #ranne-chat-window {
+    bottom: 90px; right: 24px;
+    width: 360px; max-height: 560px;
+  }
+  #ranne-chat-btn { bottom: 28px; right: 28px; }
 }
 </style>
 
