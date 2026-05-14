@@ -30,25 +30,25 @@
 /* ══════════ RESET & VARS ══════════ */
 :root {
   /* ── Cores ── */
-  --teal: #2D3625;
-  --mint: #3A6B4A;
-  --mint-light: #EDE4D8;
-  --green: #2D3625;
-  --green-light: #EDE4D8;
+  --teal: #2D5E4A;
+  --mint: #3D7A62;
+  --mint-light: #E8E4DC;
+  --green: #2D5E4A;
+  --green-light: #E8E4DC;
   --amber: #C9A87C;
   --red: #EF4444;
   --bg: #F5EDE3;
   --white: #FFFFFF;
-  --text: #1C2A14;
-  --muted: rgba(28,42,20,0.60);
-  --muted-dark: rgba(28,42,20,0.40);
-  --border: rgba(28,42,20,0.14);
-  --card-border: rgba(28,42,20,0.10);
+  --text: #1A2E20;
+  --muted: rgba(26,46,32,0.60);
+  --muted-dark: rgba(26,46,32,0.40);
+  --border: rgba(26,46,32,0.14);
+  --card-border: rgba(26,46,32,0.10);
 
 /* ── Texto dentro de cards (tema claro → texto escuro) ── */
-  --card-text:       #1C2A14;
-  --card-text-muted: #4A6040;
-  --card-text-faint: #7A9070;
+  --card-text:       #1A2E20;
+  --card-text-muted: #4D6B5C;
+  --card-text-faint: #7A9A8B;
 
   /* ── Escala tipográfica (rem) ── */
   --text-xs:   0.6875rem;  /* 11px */
@@ -252,7 +252,7 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
   border-radius: 10px;
 }
 .tab { color: rgba(28,42,20,0.55); }
-.tab.active { background: #2D3625; color: #fff; }
+.tab.active { background: #2D5E4A; color: #fff; }
 
 /* Override para tabs dentro de cards (fundo bege) */
 .card .tabs { background: #F1F5F9; }
@@ -262,7 +262,7 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
 /* Tabs biblioteca — mesmas regras gerais */
 #p-biblioteca .tabs { background: rgba(28,42,20,0.08); }
 #p-biblioteca .tab { color: rgba(28,42,20,0.55); }
-#p-biblioteca .tab.active { background: #2D3625; color: #fff; }
+#p-biblioteca .tab.active { background: #2D5E4A; color: #fff; }
 
 /* Textos de seção fora de card (fundo verde escuro) */
 .page-content > [style*="color:var(--muted)"],
@@ -341,35 +341,35 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
 /* ══ Saúde Feminina — contraste completo ══ */
 
 /* Todos os textos dentro dos cards brancos/claros */
-#p-feminina .card,
-#p-feminina [style*="background:var(--surface-alt"] {
+#p-feminina, #cp-feminina .card,
+#p-feminina, #cp-feminina [style*="background:var(--surface-alt"] {
   color: var(--card-text) !important;
 }
 
 /* Textos genéricos com var(--text) dentro dos cards */
-#p-feminina .card [style*="color:var(--text)"],
-#p-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"] {
+#p-feminina, #cp-feminina .card [style*="color:var(--text)"],
+#p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"] {
   color: var(--card-text) !important;
 }
 
 /* Textos secundários com var(--muted) dentro dos cards */
-#p-feminina .card [style*="color:var(--muted)"],
-#p-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"] {
+#p-feminina, #cp-feminina .card [style*="color:var(--muted)"],
+#p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"] {
   color: var(--card-text-muted) !important;
 }
 
 /* Labels das seções dentro do card check-in */
-#p-feminina .card label {
+#p-feminina, #cp-feminina .card label {
   color: var(--card-text-muted) !important;
 }
-#p-feminina .card label[style*="font-weight:600"],
-#p-feminina .card > div > label {
+#p-feminina, #cp-feminina .card label[style*="font-weight:600"],
+#p-feminina, #cp-feminina .card > div > label {
   color: var(--card-text) !important;
 }
 
 /* Botões fem-opt-btn e fem-tag-btn: texto legível em fundo claro */
-#p-feminina .fem-opt-btn,
-#p-feminina .fem-tag-btn {
+#p-feminina, #cp-feminina .fem-opt-btn,
+#p-feminina, #cp-feminina .fem-tag-btn {
   background: rgba(45,94,74,0.08) !important;
   color: var(--card-text) !important;
   border: 1.5px solid rgba(45,94,74,0.18) !important;
@@ -380,103 +380,103 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
   cursor: pointer !important;
   transition: background .15s, border-color .15s !important;
 }
-#p-feminina .fem-opt-btn:hover,
-#p-feminina .fem-tag-btn:hover {
+#p-feminina, #cp-feminina .fem-opt-btn:hover,
+#p-feminina, #cp-feminina .fem-tag-btn:hover {
   background: rgba(45,94,74,0.14) !important;
   border-color: rgba(45,94,74,0.35) !important;
 }
-#p-feminina .fem-opt-btn.sel,
-#p-feminina .fem-tag-btn.sel {
+#p-feminina, #cp-feminina .fem-opt-btn.sel,
+#p-feminina, #cp-feminina .fem-tag-btn.sel {
   background: var(--mint) !important;
   color: #ffffff !important;
   border-color: var(--mint) !important;
 }
 
 /* Texto do card-hdr e card-title dentro de p-feminina */
-#p-feminina .card-hdr .card-title,
-#p-feminina .card-title {
+#p-feminina, #cp-feminina .card-hdr .card-title,
+#p-feminina, #cp-feminina .card-title {
   color: var(--card-text) !important;
 }
-#p-feminina .card-hdr span[style*="color:var(--muted)"] {
+#p-feminina, #cp-feminina .card-hdr span[style*="color:var(--muted)"] {
   color: var(--card-text-muted) !important;
 }
 
 /* Aviso de privacidade no banner verde escuro — texto branco */
-#p-feminina > div[style*="background:linear-gradient"],
-#p-feminina > div[style*="background:linear-gradient"] * {
+#p-feminina, #cp-feminina > div[style*="background:linear-gradient"],
+#p-feminina, #cp-feminina > div[style*="background:linear-gradient"] * {
   color: #ffffff !important;
 }
 
 /* Aviso de privacidade no fundo verde suave — muted escuro */
-#p-feminina > div[style*="background:rgba(61"] {
+#p-feminina, #cp-feminina > div[style*="background:rgba(61"] {
   color: var(--card-text-muted) !important;
 }
-#p-feminina > div[style*="background:rgba(61"] strong {
+#p-feminina, #cp-feminina > div[style*="background:rgba(61"] strong {
   color: var(--card-text) !important;
 }
 
 /* Texto da dica */
-#p-feminina #fem-dica-texto {
+#p-feminina, #cp-feminina #fem-dica-texto {
   color: var(--card-text-muted) !important;
 }
 
 /* Botão "Ver outra dica" */
-#p-feminina button[style*="color:var(--mint)"] {
+#p-feminina, #cp-feminina button[style*="color:var(--mint)"] {
   color: var(--mint) !important;
 }
 
 /* Textarea dentro do card */
-#p-feminina #fem-sinto {
+#p-feminina, #cp-feminina #fem-sinto {
   color: #1A2E20 !important;
   background: #F7F4EE !important;
 }
 
 /* Título da seção de labels (Sono · Energia · Humor · Foco) */
-#p-feminina .card > div[style*="text-transform:uppercase"] {
+#p-feminina, #cp-feminina .card > div[style*="text-transform:uppercase"] {
   color: var(--card-text-muted) !important;
 }
 
 /* dark mode — reverter para branco nos cards escuros */
-body.dark #p-feminina .fem-opt-btn,
-body.dark #p-feminina .fem-tag-btn {
+body.dark #p-feminina, #cp-feminina .fem-opt-btn,
+body.dark #p-feminina, #cp-feminina .fem-tag-btn {
   background: rgba(255,255,255,0.08) !important;
   color: rgba(255,255,255,0.85) !important;
   border-color: rgba(255,255,255,0.15) !important;
 }
-body.dark #p-feminina .fem-opt-btn.sel,
-body.dark #p-feminina .fem-tag-btn.sel {
+body.dark #p-feminina, #cp-feminina .fem-opt-btn.sel,
+body.dark #p-feminina, #cp-feminina .fem-tag-btn.sel {
   background: var(--mint) !important;
   color: #ffffff !important;
   border-color: var(--mint) !important;
 }
 
 /* dark mode — todos os textos na área feminina usam cores claras */
-body.dark #p-feminina .card [style*="color:var(--text)"],
-body.dark #p-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"],
-body.dark #p-feminina .card [style*="font-weight:700"] {
+body.dark #p-feminina, #cp-feminina .card [style*="color:var(--text)"],
+body.dark #p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"],
+body.dark #p-feminina, #cp-feminina .card [style*="font-weight:700"] {
   color: #E8F4F0 !important;
 }
-body.dark #p-feminina .card [style*="color:var(--muted)"],
-body.dark #p-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"],
-body.dark #p-feminina .card label,
-body.dark #p-feminina #fem-dica-texto {
+body.dark #p-feminina, #cp-feminina .card [style*="color:var(--muted)"],
+body.dark #p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"],
+body.dark #p-feminina, #cp-feminina .card label,
+body.dark #p-feminina, #cp-feminina #fem-dica-texto {
   color: rgba(232,244,240,0.65) !important;
 }
-body.dark #p-feminina .card .card-title,
-body.dark #p-feminina .card-title {
+body.dark #p-feminina, #cp-feminina .card .card-title,
+body.dark #p-feminina, #cp-feminina .card-title {
   color: #E8F4F0 !important;
 }
-body.dark #p-feminina .card .card-hdr span {
+body.dark #p-feminina, #cp-feminina .card .card-hdr span {
   color: rgba(232,244,240,0.55) !important;
 }
-body.dark #p-feminina #fem-sinto {
+body.dark #p-feminina, #cp-feminina #fem-sinto {
   color: #E8F4F0 !important;
   background: rgba(255,255,255,0.06) !important;
 }
-body.dark #p-feminina > div[style*="background:rgba(61"] {
+body.dark #p-feminina, #cp-feminina > div[style*="background:rgba(61"] {
   color: rgba(232,244,240,0.70) !important;
 }
-body.dark #p-feminina > div[style*="background:rgba(61"] strong {
+body.dark #p-feminina, #cp-feminina > div[style*="background:rgba(61"] strong {
   color: #E8F4F0 !important;
 }
 
@@ -500,7 +500,7 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 
 /* ══════════ DARK MODE ══════════ */
 body.dark {
-  --bg:     #2D3625;
+  --bg:     #1E3528;
   --white:  #364430;
   --text:   #FFFFFF;
   --muted:  rgba(255,255,255,0.65);
@@ -520,6 +520,8 @@ body.dark {
   --shadow-md: 0 4px 16px rgba(0,0,0,.3), 0 1px 4px rgba(0,0,0,.2);
   --shadow-lg: 0 8px 32px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.25);
 }
+
+body.dark .topbar { background: rgba(30,40,24,.92) !important; }
 body.dark .sidebar { background:#1E2A18; background-image: linear-gradient(180deg, #182215 0%, #1E2A18 60%, #141E12 100%); border-right-color: rgba(255,255,255,0.06); }
 body.dark .card { box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 body.dark .field-input { background:rgba(255,255,255,0.04); color:#fff; }
@@ -623,7 +625,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   transition: all 0.3s ease;
 }
 .step-dot.done {
-  background: #2D3625;
+  background: #2D5E4A;
   width: 20px;
   border-radius: 3px;
 }
@@ -690,7 +692,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 }
 .role-cards .role-card.active,
 .role-cards .role-card.selected {
-  border-color: #2D3625 !important;
+  border-color: #2D5E4A !important;
   background: rgba(45,90,78,.06) !important;
   box-shadow: 0 0 0 3px rgba(45,90,78,.08) !important;
 }
@@ -698,7 +700,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   position: absolute; top: 9px; right: 9px;
   width: 18px; height: 18px;
   border-radius: 50%;
-  background: #2D3625;
+  background: #2D5E4A;
   color: #fff;
   font-size: 12px;
   display: flex; align-items: center; justify-content: center;
@@ -745,7 +747,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   display: block;
   box-shadow: 0 4px 14px rgba(27,61,47,.2);
 }
-.btn-cta:hover { background: #2D3625; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(27,61,47,.25); }
+.btn-cta:hover { background: #2D5E4A; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(27,61,47,.25); }
 .btn-cta:active { transform: translateY(0); box-shadow: none; }
 .btn-cta:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
@@ -779,7 +781,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   -webkit-appearance: none;
 }
 .field-input:focus {
-  border-color: #2D3625;
+  border-color: #2D5E4A;
   box-shadow: 0 0 0 3px rgba(45,90,78,.08);
   background: #fff;
 }
@@ -993,7 +995,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   font-size:12px; color:var(--card-text-muted); line-height:1.65;
 }
 .ajuda-hero {
-  background:linear-gradient(135deg,#1A2B14,#2D3625);
+  background:linear-gradient(135deg,#1A2B14,#2D5E4A);
   border-radius:16px; padding:20px; margin-bottom:14px;
 }
 
@@ -1033,7 +1035,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
 }
 @keyframes tourPulse {
   0%, 100% { outline-color: #4ECBA0; outline-offset: 4px; }
-  50%       { outline-color: #2D3625; outline-offset: 7px; }
+  50%       { outline-color: #2D5E4A; outline-offset: 7px; }
 }
 
 /* Tour card — bottom sheet no mobile, canto inferior direito no desktop */
@@ -1110,7 +1112,7 @@ body.dark #tour-card {
 #tour-card .tc-btn-skip:hover { background: rgba(255,255,255,0.08); }
 #tour-card .tc-btn-next {
   padding: 7px 16px; border-radius: 8px; border: none;
-  background: #2D3625; font-family: 'Inter', sans-serif;
+  background: #2D5E4A; font-family: 'Inter', sans-serif;
   font-size: 12px; font-weight: 700; color: #fff; cursor: pointer;
   transition: opacity 0.12s; display: flex; align-items: center; gap: 5px;
 }
@@ -1137,7 +1139,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 
 /* ══════════ LOADING SCREEN ══════════ */
 #loading-screen {
-  position:fixed; inset:0; background:#2D3625; display:flex;
+  position:fixed; inset:0; background:#2D5E4A; display:flex;
   flex-direction:column; align-items:center; justify-content:center; z-index:9999;
 }
 #loading-screen img {
@@ -1204,7 +1206,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
   max-height: 380px;
   overflow: hidden;
   flex-shrink: 0;
-  background: linear-gradient(160deg, #1A2B14 0%, #2D3625 60%, #3D7A60 100%);
+  background: linear-gradient(160deg, #1A2B14 0%, #2D5E4A 60%, #3D7A60 100%);
 }
 .ob-hero img {
   width: 100%; height: 100%;
@@ -1336,7 +1338,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 }
 .role-card:hover::before { opacity: 1; }
 .role-card.selected {
-  border-color: #2D3625;
+  border-color: #2D5E4A;
   background: rgba(45,90,78,.05);
   box-shadow: 0 0 0 3px rgba(45,90,78,.08);
 }
@@ -1345,7 +1347,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 .rc-check {
   position: absolute; top: 10px; right: 10px;
   width: 20px; height: 20px; border-radius: 50%;
-  background: #2D3625;
+  background: #2D5E4A;
   display: flex; align-items: center; justify-content: center;
   opacity: 0; transform: scale(.5);
   transition: all .2s cubic-bezier(.34,1.56,.64,1);
@@ -1370,7 +1372,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
   padding: 16px;
   border-radius: 16px;
   border: none;
-  background: #1A2B14;
+  background: #2D5E4A;
   color: white;
   font-family: 'DM Sans', 'Inter', sans-serif;
   font-size: 15px; font-weight: 600;
@@ -1381,15 +1383,15 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
   letter-spacing: -.1px;
   box-shadow: 0 4px 16px rgba(27,61,47,.22);
 }
-.ob-btn:hover { background: #2D3625; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(27,61,47,.28); }
+.ob-btn:hover { background: #2D5E4A; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(27,61,47,.28); }
 .ob-btn:active { transform: translateY(0); box-shadow: none; }
 .ob-btn svg { width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none; }
 
 /* Links */
 .ob-links { text-align: center; margin-bottom: 24px; }
 .ob-links p { font-size: 12.5px; color: #6B7F76; margin-bottom: 2px; }
-.ob-links a { font-size: 13px; font-weight: 600; color: #2D3625; text-decoration: none; border-bottom: 1px solid rgba(45,90,78,.25); transition: border-color .2s; }
-.ob-links a:hover { border-color: #2D3625; }
+.ob-links a { font-size: 13px; font-weight: 600; color: #2D5E4A; text-decoration: none; border-bottom: 1px solid rgba(45,90,78,.25); transition: border-color .2s; }
+.ob-links a:hover { border-color: #2D5E4A; }
 
 /* Trust strip */
 .ob-trust { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px; }
@@ -1555,12 +1557,12 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 
 /* ── SIDEBAR PREMIUM ── */
 .sidebar {
-  width:var(--sidebar-w); background:#2D3625; display:flex; flex-direction:column;
+  width:var(--sidebar-w); background:#2D5E4A; display:flex; flex-direction:column;
   position:fixed; top:0; left:0; height:100vh; z-index:50;
   border-right:1px solid rgba(0,0,0,0.10);
   box-shadow:4px 0 24px rgba(0,0,0,.12);
   padding-top:var(--safe-top);
-  background-image: linear-gradient(180deg, #252F1E 0%, #2D3625 60%, #232C1C 100%);
+  background-image: linear-gradient(180deg, #252F1E 0%, #2D5E4A 60%, #232C1C 100%);
 }
 .sb-header {
   padding:22px 18px 18px;
@@ -1619,7 +1621,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 }
 .cav-red { background:#FDECEA; color:#C0392B; }
 .cav-amber { background:#FEF5E7; color:#92620A; }
-.cav-green { background:#E8F5EC; color:#2D3625; }
+.cav-green { background:#E8F5EC; color:#2D5E4A; }
 .cav-gray { background:#F2EEE8; color:#6B645D; }
 .cav-teal { background:var(--green-light); color:var(--teal); }
 
@@ -1640,7 +1642,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 .sb-user { display:flex; align-items:center; gap:10px; }
 .sb-avatar {
   width:32px; height:32px; border-radius:9px;
-  background:linear-gradient(135deg,#2D3625,#4ECBA0);
+  background:linear-gradient(135deg,#2D5E4A,#4ECBA0);
   display:flex; align-items:center; justify-content:center;
   color:#fff; font-weight:800; font-size:11px; flex-shrink:0;
 }
@@ -1993,7 +1995,7 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 
 /* COLABORADOR VIEW */
 .collab-view { min-height:100vh; background:var(--bg); }
-.collab-navbar { background:#2D3625; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; padding-top:calc(16px + var(--safe-top)); }
+.collab-navbar { background:#2D5E4A; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; padding-top:calc(16px + var(--safe-top)); }
 .brand { color:var(--mint); font-size:20px; font-weight:800; }
 .anon-badge { background:rgba(78,203,160,0.15); color:var(--mint); font-size:11px; font-weight:700; padding:5px 12px; border-radius:99px; }
 
@@ -2250,7 +2252,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 .clin-prog-lbl { font-size: 12px; font-weight:700; color:var(--muted); }
 .clin-prog-pct { font-size: 12px; font-weight:700; color:var(--green); }
 .clin-prog-track { height:5px; background:var(--border); border-radius:99px; overflow:hidden; }
-.clin-prog-fill { height:5px; border-radius:99px; background:linear-gradient(90deg,#2D3625,#52B788); transition:width .5s cubic-bezier(.16,1,.3,1); }
+.clin-prog-fill { height:5px; border-radius:99px; background:linear-gradient(90deg,#2D5E4A,#52B788); transition:width .5s cubic-bezier(.16,1,.3,1); }
 
 .clin-question-card {
   background:var(--white); border-radius:16px; padding:20px;
@@ -2374,7 +2376,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 }
 .crp-avatar {
   width:36px; height:36px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg,#2D3625,#52B788);
+  background:linear-gradient(135deg,#2D5E4A,#52B788);
   display:flex; align-items:center; justify-content:center;
   font-size:16px; color:#fff;
 }
@@ -2444,9 +2446,9 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 .trilha-card.t3:hover { border-color:rgba(99,102,241,.25); }
 .trilha-card.t3 .tc-prog-fill { background:#6366F1; }
 /* Trilha 4: Foco — verde */
-.trilha-card.t4::before { background:#2D3625; opacity:.9; }
+.trilha-card.t4::before { background:#2D5E4A; opacity:.9; }
 .trilha-card.t4:hover { border-color:rgba(45,106,79,.25); }
-.trilha-card.t4 .tc-prog-fill { background:#2D3625; }
+.trilha-card.t4 .tc-prog-fill { background:#2D5E4A; }
 /* Trilha 5: Relações — âmbar */
 .trilha-card.t5::before { background:#D97706; opacity:.8; }
 .trilha-card.t5:hover { border-color:rgba(217,119,6,.25); }
@@ -2468,7 +2470,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 .tdh-prog-lbl { font-size: 12px; color:rgba(255,255,255,.35); font-weight:600; }
 .tdh-prog-pct { font-size: 12px; color:#4ECBA0; font-weight:700; }
 .tdh-prog-track { height:4px; background:rgba(255,255,255,.08); border-radius:99px; overflow:hidden; }
-.tdh-prog-fill { height:4px; border-radius:99px; background:linear-gradient(90deg,#2D3625,#4ECBA0); transition:width .8s ease; }
+.tdh-prog-fill { height:4px; border-radius:99px; background:linear-gradient(90deg,#2D5E4A,#4ECBA0); transition:width .8s ease; }
 
 /* Aula card */
 .aula-card {
@@ -2539,7 +2541,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 }
 .ar-crp-avatar {
   width:32px; height:32px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg,#2D3625,#52B788);
+  background:linear-gradient(135deg,#2D5E4A,#52B788);
   display:flex; align-items:center; justify-content:center; font-size:14px;
 }
 .ar-crp-nome { font-size:11px; font-weight:700; color:var(--card-text); }
@@ -2712,8 +2714,8 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 #app-colaborador {
   --bg: #F5EDE3;
   --white: #FFFCF8;
-  --green: #2D3625;
-  --green-light: #EDE4D8;
+  --green: #2D5E4A;
+  --green-light: #E8E4DC;
   --green-mid: #52B788;
   --amber: #D97706;
   --red: #DC2626;
@@ -2818,6 +2820,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 /* ══════ NAV INFERIOR ══════ */
 .col-nav {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: none !important;
   background: rgba(250,246,240,.97);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(45,54,37,.08);
@@ -2826,6 +2829,8 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   box-shadow: 0 -4px 24px rgba(45,54,37,.06);
 }
 body.dark .col-nav { background: rgba(30,42,24,.97); border-top-color: rgba(255,255,255,.08); }
+body.collab-ativo .col-nav { display: flex !important; }
+
 .cn-item {
   flex: 1; display: flex; flex-direction: column; align-items: center;
   justify-content: center; gap: 3px; cursor: pointer; padding: 6px 2px 4px;
@@ -2843,11 +2848,11 @@ body.dark .col-nav { background: rgba(30,42,24,.97); border-top-color: rgba(255,
   transition: color .2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
 }
 .cn-item.active .cn-icon {
-  background: linear-gradient(135deg, #2D3625, #3A6B4A);
+  background: linear-gradient(135deg, #2D5E4A, #3D7A62);
   transform: translateY(-2px); box-shadow: 0 4px 12px rgba(45,54,37,.25);
 }
 .cn-item.active .cn-icon svg { stroke: #fff; }
-.cn-item.active .cn-label { color: #2D3625; font-weight: 700; }
+.cn-item.active .cn-label { color: #2D5E4A; font-weight: 700; }
 body.dark .cn-item.active .cn-label { color: #7EC8A0; }
 body.dark .cn-icon svg { stroke: rgba(255,255,255,.35); }
 body.dark .cn-label { color: rgba(255,255,255,.35); }
@@ -2897,7 +2902,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .md-bar { height:4px; border-radius:99px; background:#EEE9E2; margin-top:8px; overflow:hidden; }
 .md-fill { height:4px; border-radius:99px; animation:growW 1s ease both; }
 @keyframes growW{from{width:0}to{}}
-.cv-green { color:#2D3625; } .cv-amber { color:#D97706; } .cv-red { color:#DC2626; }
+.cv-green { color:#2D5E4A; } .cv-amber { color:#D97706; } .cv-red { color:#DC2626; }
 .cf-green { background:#52B788; } .cf-amber { background:#F59E0B; } .cf-red { background:#EF4444; }
 
 /* Seção */
@@ -3109,8 +3114,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 #app-colaborador {
   --bg: #F5EDE3;
   --white: #FFFCF8;
-  --green: #2D3625;
-  --green-light: #EDE4D8;
+  --green: #2D5E4A;
+  --green-light: #E8E4DC;
   --green-mid: #52B788;
   --amber: #D97706;
   --red: #DC2626;
@@ -3264,7 +3269,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .md-bar { height:4px; border-radius:99px; background:#EEE9E2; margin-top:8px; overflow:hidden; }
 .md-fill { height:4px; border-radius:99px; animation:growW 1s ease both; }
 @keyframes growW{from{width:0}to{}}
-.cv-green { color:#2D3625; } .cv-amber { color:#D97706; } .cv-red { color:#DC2626; }
+.cv-green { color:#2D5E4A; } .cv-amber { color:#D97706; } .cv-red { color:#DC2626; }
 .cf-green { background:#52B788; } .cf-amber { background:#F59E0B; } .cf-red { background:#EF4444; }
 
 /* Seção */
@@ -3373,7 +3378,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .bv-btn {
   width:100%; max-width:300px; padding:16px;
   border-radius:14px; border:none;
-  background:linear-gradient(135deg,#2D3625,#4ECBA0);
+  background:linear-gradient(135deg,#2D5E4A,#4ECBA0);
   color:#fff; font-size:15px; font-weight:700;
   font-family:'Inter',sans-serif; cursor:pointer;
   transition:all .2s;
@@ -3397,7 +3402,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
   background:rgba(255,255,255,.05);
 }
 .bv-loader-fill {
-  height:2px; background:linear-gradient(90deg,#2D3625,#4ECBA0);
+  height:2px; background:linear-gradient(90deg,#2D5E4A,#4ECBA0);
   width:0%; transition:width .1s linear;
 }
 
@@ -3630,7 +3635,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .qusp-progress-lbl { font-size:11px; font-weight:700; color:rgba(26,46,32,0.65); }
 .qusp-progress-pct { font-size:11px; font-weight:700; color:var(--green); }
 .qusp-progress-track { height:6px; background:var(--border); border-radius:99px; overflow:hidden; }
-.qusp-progress-fill { height:6px; border-radius:99px; background:linear-gradient(90deg,#2D3625,#52B788); transition:width .5s cubic-bezier(.16,1,.3,1); }
+.qusp-progress-fill { height:6px; border-radius:99px; background:linear-gradient(90deg,#2D5E4A,#52B788); transition:width .5s cubic-bezier(.16,1,.3,1); }
 .qusp-block-label { display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; background:rgba(45,106,79,.08); border:1px solid rgba(45,106,79,.15); border-radius:99px; padding:4px 12px; font-size: 12px; font-weight:700; color:var(--green); }
 .qusp-question { font-size:15px; font-weight:700; color:var(--card-text); margin-bottom:16px; line-height:1.5; }
 .qusp-scale { display:flex; flex-direction:column; gap:8px; }
@@ -4149,6 +4154,14 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .cap-item-del:hover { color:var(--red); }
 .cap-vazio { text-align:center; padding:24px; color:var(--muted); font-size:13px; }
 
+
+body.dark .ob-btn { background: #2D5E4A; }
+
+/* Garantir que col-pages do colaborador ficam ocultas quando app está fechado */
+#app-colaborador[style*="display:none"] .col-page,
+#app-colaborador[style*="display: none"] .col-page {
+  display: none !important;
+}
 </style>
 
 </head>
@@ -4247,8 +4260,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       <h2>Cuide de quem<strong>faz sua <em class="ohc-highlight">empresa</em> crescer.</strong></h2>
       <p>Diagnóstico de <strong>clima organizacional</strong> com dados anonimizados, relatórios <strong>NR-1</strong> e <strong>acompanhamento contínuo</strong>.</p>
       <div class="ohc-stats">
-        <div><div class="ohc-stat-val">+<em>120</em></div><div class="ohc-stat-lbl">Empresas ativas</div></div>
-        <div class="ohc-stat-sep"></div>
         <div><div class="ohc-stat-val"><em>98</em>%</div><div class="ohc-stat-lbl">Satisfação</div></div>
         <div class="ohc-stat-sep"></div>
         <div><div class="ohc-stat-val">LGPD</div><div class="ohc-stat-lbl">Compliant</div></div>
@@ -4366,7 +4377,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           <button class="btn-cta" onclick="goS(2)">Continuar →</button>
           <div class="ob-divider"><hr><span>ou</span><hr></div>
           <p style="text-align:center;font-size:12px;color:#6B7F76;line-height:1.6">
-            Já tem conta? <span style="color:#2D3625;font-weight:600;cursor:pointer;border-bottom:1px solid rgba(45,90,78,.25);" onclick="goSStep('s-login')">Fazer login →</span>
+            Já tem conta? <span style="color:#2D5E4A;font-weight:600;cursor:pointer;border-bottom:1px solid rgba(45,90,78,.25);" onclick="goSStep('s-login')">Fazer login →</span>
           </p>
           <p class="ob-fine">LGPD compliant · Dados criptografados</p>
         </div>
@@ -4384,7 +4395,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           <button class="btn-cta" id="btn-login-senha" onclick="doLoginSenha()">Entrar →</button>
           <div class="ob-divider" style="margin-top:16px;"><hr><span>ou</span><hr></div>
           <p style="text-align:center;font-size:12px;color:#6B7F76;line-height:1.6">
-            Não tem conta? <span style="color:#2D3625;font-weight:600;cursor:pointer;border-bottom:1px solid rgba(45,90,78,.25);" onclick="goSStep('s1')">Criar conta →</span>
+            Não tem conta? <span style="color:#2D5E4A;font-weight:600;cursor:pointer;border-bottom:1px solid rgba(45,90,78,.25);" onclick="goSStep('s1')">Criar conta →</span>
           </p>
         </div>
 
@@ -4407,7 +4418,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           <div id="s2-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
           <button class="btn-cta" onclick="goS2Next()">Continuar →</button>
           <p style="text-align:center;font-size:12px;color:#6B7F76;margin-top:12px">
-            <span style="color:#2D3625;font-weight:600;cursor:pointer" onclick="goSStep('s1')">← Voltar</span>
+            <span style="color:#2D5E4A;font-weight:600;cursor:pointer" onclick="goSStep('s1')">← Voltar</span>
           </p>
         </div>
 
@@ -4498,12 +4509,12 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
             <label class="field-label" style="margin-top:12px;display:block;">Expectativa com a Ranne (pode marcar mais de um)</label>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
-              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-diag" style="accent-color:#2D3625;"> Diagnóstico de clima</label>
-              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-prog" style="accent-color:#2D3625;"> Programa de bem-estar</label>
-              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-psico" style="accent-color:#2D3625;"> Suporte psicológico</label>
-              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-lider" style="accent-color:#2D3625;"> Treinamento de liderança</label>
-              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-dash" style="accent-color:#2D3625;"> Dashboard e relatórios RH</label>
-              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-nr1" style="accent-color:#2D3625;"> Conformidade NR-1</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-diag" style="accent-color:#2D5E4A;"> Diagnóstico de clima</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-prog" style="accent-color:#2D5E4A;"> Programa de bem-estar</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-psico" style="accent-color:#2D5E4A;"> Suporte psicológico</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-lider" style="accent-color:#2D5E4A;"> Treinamento de liderança</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-dash" style="accent-color:#2D5E4A;"> Dashboard e relatórios RH</label>
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-nr1" style="accent-color:#2D5E4A;"> Conformidade NR-1</label>
             </div>
             <div style="display:flex;gap:8px;margin-top:16px;">
               <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('a')">←</button>
@@ -4516,16 +4527,16 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
             <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#3D7A62;margin-bottom:10px;">3 · Plano contratado</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
               <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-starter" onclick="selPlano('starter')">
-                <input type="radio" name="empresa-plano" value="starter" style="accent-color:#2D3625;"> <span style="font-size:12.5px;font-weight:600;">☆ Starter</span>
+                <input type="radio" name="empresa-plano" value="starter" style="accent-color:#2D5E4A;"> <span style="font-size:12.5px;font-weight:600;">☆ Starter</span>
               </label>
               <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-growth" onclick="selPlano('growth')">
-                <input type="radio" name="empresa-plano" value="growth" style="accent-color:#2D3625;"> <span style="font-size:12.5px;font-weight:600;">↑ Growth</span>
+                <input type="radio" name="empresa-plano" value="growth" style="accent-color:#2D5E4A;"> <span style="font-size:12.5px;font-weight:600;">↑ Growth</span>
               </label>
               <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-enterprise" onclick="selPlano('enterprise')">
-                <input type="radio" name="empresa-plano" value="enterprise" style="accent-color:#2D3625;"> <span style="font-size:12.5px;font-weight:600;">⬡ Enterprise</span>
+                <input type="radio" name="empresa-plano" value="enterprise" style="accent-color:#2D5E4A;"> <span style="font-size:12.5px;font-weight:600;">⬡ Enterprise</span>
               </label>
               <label style="border:1.5px solid var(--border-c,#E3DDD5);border-radius:10px;padding:12px;cursor:pointer;display:flex;align-items:center;gap:8px;" id="plano-custom" onclick="selPlano('custom')">
-                <input type="radio" name="empresa-plano" value="custom" style="accent-color:#2D3625;"> <span style="font-size:12.5px;font-weight:600;">✦ Personalizado</span>
+                <input type="radio" name="empresa-plano" value="custom" style="accent-color:#2D5E4A;"> <span style="font-size:12.5px;font-weight:600;">✦ Personalizado</span>
               </label>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -4549,7 +4560,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           </div>
 
           <p style="text-align:center;font-size:12px;color:#6B7F76;margin-top:12px;">
-            <span style="color:#2D3625;font-weight:600;cursor:pointer;" onclick="goSStep('s2')">← Voltar ao login</span>
+            <span style="color:#2D5E4A;font-weight:600;cursor:pointer;" onclick="goSStep('s2')">← Voltar ao login</span>
           </p>
         </div>
 
@@ -4572,7 +4583,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
           <div id="pessoa-error" style="color:#991B1B;font-size:12px;margin-bottom:12px;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
           <button class="btn-cta" id="pessoa-btn" onclick="setupPessoa()">Entrar na plataforma →</button>
           <p style="text-align:center;font-size:11px;color:rgba(26,46,32,.4);margin-top:12px">
-            <span style="color:#2D3625;font-weight:600;cursor:pointer" onclick="goSStep('s2')">← Voltar</span>
+            <span style="color:#2D5E4A;font-weight:600;cursor:pointer" onclick="goSStep('s2')">← Voltar</span>
           </p>
         </div>
 
@@ -4612,8 +4623,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
         <div class="sb-item" onclick="pg('biblioteca',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span> Biblioteca</div>
         <div class="sb-section">Gestão</div>
         <div class="sb-item" onclick="pg('formularios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Kit Formulários</div>
-        <div class="sb-item" onclick="pg('colaboradores',this)"
-        <div class="sb-item" onclick="pg('escuta-rh',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span> Canal de Escuta <span id="badge-escuta" style="display:none;background:#EF4444;color:#fff;border-radius:99px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">0</span></div>><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span> Colaboradores</div>
+        <div class="sb-item" onclick="pg('colaboradores',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span> Colaboradores</div>
+        <div class="sb-item" onclick="pg('escuta-rh',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span> Canal de Escuta <span id="badge-escuta" style="display:none;background:#EF4444;color:#fff;border-radius:99px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px">0</span></div>
         <div class="sb-item" onclick="pg('equipe',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6"/><circle cx="18" cy="7" r="2.5"/><path d="M22 20c0-2.5-2-4.5-4.5-4.5"/></svg></span> Equipe</div>
         <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span> Relatórios & NR-1</div>
         <div class="sb-item" onclick="pg('config',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span> Configurações</div>
@@ -4765,10 +4776,10 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
               <div class="isa-ring-wrap">
                 <svg viewBox="0 0 52 52">
                   <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
-                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#2D3625" style="stroke-dashoffset:132"/>
+                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#2D5E4A" style="stroke-dashoffset:132"/>
                 </svg>
                 <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-isa geral" style="color:#2D3625">—</span>
+                  <span class="isa-ring-val" id="isa-isa geral" style="color:#2D5E4A">—</span>
                 </div>
               </div>
               <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
@@ -5414,7 +5425,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
   <!-- Cabeçalho da ficha -->
   <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#071A22,#0D2B1E);border:1px solid rgba(78,203,160,.15)">
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <div id="ficha-avatar" style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2D3625,#4ECBA0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0">--</div>
+      <div id="ficha-avatar" style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#2D5E4A,#4ECBA0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;flex-shrink:0">--</div>
       <div style="flex:1">
         <div style="color:var(--card-text);font-size:17px;font-weight:800;margin-bottom:4px" id="ficha-nome-hdr">—</div>
         <div style="color:rgba(255,255,255,.45);font-size:12px" id="ficha-info-hdr">—</div>
@@ -5550,7 +5561,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
         </div>
 
         <!-- Intro -->
-        <div style="background:linear-gradient(135deg,#1A2B14,#2D3625);border-radius:14px;padding:16px;margin-bottom:14px;">
+        <div style="background:linear-gradient(135deg,#1A2B14,#2D5E4A);border-radius:14px;padding:16px;margin-bottom:14px;">
           <div style="color:var(--card-text);font-size:14px;font-weight:700;margin-bottom:6px;">Kit de Formulários Ranne Care</div>
           <div style="color:rgba(255,255,255,.6);font-size:12px;line-height:1.6;">Formulários para uso interno da consultoria. Clique em cada formulário para expandir, preencher e imprimir.</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
@@ -6017,7 +6028,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
             <button class="filter-chip-rh active" onclick="filtroRisco('todos',this)">Todos</button>
             <button class="filter-chip-rh" onclick="filtroRisco('critico',this)" style="color:#C0392B;">🔴 Crítico</button>
             <button class="filter-chip-rh" onclick="filtroRisco('atencao',this)" style="color:#D4891A;">🟡 Atenção</button>
-            <button class="filter-chip-rh" onclick="filtroRisco('ok',this)" style="color:#2D3625;">🟢 OK</button>
+            <button class="filter-chip-rh" onclick="filtroRisco('ok',this)" style="color:#2D5E4A;">🟢 OK</button>
             <button class="filter-chip-rh" onclick="filtroRisco('sem_resp',this)">⚪ Sem resposta</button>
           </div>
 
@@ -6201,7 +6212,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       </div><!-- /p-config -->
 
       
-<!-- ══ MEU DIÁRIO ══ -->
+
+
       <!-- AJUDA & TOUR -->
       <div id="p-ajuda" style="display:none">
         <div class="topbar">
@@ -6428,7 +6440,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
         </div>
 
         <!-- Destaque NR-1 -->
-        <div style="background:linear-gradient(135deg,#1A2B14,#2D3625);border-radius:16px;padding:20px;margin-bottom:16px;">
+        <div style="background:linear-gradient(135deg,#1A2B14,#2D5E4A);border-radius:16px;padding:20px;margin-bottom:16px;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
             <span style="display:flex;align-items:center;color:var(--teal)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 9l9-6 9 6M5 20h14"/><path d="M4 9l4 8M20 9l-4 8"/></svg></span>
             <div>
@@ -6720,7 +6732,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
             <div class="ins-from">Plataforma Ranne</div>
             <div class="ins-when">Hoje, 09:00</div>
             <div class="ins-text">Seu engajamento com os check-ins tem sido ótimo! Isso ajuda muito o seu time a entender o clima geral.</div>
-            <span class="ins-pill" style="background:#E8F2EC;color:#2D3625">Reconhecimento</span>
+            <span class="ins-pill" style="background:#E8F2EC;color:#2D5E4A">Reconhecimento</span>
           </div>
         </div>
 
@@ -6795,7 +6807,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       <!-- Campo aberto -->
       <div class="ci-block">
         <div class="ci-q">5. Quer compartilhar algo? <span style="color:var(--muted);font-weight:400">(opcional)</span></div>
-        <textarea id="ci-aberto" placeholder="Pode escrever à vontade, é anônimo para o time..." style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;height:80px;outline:none;resize:none;font-family:'Inter',sans-serif;background:#F7F4EF;color:var(--text);transition:border .2s" onfocus="this.style.borderColor='#2D3625'" onblur="this.style.borderColor='rgba(26,46,32,.1)'"></textarea>
+        <textarea id="ci-aberto" placeholder="Pode escrever à vontade, é anônimo para o time..." style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;height:80px;outline:none;resize:none;font-family:'Inter',sans-serif;background:#F7F4EF;color:var(--text);transition:border .2s" onfocus="this.style.borderColor='#2D5E4A'" onblur="this.style.borderColor='rgba(26,46,32,.1)'"></textarea>
       </div>
 
       <button class="btn-submit-ci" id="btn-submit-ci" onclick="enviarCheckin()">Enviar check-in ✓</button>
@@ -6853,7 +6865,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       <div class="tip-body">
         <strong>Pausa de 5 minutos</strong>
         <p>Saia da mesa, alongue o corpo e respire ar fresco</p>
-        <span class="tip-tag" style="background:#E8F2EC;color:#2D3625">5 min · Movimento</span>
+        <span class="tip-tag" style="background:#E8F2EC;color:#2D5E4A">5 min · Movimento</span>
       </div>
       <span class="tip-arr">›</span>
     </div>
@@ -7350,7 +7362,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
     <!-- INTELIGÊNCIA EMOCIONAL -->
     <div class="test-card" onclick="iniciarTeste('ie_ranne')" id="tc-ie_ranne">
-      <div class="test-card-badge" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D3625" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div class="test-card-badge" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D5E4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
       <div class="test-card-body">
         <div class="test-card-fonte">Goleman (1995) · Mayer & Salovey (1997) · Bar-On (2006)</div>
         <div class="test-card-title">Inteligência Emocional no Trabalho</div>
@@ -7468,12 +7480,9 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
   <!-- ══ SAÚDE FEMININA ══ -->
 <div class="col-page" id="cp-feminina">
-  
-    </div>
-  </div>
 
   <!-- Banner -->
-  <div style="background:linear-gradient(135deg,var(--mint) 0%,#2D3625 100%);border-radius:16px;padding:20px 22px;margin-bottom:20px;color:#fff">
+  <div style="background:linear-gradient(135deg,var(--mint) 0%,#2D5E4A 100%);border-radius:16px;padding:20px 22px;margin-bottom:20px;color:#fff">
     <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.75;margin-bottom:6px">Ranne Care · Saúde Feminina</div>
     <div style="font-size:20px;font-weight:700;font-family:'Fraunces',serif;margin-bottom:6px">Um espaço só seu</div>
     <div style="font-size:13px;opacity:.85;line-height:1.6">Apoio à saúde emocional e bem-estar feminino no trabalho. Tudo aqui é confidencial e nunca compartilhado com a empresa.</div>
@@ -7651,7 +7660,10 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
   <div class="col-page" id="cp-diario">
-  
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--text)">Meu Diário</div>
+      <div style="font-size:12px;color:var(--muted)" id="diario-data-hoje"></div>
     </div>
     <button class="btn btn-primary btn-sm" onclick="diarioSalvar()">Salvar →</button>
   </div>
@@ -7659,7 +7671,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
   <!-- Pergunta do dia -->
   <div class="card" style="margin-bottom:16px">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--mint),#2D3625);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--mint),#2D5E4A);display:flex;align-items:center;justify-content:center;flex-shrink:0">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       </div>
       <div>
@@ -7789,20 +7801,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
       <span class="cn-label">Trilhas</span>
     </div>
-    <div class="cn-item" id="cn-diario" onclick="cpg('diario')">
-      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
-      <span class="cn-label">Diário</span>
-    </div>
     <div class="cn-item" id="cn-feminina" onclick="cpg('feminina')">
-    <div class="cn-item" id="cn-escuta" onclick="cpg('escuta')">
-      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
-      <span class="cn-label">Escuta</span>
-    </div>
-    <div class="cn-item" id="cn-escuta" onclick="cpg('escuta')">
-      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
-      <span class="cn-label">Escuta</span>
-    </div>
-    
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
       <span class="cn-label">Saúde ♀</span>
     </div>
@@ -7928,6 +7927,7 @@ function showEmpresa() {
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'block';
   document.getElementById('app-colaborador').style.display = 'none';
+  document.body.classList.remove('collab-ativo');
   const nome = currentEmpresa?.nome || 'Empresa';
   const ini  = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
   document.getElementById('sb-empresa-nome').textContent = nome;
@@ -7952,6 +7952,7 @@ function showColaborador(nome) {
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'block';
+  document.body.classList.add('collab-ativo');
   const nameEl = document.getElementById('collab-user-name');
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
@@ -8855,6 +8856,7 @@ function showOnboarding() {
   if (ob) ob.style.display = 'flex';
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'none';
+  document.body.classList.remove('collab-ativo');
 }
 
 
@@ -9294,7 +9296,7 @@ function riscoBadge(risco) {
   const map = {
     critico: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#FDECEA;color:#C0392B;">🔴 Crítico</span>',
     atencao: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#FEF5E7;color:#D4891A;">🟡 Atenção</span>',
-    ok: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#E8F5EC;color:#2D3625;">🟢 OK</span>',
+    ok: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#E8F5EC;color:#2D5E4A;">🟢 OK</span>',
     sem_resp: '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:600;background:#F2EEE8;color:#6B645D;">⚪ Pendente</span>',
   };
   return map[risco] || map.sem_resp;
@@ -9324,7 +9326,7 @@ function renderColabs() {
   lista.innerHTML = filtered.map(c => {
     const risco = c.risco || getRisco(c.score);
     const scoreVal = c.score ? c.score.score_geral : null;
-    const scoreColor = { critico: '#C0392B', atencao: '#D4891A', ok: '#2D3625', sem_resp: '#6B645D' }[risco];
+    const scoreColor = { critico: '#C0392B', atencao: '#D4891A', ok: '#2D5E4A', sem_resp: '#6B645D' }[risco];
     const initials = c.initials || (c.nome ? c.nome.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase() : '?');
     return `<div class="colab-row" onclick="abrirFicha('${c.id}')">
       <div class="colab-av ${avClass(risco)}">${initials}</div>
@@ -10079,7 +10081,7 @@ function s3SubVoltar(sub) {
 function selPlano(plano) {
   ['starter','growth','enterprise','custom'].forEach(p => {
     const el = document.getElementById('plano-' + p);
-    if (el) el.style.borderColor = p === plano ? '#2D3625' : '#E3DDD5';
+    if (el) el.style.borderColor = p === plano ? '#2D5E4A' : '#E3DDD5';
   });
 }
 
@@ -11473,7 +11475,7 @@ const TRILHAS = [
     ]
   },
   {
-    id:4, emoji:'🧠', cor:'#2D3625',
+    id:4, emoji:'🧠', cor:'#2D5E4A',
     titulo:'Foco e Performance Mental',
     desc:'Trabalhe com o ritmo natural do seu cérebro e produza melhor — sem se esgotar no processo.',
     ref:'Diamond, A. (2013). Executive functions. Annual Review of Psychology.',
@@ -12074,8 +12076,20 @@ function renderAlertasPiora(alertas) {
       <span class="card-title">Alertas de Piora Individual</span>
       <span class="chip chip-red">${alertas.length} alerta${alertas.length > 1 ? 's' : ''}</span>
     </div>
-    ${alertas.map(a => `
+    ${alertas.map(a => {
+      const tipoAlerta = a.dimPior || 'Piora Geral';
+      const tipoEmoji = {Burnout:'🔴',Estresse:'🟡','Sono/Fadiga':'🟠','Ansiedade Social':'🟣'}[tipoAlerta] || '🔴';
+      const gravidade = a.delta >= 25 ? 'Crítico' : a.delta >= 15 ? 'Atenção' : 'Monitorar';
+      const gravCor = a.delta >= 25 ? '#DC2626' : a.delta >= 15 ? '#D97706' : '#6B7280';
+      return `
       <div style="padding:14px;border:1px solid rgba(239,68,68,.2);border-radius:12px;background:rgba(254,242,242,.6);margin-bottom:10px;cursor:pointer" onclick="abrirFicha('${a.id}')">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px">
+          <div style="display:flex;align-items:center;gap:6px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:99px;padding:4px 10px">
+            <span style="font-size:13px">${tipoEmoji}</span>
+            <span style="font-size:11.5px;font-weight:700;color:#DC2626">${tipoAlerta}</span>
+          </div>
+          <span style="font-size:11px;font-weight:700;color:${gravCor};background:${gravCor}14;border-radius:99px;padding:3px 8px">${gravidade}</span>
+        </div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
           <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#EF4444,#DC2626);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex-shrink:0">
             ${a.nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase()}
@@ -12109,7 +12123,8 @@ function renderAlertasPiora(alertas) {
           <button onclick="event.stopPropagation();fichaColaboradorId='${a.id}';abrirModalIntervencao()" style="flex:1;padding:7px;border-radius:8px;border:1px solid rgba(239,68,68,.3);background:transparent;color:#EF4444;font-size:11.5px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">+ Registrar intervenção</button>
         </div>
       </div>
-    `).join('')}
+    `;
+    }).join('')}
   `;
 }
 
@@ -12163,19 +12178,19 @@ async function gerarRelatorioNR1() {
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Inter',sans-serif; color:#1A2E20; background:#fff; font-size:11pt; line-height:1.6; }
   .page { max-width:210mm; margin:0 auto; padding:20mm 18mm; }
-  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #2D3625; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #2D5E4A; }
   .logo-area { display:flex; flex-direction:column; gap:4px; }
-  .logo-name { font-size:22pt; font-weight:800; color:#2D3625; letter-spacing:-1px; }
+  .logo-name { font-size:22pt; font-weight:800; color:#2D5E4A; letter-spacing:-1px; }
   .logo-tag { font-size:8pt; color:rgba(0,0,0,.45); font-weight:500; text-transform:uppercase; letter-spacing:.8px; }
   .header-right { text-align:right; }
-  .doc-tipo { font-size:9pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#2D3625; margin-bottom:4px; }
+  .doc-tipo { font-size:9pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#2D5E4A; margin-bottom:4px; }
   .doc-data { font-size:9pt; color:rgba(0,0,0,.5); }
   h1 { font-size:16pt; font-weight:800; color:#1A2E20; margin-bottom:6px; }
-  h2 { font-size:12pt; font-weight:700; color:#2D3625; margin:24px 0 12px; padding-bottom:6px; border-bottom:1px solid rgba(45,106,79,.2); }
+  h2 { font-size:12pt; font-weight:700; color:#2D5E4A; margin:24px 0 12px; padding-bottom:6px; border-bottom:1px solid rgba(45,106,79,.2); }
   h3 { font-size:10.5pt; font-weight:700; color:#1A2E20; margin:14px 0 8px; }
   p { margin-bottom:10px; color:#2C2C2C; }
   .subtitle { font-size:10pt; color:rgba(0,0,0,.5); margin-bottom:24px; }
-  .badge-nr { display:inline-block; background:#2D3625; color:#fff; font-size:8pt; font-weight:700; padding:4px 12px; border-radius:99px; margin-bottom:20px; }
+  .badge-nr { display:inline-block; background:#2D5E4A; color:#fff; font-size:8pt; font-weight:700; padding:4px 12px; border-radius:99px; margin-bottom:20px; }
   .section-box { background:#F7F4EF; border-radius:10px; padding:16px 20px; margin-bottom:16px; }
   .empresa-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
   .empresa-item label { display:block; font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:rgba(0,0,0,.4); margin-bottom:2px; }
@@ -12185,7 +12200,7 @@ async function gerarRelatorioNR1() {
   .metric-box .val { font-size:22pt; font-weight:800; color:#1A2E20; }
   .metric-box .lbl { font-size:8.5pt; color:rgba(0,0,0,.55); margin-top:4px; }
   .dim-table { width:100%; border-collapse:collapse; margin-bottom:16px; }
-  .dim-table th { background:#2D3625; color:#fff; font-size:9pt; font-weight:700; padding:8px 12px; text-align:left; }
+  .dim-table th { background:#2D5E4A; color:#fff; font-size:9pt; font-weight:700; padding:8px 12px; text-align:left; }
   .dim-table td { padding:8px 12px; font-size:10pt; border-bottom:1px solid rgba(0,0,0,.08); }
   .dim-table tr:last-child td { border-bottom:none; }
   .dim-table tr:nth-child(even) td { background:#F7F4EF; }
@@ -12194,7 +12209,7 @@ async function gerarRelatorioNR1() {
   .status-critico { color:#DC2626; font-weight:700; }
   .interv-row { padding:10px 0; border-bottom:1px solid rgba(0,0,0,.07); display:flex; gap:12px; align-items:flex-start; }
   .interv-row:last-child { border-bottom:none; }
-  .interv-tipo { font-size:9pt; font-weight:700; color:#2D3625; min-width:140px; }
+  .interv-tipo { font-size:9pt; font-weight:700; color:#2D5E4A; min-width:140px; }
   .interv-desc { font-size:9.5pt; color:#2C2C2C; flex:1; }
   .interv-data { font-size:8.5pt; color:rgba(0,0,0,.4); white-space:nowrap; }
   .aviso-box { background:#FEF9EE; border:1.5px solid rgba(201,168,76,.4); border-radius:10px; padding:16px 20px; margin-bottom:20px; }
@@ -12207,7 +12222,7 @@ async function gerarRelatorioNR1() {
   .ass-cargo { font-size:8.5pt; color:rgba(0,0,0,.4); }
   .crp-badge { display:flex; align-items:center; gap:8px; background:#E8F4EE; border:1px solid rgba(45,94,74,.2); border-radius:8px; padding:8px 12px; margin-top:20px; }
   .crp-badge span { font-size:9pt; color:#1A2E20; }
-  .crp-badge strong { color:#2D3625; }
+  .crp-badge strong { color:#2D5E4A; }
   .disclaimer { background:#F7F4EF; border:1px solid rgba(45,94,74,.15); border-radius:8px; padding:12px 16px; margin-top:16px; font-size:9pt; color:rgba(0,0,0,.55); line-height:1.6; }
   @media print { body { print-color-adjust:exact; -webkit-print-color-adjust:exact; } }
 </style>
@@ -12309,7 +12324,7 @@ async function gerarRelatorioNR1() {
     </div>
     <div style="text-align:right">
       <div style="font-size:8pt;color:rgba(0,0,0,.35)">Documento gerado pela plataforma</div>
-      <div style="font-size:9pt;font-weight:700;color:#2D3625">Ranne Care · ranne.vercel.app</div>
+      <div style="font-size:9pt;font-weight:700;color:#2D5E4A">Ranne Care · ranne.vercel.app</div>
       <div style="font-size:8pt;color:rgba(0,0,0,.35)">${dataHoje}</div>
     </div>
   </div>
@@ -12786,944 +12801,497 @@ function diarioLimparTudo() {
 </script>
 
 <!-- ══════════════════════════════════════
-     RANNE CHATBOT — Botão flutuante IA
-     Aparece nas áreas empresa e colaborador
+     RANNE CHATBOT — IA Saúde Mental
      ════════════════════════════════════ -->
 
 <style>
 /* ── Botão flutuante ── */
 #ranne-chat-btn {
   position: fixed;
-  bottom: calc(72px + var(--safe-bottom, 0px));
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   right: 20px;
-  width: 52px; height: 52px;
+  width: 56px; height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2D3625, #3A6B4A);
-  color: #fff;
+  background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 999;
-  display: none; /* shown via JS after login */
-  align-items: center;
-  justify-content: center;
+  z-index: 1000;
+  display: none;
+  padding: 0;
   box-shadow: 0 4px 20px rgba(45,54,37,.35);
   transition: transform .2s, box-shadow .2s;
-  font-size: 22px;
 }
-#ranne-chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(45,54,37,.45); }
+#ranne-chat-btn img {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid #2D5E4A;
+  background: #F0EDE6;
+}
+#ranne-chat-btn:hover { transform: scale(1.08); }
 #ranne-chat-btn .chat-badge {
   position: absolute; top: -2px; right: -2px;
   width: 16px; height: 16px; border-radius: 50%;
-  background: #C9A87C; border: 2px solid var(--bg);
+  background: #EF4444; border: 2px solid var(--bg, #F5EDE3);
   display: none;
 }
 
 /* ── Janela do chat ── */
 #ranne-chat-window {
   position: fixed;
-  bottom: calc(136px + var(--safe-bottom, 0px));
-  right: 20px;
-  width: 340px;
-  max-height: 520px;
-  background: var(--white);
-  border-radius: 20px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.18);
+  z-index: 1001;
   display: none;
   flex-direction: column;
-  z-index: 998;
   overflow: hidden;
-  border: 1px solid var(--border);
-  animation: chatIn .25s cubic-bezier(.16,1,.3,1);
+  border: 1px solid rgba(45,94,74,.18);
+  animation: chatIn .28s cubic-bezier(.16,1,.3,1);
 }
 @keyframes chatIn {
-  from { opacity:0; transform: translateY(12px) scale(.97); }
+  from { opacity:0; transform: translateY(14px) scale(.97); }
   to   { opacity:1; transform: translateY(0) scale(1); }
 }
 #ranne-chat-window.open { display: flex; }
 
-/* Header */
+/* ── Posicionamento responsivo ── */
+/* Desktop */
+@media (min-width: 769px) {
+  #ranne-chat-window {
+    bottom: 100px; right: 24px;
+    width: 380px; max-height: 600px;
+    border-radius: 22px;
+    background: #FFFFFF;
+    box-shadow: 0 12px 48px rgba(0,0,0,.18);
+  }
+  #ranne-chat-btn { bottom: 32px; right: 28px; }
+}
+/* Tablet */
+@media (min-width: 481px) and (max-width: 768px) {
+  #ranne-chat-window {
+    bottom: 90px; right: 16px;
+    width: calc(100vw - 32px); max-width: 420px;
+    max-height: 70vh;
+    border-radius: 20px;
+    background: #FFFFFF;
+    box-shadow: 0 8px 36px rgba(0,0,0,.16);
+  }
+  #ranne-chat-btn { bottom: calc(80px + env(safe-area-inset-bottom,0px)); right: 16px; }
+}
+/* Mobile */
+@media (max-width: 480px) {
+  #ranne-chat-window {
+    bottom: 0; left: 0; right: 0;
+    width: 100vw; max-width: 100vw;
+    height: 92vh; max-height: 92vh;
+    border-radius: 22px 22px 0 0;
+    background: #FFFFFF;
+    box-shadow: 0 -4px 32px rgba(0,0,0,.18);
+  }
+  #ranne-chat-btn {
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    right: 16px; width: 52px; height: 52px;
+  }
+  #ranne-chat-btn img { width: 52px; height: 52px; }
+}
+
+/* ── Header ── */
 .chat-header {
-  background: linear-gradient(135deg, #2D3625, #3A6B4A);
+  background: linear-gradient(135deg, #1E3528, #2D5E4A);
   padding: 14px 16px;
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 11px;
   flex-shrink: 0;
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .chat-header-avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: rgba(255,255,255,.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  overflow: hidden; flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,.25);
 }
-.chat-header-info { flex: 1; }
-.chat-header-name { color: #fff; font-size: 13px; font-weight: 700; }
-.chat-header-status { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 1px; }
+.chat-header-avatar img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.chat-header-info { flex: 1; min-width: 0; }
+.chat-header-name { color: #fff; font-size: 13.5px; font-weight: 700; }
+.chat-header-status { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 2px; display:flex; align-items:center; gap:5px; }
+.chat-online-dot { width:6px; height:6px; border-radius:50%; background:#52C995; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
 .chat-header-close {
-  background: none; border: none; color: rgba(255,255,255,.7);
-  font-size: 18px; cursor: pointer; padding: 4px; line-height: 1;
-  transition: color .15s;
+  background: rgba(255,255,255,.12); border: none;
+  color: rgba(255,255,255,.85); font-size: 16px;
+  cursor: pointer; padding: 6px; line-height: 1;
+  border-radius: 8px; transition: background .15s; flex-shrink: 0;
 }
-.chat-header-close:hover { color: #fff; }
+.chat-header-close:hover { background: rgba(255,255,255,.22); color: #fff; }
 
-/* Mensagens */
+/* ── Tela de boas-vindas ── */
+#chat-welcome {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px 24px; gap: 18px;
+  text-align: center;
+}
+.chat-welcome-avatar {
+  width: 88px; height: 88px; border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(45,94,74,.18);
+  box-shadow: 0 4px 20px rgba(45,94,74,.15);
+  flex-shrink: 0;
+}
+.chat-welcome-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-welcome-msg {
+  font-size: 15px; font-weight: 700; color: #1A2E20;
+  line-height: 1.4; margin: 0;
+}
+.chat-welcome-sub {
+  font-size: 12.5px; color: #5A7A6A; line-height: 1.55;
+  margin: -8px 0 0; max-width: 280px;
+}
+.chat-welcome-suggs {
+  display: flex; flex-direction: column; gap: 8px;
+  width: 100%; max-width: 320px;
+}
+.chat-welcome-sugg {
+  background: #F7F4EE;
+  border: 1.5px solid rgba(45,94,74,.15);
+  color: #1A2E20;
+  font-size: 12.5px; font-weight: 500;
+  padding: 11px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all .15s;
+  font-family: "Inter", sans-serif;
+  line-height: 1.4;
+}
+.chat-welcome-sugg:hover {
+  background: #2D5E4A; color: #fff;
+  border-color: #2D5E4A;
+  transform: translateX(3px);
+}
+
+/* ── Área de mensagens ── */
 .chat-messages {
-  flex: 1; overflow-y: auto; padding: 14px;
+  flex: 1; overflow-y: auto; padding: 14px 14px 8px;
   display: flex; flex-direction: column; gap: 10px;
   scroll-behavior: smooth;
 }
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(45,94,74,.2); border-radius: 2px; }
+
 .chat-msg {
   max-width: 85%; padding: 10px 13px;
   border-radius: 14px; font-size: 13px; line-height: 1.55;
-  animation: msgIn .2s ease;
+  animation: msgIn .2s ease; word-break: break-word;
 }
 @keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
 .chat-msg.bot {
-  background: var(--surface);
-  color: var(--card-text);
-  border-bottom-left-radius: 4px;
-  align-self: flex-start;
-  border: 1px solid var(--border);
+  background: #F0EDE6; color: #1A2E20;
+  border-bottom-left-radius: 4px; align-self: flex-start;
+  border: 1px solid rgba(45,94,74,.12);
 }
 .chat-msg.user {
-  background: #2D3625;
-  color: #fff;
-  border-bottom-right-radius: 4px;
-  align-self: flex-end;
+  background: #2D5E4A; color: #fff;
+  border-bottom-right-radius: 4px; align-self: flex-end;
 }
 .chat-msg.typing {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  align-self: flex-start;
-  padding: 12px 16px;
+  background: #F0EDE6; border: 1px solid rgba(45,94,74,.12);
+  align-self: flex-start; padding: 12px 16px;
 }
 .typing-dots { display: flex; gap: 4px; align-items: center; }
 .typing-dots span {
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--card-text-muted);
+  background: #5A7A6A;
   animation: dot .9s infinite;
 }
 .typing-dots span:nth-child(2) { animation-delay: .15s; }
 .typing-dots span:nth-child(3) { animation-delay: .3s; }
 @keyframes dot { 0%,60%,100% { transform: translateY(0); opacity:.4; } 30% { transform: translateY(-5px); opacity:1; } }
 
-/* Sugestões rápidas */
+/* ── Sugestões rápidas (pós-conversa) ── */
 .chat-suggestions {
-  padding: 0 14px 10px;
-  display: flex; flex-wrap: wrap; gap: 6px;
-  flex-shrink: 0;
+  padding: 0 12px 8px;
+  display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0;
 }
 .chat-sugg {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--card-text-muted);
-  font-size: 11px; font-weight: 600;
+  background: #F0EDE6; border: 1.5px solid rgba(45,94,74,.15);
+  color: #2D5E4A; font-size: 11px; font-weight: 600;
   padding: 5px 10px; border-radius: 99px;
-  cursor: pointer; transition: all .15s;
-  white-space: nowrap;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+  font-family: "Inter", sans-serif;
 }
-.chat-sugg:hover { background: #2D3625; color: #fff; border-color: #2D3625; }
+.chat-sugg:hover { background: #2D5E4A; color: #fff; border-color: #2D5E4A; }
 
-/* Input */
+/* ── Input ── */
 .chat-input-row {
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  display: flex; gap: 8px; align-items: flex-end;
-  flex-shrink: 0;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(45,94,74,.1);
+  display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0;
+  background: #FFFFFF;
 }
 .chat-input-row textarea {
-  flex: 1; border: 1.5px solid var(--border); border-radius: 12px;
-  padding: 9px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
+  flex: 1; border: 1.5px solid rgba(45,94,74,.2);
+  border-radius: 12px; padding: 9px 12px;
+  font-size: 13px; font-family: "Inter", sans-serif;
   resize: none; outline: none; line-height: 1.45;
-  background: var(--surface); color: var(--card-text);
+  background: #F7F4EE; color: #1A2E20;
   max-height: 90px; transition: border-color .15s;
 }
-.chat-input-row textarea:focus { border-color: #3A6B4A; }
-.chat-input-row textarea::placeholder { color: var(--card-text-faint); }
+.chat-input-row textarea:focus { border-color: #2D5E4A; }
+.chat-input-row textarea::placeholder { color: #8AAA95; }
 .chat-send-btn {
-  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-  background: #2D3625; color: #fff; border: none;
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: #2D5E4A; color: #fff; border: none;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: opacity .15s; font-size: 16px;
+  transition: opacity .15s, transform .1s;
 }
-.chat-send-btn:hover { opacity: .85; }
-.chat-send-btn:disabled { opacity: .4; cursor: default; }
+.chat-send-btn:hover { opacity: .88; transform: scale(1.05); }
+.chat-send-btn:disabled { opacity: .4; cursor: default; transform: none; }
 
-/* Dark mode */
-body.dark #ranne-chat-window { background: var(--white); border-color: var(--border); }
-body.dark .chat-msg.bot { background: var(--surface); border-color: var(--border); }
-body.dark .chat-input-row textarea { background: var(--surface); }
-body.dark .chat-sugg { background: var(--surface); border-color: var(--border); }
-
-/* Mobile: acima da navbar */
-@media (max-width: 480px) {
-  #ranne-chat-window {
-    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-    right: 0; left: 0; width: 100%;
-    max-height: calc(85vh - 64px); border-radius: 20px 20px 0 0;
-  }
-  #ranne-chat-btn { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); right: 16px; }
-}
-@media (min-width: 481px) {
-  #ranne-chat-window { bottom: 90px; right: 24px; width: 360px; max-height: 560px; }
-  #ranne-chat-btn { bottom: 28px; right: 28px; }
-}
+/* ── Dark mode ── */
+body.dark #ranne-chat-window,
+body.dark .chat-input-row { background: #1E2A1A; }
+body.dark .chat-msg.bot,
+body.dark .chat-msg.typing { background: #253020; border-color: rgba(255,255,255,.08); color: #E8F4F0; }
+body.dark .chat-input-row textarea { background: #253020; color: #E8F4F0; border-color: rgba(255,255,255,.15); }
+body.dark .chat-sugg { background: #253020; border-color: rgba(255,255,255,.12); color: #7EC8A0; }
+body.dark #chat-welcome { background: #1E2A1A; }
+body.dark .chat-welcome-msg { color: #E8F4F0; }
+body.dark .chat-welcome-sub { color: rgba(232,244,240,.65); }
+body.dark .chat-welcome-sugg { background: #253020; border-color: rgba(255,255,255,.1); color: #E8F4F0; }
+body.dark .chat-welcome-sugg:hover { background: #2D5E4A; color: #fff; }
 </style>
 
 <!-- Botão flutuante -->
-<button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Assistente Ranne">
-  🌿
+<button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Falar com a Ranne">
+  <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne" onerror="this.style.display='none';this.parentElement.innerHTML='🌿'">
   <span class="chat-badge" id="chat-badge"></span>
 </button>
 
 <!-- Janela do chat -->
 <div id="ranne-chat-window">
+  <!-- Header -->
   <div class="chat-header">
-    <div class="chat-header-avatar">🌿</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">Assistente Ranne</div>
-      <div class="chat-header-status" id="chat-status">Pronto para ajudar</div>
+    <div class="chat-header-avatar">
+      <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne" onerror="this.outerHTML='<div style=&quot;display:flex;align-items:center;justify-content:center;width:40px;height:40px;font-size:20px&quot;>🌿</div>'">
     </div>
-    <button class="chat-header-close" onclick="ranneChat.toggle()">✕</button>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Ranne</div>
+      <div class="chat-header-status"><span class="chat-online-dot"></span>Online agora</div>
+    </div>
+    <button class="chat-header-close" onclick="ranneChat.toggle()" aria-label="Fechar chat">✕</button>
   </div>
-  <div class="chat-messages" id="chat-messages"></div>
+
+  <!-- Tela de boas-vindas (some ao iniciar conversa) -->
+  <div id="chat-welcome">
+    <div class="chat-welcome-avatar">
+      <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne">
+    </div>
+    <p class="chat-welcome-msg">Olá! Eu sou a Ranne 👋<br>Como posso te ajudar hoje?</p>
+    <p class="chat-welcome-sub" id="chat-welcome-sub">Escolha uma pergunta ou escreva livremente:</p>
+    <div class="chat-welcome-suggs" id="chat-welcome-suggs"></div>
+  </div>
+
+  <!-- Área de mensagens (oculta no início) -->
+  <div class="chat-messages" id="chat-messages" style="display:none"></div>
   <div class="chat-suggestions" id="chat-suggestions"></div>
+
+  <!-- Input -->
   <div class="chat-input-row">
-    <textarea id="chat-input" placeholder="Digite sua mensagem…" rows="1"
+    <textarea id="chat-input" placeholder="Escreva uma mensagem…" rows="1"
       onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ranneChat.send();}"
       oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-    <button class="chat-send-btn" id="chat-send-btn" onclick="ranneChat.send()">➤</button>
+    <button class="chat-send-btn" id="chat-send-btn" onclick="ranneChat.send()" aria-label="Enviar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
   </div>
 </div>
 
 <script>
-/* ══════════════════════════════════════
-   RANNE CHATBOT — IA Saúde Mental
-   ════════════════════════════════════ */
 const ranneChat = (() => {
   let history = [];
   let isOpen = false;
   let isLoading = false;
+  let welcomeActive = true;
 
-  const SUGGESTIONS_RH = [
-    '📊 Como interpretar o ISA?',
-    '🚨 O que fazer com alertas críticos?',
-    '📋 Como criar um plano de ação?',
-    '👥 Como engajar a equipe nos testes?',
+  const SUGGS_RH = [
+    '📊 Como interpretar o ISA da minha equipe?',
+    '🚨 O que fazer quando vejo um alerta de burnout?',
+    '📋 Como criar um plano de ação eficaz?',
+    '👥 Como engajar colaboradores nos diagnósticos?',
+    '📄 O que é a NR-1 e como cumprir?',
   ];
-  const SUGGESTIONS_COLAB = [
-    '😰 Estou me sentindo sobrecarregado',
-    '😴 Tenho dormido mal',
-    '💡 Dicas para reduzir o estresse',
-    '🧘 Como praticar autocuidado?',
+  const SUGGS_COLAB = [
+    '😰 Estou me sentindo sobrecarregado(a)',
+    '😴 Tenho dormido muito mal',
+    '💡 Preciso de dicas para reduzir o estresse',
+    '🧘 Como posso praticar autocuidado no trabalho?',
+    '💬 Quero entender meu resultado de saúde',
   ];
+
+  function getRole() {
+    return (typeof currentRole !== "undefined" ? currentRole : "empresa");
+  }
+
+  function getSuggs() {
+    return getRole() === "empresa" ? SUGGS_RH : SUGGS_COLAB;
+  }
 
   function getSystemPrompt() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    const isRH = role === 'empresa';
-    if (isRH) {
-      return 'Voc\u00ea \u00e9 o Assistente Ranne, especialista em sa\u00fade organizacional e bem-estar no trabalho. '
-        + 'Voc\u00ea apoia gestores e profissionais de RH a interpretar dados de clima organizacional, identificar sinais de burnout e sobrecarga nas equipes, e criar planos de a\u00e7\u00e3o eficazes. '
-        + 'Diretrizes: '
-        + '- Seja objetivo, emp\u00e1tico e profissional. '
-        + '- Use dados e evid\u00eancias quando poss\u00edvel. '
-        + '- Sugira a\u00e7\u00f5es concretas e pr\u00e1ticas. '
-        + '- Lembre sempre que o app \u00e9 uma ferramenta de apoio, n\u00e3o substitui avalia\u00e7\u00e3o cl\u00ednica profissional. '
-        + '- Responda em portugu\u00eas do Brasil. '
-        + '- Seja conciso (m\u00e1x. 3 par\u00e1grafos por resposta). '
-        + '- Nunca fa\u00e7a diagn\u00f3sticos de sa\u00fade mental individuais.';
-    } else {
-      return 'Voc\u00ea \u00e9 o Assistente Ranne, um apoio amig\u00e1vel de sa\u00fade mental e bem-estar no trabalho. '
-        + 'Voc\u00ea ajuda colaboradores a entender seus pr\u00f3prios sentimentos, lidar com estresse, burnout e sobrecarga, e adotar pr\u00e1ticas de autocuidado no dia a dia. '
-        + 'Diretrizes: '
-        + '- Seja caloroso, acolhedor e sem julgamentos. '
-        + '- Use linguagem simples e acess\u00edvel. '
-        + '- Ofere\u00e7a dicas pr\u00e1ticas baseadas em evid\u00eancias. '
-        + '- Valide os sentimentos da pessoa antes de dar sugest\u00f5es. '
-        + '- Lembre sempre que voc\u00ea \u00e9 um apoio, n\u00e3o substitui profissionais de sa\u00fade mental. '
-        + '- Se a pessoa demonstrar sofrimento intenso, encoraje buscar apoio profissional. '
-        + '- Responda em portugu\u00eas do Brasil. '
-        + '- Seja conciso e humano (m\u00e1x. 3 par\u00e1grafos). '
-        + '- Nunca fa\u00e7a diagn\u00f3sticos.';
+    if (getRole() === "empresa") {
+      return "Você é a Ranne, assistente especialista em saúde organizacional e bem-estar corporativo. " +
+        "Apoia gestores e RH a interpretar dados de clima, identificar sinais de burnout e criar planos de ação. " +
+        "Seja objetivo, empático e profissional. Use dados e evidências. Sugira ações concretas. " +
+        "Máx. 3 parágrafos por resposta. Responda em português do Brasil. Nunca faça diagnósticos clínicos.";
     }
+    return "Você é a Ranne, apoio amigável de saúde mental e bem-estar no trabalho. " +
+      "Ajuda colaboradores com estresse, burnout e autocuidado. " +
+      "Seja calorosa, acolhedora, sem julgamentos. Valide os sentimentos antes de sugerir. " +
+      "Se a pessoa demonstrar sofrimento intenso, encoraje buscar apoio profissional. " +
+      "Máx. 3 parágrafos. Responda em português do Brasil. Nunca faça diagnósticos.";
   }
 
-  function getSuggestions() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    return role === 'empresa' ? SUGGESTIONS_RH : SUGGESTIONS_COLAB;
+  function renderWelcomeSuggs() {
+    const el = document.getElementById("chat-welcome-suggs");
+    if (!el) return;
+    el.innerHTML = getSuggs().map(function(s) {
+      return "<button class=\"chat-welcome-sugg\" onclick=\"ranneChat.startFromSugg(this, '" + s.replace(/'/g,"\\'") + "')\">" + s + "</button>";
+    }).join("");
   }
 
-  function getWelcome() {
-    const role = typeof currentRole !== 'undefined' ? currentRole : 'empresa';
-    if (role === 'empresa') {
-      return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para ajudar voc\u00ea a entender os dados da sua equipe e criar estrat\u00e9gias de bem-estar organizacional. Como posso ajudar?';
-    }
-    return 'Ol\u00e1! Sou o Assistente Ranne \uD83C\uDF3F\n\nEstou aqui para te apoiar com dicas de bem-estar, lidar com o estresse do dia a dia e cuidar da sua sa\u00fade mental. Como voc\u00ea est\u00e1 se sentindo hoje?';
+  function hideWelcome() {
+    const w = document.getElementById("chat-welcome");
+    const m = document.getElementById("chat-messages");
+    if (w) w.style.display = "none";
+    if (m) m.style.display = "flex";
+    welcomeActive = false;
   }
 
   function renderMsg(text, type) {
-    const el = document.createElement('div');
-    el.className = 'chat-msg ' + type;
+    const el = document.createElement("div");
+    el.className = "chat-msg " + type;
     el.textContent = text;
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
+    const msgs = document.getElementById("chat-messages");
+    if (msgs) { msgs.appendChild(el); scrollBottom(); }
     return el;
   }
 
   function renderTyping() {
-    const el = document.createElement('div');
-    el.className = 'chat-msg typing';
-    el.id = 'chat-typing';
-    el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-    document.getElementById('chat-messages').appendChild(el);
-    scrollBottom();
+    const el = document.createElement("div");
+    el.className = "chat-msg typing"; el.id = "chat-typing";
+    el.innerHTML = "<div class=\"typing-dots\"><span></span><span></span><span></span></div>";
+    const msgs = document.getElementById("chat-messages");
+    if (msgs) { msgs.appendChild(el); scrollBottom(); }
   }
 
   function removeTyping() {
-    document.getElementById('chat-typing')?.remove();
+    document.getElementById("chat-typing")?.remove();
   }
 
   function scrollBottom() {
-    const el = document.getElementById('chat-messages');
+    const el = document.getElementById("chat-messages");
     if (el) el.scrollTop = el.scrollHeight;
   }
 
-  function renderSuggestions(show = true) {
-    const el = document.getElementById('chat-suggestions');
+  function renderSuggs(show) {
+    const el = document.getElementById("chat-suggestions");
     if (!el) return;
-    if (!show) { el.innerHTML = ''; return; }
-    el.innerHTML = getSuggestions().map(function(s) {
-      return '<button class="chat-sugg" onclick="ranneChat.sendText(\'' + s.replace(/'/g, "\\'") + '\')">' + s + '</button>';
-    }).join('');
+    if (!show) { el.innerHTML = ""; return; }
+    el.innerHTML = getSuggs().slice(0,3).map(function(s) {
+      return "<button class=\"chat-sugg\" onclick=\"ranneChat.sendText(\'" + s.replace(/'/g,"\\'") + "\')\">" + s + "</button>";
+    }).join("");
   }
 
   function setStatus(txt) {
-    const el = document.getElementById('chat-status');
+    const el = document.getElementById("chat-status");
     if (el) el.textContent = txt;
   }
 
   async function callAI(userMsg) {
-    const msgs = history.map(m => ({ role: m.role, content: m.content }));
-    msgs.push({ role: 'user', content: userMsg });
-
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
+    msgs.push({ role: "user", content: userMsg });
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: "claude-sonnet-4-20250514",
         max_tokens: 1000,
         system: getSystemPrompt(),
         messages: msgs
       })
     });
-
-    if (!res.ok) throw new Error('Erro na API');
+    if (!res.ok) throw new Error("API error");
     const data = await res.json();
-    return data.content?.[0]?.text || 'Desculpe, não consegui processar sua mensagem.';
+    return data.content?.[0]?.text || "Desculpe, não consegui processar sua mensagem.";
   }
 
   return {
     toggle() {
       isOpen = !isOpen;
-      const win = document.getElementById('ranne-chat-window');
-      const badge = document.getElementById('chat-badge');
+      const win = document.getElementById("ranne-chat-window");
+      const badge = document.getElementById("chat-badge");
       if (isOpen) {
-        win.classList.add('open');
-        badge.style.display = 'none';
-        if (history.length === 0) {
-          renderMsg(getWelcome(), 'bot');
-          renderSuggestions(true);
-        }
-        setTimeout(() => document.getElementById('chat-input')?.focus(), 200);
+        win.classList.add("open");
+        if (badge) badge.style.display = "none";
+        if (welcomeActive) renderWelcomeSuggs();
+        setTimeout(function() { document.getElementById("chat-input")?.focus(); }, 250);
       } else {
-        win.classList.remove('open');
+        win.classList.remove("open");
       }
     },
 
     show() {
-      document.getElementById('ranne-chat-btn').style.display = 'flex';
+      const btn = document.getElementById("ranne-chat-btn");
+      if (btn) btn.style.display = "flex";
+    },
+
+    startFromSugg(el, text) {
+      hideWelcome();
+      this.sendText(text);
     },
 
     async send() {
-      const input = document.getElementById('chat-input');
+      const input = document.getElementById("chat-input");
       const text = input?.value.trim();
       if (!text || isLoading) return;
+      if (welcomeActive) hideWelcome();
       this.sendText(text);
-      input.value = '';
-      input.style.height = 'auto';
+      input.value = "";
+      input.style.height = "auto";
     },
 
     async sendText(text) {
       if (isLoading) return;
       isLoading = true;
-
-      renderSuggestions(false);
-      renderMsg(text, 'user');
-      history.push({ role: 'user', content: text });
-
-      const sendBtn = document.getElementById('chat-send-btn');
+      if (welcomeActive) hideWelcome();
+      renderSuggs(false);
+      renderMsg(text, "user");
+      history.push({ role: "user", content: text });
+      const sendBtn = document.getElementById("chat-send-btn");
       if (sendBtn) sendBtn.disabled = true;
-      setStatus('Digitando…');
+      setStatus("Digitando…");
       renderTyping();
-
       try {
         const reply = await callAI(text);
         removeTyping();
-        renderMsg(reply, 'bot');
-        history.push({ role: 'assistant', content: reply });
-        // Manter histórico em no máx 20 trocas
+        renderMsg(reply, "bot");
+        history.push({ role: "assistant", content: reply });
         if (history.length > 40) history = history.slice(-40);
-        setStatus('Pronto para ajudar');
+        setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg('Ops, tive um problema de conexão. Tente novamente em instantes.', 'bot');
-        setStatus('Pronto para ajudar');
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
+        setStatus("Online agora");
       } finally {
         isLoading = false;
         if (sendBtn) sendBtn.disabled = false;
-        renderSuggestions(true);
+        renderSuggs(true);
       }
     }
   };
 })();
-
-/* Mostrar botão após login (chama ranneChat.show() nas funções de entrada) */
-</script>
-
-
-<!-- ══════════════════════════════════════
-     RANNE CHATBOT — Botão flutuante IA
-     Aparece nas áreas empresa e colaborador
-     ════════════════════════════════════ -->
-
-<style>
-/* ── Botão flutuante ── */
-#ranne-chat-btn {
-  position: fixed;
-  bottom: calc(72px + var(--safe-bottom, 0px));
-  right: 20px;
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2D3625, #3A6B4A);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  z-index: 999;
-  display: none; /* shown via JS after login */
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(45,54,37,.35);
-  transition: transform .2s, box-shadow .2s;
-  font-size: 22px;
-}
-#ranne-chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(45,54,37,.45); }
-#ranne-chat-btn .chat-badge {
-  position: absolute; top: -2px; right: -2px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: #C9A87C; border: 2px solid var(--bg);
-  display: none;
-}
-
-/* ── Janela do chat ── */
-#ranne-chat-window {
-  position: fixed;
-  bottom: calc(136px + var(--safe-bottom, 0px));
-  right: 20px;
-  width: 340px;
-  max-height: 520px;
-  background: var(--white);
-  border-radius: 20px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.18);
-  display: none;
-  flex-direction: column;
-  z-index: 998;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  animation: chatIn .25s cubic-bezier(.16,1,.3,1);
-}
-@keyframes chatIn {
-  from { opacity:0; transform: translateY(12px) scale(.97); }
-  to   { opacity:1; transform: translateY(0) scale(1); }
-}
-#ranne-chat-window.open { display: flex; }
-
-/* Header */
-.chat-header {
-  background: linear-gradient(135deg, #2D3625, #3A6B4A);
-  padding: 14px 16px;
-  display: flex; align-items: center; gap: 10px;
-  flex-shrink: 0;
-}
-.chat-header-avatar {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: rgba(255,255,255,.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
-}
-.chat-header-info { flex: 1; }
-.chat-header-name { color: #fff; font-size: 13px; font-weight: 700; }
-.chat-header-status { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 1px; }
-.chat-header-close {
-  background: none; border: none; color: rgba(255,255,255,.7);
-  font-size: 18px; cursor: pointer; padding: 4px; line-height: 1;
-  transition: color .15s;
-}
-.chat-header-close:hover { color: #fff; }
-
-/* Mensagens */
-.chat-messages {
-  flex: 1; overflow-y: auto; padding: 14px;
-  display: flex; flex-direction: column; gap: 10px;
-  scroll-behavior: smooth;
-}
-.chat-msg {
-  max-width: 85%; padding: 10px 13px;
-  border-radius: 14px; font-size: 13px; line-height: 1.55;
-  animation: msgIn .2s ease;
-}
-@keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-.chat-msg.bot {
-  background: var(--surface);
-  color: var(--card-text);
-  border-bottom-left-radius: 4px;
-  align-self: flex-start;
-  border: 1px solid var(--border);
-}
-.chat-msg.user {
-  background: #2D3625;
-  color: #fff;
-  border-bottom-right-radius: 4px;
-  align-self: flex-end;
-}
-.chat-msg.typing {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  align-self: flex-start;
-  padding: 12px 16px;
-}
-.typing-dots { display: flex; gap: 4px; align-items: center; }
-.typing-dots span {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--card-text-muted);
-  animation: dot .9s infinite;
-}
-.typing-dots span:nth-child(2) { animation-delay: .15s; }
-.typing-dots span:nth-child(3) { animation-delay: .3s; }
-@keyframes dot { 0%,60%,100% { transform: translateY(0); opacity:.4; } 30% { transform: translateY(-5px); opacity:1; } }
-
-/* Sugestões rápidas */
-.chat-suggestions {
-  padding: 0 14px 10px;
-  display: flex; flex-wrap: wrap; gap: 6px;
-  flex-shrink: 0;
-}
-.chat-sugg {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--card-text-muted);
-  font-size: 11px; font-weight: 600;
-  padding: 5px 10px; border-radius: 99px;
-  cursor: pointer; transition: all .15s;
-  white-space: nowrap;
-}
-.chat-sugg:hover { background: #2D3625; color: #fff; border-color: #2D3625; }
-
-/* Input */
-.chat-input-row {
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  display: flex; gap: 8px; align-items: flex-end;
-  flex-shrink: 0;
-}
-.chat-input-row textarea {
-  flex: 1; border: 1.5px solid var(--border); border-radius: 12px;
-  padding: 9px 12px; font-size: 13px; font-family: 'Inter', sans-serif;
-  resize: none; outline: none; line-height: 1.45;
-  background: var(--surface); color: var(--card-text);
-  max-height: 90px; transition: border-color .15s;
-}
-.chat-input-row textarea:focus { border-color: #3A6B4A; }
-.chat-input-row textarea::placeholder { color: var(--card-text-faint); }
-.chat-send-btn {
-  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-  background: #2D3625; color: #fff; border: none;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: opacity .15s; font-size: 16px;
-}
-.chat-send-btn:hover { opacity: .85; }
-.chat-send-btn:disabled { opacity: .4; cursor: default; }
-
-/* Dark mode */
-body.dark #ranne-chat-window { background: var(--white); border-color: var(--border); }
-body.dark .chat-msg.bot { background: var(--surface); border-color: var(--border); }
-body.dark .chat-input-row textarea { background: var(--surface); }
-body.dark .chat-sugg { background: var(--surface); border-color: var(--border); }
-
-/* Mobile: acima da navbar */
-@media (max-width: 480px) {
-  #ranne-chat-window {
-    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-    right: 0; left: 0; width: 100%;
-    max-height: calc(85vh - 64px); border-radius: 20px 20px 0 0;
-  }
-  #ranne-chat-btn { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); right: 16px; }
-}
-@media (min-width: 481px) {
-  #ranne-chat-window { bottom: 90px; right: 24px; width: 360px; max-height: 560px; }
-  #ranne-chat-btn { bottom: 28px; right: 28px; }
-}
-</style>
-
-<!-- Botão flutuante -->
-<button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Assistente Ranne">
-  🌿
-  <span class="chat-badge" id="chat-badge"></span>
-</button>
-
-<!-- Janela do chat -->
-<div id="ranne-chat-window">
-  <div class="chat-header">
-    <div class="chat-header-avatar">🌿</div>
-    <div class="chat-header-info">
-      <div class="chat-header-name">Assistente Ranne</div>
-      <div class="chat-header-status" id="chat-status">Pronto para ajudar</div>
-    </div>
-    <button class="chat-header-close" onclick="ranneChat.toggle()">✕</button>
-  </div>
-  <div class="chat-messages" id="chat-messages"></div>
-  <div class="chat-suggestions" id="chat-suggestions"></div>
-  <div class="chat-input-row">
-    <textarea id="chat-input" placeholder="Digite sua mensagem…" rows="1"
-      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ranneChat.send();}"
-      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-    <button class="chat-send-btn" id="chat-send-btn" onclick="ranneChat.send()">➤</button>
-  </div>
-</div>
-
-<script>
-
-/* Mostrar botão após login (chama ranneChat.show() nas funções de entrada) */
-
-
-const AEP_PERGUNTAS = {
-  q1:  { texto: 'Metas e pressão por produtividade',      grupo: 'Organização do Trabalho' },\n  q2:  { texto: 'Jornada excessiva de trabalho',          grupo: 'Organização do Trabalho' },\n  q3:  { texto: 'Trabalho noturno e em turnos',           grupo: 'Organização do Trabalho' },\n  q4:  { texto: 'Falta de autonomia sobre o trabalho',    grupo: 'Organização do Trabalho' },\n  q5:  { texto: 'Relatos de ass\u00e9dio moral ou sexual', grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q6:  { texto: 'Conflitos interpessoais recorrentes',    grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q7:  { texto: 'Falta de suporte da lideran\u00e7a',     grupo: 'Rela\u00e7\u00f5es Interpessoais' },\n  q8:  { texto: 'Alta rotatividade (turnover)',            grupo: 'Indicadores Organizacionais' },\n  q9:  { texto: 'Absenteísmo elevado',                    grupo: 'Indicadores Organizacionais' },\n  q10: { texto: 'Falta de clareza de pap\u00e9is',        grupo: 'Indicadores Organizacionais' },\n  q11: { texto: 'Sinais de burnout ou esgotamento',       grupo: 'Sa\u00fade Mental' },\n  q12: { texto: 'Aus\u00eancia de programas de bem-estar', grupo: 'Sa\u00fade Mental' },\n};
-
-let aepRespostas = {};
-
-function aepResponder(qid, resp, btnEl) {
-  aepRespostas[qid] = resp;
-
-  // Atualizar visual do item
-  const item = document.getElementById('aep-' + qid);\n  if (item) {
-    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');\n    item.classList.add('aep-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n  }
-
-  // Atualizar botões
-  const btns = item ? item.querySelectorAll('.aep-btn') : [];\n  btns.forEach(function(b) {
-    b.classList.remove('sel-sim', 'sel-nao', 'sel-parc');\n  });
-  if (btnEl) {
-    btnEl.classList.add('sel-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n  }
-
-  // Atualizar progresso
-  const total = Object.keys(AEP_PERGUNTAS).length;
-  const resp_count = Object.keys(aepRespostas).length;
-  const pct = Math.round((resp_count / total) * 100);
-
-  const countEl = document.getElementById('aep-resp-count');\n  const fillEl  = document.getElementById('aep-prog-fill');\n  const btnFin  = document.getElementById('aep-btn-finalizar');\n
-  if (countEl) countEl.textContent = resp_count;
-  if (fillEl)  fillEl.style.width = pct + '%';\n  if (btnFin) {
-    if (resp_count === total) {
-      btnFin.disabled = false;
-      btnFin.style.opacity = '1';\n      btnFin.style.cursor = 'pointer';\n    }
-  }
-}
-
-function aepFinalizar() {
-  const total = Object.keys(AEP_PERGUNTAS).length;
-  if (Object.keys(aepRespostas).length < total) {
-    toast('Responda todas as perguntas antes de finalizar.');\n    return;
-  }
-
-  // Calcular riscos
-  const riscos_altos  = [];
-  const riscos_medios = [];
-  const riscos_baixos = [];
-
-  Object.keys(aepRespostas).forEach(function(qid) {
-    const r = aepRespostas[qid];
-    const p = AEP_PERGUNTAS[qid];
-    if (r === 'sim')  riscos_altos.push(p.texto);\n    if (r === 'parc') riscos_medios.push(p.texto);\n    if (r === 'nao')  riscos_baixos.push(p.texto);\n  });
-
-  // Renderizar lista
-  const lista = document.getElementById('aep-resumo-lista');\n  if (!lista) return;
-  let html = '';\n
-  if (riscos_altos.length > 0) {
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#EF4444;margin-bottom:8px;margin-top:4px">Alto Risco (' + riscos_altos.length + ')</div>';\n    riscos_altos.forEach(function(t) {
-      html += '<div class="aep-risco-item aep-risco-alto"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">IDENTIFICADO</span></div>';\n    });
-  }
-  if (riscos_medios.length > 0) {
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#F59E0B;margin-bottom:8px;margin-top:12px">Risco Parcial (' + riscos_medios.length + ')</div>';\n    riscos_medios.forEach(function(t) {
-      html += '<div class="aep-risco-item aep-risco-medio"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">PARCIAL</span></div>';\n    });
-  }
-  if (riscos_baixos.length > 0) {
-    html += '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#22C55E;margin-bottom:8px;margin-top:12px">Controlado (' + riscos_baixos.length + ')</div>';\n    riscos_baixos.forEach(function(t) {
-      html += '<div class="aep-risco-item aep-risco-baixo"><div class="aep-risco-dot"></div><span class="aep-risco-texto">' + t + '</span><span class="aep-risco-resp">OK</span></div>';\n    });
-  }
-  lista.innerHTML = html;
-
-  // Ações recomendadas
-  const acoes = [];
-  if (riscos_altos.length > 0) {
-    acoes.push('Iniciar diagnóstico QUSP imediatamente para as áreas de maior risco');\n    acoes.push('Registrar riscos identificados no PGR (Programa de Gerenciamento de Riscos)');\n  }
-  if (aepRespostas.q5 === 'sim' || aepRespostas.q5 === 'parc') {\n    acoes.push('Ativar canal de escuta permanente e revisar política de prevenção de assédio');\n  }
-  if (aepRespostas.q2 === 'sim' || aepRespostas.q2 === 'parc') {\n    acoes.push('Auditar banco de horas e controle de jornada conforme NR-1');\n  }
-  if (riscos_altos.length === 0 && riscos_medios.length === 0) {
-    acoes.push('Manter monitoramento trimestral e revisar em caso de mudanças organizacionais');\n  }
-  acoes.push('Agendar revisão desta AEP em 12 meses ou após evento crítico');\n
-  const acoesLista = document.getElementById('aep-resumo-acoes-lista');\n  if (acoesLista) {
-    acoesLista.innerHTML = acoes.map(function(a) { return '<li>' + a + '</li>'; }).join('');\n  }
-
-  // Mostrar resumo
-  const resumo = document.getElementById('aep-resumo');\n  if (resumo) {
-    resumo.classList.add('show');\n    resumo.scrollIntoView({ behavior: 'smooth', block: 'start' });\n  }
-
-  // Badge no sidebar
-  const badge = document.getElementById('badge-aep');\n  if (badge && riscos_altos.length > 0) {
-    badge.style.display = 'inline';\n    badge.textContent = riscos_altos.length;
-  }
-
-  // Salvar no localStorage
-  const dadosAEP = {
-    data: new Date().toISOString(),
-    respostas: aepRespostas,
-    riscos_altos: riscos_altos,
-    riscos_medios: riscos_medios,
-    riscos_baixos: riscos_baixos,
-  };
-  try { localStorage.setItem('ranne_aep', JSON.stringify(dadosAEP)); } catch(e) {}\n
-  toast('\u2705 AEP salva! ' + riscos_altos.length + ' risco(s) alto(s) identificado(s).');\n}
-
-function aepNovo() {
-  aepRespostas = {};
-  // Limpar visual
-  for (let i = 1; i <= 12; i++) {
-    const item = document.getElementById('aep-q' + i);\n    if (item) {
-      item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');\n      item.querySelectorAll('.aep-btn').forEach(function(b) {\n        b.classList.remove('sel-sim', 'sel-nao', 'sel-parc');\n      });
-    }
-  }
-  const countEl = document.getElementById('aep-resp-count');\n  const fillEl  = document.getElementById('aep-prog-fill');\n  const btnFin  = document.getElementById('aep-btn-finalizar');\n  const resumo  = document.getElementById('aep-resumo');\n  if (countEl) countEl.textContent = '0';\n  if (fillEl)  fillEl.style.width = '0%';\n  if (btnFin)  { btnFin.disabled = true; btnFin.style.opacity = '.4'; btnFin.style.cursor = 'not-allowed'; }\n  if (resumo)  resumo.classList.remove('show');\n  window.scrollTo({ top: 0, behavior: 'smooth' });\n}
-
-function aepSalvarPDF() {
-  const dados = JSON.parse(localStorage.getItem('ranne_aep') || '{}');\n  if (!dados.data) { toast('Nenhuma AEP salva. Finalize a avaliação primeiro.'); return; }\n
-  const dataFormatada = new Date(dados.data).toLocaleDateString('pt-BR');\n  const empresa = (typeof currentEmpresa !== 'undefined' && currentEmpresa) ? currentEmpresa.nome : 'Empresa';\n
-  const linhas_altos  = (dados.riscos_altos  || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#EF4444;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">ALTO</span></td></tr>'; }).join('');\n  const linhas_medios = (dados.riscos_medios || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#F59E0B;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">PARCIAL</span></td></tr>'; }).join('');\n  const linhas_baixos = (dados.riscos_baixos || []).map(function(t) { return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + t + '</td><td style="padding:8px 12px;border-bottom:1px solid #eee;text-align:center"><span style="background:#22C55E;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700">OK</span></td></tr>'; }).join('');\n
-  const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>AEP — ' + empresa + '</title><style>body{font-family:Arial,sans-serif;padding:40px;color:#1a1a1a}h1{color:#2D5E4A;font-size:20px}h2{color:#2D5E4A;font-size:14px;margin-top:28px}table{width:100%;border-collapse:collapse;margin-top:12px}th{background:#2D5E4A;color:#fff;padding:10px 12px;text-align:left;font-size:12px}td{font-size:13px}.rodape{margin-top:40px;padding-top:16px;border-top:2px solid #2D5E4A;font-size:11px;color:#666}</style></head><body>'\n    + '<h1>AEP — Avaliação de Risco Psicossocial</h1>'\n    + '<p style="font-size:13px;color:#666"><strong>Empresa:</strong> ' + empresa + ' &nbsp;|&nbsp; <strong>Data:</strong> ' + dataFormatada + ' &nbsp;|&nbsp; <strong>Referência:</strong> NR-1 (2025)</p>'\n    + '<h2>Riscos Identificados</h2>'\n    + '<table><thead><tr><th>Fator de Risco</th><th style="width:120px;text-align:center">Classificação</th></tr></thead><tbody>' + linhas_altos + linhas_medios + linhas_baixos + '</tbody></table>'\n    + '<div class="rodape">Gerado por Ranne Care &middot; Documento para composição do PGR/NR-1</div>'\n    + '</body></html>';\n
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });\n  const url  = URL.createObjectURL(blob);
-  const win  = window.open(url, '_blank');\n  if (win) { win.onload = function() { setTimeout(function() { win.print(); }, 400); }; }
-  else {
-    const a = document.createElement('a');\n    a.href = url; a.download = 'AEP-' + empresa + '-' + dataFormatada + '.html';\n    a.click();
-  }
-}
-
-// Carregar AEP salva ao abrir a página
-function aepCarregarSalvo() {
-  try {
-    const dados = JSON.parse(localStorage.getItem('ranne_aep') || '{}');\n    if (!dados.respostas) return;
-    Object.keys(dados.respostas).forEach(function(qid) {
-      const resp = dados.respostas[qid];
-      aepRespostas[qid] = resp;
-      const item = document.getElementById('aep-' + qid);\n      if (!item) return;
-      item.classList.add('aep-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n      const btns = item.querySelectorAll('.aep-btn');\n      btns.forEach(function(b) {
-        const label = b.textContent.trim().toLowerCase();
-        if ((resp === 'sim' && label === 'sim') || (resp === 'nao' && label === 'não') || (resp === 'parc' && label === 'parcial')) {\n          b.classList.add('sel-' + (resp === 'sim' ? 'sim' : resp === 'nao' ? 'nao' : 'parc'));\n        }
-      });
-    });
-    // Atualizar progresso
-    const total = Object.keys(AEP_PERGUNTAS).length;
-    const count = Object.keys(aepRespostas).length;
-    const pct   = Math.round((count / total) * 100);
-    const countEl = document.getElementById('aep-resp-count');\n    const fillEl  = document.getElementById('aep-prog-fill');\n    const btnFin  = document.getElementById('aep-btn-finalizar');\n    if (countEl) countEl.textContent = count;
-    if (fillEl)  fillEl.style.width = pct + '%';\n    if (btnFin && count === total) {
-      btnFin.disabled = false;
-      btnFin.style.opacity = '1';\n      btnFin.style.cursor = 'pointer';\n    }
-  } catch(e) {}
-}
-
-
-
-
-/* ══════════════════════════════════════
-   Canal de Escuta Permanente
-   ════════════════════════════════════ */
-
-function escutaEnviar() {
-  var categoria = document.getElementById('escuta-categoria').value;\n  var texto     = (document.getElementById('escuta-texto').value || '').trim();\n
-  if (!categoria) { toast('Selecione uma categoria.'); return; }\n  if (texto.length < 20) { toast('Descreva a situa\u00e7\u00e3o com pelo menos 20 caracteres.'); return; }\n
-  var relato = {
-    id:        Date.now(),
-    categoria: categoria,
-    texto:     texto,
-    data:      new Date().toISOString(),
-    lido:      false,
-  };
-
-  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    lista.unshift(relato);
-    localStorage.setItem('ranne_escuta', JSON.stringify(lista));\n  } catch(e) {}
-
-  // Mostrar confirmação
-  var form = document.getElementById('escuta-form-wrap');\n  var conf = document.getElementById('escuta-confirmacao');\n  if (form) form.style.display = 'none';\n  if (conf) conf.classList.add('show');\n
-  // Limpar campos
-  document.getElementById('escuta-categoria').value = '';\n  document.getElementById('escuta-texto').value     = '';\n}
-
-function escutaNovo() {
-  var form = document.getElementById('escuta-form-wrap');\n  var conf = document.getElementById('escuta-confirmacao');\n  if (form) form.style.display = 'block';\n  if (conf) conf.classList.remove('show');\n}
-
-/* ── Lado RH ── */
-var escutaFiltroAtivo = 'todos';\n
-function escutaCarregarRH() {
-  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    var agora = new Date();
-    var set7  = new Date(agora - 7 * 24 * 60 * 60 * 1000);
-
-    // Métricas
-    var novos   = lista.filter(function(r) { return new Date(r.data) >= set7; }).length;
-    var assedio = lista.filter(function(r) { return r.categoria === 'assedio'; }).length;\n
-    var totalEl   = document.getElementById('escuta-total');\n    var novosEl   = document.getElementById('escuta-novos');\n    var assedioEl = document.getElementById('escuta-assedio');\n    if (totalEl)   totalEl.textContent   = lista.length;
-    if (novosEl)   novosEl.textContent   = novos;
-    if (assedioEl) assedioEl.textContent = assedio;
-
-    // Badge sidebar
-    var badge = document.getElementById('badge-escuta');\n    if (badge) {
-      if (novos > 0) { badge.style.display = 'inline'; badge.textContent = novos; }\n      else           { badge.style.display = 'none'; }\n    }
-
-    escutaRenderLista(lista);
-  } catch(e) {}
-}
-
-function escutaRenderLista(lista) {
-  var container = document.getElementById('escuta-rh-lista');\n  if (!container) return;
-
-  var filtrada = escutaFiltroAtivo === 'todos'\n    ? lista
-    : lista.filter(function(r) { return r.categoria === escutaFiltroAtivo; });
-
-  if (filtrada.length === 0) {
-    container.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato' + (escutaFiltroAtivo !== 'todos' ? ' nesta categoria' : '') + '.<br>Os relatos aparecer\u00e3o aqui.</p></div>';\n    return;
-  }
-
-  var catLabels = { assedio:'Ass\u00e9dio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };\n  var catClasses = { assedio:'cat-assedio', sobrecarga:'cat-sobrecarga', conflito:'cat-conflito', outro:'cat-outro' };\n
-  container.innerHTML = filtrada.map(function(r) {
-    var data = new Date(r.data).toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });\n    var catLabel = catLabels[r.categoria] || r.categoria;
-    var catClass = catClasses[r.categoria] || 'cat-outro';\n    return '<div class="escuta-relato-card">'\n      + '<div class="escuta-relato-header">'\n      + '<span class="escuta-relato-cat ' + catClass + '">' + catLabel + '</span>'\n      + '<span class="escuta-relato-data">' + data + '</span>'\n      + '</div>'\n      + '<div class="escuta-relato-texto">' + r.texto.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'\n      + '<div class="escuta-relato-anonimo">🔒 Relato an\u00f4nimo · ID #' + String(r.id).slice(-6) + '</div>'\n      + '</div>';\n  }).join('');\n}
-
-function escutaFiltrar(cat, btnEl) {
-  escutaFiltroAtivo = cat;
-  document.querySelectorAll('.escuta-rh-chip').forEach(function(b) { b.classList.remove('active'); });\n  if (btnEl) btnEl.classList.add('active');\n  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    escutaRenderLista(lista);
-  } catch(e) {}
-}
-
-function escutaRhExportar() {
-  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_escuta') || '[]');\n    if (lista.length === 0) { toast('Nenhum relato para exportar.'); return; }\n
-    var catLabels = { assedio:'Ass\u00e9dio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };\n    var linhas = lista.map(function(r) {
-      var data = new Date(r.data).toLocaleDateString('pt-BR');\n      return '<tr><td style="padding:8px 12px;border-bottom:1px solid #eee">' + data + '</td>'\n        + '<td style="padding:8px 12px;border-bottom:1px solid #eee">' + (catLabels[r.categoria]||r.categoria) + '</td>'\n        + '<td style="padding:8px 12px;border-bottom:1px solid #eee">' + r.texto.replace(/</g,'&lt;') + '</td></tr>';\n    }).join('');\n
-    var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Canal de Escuta</title>'\n      + '<style>body{font-family:Arial,sans-serif;padding:40px}h1{color:#2D5E4A}table{width:100%;border-collapse:collapse}th{background:#2D5E4A;color:#fff;padding:10px 12px;text-align:left;font-size:12px}td{font-size:13px}.rodape{margin-top:32px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:12px}</style>'\n      + '</head><body>'\n      + '<h1>Canal de Escuta — Relatos An\u00f4nimos</h1>'\n      + '<p style="font-size:12px;color:#666">Exportado em ' + new Date().toLocaleDateString('pt-BR') + ' &middot; ' + lista.length + ' relato(s)</p>'\n      + '<table><thead><tr><th>Data</th><th>Categoria</th><th>Relato</th></tr></thead><tbody>' + linhas + '</tbody></table>'\n      + '<div class="rodape">Documento confidencial &middot; Ranne Care &middot; Somente para uso interno do RH</div>'\n      + '</body></html>';\n
-    var blob = new Blob([html], { type:'text/html;charset=utf-8' });\n    var a = document.createElement('a');\n    a.href = URL.createObjectURL(blob);
-    a.download = 'canal-escuta-' + new Date().toISOString().slice(0,10) + '.html';\n    a.click();
-    toast('\u2705 Exportado com sucesso!');\n  } catch(e) { toast('Erro ao exportar.'); }\n}
-
-
-/* ══════════════════════════════════════
-   F4: Data de Revisão NR-1
-   F5: Log de Capacitações
-   ════════════════════════════════════ */
-
-// ── F4: Data de revisão ──────────────────────────────────────────
-
-
-
-
-function qrToggleDetalhes() {
-  var el = document.getElementById('qr-detalhes-tecnico');
-  var btn = document.querySelector('.qr-detalhes-toggle button');
-  if (!el) return;
-  el.classList.toggle('show');
-  if (btn) btn.textContent = el.classList.contains('show')
-    ? 'Ocultar detalhes técnicos ↑'
-    : 'Ver detalhes técnicos do resultado ↓';
-}
-
-
-
-function nr1IniciarDataRevisao() {
-  var input = document.getElementById('nr1-data-revisao');\n  if (!input) return;
-  // Tentar carregar data salva
-  var salvo = '';\n  try { salvo = localStorage.getItem('ranne_nr1_revisao') || ''; } catch(e) {}\n  if (salvo) {
-    input.value = salvo;
-  } else {
-    // Preencher com +12 meses
-    var d = new Date();
-    d.setFullYear(d.getFullYear() + 1);
-    input.value = d.toISOString().slice(0,10);
-    try { localStorage.setItem('ranne_nr1_revisao', input.value); } catch(e) {}\n  }
-}
-
-function nr1SalvarRevisao() {
-  var input = document.getElementById('nr1-data-revisao');\n  if (!input) return;
-  try { localStorage.setItem('ranne_nr1_revisao', input.value); } catch(e) {}\n}
-
-// ── F5: Log de Capacitações ──────────────────────────────────────
-function capRegistrar() {
-  var data         = document.getElementById('cap-data').value;\n  var tema         = (document.getElementById('cap-tema').value || '').trim();\n  var responsavel  = (document.getElementById('cap-responsavel').value || '').trim();\n  var participantes= parseInt(document.getElementById('cap-participantes').value) || 0;\n  var formato      = document.getElementById('cap-formato').value;\n
-  if (!data)         { toast('Informe a data da capacita\u00e7\u00e3o.'); return; }\n  if (!tema)         { toast('Informe o tema do treinamento.'); return; }\n  if (!responsavel)  { toast('Informe o nome do respons\u00e1vel.'); return; }\n  if (participantes < 1) { toast('Informe o n\u00famero de participantes.'); return; }\n
-  var registro = { id: Date.now(), data, tema, responsavel, participantes, formato };
-
-  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]');\n    lista.unshift(registro);
-    localStorage.setItem('ranne_capacitacoes', JSON.stringify(lista));\n  } catch(e) {}
-
-  // Limpar campos
-  document.getElementById('cap-data').value          = '';\n  document.getElementById('cap-tema').value          = '';\n  document.getElementById('cap-responsavel').value   = '';\n  document.getElementById('cap-participantes').value = '';\n
-  capRenderLista();
-  toast('\u2705 Capacita\u00e7\u00e3o registrada com sucesso!');\n}
-
-function capRenderLista() {
-  var container = document.getElementById('cap-lista');\n  var badge     = document.getElementById('cap-total-badge');\n  if (!container) return;
-
-  var lista = [];
-  try { lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]'); } catch(e) {}\n
-  if (badge) badge.textContent = lista.length + ' registro' + (lista.length !== 1 ? 's' : '');\n
-  if (lista.length === 0) {
-    container.innerHTML = '<div class="cap-vazio">Nenhuma capacita\u00e7\u00e3o registrada ainda.</div>';\n    return;
-  }
-
-  container.innerHTML = lista.map(function(r) {
-    var dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });\n    return '<div class="cap-item">'\n      + '<div class="cap-item-data">' + dataFmt + '</div>'\n      + '<div class="cap-item-body">'\n      + '<strong>' + r.tema + '</strong>'\n      + '<span>' + r.responsavel + ' &middot; ' + r.formato + ' &middot; ' + r.participantes + ' participante' + (r.participantes !== 1 ? 's' : '') + '</span>'\n      + '</div>'\n      + '<button class="cap-item-del" onclick="capExcluir(' + r.id + ')" title="Remover">&#x2715;</button>'\n      + '</div>';\n  }).join('');\n}
-
-function capExcluir(id) {
-  try {
-    var lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]');\n    lista = lista.filter(function(r) { return r.id !== id; });
-    localStorage.setItem('ranne_capacitacoes', JSON.stringify(lista));\n  } catch(e) {}
-  capRenderLista();
-  toast('Registro removido.');\n}
-
-function capGerarSecaoPDF() {
-  var lista = [];
-  try { lista = JSON.parse(localStorage.getItem('ranne_capacitacoes') || '[]'); } catch(e) {}\n  if (lista.length === 0) return '';\n
-  var linhas = lista.map(function(r) {
-    var dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR');\n    return '<tr><td>' + dataFmt + '</td><td>' + r.tema + '</td><td>' + r.responsavel + '</td><td style="text-align:center">' + r.participantes + '</td><td>' + r.formato + '</td></tr>';\n  }).join('');\n
-  return '<h2>Evidências de Capacita\u00e7\u00e3o</h2>'\n    + '<p style="font-size:10pt;color:rgba(0,0,0,.55);margin-bottom:12px">Treinamentos realizados em sa\u00fade mental e bem-estar organizacional conforme exig\u00eancia NR-1 (2025).</p>'\n    + '<table class="dim-table"><thead><tr>'\n    + '<th>Data</th><th>Tema</th><th>Respons\u00e1vel</th><th style="text-align:center">Partic.</th><th>Formato</th>'\n    + '</tr></thead><tbody>' + linhas + '</tbody></table>';\n}
-
-function nr1GerarSecaoRevisao() {
-  var dataRevisao = '';\n  try { dataRevisao = localStorage.getItem('ranne_nr1_revisao') || ''; } catch(e) {}\n  var inputEl = document.getElementById('nr1-data-revisao');\n  if (inputEl && inputEl.value) dataRevisao = inputEl.value;
-
-  if (!dataRevisao) {
-    var d = new Date(); d.setFullYear(d.getFullYear() + 1);
-    dataRevisao = d.toISOString().slice(0,10);
-  }
-
-  var dataFmt = new Date(dataRevisao + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });\n
-  return '<div style="background:#FEF9EC;border:1.5px solid rgba(201,168,76,.35);border-radius:10px;padding:16px 20px;margin-bottom:20px;">'\n    + '<div style="font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#92660A;margin-bottom:6px;">\uD83D\uDCC5 Pr\u00f3xima Revis\u00e3o Obrigat\u00f3ria — NR-1</div>'\n    + '<div style="font-size:14pt;font-weight:800;color:#1A2E20">' + dataFmt + '</div>'\n    + '<div style="font-size:9pt;color:rgba(0,0,0,.5);margin-top:4px">Conforme NR-1 (2025), a avalia\u00e7\u00e3o de riscos psicossociais deve ser revisada anualmente ou ap\u00f3s evento cr\u00edtico.</div>'\n    + '</div>';
-}
-
 </script>
 </body>
 </html>
