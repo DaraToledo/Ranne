@@ -8073,7 +8073,7 @@ async function setupEmpresa() {
     // PASSO 3: Cria registro da empresa
     const codigoEmpresa = gerarCodigo();
     const { data: emp, error: insertErr } = await db.from('empresas')
-      .insert({ user_id: authUser.id, nome, cnpj, size, setor, plan: plano || 'free', codigo_acesso: codigoEmpresa, nome_fantasia: fantasia, endereco, site, resp_nome: respNome, resp_cargo: respCargo, resp_tel: respTel })
+      .insert({ user_id: authUser.id, nome, cnpj, size, setor, plan: plano || 'free', codigo_acesso: codigoEmpresa, nome_fantasia: fantasia, endereço, site, resp_nome: respNome, resp_cargo: respCargo, resp_tel: respTel })
       .select().single();
 
     if (insertErr) {
