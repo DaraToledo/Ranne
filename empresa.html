@@ -7793,7 +7793,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="cn-label">Check-in</span>
     </div>
     <div class="cn-item" id="cn-decomp" onclick="cpg('decomp')">
-      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22c0 0 4-2 8-8 4-6 12-8 12-8s-2 8-8 12c-6 4-12 4-12 4z"/><path d="M12 14c-2-4 0-10 0-10"/></svg></span>
+      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="5" x2="8" y2="19"/><line x1="16" y1="5" x2="16" y2="19"/></svg></span>
       <span class="cn-label">Pausa</span>
     </div>
     <div class="cn-item" id="cn-biblioteca" onclick="cpg('biblioteca')">
@@ -8856,10 +8856,20 @@ function showOnboarding() {
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'none';
   document.body.classList.remove('collab-ativo');
+  // Ocultar chat no onboarding/login
+  var chatBtn = document.getElementById('ranne-chat-btn');
+  var chatWin = document.getElementById('ranne-chat-window');
+  if (chatBtn) chatBtn.style.display = 'none';
+  if (chatWin) chatWin.classList.remove('open');
 }
 
 
 function goSStep(id) {
+  // Ocultar chat nas telas de auth
+  var chatBtn = document.getElementById('ranne-chat-btn');
+  var chatWin = document.getElementById('ranne-chat-window');
+  if (chatBtn) chatBtn.style.display = 'none';
+  if (chatWin) chatWin.classList.remove('open');
   // Hide new onboarding, show steps panel
   var newOb = document.getElementById('onboarding');
   var stepsPanel = document.getElementById('onboarding-steps');
@@ -9518,6 +9528,11 @@ function selRole(r, el) {
 
 /* goS atualizado */
 function goS(n) {
+  // Ocultar chat nas telas de auth
+  var chatBtn = document.getElementById('ranne-chat-btn');
+  var chatWin = document.getElementById('ranne-chat-window');
+  if (chatBtn) chatBtn.style.display = 'none';
+  if (chatWin) chatWin.classList.remove('open');
   // Hide new onboarding, show steps panel
   var newOb = document.getElementById('onboarding');
   var stepsPanel = document.getElementById('onboarding-steps');
@@ -12823,8 +12838,8 @@ function diarioLimparTudo() {
 #ranne-chat-btn img {
   width: 56px; height: 56px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 12%;
+  object-fit: none;
+  object-position: 42% 8%;
   border: 2.5px solid #2D5E4A;
   background: #F0EDE6;
 }
@@ -12910,9 +12925,9 @@ function diarioLimparTudo() {
   border: 2px solid rgba(255,255,255,.25);
 }
 .chat-header-avatar img {
-  width: 100%; height: 100%;
+  width: 140%; height: 140%;
   object-fit: cover;
-  object-position: center 10%;
+  margin-left: -20%; margin-top: -8%;
 }
 .chat-header-info { flex: 1; min-width: 0; }
 .chat-header-name { color: #fff; font-size: 13.5px; font-weight: 700; }
@@ -12936,16 +12951,16 @@ function diarioLimparTudo() {
   overflow-y: auto;
 }
 .chat-welcome-avatar {
-  width: 72px; height: 72px; border-radius: 50%;
+  width: 64px; height: 64px; border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(45,94,74,.18);
   box-shadow: 0 4px 20px rgba(45,94,74,.15);
   flex-shrink: 0;
 }
 .chat-welcome-avatar img {
-  width: 100%; height: 100%;
+  width: 140%; height: 140%;
   object-fit: cover;
-  object-position: center 15%;
+  margin-left: -20%; margin-top: -8%;
 }
 .chat-welcome-msg {
   font-size: 15px; font-weight: 700; color: #1A2E20;
