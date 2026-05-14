@@ -12838,8 +12838,8 @@ function diarioLimparTudo() {
 #ranne-chat-btn img {
   width: 56px; height: 56px;
   border-radius: 50%;
-  object-fit: none;
-  object-position: 42% 8%;
+  object-fit: cover;
+  object-position: center 15%;
   border: 2.5px solid #2D5E4A;
   background: #F0EDE6;
 }
@@ -12872,7 +12872,9 @@ function diarioLimparTudo() {
 @media (min-width: 769px) {
   #ranne-chat-window {
     bottom: 100px; right: 24px;
-    width: 380px; max-height: 600px;
+    width: 380px;
+    height: min(600px, calc(100vh - 120px));
+    max-height: calc(100vh - 120px);
     border-radius: 22px;
     background: #FFFFFF;
     box-shadow: 0 12px 48px rgba(0,0,0,.18);
@@ -12925,9 +12927,9 @@ function diarioLimparTudo() {
   border: 2px solid rgba(255,255,255,.25);
 }
 .chat-header-avatar img {
-  width: 140%; height: 140%;
+  width: 100%; height: 100%;
   object-fit: cover;
-  margin-left: -20%; margin-top: -8%;
+  object-position: center 20%;
 }
 .chat-header-info { flex: 1; min-width: 0; }
 .chat-header-name { color: #fff; font-size: 13.5px; font-weight: 700; }
@@ -12946,21 +12948,21 @@ function diarioLimparTudo() {
 #chat-welcome {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 20px 20px; gap: 14px;
+  padding: 28px 20px 20px; gap: 14px;
   text-align: center;
   overflow-y: auto;
 }
 .chat-welcome-avatar {
-  width: 64px; height: 64px; border-radius: 50%;
+  width: 80px; height: 80px; border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(45,94,74,.18);
   box-shadow: 0 4px 20px rgba(45,94,74,.15);
   flex-shrink: 0;
 }
 .chat-welcome-avatar img {
-  width: 140%; height: 140%;
+  width: 100%; height: 100%;
   object-fit: cover;
-  margin-left: -20%; margin-top: -8%;
+  object-position: center 40%;
 }
 .chat-welcome-msg {
   font-size: 15px; font-weight: 700; color: #1A2E20;
@@ -13108,9 +13110,6 @@ body.dark .chat-welcome-sugg:hover { background: #2D5E4A; color: #fff; }
 
   <!-- Tela de boas-vindas (some ao iniciar conversa) -->
   <div id="chat-welcome">
-    <div class="chat-welcome-avatar">
-      <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne">
-    </div>
     <p class="chat-welcome-msg">Olá! Eu sou a Ranne 👋<br>Como posso te ajudar hoje?</p>
     <p class="chat-welcome-sub" id="chat-welcome-sub">Escolha uma pergunta ou escreva livremente:</p>
     <div class="chat-welcome-suggs" id="chat-welcome-suggs"></div>
