@@ -134,8 +134,8 @@ nav{
 }
 .ab-inner{display:flex;align-items:center;justify-content:space-between;gap:2.5rem;flex-wrap:wrap;}
 .ab-label{font-family:'Jost',sans-serif;font-size:1.1rem;letter-spacing:.18em;text-transform:uppercase;color:#5a5248;white-space:nowrap;}
-.ab-items{display:flex;gap:2.5rem;flex-wrap:wrap;align-items:center;}
-.ab-item{display:flex;align-items:center;gap:.5rem;font-family:'Jost',sans-serif;font-size:1.15rem;font-weight:300;color:var(--preto);}
+.ab-items{display:flex;gap:1.8rem;flex-wrap:nowrap;align-items:center;}
+.ab-item{display:flex;align-items:center;gap:.4rem;font-family:'Jost',sans-serif;font-size:.88rem;font-weight:300;color:var(--preto);white-space:nowrap;}
 .ab-icon{font-size:1.35rem;}
 
 /* ── SEÇÕES ── */
@@ -252,6 +252,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;heigh
 .calc-dest-v{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:white;}
 .calc-cta{text-align:center;margin-top:1.8rem;}
 .calc-disc{font-family:'Jost',sans-serif;font-size:1.06rem;font-weight:200;color:rgba(255,255,255,.60);margin-top:.9rem;}
+
+/* ── SCREENS SHOWCASE ── */
+.screens-showcase{margin-top:4rem;}
+.screens-label{font-family:'Jost',sans-serif;font-size:.78rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--dourado);text-align:center;margin-bottom:2.2rem;}
+.screens-grid{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:1.5rem;align-items:end;}
+.screen-card{display:flex;flex-direction:column;gap:.8rem;}
+.screen-tag{font-family:'Jost',sans-serif;font-size:.75rem;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--verde-ink);padding:.3rem .7rem;border:1px solid rgba(74,122,110,.25);border-radius:2px;display:inline-block;align-self:flex-start;}
+.screen-frame{border-radius:8px;overflow:hidden;border:1px solid rgba(74,122,110,.18);box-shadow:0 8px 32px rgba(0,0,0,.1);background:var(--creme);}
+.screen-frame img{width:100%;height:auto;display:block;transition:transform .4s ease;}
+.screen-card:hover .screen-frame img{transform:scale(1.02);}
+.screen-card-featured .screen-frame{border-color:rgba(201,168,76,.35);box-shadow:0 12px 40px rgba(0,0,0,.15);}
+.screen-desc{font-family:'Jost',sans-serif;font-size:.88rem;font-weight:300;color:#5a5248;line-height:1.5;}
 
 /* ── POR PERFIL ── */
 .perfis-section{padding:7rem 5rem;background:var(--offwhite);}
@@ -410,48 +422,118 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 #site-loading .ld-dot:nth-child(3){animation-delay:.4s}
 @keyframes ldPulse{0%,100%{opacity:.3;background:rgba(201,168,76,.3)}50%{opacity:1;background:var(--dourado)}}
 
-/* ── RESPONSIVE ── */
+/* ── RESPONSIVE TABLET ── */
 @media(max-width:900px){
-  nav{padding:1rem 1.2rem;}
+  nav{padding:.8rem 1.2rem;}
   .nav-links{display:none;}
-  .hero{grid-template-columns:1fr;min-height:auto;padding-top:64px;}
-  .hero-left{padding:2rem 1.2rem;order:1;}
-  .hero-title{font-size:2.8rem;}
-  .hero-subtitle{font-size:1.15rem;margin:1.2rem 0 1.4rem;}
-  .hero-right{order:2;min-height:220px;max-height:300px;}
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:60px;}
+  .hero-left{padding:2rem 1.2rem 1.5rem;order:1;}
+  .hero-title{font-size:2.2rem;line-height:1.15;}
+  .hero-subtitle{font-size:1rem;margin:1rem 0 1.2rem;}
+  .hero-autoridade{font-size:.78rem;}
+  .hero-right{order:2;min-height:240px;max-height:320px;}
   .hero-buttons{flex-direction:column;gap:.7rem;}
-  .btn-p,.btn-o{width:100%;text-align:center;padding:.9rem 1rem;}
-  .hero-cards-row{flex-direction:column;gap:.5rem;padding:.8rem;margin-top:-10px;}
-  .h-card-row{flex:none;width:100%;padding:.7rem .9rem;}
+  .btn-p,.btn-o{width:100%;text-align:center;padding:.9rem 1rem;font-size:.9rem;}
+  .hero-cards-row{flex-direction:row;flex-wrap:wrap;gap:.5rem;padding:.8rem;margin-top:-10px;}
+  .h-card-row{flex:1;min-width:calc(50% - .5rem);padding:.7rem .9rem;}
+  .hc-lbl{font-size:.78rem;}
+  .hc-val{font-size:1.6rem;}
+  .hc-desc{font-size:.82rem;}
+  .hero-deliverables{gap:5px;}
+  .dl-tag{font-size:.82rem;padding:5px 10px;}
+  .hero-produtos{gap:.4rem;}
+  .hp-item{font-size:.85rem;}
+  .hero-soft-ctas{gap:12px;}
   .autoridade-bar{padding:1.5rem 1.2rem;}
   .ab-inner{flex-direction:column;gap:1rem;align-items:flex-start;}
-  .ab-items{gap:1rem;}
-  .section{padding:4rem 1.2rem;}
-  .perfis-section{padding:4rem 1.2rem;}
+  .ab-items{gap:.8rem;flex-direction:column;}
+  .ab-item{font-size:.9rem;}
+  .ab-label{font-size:.78rem;}
+  .section{padding:3.5rem 1.2rem;}
+  .perfis-section{padding:3.5rem 1.2rem;}
+  .stitle{font-size:clamp(1.8rem,6vw,2.6rem);}
+  .stag{font-size:.78rem;}
   .grid-2{grid-template-columns:1fr;gap:2rem;}
   .grid-3,.grid-4{grid-template-columns:1fr;}
+  .stat-num{font-size:2.8rem;}
+  .stat-text{font-size:.95rem;}
+  .stat-source{font-size:.85rem;}
   .ciclo-steps{grid-template-columns:1fr 1fr;gap:1.2rem;}
   .ciclo-line{display:none;}
   .ciclo-bottom{grid-template-columns:1fr;}
+  .cb-title{font-size:1.5rem;}
+  .cb-desc{font-size:.95rem;}
   .pilares{grid-template-columns:1fr 1fr;}
+  .pilar{padding:1.5rem 1.2rem;}
+  .pilar-title{font-size:.88rem;}
+  .pilar-desc{font-size:.88rem;}
   .comp{grid-template-columns:1fr;}
   .comp-div{display:none;}
   .comp-col{padding:1.5rem 1.2rem;}
+  .comp-item{font-size:.95rem;}
   .ev-cards,.ciencia-grid{grid-template-columns:1fr;}
+  .ev-num{font-size:2.2rem;}
+  .ev-title{font-size:.88rem;}
+  .ev-desc{font-size:.88rem;}
   .calc-inputs{grid-template-columns:1fr;padding:1.5rem 1.2rem;gap:1.2rem;}
   .calc-slider-group{grid-column:1;}
   .calc-results{padding:1.5rem 1.2rem;}
   .calc-nums{grid-template-columns:1fr;gap:.8rem;}
   .calc-dest{flex-direction:column;text-align:center;}
   .profile-panel.active{grid-template-columns:1fr;}
-  .cta-section{padding:5rem 1.2rem;}
+  .profile-tab{font-size:.8rem;padding:.6rem 1rem;}
+  .cta-section{padding:4rem 1.2rem;}
+  .cta-title{font-size:clamp(1.8rem,6vw,2.6rem);}
   .cta-buttons{flex-direction:column;align-items:center;}
+  .cta-sub{font-size:.95rem;}
   footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.2rem;}
   .footer-tag{display:none;}
+  .mercado-quote{font-size:1.3rem;}
+  .dado-num{font-size:1.5rem;}
+  .dado-txt{font-size:.9rem;}
 }
-@media(max-width:400px){
+
+/* ── RESPONSIVE MOBILE ── */
+/* ── TABLET (iPad, Android tablet: 768px) ── */
+@media(max-width:768px){
+  .screens-grid{grid-template-columns:1fr 1fr;gap:1rem;}
+  .screen-card:last-child{grid-column:1/3;}
+  .screen-card-featured{order:-1;grid-column:1/3;}
+  .screens-showcase{margin-top:3rem;}
+}
+
+@media(max-width:480px){
+  nav{padding:.7rem 1rem;}
+  .nav-brand-text .nbn{font-size:1.1rem;}
+  .hero-title{font-size:1.9rem;}
+  .hero-subtitle{font-size:.95rem;}
+  .hero-autoridade{font-size:.72rem;padding:.35rem .7rem;}
+  .btn-p,.btn-o{font-size:.85rem;letter-spacing:.06em;}
+  .hero-cards-row{flex-direction:column;}
+  .h-card-row{width:100%;}
+  .stitle{font-size:clamp(1.6rem,7vw,2.2rem);}
+  .stat-num{font-size:2.4rem;}
   .pilares{grid-template-columns:1fr;}
-  .profile-tabs{flex-direction:column;}
+  .profile-tabs{flex-wrap:wrap;}
+  .profile-tab{font-size:.76rem;padding:.5rem .8rem;}
+  .cta-title{font-size:clamp(1.6rem,7vw,2.2rem);}
+  .calc-num-v{font-size:2rem;}
+  .calc-dest-v{font-size:2rem;}
+  .ab-items{gap:.6rem;}
+  .ab-item{font-size:.88rem;}
+  .ciclo-steps{grid-template-columns:1fr;}
+  .cs-title{font-size:1.1rem;}
+  .cs-desc{font-size:.88rem;}
+  .cb-title{font-size:1.3rem;}
+  .mercado-quote{font-size:1.1rem;padding-left:1rem;}
+  .dado{padding:1rem 1.2rem;}
+  .dado-num{font-size:1.3rem;min-width:60px;}
+  .screens-grid{grid-template-columns:1fr;gap:1rem;}
+  .screen-card-featured{order:-1;grid-column:auto;}
+  .screen-card:last-child{grid-column:auto;}
+  .screen-tag{font-size:.7rem;}
+  .screen-desc{font-size:.84rem;}
+  .screens-label{font-size:.72rem;}
 }
 </style>
 </head>
@@ -623,6 +705,38 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
       <div class="pilar"><div class="pilar-num">03</div><div class="pilar-title">Dashboard Estratégico</div><div class="pilar-desc">Histórico de evolução, benchmarks do setor e alertas preventivos em tempo real para o gestor.</div></div>
       <div class="pilar"><div class="pilar-num">04</div><div class="pilar-title">ROI Mensurável</div><div class="pilar-desc">Correlação entre saúde emocional e produtividade. Relatório executivo com dados concretos para o CEO.</div></div>
     </div>
+
+    <!-- SCREENS -->
+    <div class="screens-showcase fade fd2">
+      <div class="screens-label">Veja a plataforma em ação</div>
+      <div class="screens-grid">
+        <div class="screen-card">
+          <div class="screen-tag">Visão do Colaborador</div>
+          <div class="screen-frame">
+            <img src="images/screen-colaborador.jpg" alt="Tela do colaborador" loading="lazy">
+          </div>
+          <div class="screen-desc">Diagnóstico anônimo e acompanhamento individual de bem-estar</div>
+        </div>
+        <div class="screen-card screen-card-featured">
+          <div class="screen-tag">Dashboard do RH</div>
+          <div class="screen-frame">
+            <img src="images/screen-dashboard.jpg" alt="Dashboard do RH" loading="lazy">
+          </div>
+          <div class="screen-desc">Scores por dimensão, alertas preventivos e histórico de evolução</div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-tag">Plano de Ação</div>
+          <div class="screen-frame">
+            <img src="images/screen-plano.jpg" alt="Plano de ação" loading="lazy">
+          </div>
+          <div class="screen-desc">Plano gerado automaticamente com responsáveis e prazos</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:2.5rem">
+        <a href="empresa.html" target="_blank" class="btn-p">Experimentar grátis →</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
