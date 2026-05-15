@@ -7952,6 +7952,13 @@ function showEmpresa() {
   document.getElementById('dash-greeting').textContent = 'Olá, ' + nome;
   document.getElementById('dash-sub').textContent = 'Seu painel de saúde organizacional';
   document.getElementById('cfg-nome').value = currentEmpresa?.nome || '';
+  // Preenche campos de perfil pessoal
+  const cfgUserNome = document.getElementById('cfg-user-nome');
+  const cfgUserCargo = document.getElementById('cfg-user-cargo');
+  const cfgUserEmail = document.getElementById('cfg-user-email');
+  if (cfgUserNome) cfgUserNome.value = currentEmpresa?.resp_nome || db.auth.getUser().then(u => { if(cfgUserNome && u.data?.user?.user_metadata?.nome) cfgUserNome.value = u.data.user.user_metadata.nome; });
+  if (cfgUserCargo) cfgUserCargo.value = currentEmpresa?.resp_cargo || '';
+  if (cfgUserEmail) cfgUserEmail.value = currentUser?.email || '';
   setTimeout(() => {
     document.getElementById('skelWrap').style.display = 'none';
     document.getElementById('realMetrics').style.display = 'block';
@@ -12662,7 +12669,7 @@ if ('serviceWorker' in navigator) {
 function carregarPerfil() {
   const nome  = currentUser?.user_metadata?.nome || currentEmpresa?.nome || '';
   const email = currentUser?.email || '';
-  const cargo = currentUser?.user_metadata?.cargo || '';
+  const cargo = currentUser?.user_metadata?.cargo || currentEmpresa?.resp_cargo || '';
   const ini   = nome ? nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase() : '?';
   const el    = id => document.getElementById(id);
   if (el('cfg-avatar-circle')) el('cfg-avatar-circle').textContent = ini || '?';
@@ -12682,10 +12689,33 @@ async function salvarPerfil() {
   if (senha && senha !== senha2) { toast('❌ As senhas não coincidem.'); return; }
   if (senha && senha.length < 6) { toast('❌ Senha deve ter no mínimo 6 caracteres.'); return; }
   try {
+    // 1. Atualiza metadata do auth
     const updates = { data: { nome, cargo } };
     if (senha) updates.password = senha;
     const { error } = await db.auth.updateUser(updates);
     if (error) throw error;
+
+    // 2. Salva cargo na tabela empresas (resp_cargo e resp_nome)
+    if (currentEmpresa?.id) {
+      const empUpdate = {};
+      if (nome) empUpdate.resp_nome = nome;
+      if (cargo) empUpdate.resp_cargo = cargo;
+      if (Object.keys(empUpdate).length > 0) {
+        await db.from('empresas').update(empUpdate).eq('id', currentEmpresa.id);
+        if (nome) currentEmpresa.resp_nome = nome;
+        if (cargo) currentEmpresa.resp_cargo = cargo;
+      }
+    }
+
+    // 3. Atualiza nome na sidebar
+    if (nome) {
+      const el = document.getElementById('cfg-avatar-nome');
+      if (el) el.textContent = nome;
+      const ini = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+      const av = document.getElementById('cfg-avatar-circle');
+      if (av) av.textContent = ini;
+    }
+
     if (document.getElementById('cfg-user-senha')) document.getElementById('cfg-user-senha').value = '';
     if (document.getElementById('cfg-user-senha2')) document.getElementById('cfg-user-senha2').value = '';
     toast('✅ Perfil atualizado com sucesso!');
