@@ -320,6 +320,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;heigh
 
 /* ── ROI TABLE ── */
 .roi-table-wrap{overflow-x:auto;margin:2.5rem 0;}
+@media(max-width:600px){
+  .roi-table thead { display:none; }
+  .roi-table, .roi-table tbody, .roi-table tr, .roi-table td { display:block!important; width:100%!important; }
+  .roi-table tr { border:1px solid rgba(45,90,78,.12); border-radius:8px; margin-bottom:12px; padding:12px; background:rgba(45,90,78,.02); }
+  .roi-table td { border:none!important; padding:4px 0!important; font-size:.9rem!important; }
+  .roi-table td:first-child { font-weight:600!important; color:var(--verde-ink)!important; font-size:.95rem!important; margin-bottom:4px; }
+  .roi-table td.td-fonte { font-size:.8rem!important; opacity:.7; }
+  .roi-table .td-fonte { white-space:normal!important; }
+}
 .roi-table{width:100%;border-collapse:collapse;font-family:'Jost',sans-serif;}
 .roi-table th{font-size:1.1rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
   color:#5a5248;padding:.8rem 1.2rem;text-align:left;border-bottom:1px solid rgba(201,168,76,.2);}
