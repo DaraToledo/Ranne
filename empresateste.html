@@ -595,6 +595,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   align-items: center;
   justify-content: flex-start;
   padding: calc(env(safe-area-inset-top,0px) + 28px) 20px calc(env(safe-area-inset-bottom,0px) + 40px);
+  overflow-x: hidden;
 }
 
 /* Orbs decorativos removidos — clean */
@@ -608,8 +609,8 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   padding: 32px 28px 28px;
   width: 100%;
   max-width: 420px !important;
-  margin: 0 auto;
   position: relative;
+  box-sizing: border-box;
 }
 
 /* Step indicator dots */
@@ -746,6 +747,28 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   margin-bottom: 14px;
   display: block;
   box-shadow: 0 4px 14px rgba(27,61,47,.2);
+  box-sizing: border-box;
+  min-width: 0;
+}
+/* Botões lado a lado dentro do card */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.btn-row .btn-cta {
+  margin-bottom: 0;
+  flex: 1;
+  width: auto;
+}
+.btn-row .btn-back {
+  flex: 0 0 auto;
+  width: 52px;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid #E3DDD5;
+  color: #6B645D;
+  box-shadow: none;
 }
 .btn-cta:hover { background: #2D5E4A; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(27,61,47,.25); }
 .btn-cta:active { transform: translateY(0); box-shadow: none; }
@@ -4535,9 +4558,9 @@ body.dark .ob-btn { background: #2D5E4A; }
               <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-dash" style="accent-color:#2D5E4A;"> Dashboard e relatórios RH</label>
               <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-nr1" style="accent-color:#2D5E4A;"> Conformidade NR-1</label>
             </div>
-            <div style="display:flex;gap:8px;margin-top:16px;">
-              <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('a')">←</button>
-              <button class="btn-cta" style="flex:1;" onclick="s3SubProximo('c')">Continuar →</button>
+            <div class="btn-row">
+              <button class="btn-cta btn-back" onclick="s3SubVoltar('a')">←</button>
+              <button class="btn-cta" onclick="s3SubProximo('c')">Continuar →</button>
             </div>
           </div>
 
@@ -4566,9 +4589,9 @@ body.dark .ob-btn { background: #2D5E4A; }
             <textarea class="field-input" id="empresa-obs" placeholder="Informações adicionais sobre o contrato..." style="resize:vertical;min-height:56px;margin-top:4px;"></textarea>
 
             <div id="setup-error" style="color:#991B1B;font-size:12px;margin:12px 0 0;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
-            <div style="display:flex;gap:8px;margin-top:16px;">
-              <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('b')">←</button>
-              <button class="btn-cta" style="flex:1;" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
+            <div class="btn-row">
+              <button class="btn-cta btn-back" onclick="s3SubVoltar('b')">←</button>
+              <button class="btn-cta" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
             </div>
           </div>
 
@@ -12376,12 +12399,14 @@ async function gerarRelatorioNR1() {
 }
 @media (min-width: 861px) {
   #onboarding-steps {
-    padding-left: clamp(260px, 32vw, 440px) !important;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
   }
+  #onboarding-steps .auth-box {
+    margin-left: clamp(160px, 18vw, 260px);
+  }
   #onboarding-steps .auth-steps-logo {
-    padding-left: clamp(260px, 32vw, 440px);
+    margin-left: clamp(160px, 18vw, 260px);
   }
 }
 </style>
