@@ -4717,7 +4717,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="sb-item" onclick="pg('ajuda',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></span> Ajuda & Tour</div>
       </nav>
       <div class="sb-footer">
-        <button class="dark-toggle" id="darkBtn" onclick="toggleDark()" title="Alternar tema" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:8px;border-radius:8px;justify-content:flex-start;">
+        <button id="darkBtn" onclick="toggleDark()" title="Alternar tema" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:8px;border-radius:8px;justify-content:flex-start;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);cursor:pointer;color:rgba(255,255,255,.75);transition:all .2s;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
           <span style="font-size:12px;font-weight:500;letter-spacing:.02em;" id="darkBtnLabel">Modo escuro</span>
         </button>
@@ -5620,7 +5620,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="page-sub">Ranne Care · 6 formulários · Uso interno</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="window.print()">Imprimir</button>
+          
         </div>
 
         <!-- Intro -->
@@ -5688,7 +5688,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Há algo que a liderança poderia fazer diferente?</label><textarea class="fk-textarea"></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk2')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk2')">↺ Limpar</button>
             </div>
           </div>
@@ -5798,7 +5798,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Algo sobre sua saúde que gostaria de compartilhar?</label><textarea class="fk-textarea" placeholder="Informações que ajudem a personalizar sua jornada..."></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk3')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk3')">↺ Limpar</button>
             </div>
           </div>
@@ -5879,7 +5879,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Observações importantes</label><textarea class="fk-textarea" placeholder="Restrições, necessidades especiais, preferência de profissional..."></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk4')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk4')">↺ Limpar</button>
             </div>
           </div>
@@ -5941,7 +5941,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Depoimento (opcional)</label><textarea class="fk-textarea" placeholder='"Trabalhar com a Ranne foi..."'></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk5')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk5')">↺ Limpar</button>
             </div>
           </div>
@@ -6015,7 +6015,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               </div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk6')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk6')">↺ Limpar</button>
             </div>
           </div>
@@ -9035,6 +9035,47 @@ function copyLink() {
 /* ─────────────────────────────────────
    DARK MODE
    ───────────────────────────────────── */
+function printForm(formId) {
+  // Remove print area anterior
+  const old = document.getElementById('print-area');
+  if (old) old.remove();
+
+  // Pega o conteúdo do formulário
+  const card = document.getElementById(formId);
+  if (!card) return;
+  const body = card.querySelector('.form-kit-body');
+  const title = card.querySelector('.form-kit-title')?.textContent || 'Formulário';
+  if (!body) return;
+
+  // Cria área de impressão
+  const printArea = document.createElement('div');
+  printArea.id = 'print-area';
+
+  // Header da Ranne
+  printArea.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #2D5E4A;">
+      <div>
+        <div style="font-family:Georgia,serif;font-size:20px;font-weight:400;color:#2D5E4A;letter-spacing:.04em;">RANNE CARE</div>
+        <div style="font-size:11px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin-top:2px;">Saúde Organizacional</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:#888;">
+        ${title}<br>
+        ${new Date().toLocaleDateString('pt-BR')}
+      </div>
+    </div>
+    ${body.innerHTML}
+  `;
+
+  // Remove botões de ação da impressão
+  printArea.querySelectorAll('.fk-actions').forEach(el => el.remove());
+
+  document.body.appendChild(printArea);
+  window.print();
+
+  // Remove após impressão
+  setTimeout(() => { printArea.remove(); }, 1000);
+}
+
 function toggleDark() {
   const on = document.body.classList.toggle('dark');
   const label = document.getElementById('darkBtnLabel');
@@ -12460,6 +12501,33 @@ async function gerarRelatorioNR1() {
   }
   #onboarding-steps .auth-steps-logo {
     margin-left: clamp(160px, 18vw, 260px);
+  }
+}
+
+/* ── IMPRESSÃO: mostra apenas o formulário ativo ── */
+@media print {
+  body * { visibility: hidden !important; }
+  #print-area, #print-area * { visibility: visible !important; }
+  #print-area {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    background: #fff !important;
+    padding: 24px !important;
+    overflow: visible !important;
+  }
+  /* Reset cores para impressão */
+  #print-area * {
+    color: #000 !important;
+    background: transparent !important;
+    border-color: #ccc !important;
+  }
+  #print-area .fk-actions { display: none !important; }
+  #print-area input, #print-area textarea {
+    border-bottom: 1px solid #999 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
   }
 }
 </style>
