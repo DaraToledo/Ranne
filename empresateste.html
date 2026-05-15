@@ -8689,6 +8689,13 @@ async function salvarCheckin() {
    PLANO DE AÇÃO
    ───────────────────────────────────── */
 function initPlano() {
+  // Limpa badge antigo do localStorage se não há ações reais
+  if (document.querySelectorAll('.action-row[data-id]').length === 0) {
+    localStorage.removeItem('ranne-acoes');
+    const badge = document.getElementById('badge-acoes');
+    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+    return;
+  }
   // Restaura estado salvo
   const saved = localStorage.getItem('ranne-acoes');
   if (saved && document.querySelectorAll('.action-row[data-id]').length > 0) {
@@ -9674,16 +9681,18 @@ function gerarCodigo() {
 }
 
 function copiarCodigo() {
-  const codigo = document.getElementById('codigo-gerado').textContent;
-  navigator.clipboard.writeText(codigo).catch(()=>{});
-  toast('Código copiado!');
+  // Elemento removido — função mantida por compatibilidade
 }
 
 function resetModalInvite() {
-  document.getElementById('codigo-gerado-wrap').style.display = 'none';
-  document.getElementById('btn-invite').textContent = 'Gerar código →';
-  document.getElementById('invite-nome').value = '';
-  document.getElementById('invite-email').value = '';
+  const nome = document.getElementById('invite-nome');
+  const email = document.getElementById('invite-email');
+  const senha = document.getElementById('invite-senha');
+  const btn = document.getElementById('btn-invite');
+  if (nome) nome.value = '';
+  if (email) email.value = '';
+  if (senha) senha.value = '';
+  if (btn) btn.textContent = 'Cadastrar e enviar e-mail →';
 }
 
 
