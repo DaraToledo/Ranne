@@ -731,39 +731,7 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 .chat-send-btn:hover { opacity: .88; transform: scale(1.05); }
 .chat-send-btn:disabled { opacity: .4; cursor: default; transform: none; }
 
-/* ══ MASCOTE — Como Funciona ══ */
-.ciclo-mascote-abs{
-  position:absolute;
-  left:0;bottom:0;
-  pointer-events:none;
-  z-index:2;
-}
-.ciclo-mascote-abs img{
-  height:85vh;
-  width:auto;
-  display:block;
-  object-fit:contain;
-  object-position:left bottom;
-  mix-blend-mode:lighten;
-}
 
-/* ══ MASCOTE — CTA Final ══ */
-.cta-content{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;
-}
-.cta-mascote-wrap{
-  position:absolute;
-  bottom:0;right:clamp(20px,6vw,120px);
-  z-index:1;pointer-events:none;
-  display:flex;align-items:flex-end;
-}
-.cta-mascote-img{
-  height:clamp(200px,32vw,420px);width:auto;
-  object-fit:contain;object-position:center center;
-  mix-blend-mode:lighten;
-  opacity:.95;
-}
 
 /* ══ MASCOTE — Chat button ══ */
 #ranne-chat-btn img{
@@ -777,15 +745,13 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 
 /* Responsivo */
 @media(max-width:900px){
-  .ciclo-mascote-abs{width:clamp(200px,22vw,280px);left:-10px;}
-  #como-funciona{padding-left:clamp(180px,22vw,260px)!important;}
+
   .ciclo-mascote-fala{font-size:.78rem;max-width:160px;}
   .cta-mascote-wrap{right:8px;}
   .cta-mascote-img{height:clamp(140px,22vw,220px);opacity:.6;}
 }
 @media(max-width:480px){
-  .ciclo-mascote-abs{display:none;}
-  #como-funciona{padding-left:1.2rem!important;}
+
   .cta-mascote-wrap{display:none;}
 }
 
@@ -1051,11 +1017,7 @@ html, body {
 
 <!-- COMO FUNCIONA -->
 <section class="section section-dark" id="como-funciona" style="position:relative;overflow:hidden;padding-left:clamp(280px,30vw,480px);">
-  <div class="ciclo-mascote-abs">
-    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ilz7n.png"
-         alt="Ranne assistente"
-         onerror="this.parentElement.style.display='none'">
-  </div>
+
   <div style="max-width:960px;margin:0 auto">
     <div class="fade" style="text-align:center;margin-bottom:1rem">
       <div class="stag stag-center">Como funciona</div>
@@ -1334,12 +1296,7 @@ html, body {
 <!-- CTA FINAL -->
 <section class="cta-section" id="contato" style="overflow:hidden;">
   <div class="cta-bg">Ranne Care</div>
-  <div class="cta-mascote-wrap">
-    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/BThwe.png"
-         alt="Ranne assistente"
-         class="cta-mascote-img"
-         onerror="this.style.display='none'">
-  </div>
+
   <div class="cta-content">
     <span class="cta-tag fade">Próximo passo</span>
     <h2 class="cta-title fade fd1">Pronto para transformar saúde mental em <em>crescimento?</em></h2>
@@ -1628,7 +1585,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
