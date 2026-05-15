@@ -726,31 +726,20 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 .chat-send-btn:disabled { opacity: .4; cursor: default; transform: none; }
 
 /* ══ MASCOTE — Como Funciona ══ */
-.ciclo-com-mascote{display:flex;flex-direction:row;align-items:flex-end;gap:0;margin:2rem -60px 0;}
-.ciclo-mascote-wrap{
-  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
-  flex-shrink:0;width:220px;padding-bottom:0;
+.ciclo-mascote-abs{
+  position:absolute;
+  left:0;bottom:0;
+  width:clamp(220px,22vw,340px);
+  pointer-events:none;
+  z-index:2;
 }
-.ciclo-mascote-img{
-  height:clamp(260px,32vw,420px);width:auto;
-  object-fit:contain;object-position:center bottom;
-  mix-blend-mode:lighten;
+.ciclo-mascote-abs img{
+  width:100%;height:auto;
   display:block;
+  object-fit:contain;
+  object-position:center bottom;
+  mix-blend-mode:lighten;
 }
-.ciclo-mascote-fala{
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.2);
-  border-radius:0 12px 12px 12px;
-  padding:.55rem .9rem;
-  font-family:'Jost',sans-serif;
-  font-size:.82rem;font-weight:300;
-  color:rgba(255,255,255,.9);
-  margin-top:.5rem;
-  max-width:180px;
-  line-height:1.5;
-  align-self:flex-start;
-}
-.ciclo-com-mascote .ciclo-steps{flex:1;margin-bottom:1.2rem;}
 
 /* ══ MASCOTE — CTA Final ══ */
 .cta-content{
@@ -782,15 +771,13 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 
 /* Responsivo */
 @media(max-width:900px){
-  .ciclo-com-mascote{flex-direction:column;margin:2rem 0 0;}
-  .ciclo-mascote-wrap{width:100%;flex-direction:row;align-items:flex-end;gap:.8rem;}
-  .ciclo-mascote-img{height:clamp(160px,22vw,240px);}
+  .ciclo-mascote-abs{width:clamp(160px,16vw,220px);}
   .ciclo-mascote-fala{font-size:.78rem;max-width:160px;}
   .cta-mascote-wrap{right:8px;}
   .cta-mascote-img{height:clamp(140px,22vw,220px);opacity:.6;}
 }
 @media(max-width:480px){
-  .ciclo-mascote-wrap{display:none;}
+  .ciclo-mascote-abs{display:none;}
   .cta-mascote-wrap{display:none;}
 }
 </style>
@@ -999,29 +986,25 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 </section>
 
 <!-- COMO FUNCIONA -->
-<section class="section section-dark" id="como-funciona">
+<section class="section section-dark" id="como-funciona" style="position:relative;overflow:hidden;">
+  <div class="ciclo-mascote-abs">
+    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ilz7n.png"
+         alt="Ranne assistente"
+         onerror="this.parentElement.style.display='none'">
+  </div>
   <div style="max-width:960px;margin:0 auto">
     <div class="fade" style="text-align:center;margin-bottom:1rem">
       <div class="stag stag-center">Como funciona</div>
       <h2 class="stitle stitle-w">Não é uma ação pontual.<br>É <em style="font-style:italic;color:var(--verde-nevoa)">gestão contínua.</em></h2>
       <p style="font-family:'Jost',sans-serif;font-weight:300;font-size:1.1rem;color:rgba(255,255,255,.85);margin-top:1rem;line-height:1.7;max-width:520px;margin-left:auto;margin-right:auto">A Ranne Care funciona em ciclo — cada diagnóstico alimenta o próximo. O RH deixa de agir por intuição e passa a ter um sistema vivo de gestão de pessoas.</p>
     </div>
-    <div class="ciclo-com-mascote fade fd1">
-      <div class="ciclo-mascote-wrap">
-        <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ilz7n.png"
-             alt="Ranne assistente"
-             class="ciclo-mascote-img"
-             onerror="this.parentElement.style.display='none'">
-        <div class="ciclo-mascote-fala">Veja como funciona o ciclo completo</div>
-      </div>
-      <div class="ciclo-steps">
-        <div class="ciclo-line"></div>
-        <div class="ciclo-step"><div class="cs-icon">🔍</div><div class="cs-num">Etapa 1</div><div class="cs-title">Diagnóstico</div><div class="cs-desc">Questionário psicossocial anônimo enviado aos colaboradores</div></div>
-        <div class="ciclo-step"><div class="cs-icon">📋</div><div class="cs-num">Etapa 2</div><div class="cs-title">Laudo</div><div class="cs-desc">Scores por dimensão com análise e pontos críticos</div></div>
-        <div class="ciclo-step"><div class="cs-icon">📊</div><div class="cs-num">Etapa 3</div><div class="cs-title">Dashboard RH</div><div class="cs-desc">Dados em tempo real, alertas e histórico de evolução</div></div>
-        <div class="ciclo-step"><div class="cs-icon">🎯</div><div class="cs-num">Etapa 4</div><div class="cs-title">Plano de Ação</div><div class="cs-desc">Gerado automaticamente com prioridades por urgência</div></div>
-        <div class="ciclo-step"><div class="cs-icon">🔄</div><div class="cs-num">Etapa 5</div><div class="cs-title">Novo Ciclo</div><div class="cs-desc">Novo diagnóstico mede evolução e o sistema aprende</div></div>
-      </div>
+    <div class="ciclo-steps fade fd1">
+      <div class="ciclo-line"></div>
+      <div class="ciclo-step"><div class="cs-icon">🔍</div><div class="cs-num">Etapa 1</div><div class="cs-title">Diagnóstico</div><div class="cs-desc">Questionário psicossocial anônimo enviado aos colaboradores</div></div>
+      <div class="ciclo-step"><div class="cs-icon">📋</div><div class="cs-num">Etapa 2</div><div class="cs-title">Laudo</div><div class="cs-desc">Scores por dimensão com análise e pontos críticos</div></div>
+      <div class="ciclo-step"><div class="cs-icon">📊</div><div class="cs-num">Etapa 3</div><div class="cs-title">Dashboard RH</div><div class="cs-desc">Dados em tempo real, alertas e histórico de evolução</div></div>
+      <div class="ciclo-step"><div class="cs-icon">🎯</div><div class="cs-num">Etapa 4</div><div class="cs-title">Plano de Ação</div><div class="cs-desc">Gerado automaticamente com prioridades por urgência</div></div>
+      <div class="ciclo-step"><div class="cs-icon">🔄</div><div class="cs-num">Etapa 5</div><div class="cs-title">Novo Ciclo</div><div class="cs-desc">Novo diagnóstico mede evolução e o sistema aprende</div></div>
     </div>
     <div class="ciclo-bottom fade fd2">
       <div class="cb-item"><div class="cb-title">Para o colaborador</div><div class="cb-desc">Sente que a empresa se importa. Responde diagnóstico anônimo e vê ações acontecendo de verdade.</div></div>
@@ -1581,7 +1564,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
