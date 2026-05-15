@@ -9511,12 +9511,23 @@ async function salvarIntervencao() {
   if (!desc) { toast('⚠️ Adicione uma descrição.'); return; }
 
   try {
-    await db.from('intervencoes_rh').insert({
+    const { error: intErr } = await db.from('intervencoes_rh').insert({
       colaborador_id: fichaColaboradorId,
       empresa_id: currentEmpresa?.id,
-      tipo, descricao: desc, responsavel: resp,
-      status, followup_em: followup || null
+      tipo,
+      descricao: desc,
+      responsavel: resp,
+      status,
+      followup_em: followup || null,
+      criado_em: new Date().toISOString()
     });
+
+    if (intErr) {
+      console.error('Erro ao salvar intervenção:', intErr);
+      toast('⚠️ Erro: ' + (intErr.message || 'verifique a tabela intervencoes_rh'));
+      return;
+    }
+
     document.getElementById('modal-intervencao').classList.remove('open');
     toast('✅ Intervenção registrada!');
     await carregarIntervencoes(fichaColaboradorId);
@@ -9525,8 +9536,8 @@ async function salvarIntervencao() {
     document.getElementById('interv-resp').value = '';
     document.getElementById('interv-followup').value = '';
   } catch(e) {
-    toast('⚠️ Erro ao salvar. Crie a tabela intervencoes_rh no Supabase.');
-    console.warn(e);
+    console.error('Exceção ao salvar intervenção:', e);
+    toast('⚠️ Erro ao salvar: ' + (e.message || 'tente novamente'));
   }
 }
 
@@ -13652,7 +13663,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
