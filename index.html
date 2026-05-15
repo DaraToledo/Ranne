@@ -16,7 +16,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Jost',sans-serif;background:var(--offwhite);color:var(--preto);overflow-x:hidden;}
+body{font-family:'Jost',sans-serif;background:var(--offwhite);color:var(--preto);overflow-x:hidden;max-width:100vw;}
 
 /* ── NAV ── */
 nav{
@@ -63,7 +63,7 @@ nav{
 .hero-subtitle strong{color:var(--preto);font-weight:500;}
 
 /* Tags de produto no hero */
-.hero-produtos{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+.hero-produtos{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-bottom:1.4rem;max-width:100%;overflow:hidden;}
 .hp-item{display:flex;align-items:center;gap:.35rem;font-family:'Jost',sans-serif;font-size:1.15rem;font-weight:400;color:var(--preto);}
 .hp-icon{font-size:1.12rem;}
 .hp-label{letter-spacing:.04em;}
@@ -355,7 +355,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;heigh
 
 /* ── CTA ── */
 .cta-section{padding:9rem 5rem;background:var(--verde-ink);text-align:center;position:relative;overflow:hidden;}
-.cta-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:20rem;font-weight:300;
+.cta-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:clamp(6rem,18vw,20rem);font-weight:300;
   color:rgba(255,255,255,.03);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
 /* ornamental lines em CTA */
 .cta-section::before,.cta-section::after{
@@ -407,8 +407,9 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   z-index:9999;transition:opacity .5s ease;
 }
 #site-loading .ld-text{
-  font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;
-  color:white;letter-spacing:.12em;margin-bottom:1.4rem;opacity:.9;
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,7vw,2.8rem);font-weight:300;
+  color:white;letter-spacing:.08em;margin-bottom:1.4rem;opacity:.9;
+  white-space:nowrap;
 }
 #site-loading .ld-text span{color:var(--dourado);}
 #site-loading .ld-line{
@@ -506,8 +507,13 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 @media(max-width:480px){
   nav{padding:.7rem 1rem;}
   .nav-brand-text .nbn{font-size:1.1rem;}
-  .hero-title{font-size:1.9rem;}
-  .hero-subtitle{font-size:.95rem;}
+  .hero-title{font-size:1.75rem;}
+  .hero-subtitle{font-size:.92rem;}
+  .hero-left{padding:1.5rem 1rem 1rem;overflow:hidden;}
+  .hero-produtos{gap:.3rem;}
+  .hp-item{font-size:.78rem;}
+  .hp-sep{font-size:.78rem;}
+  .hp-link{font-size:.78rem;}
   .hero-autoridade{font-size:.72rem;padding:.35rem .7rem;}
   .btn-p,.btn-o{font-size:.85rem;letter-spacing:.06em;}
   .hero-cards-row{flex-direction:column;}
@@ -724,6 +730,79 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 }
 .chat-send-btn:hover { opacity: .88; transform: scale(1.05); }
 .chat-send-btn:disabled { opacity: .4; cursor: default; transform: none; }
+
+/* ══ MASCOTE — Como Funciona ══ */
+.ciclo-mascote-abs{
+  position:absolute;
+  left:0;bottom:0;
+  pointer-events:none;
+  z-index:2;
+}
+.ciclo-mascote-abs img{
+  height:85vh;
+  width:auto;
+  display:block;
+  object-fit:contain;
+  object-position:left bottom;
+  mix-blend-mode:lighten;
+}
+
+/* ══ MASCOTE — CTA Final ══ */
+.cta-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+}
+.cta-mascote-wrap{
+  position:absolute;
+  bottom:0;right:clamp(20px,6vw,120px);
+  z-index:1;pointer-events:none;
+  display:flex;align-items:flex-end;
+}
+.cta-mascote-img{
+  height:clamp(200px,32vw,420px);width:auto;
+  object-fit:contain;object-position:center center;
+  mix-blend-mode:lighten;
+  opacity:.95;
+}
+
+/* ══ MASCOTE — Chat button ══ */
+#ranne-chat-btn img{
+  width:60px;height:60px;
+  border-radius:50%;
+  object-fit:cover;
+  object-position:center 20%;
+  border:2.5px solid #2D5E4A;
+  background:#F0EDE6;
+}
+
+/* Responsivo */
+@media(max-width:900px){
+  .ciclo-mascote-abs{width:clamp(200px,22vw,280px);left:-10px;}
+  #como-funciona{padding-left:clamp(180px,22vw,260px)!important;}
+  .ciclo-mascote-fala{font-size:.78rem;max-width:160px;}
+  .cta-mascote-wrap{right:8px;}
+  .cta-mascote-img{height:clamp(140px,22vw,220px);opacity:.6;}
+}
+@media(max-width:480px){
+  .ciclo-mascote-abs{display:none;}
+  #como-funciona{padding-left:1.2rem!important;}
+  .cta-mascote-wrap{display:none;}
+}
+
+/* ── Global mobile overflow fix ── */
+@media(max-width:600px){
+  *{max-width:100%;box-sizing:border-box;}
+  img{max-width:100%;height:auto;}
+  .hero-left{padding:1.5rem 1rem!important;width:100%!important;}
+  .hero-autoridade{white-space:normal;font-size:.7rem;}
+  .hero-deliverables{flex-wrap:wrap;}
+  .dl-tag{font-size:.75rem;}
+  .hero-soft-ctas{flex-wrap:wrap;gap:8px;}
+  .soft-link{font-size:.85rem;}
+  .hero-degust{font-size:.88rem;}
+  .ab-items{flex-direction:column;gap:.5rem;}
+  .ab-item{font-size:.85rem;white-space:normal;}
+}
 </style>
 </head>
 <body>
@@ -930,7 +1009,12 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 </section>
 
 <!-- COMO FUNCIONA -->
-<section class="section section-dark" id="como-funciona">
+<section class="section section-dark" id="como-funciona" style="position:relative;overflow:hidden;padding-left:clamp(280px,30vw,480px);">
+  <div class="ciclo-mascote-abs">
+    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ilz7n.png"
+         alt="Ranne assistente"
+         onerror="this.parentElement.style.display='none'">
+  </div>
   <div style="max-width:960px;margin:0 auto">
     <div class="fade" style="text-align:center;margin-bottom:1rem">
       <div class="stag stag-center">Como funciona</div>
@@ -1207,22 +1291,30 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 </section>
 
 <!-- CTA FINAL -->
-<section class="cta-section" id="contato">
+<section class="cta-section" id="contato" style="overflow:hidden;">
   <div class="cta-bg">Ranne Care</div>
-  <span class="cta-tag fade">Próximo passo</span>
-  <h2 class="cta-title fade fd1">Pronto para transformar saúde mental em <em>crescimento?</em></h2>
-  <p class="cta-sub fade fd2">Em 20 minutos de conversa, mostramos a plataforma em ação — sem compromisso e sem cartão de crédito.</p>
-  <div class="cta-promise fade fd2">✦ 20 minutos · Sem compromisso · Sem cartão de crédito</div>
-  <div class="cta-buttons fade fd3">
-    <a href="mailto:comercial@rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.5)">Agendar uma conversa</a>
-    <a href="https://wa.me/5511941918177" target="_blank" class="btn-o" style="color:white;border-color:rgba(255,255,255,.5)">📲 WhatsApp</a>
+  <div class="cta-mascote-wrap">
+    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/BThwe.png"
+         alt="Ranne assistente"
+         class="cta-mascote-img"
+         onerror="this.style.display='none'">
   </div>
-  <div class="cta-middle-row fade fd4">
-    <a href="empresa.html" class="cta-soft-link">Explorar grátis →</a>
-    <a href="#ciencia" class="cta-soft-link">Ver fundamentação científica →</a>
-    <a href="#produto" class="cta-soft-link">Ver diagnóstico de exemplo →</a>
+  <div class="cta-content">
+    <span class="cta-tag fade">Próximo passo</span>
+    <h2 class="cta-title fade fd1">Pronto para transformar saúde mental em <em>crescimento?</em></h2>
+    <p class="cta-sub fade fd2">Em 20 minutos de conversa, mostramos a plataforma em ação — sem compromisso e sem cartão de crédito.</p>
+    <div class="cta-promise fade fd2">✦ 20 minutos · Sem compromisso · Sem cartão de crédito</div>
+    <div class="cta-buttons fade fd3">
+      <a href="mailto:comercial@rannecare.com.br" class="btn-o" style="color:white;border-color:rgba(255,255,255,.5)">Agendar uma conversa</a>
+      <a href="https://wa.me/5511941918177" target="_blank" class="btn-o" style="color:white;border-color:rgba(255,255,255,.5)">📲 WhatsApp</a>
+    </div>
+    <div class="cta-middle-row fade fd4">
+      <a href="empresa.html" class="cta-soft-link">Explorar grátis →</a>
+      <a href="#ciencia" class="cta-soft-link">Ver fundamentação científica →</a>
+      <a href="#produto" class="cta-soft-link">Ver diagnóstico de exemplo →</a>
+    </div>
+    <p class="cta-note fade">Conteúdo revisado por Viviani Alexandre Rufino · Psicóloga parceira credenciada · CRP 06/215926</p>
   </div>
-  <p class="cta-note fade">Conteúdo revisado por Viviani Alexandre Rufino · Psicóloga parceira credenciada · CRP 06/215926</p>
 </section>
 
 <!-- DISCLAIMER JURIDICO -->
@@ -1312,7 +1404,9 @@ setTimeout(esconderLoader, 3000);
 
 <!-- ══ CHAT BOT ══ -->
 <button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Falar com a Ranne">
-  <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne" onerror="this.style.display='none';this.parentElement.innerHTML='🌿'">
+  <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png"
+       alt="Ranne"
+       onerror="this.style.display='none';this.parentElement.innerHTML='🌿'">
   <span class="chat-badge" id="chat-badge"></span>
 </button>
 
@@ -1493,7 +1587,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
