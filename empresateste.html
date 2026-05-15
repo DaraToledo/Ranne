@@ -12375,7 +12375,14 @@ async function gerarRelatorioNR1() {
   #auth-mascot { display: none !important; }
 }
 @media (min-width: 861px) {
-  #onboarding-steps .auth-box { margin-left: clamp(280px, 35vw, 460px); }
+  #onboarding-steps {
+    padding-left: clamp(260px, 32vw, 440px) !important;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  #onboarding-steps .auth-steps-logo {
+    padding-left: clamp(260px, 32vw, 440px);
+  }
 }
 </style>
 </head>
@@ -13441,7 +13448,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
