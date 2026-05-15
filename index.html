@@ -535,6 +535,194 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   .screen-desc{font-size:.84rem;}
   .screens-label{font-size:.72rem;}
 }
+
+/* ══════════════════════════════════
+   CHAT BOT — Ranne Care
+══════════════════════════════════ */
+#ranne-chat-btn {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 9000;
+  display: flex;
+  align-items: center; justify-content: center;
+  padding: 0;
+  box-shadow: 0 4px 20px rgba(45,54,37,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+#ranne-chat-btn img {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 15%;
+  border: 2.5px solid #2D5E4A;
+  background: #F0EDE6;
+}
+#ranne-chat-btn:hover { transform: scale(1.08); }
+#ranne-chat-btn .chat-badge {
+  position: absolute; top: -2px; right: -2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #EF4444; border: 2px solid #fff;
+  display: none;
+}
+#ranne-chat-window {
+  position: fixed;
+  z-index: 9001;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(45,94,74,.18);
+  animation: chatIn .28s cubic-bezier(.16,1,.3,1);
+}
+@keyframes chatIn {
+  from { opacity:0; transform: translateY(14px) scale(.97); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+#ranne-chat-window.open { display: flex; }
+@media (min-width: 769px) {
+  #ranne-chat-window {
+    bottom: 100px; right: 28px;
+    width: 380px;
+    height: min(600px, calc(100vh - 120px));
+    border-radius: 22px;
+    background: #FFFFFF;
+    box-shadow: 0 12px 48px rgba(0,0,0,.18);
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  #ranne-chat-window {
+    bottom: 90px; right: 16px;
+    width: calc(100vw - 32px); max-width: 420px;
+    max-height: 70vh;
+    border-radius: 20px;
+    background: #FFFFFF;
+    box-shadow: 0 8px 36px rgba(0,0,0,.16);
+  }
+  #ranne-chat-btn { bottom: 20px; right: 16px; }
+}
+@media (max-width: 480px) {
+  #ranne-chat-window {
+    bottom: 0; left: 0; right: 0;
+    width: 100vw; max-width: 100vw;
+    height: 92vh; max-height: 92vh;
+    border-radius: 22px 22px 0 0;
+    background: #FFFFFF;
+    box-shadow: 0 -4px 32px rgba(0,0,0,.18);
+  }
+  #ranne-chat-btn { bottom: 20px; right: 16px; width: 52px; height: 52px; }
+  #ranne-chat-btn img { width: 52px; height: 52px; }
+}
+.chat-header {
+  background: linear-gradient(135deg, #1E3528, #2D5E4A);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 11px;
+  flex-shrink: 0;
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.chat-header-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  overflow: hidden; flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,.25);
+}
+.chat-header-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.chat-header-info { flex: 1; min-width: 0; }
+.chat-header-name { color: #fff; font-size: 13.5px; font-weight: 700; font-family: 'Jost', sans-serif; }
+.chat-header-status { color: rgba(255,255,255,.65); font-size: 11px; margin-top: 2px; display:flex; align-items:center; gap:5px; font-family: 'Jost', sans-serif; }
+.chat-online-dot { width:6px; height:6px; border-radius:50%; background:#52C995; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+.chat-header-close {
+  background: rgba(255,255,255,.12); border: none;
+  color: rgba(255,255,255,.85); font-size: 16px;
+  cursor: pointer; padding: 6px; line-height: 1;
+  border-radius: 8px; transition: background .15s; flex-shrink: 0;
+}
+.chat-header-close:hover { background: rgba(255,255,255,.22); color: #fff; }
+#chat-welcome {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px 20px 20px; gap: 14px;
+  text-align: center; overflow-y: auto;
+}
+.chat-welcome-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(45,94,74,.18);
+  box-shadow: 0 4px 20px rgba(45,94,74,.15);
+  flex-shrink: 0;
+}
+.chat-welcome-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+.chat-welcome-msg { font-size: 15px; font-weight: 700; color: #1A2E20; line-height: 1.4; margin: 0; font-family: 'Jost', sans-serif; }
+.chat-welcome-sub { font-size: 12.5px; color: #5A7A6A; line-height: 1.55; margin: -8px 0 0; max-width: 280px; font-family: 'Jost', sans-serif; }
+.chat-welcome-suggs { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 320px; }
+.chat-welcome-sugg {
+  background: #F7F4EE; border: 1.5px solid rgba(45,94,74,.15);
+  color: #1A2E20; font-size: 12.5px; font-weight: 500;
+  padding: 11px 14px; border-radius: 12px; cursor: pointer;
+  text-align: left; transition: all .15s; font-family: 'Jost', sans-serif; line-height: 1.4;
+}
+.chat-welcome-sugg:hover { background: #2D5E4A; color: #fff; border-color: #2D5E4A; transform: translateX(3px); }
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 14px 14px 8px;
+  display: flex; flex-direction: column; gap: 10px;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(45,94,74,.2); border-radius: 2px; }
+.chat-msg {
+  max-width: 85%; padding: 10px 13px;
+  border-radius: 14px; font-size: 13px; line-height: 1.55;
+  animation: msgIn .2s ease; word-break: break-word;
+  font-family: 'Jost', sans-serif;
+}
+@keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+.chat-msg.bot { background: #F0EDE6; color: #1A2E20; border-bottom-left-radius: 4px; align-self: flex-start; border: 1px solid rgba(45,94,74,.12); }
+.chat-msg.user { background: #2D5E4A; color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+.chat-msg.typing { background: #F0EDE6; border: 1px solid rgba(45,94,74,.12); align-self: flex-start; padding: 12px 16px; }
+.typing-dots { display: flex; gap: 4px; align-items: center; }
+.typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: #5A7A6A; animation: dot .9s infinite; }
+.typing-dots span:nth-child(2) { animation-delay: .15s; }
+.typing-dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes dot { 0%,60%,100% { transform: translateY(0); opacity:.4; } 30% { transform: translateY(-5px); opacity:1; } }
+.chat-suggestions { padding: 0 12px 8px; display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
+.chat-sugg {
+  background: #F0EDE6; border: 1.5px solid rgba(45,94,74,.15);
+  color: #2D5E4A; font-size: 11px; font-weight: 600;
+  padding: 5px 10px; border-radius: 99px;
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+  font-family: 'Jost', sans-serif;
+}
+.chat-sugg:hover { background: #2D5E4A; color: #fff; border-color: #2D5E4A; }
+.chat-input-row {
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(45,94,74,.1);
+  display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0;
+  background: #FFFFFF;
+}
+.chat-input-row textarea {
+  flex: 1; border: 1.5px solid rgba(45,94,74,.2);
+  border-radius: 12px; padding: 9px 12px;
+  font-size: 13px; font-family: 'Jost', sans-serif;
+  resize: none; outline: none; line-height: 1.45;
+  background: #F7F4EE; color: #1A2E20;
+  max-height: 90px; transition: border-color .15s;
+}
+.chat-input-row textarea:focus { border-color: #2D5E4A; }
+.chat-input-row textarea::placeholder { color: #8AAA95; }
+.chat-send-btn {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: #2D5E4A; color: #fff; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: opacity .15s, transform .1s;
+}
+.chat-send-btn:hover { opacity: .88; transform: scale(1.05); }
+.chat-send-btn:disabled { opacity: .4; cursor: default; transform: none; }
 </style>
 </head>
 <body>
@@ -1113,5 +1301,202 @@ function esconderLoader() {
 window.addEventListener('load', () => setTimeout(esconderLoader, 700));
 setTimeout(esconderLoader, 3000);
 </script>
+
+<!-- ══ CHAT BOT ══ -->
+<button id="ranne-chat-btn" onclick="ranneChat.toggle()" title="Falar com a Ranne">
+  <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne" onerror="this.style.display='none';this.parentElement.innerHTML='🌿'">
+  <span class="chat-badge" id="chat-badge"></span>
+</button>
+
+<div id="ranne-chat-window">
+  <div class="chat-header">
+    <div class="chat-header-avatar">
+      <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne" onerror="this.outerHTML='<div style=&quot;display:flex;align-items:center;justify-content:center;width:40px;height:40px;font-size:20px&quot;>🌿</div>'">
+    </div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">Ranne</div>
+      <div class="chat-header-status"><span class="chat-online-dot"></span><span id="chat-status">Online agora</span></div>
+    </div>
+    <button class="chat-header-close" onclick="ranneChat.toggle()" aria-label="Fechar chat">✕</button>
+  </div>
+  <div id="chat-welcome">
+    <div class="chat-welcome-avatar">
+      <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png" alt="Ranne" onerror="this.outerHTML='<div style=&quot;display:flex;align-items:center;justify-content:center;width:80px;height:80px;font-size:40px&quot;>🌿</div>'">
+    </div>
+    <p class="chat-welcome-msg">Olá! Eu sou a Ranne 👋<br>Como posso te ajudar hoje?</p>
+    <p class="chat-welcome-sub" id="chat-welcome-sub">Escolha uma pergunta ou escreva livremente:</p>
+    <div class="chat-welcome-suggs" id="chat-welcome-suggs"></div>
+  </div>
+  <div class="chat-messages" id="chat-messages" style="display:none"></div>
+  <div class="chat-suggestions" id="chat-suggestions"></div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" placeholder="Escreva uma mensagem…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();ranneChat.send();}"
+      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <button class="chat-send-btn" id="chat-send-btn" onclick="ranneChat.send()" aria-label="Enviar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+const ranneChat = (() => {
+  let history = [];
+  let isOpen = false;
+  let isLoading = false;
+  let welcomeActive = true;
+
+  const SUGGS = [
+    '📊 Como funciona o diagnóstico psicossocial?',
+    '💼 O que o RH recebe na plataforma?',
+    '📋 Como é gerado o plano de ação?',
+    '💰 Qual o ROI de investir em saúde mental?',
+    '🚀 Como começar a usar a Ranne Care?',
+  ];
+
+  function getSuggs() { return SUGGS; }
+
+  function getSystemPrompt() {
+    return "Você é a Ranne, assistente virtual da Ranne Care — plataforma de saúde mental e bem-estar corporativo. " +
+      "Tire dúvidas sobre a plataforma: diagnóstico psicossocial, laudo organizacional, dashboard do RH, plano de ação automático e ROI mensurável. " +
+      "Seja objetiva, empática e profissional. Use dados e evidências quando possível. " +
+      "Se o visitante quiser agendar uma conversa, direcione para o botão 'Agendar Conversa' no topo do site ou para https://wa.me/5511941918177. " +
+      "Máx. 3 parágrafos por resposta. Responda em português do Brasil. Nunca faça diagnósticos clínicos.";
+  }
+
+  function renderWelcomeSuggs() {
+    const el = document.getElementById("chat-welcome-suggs");
+    if (!el) return;
+    el.innerHTML = getSuggs().map(function(s) {
+      return "<button class=\"chat-welcome-sugg\" onclick=\"ranneChat.startFromSugg(this, '" + s.replace(/'/g,"\\'") + "')\">"+s+"</button>";
+    }).join("");
+  }
+
+  function hideWelcome() {
+    const w = document.getElementById("chat-welcome");
+    const m = document.getElementById("chat-messages");
+    if (w) w.style.display = "none";
+    if (m) m.style.display = "flex";
+    welcomeActive = false;
+  }
+
+  function renderMsg(text, type) {
+    const el = document.createElement("div");
+    el.className = "chat-msg " + type;
+    el.textContent = text;
+    const msgs = document.getElementById("chat-messages");
+    if (msgs) { msgs.appendChild(el); scrollBottom(); }
+    return el;
+  }
+
+  function renderTyping() {
+    const el = document.createElement("div");
+    el.className = "chat-msg typing"; el.id = "chat-typing";
+    el.innerHTML = "<div class=\"typing-dots\"><span></span><span></span><span></span></div>";
+    const msgs = document.getElementById("chat-messages");
+    if (msgs) { msgs.appendChild(el); scrollBottom(); }
+  }
+
+  function removeTyping() { document.getElementById("chat-typing")?.remove(); }
+
+  function scrollBottom() {
+    const el = document.getElementById("chat-messages");
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+
+  function renderSuggs(show) {
+    const el = document.getElementById("chat-suggestions");
+    if (!el) return;
+    if (!show) { el.innerHTML = ""; return; }
+    el.innerHTML = getSuggs().slice(0,3).map(function(s) {
+      return "<button class=\"chat-sugg\" onclick=\"ranneChat.sendText('" + s.replace(/'/g,"\\'") + "')\">"+s+"</button>";
+    }).join("");
+  }
+
+  function setStatus(txt) {
+    const el = document.getElementById("chat-status");
+    if (el) el.textContent = txt;
+  }
+
+  async function callAI(userMsg) {
+    const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
+    msgs.push({ role: "user", content: userMsg });
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        context: "site",
+        messages: msgs
+      })
+    });
+    if (!res.ok) throw new Error("API error " + res.status);
+    const data = await res.json();
+    return data.reply || "Desculpe, não consegui processar sua mensagem.";
+  }
+
+  return {
+    toggle() {
+      isOpen = !isOpen;
+      const win = document.getElementById("ranne-chat-window");
+      const badge = document.getElementById("chat-badge");
+      if (isOpen) {
+        win.classList.add("open");
+        if (badge) badge.style.display = "none";
+        if (welcomeActive) renderWelcomeSuggs();
+        setTimeout(function() { document.getElementById("chat-input")?.focus(); }, 250);
+      } else {
+        win.classList.remove("open");
+      }
+    },
+    show() {
+      const btn = document.getElementById("ranne-chat-btn");
+      if (btn) btn.style.display = "flex";
+    },
+    startFromSugg(el, text) {
+      hideWelcome();
+      this.sendText(text);
+    },
+    async send() {
+      const input = document.getElementById("chat-input");
+      const text = input?.value.trim();
+      if (!text || isLoading) return;
+      if (welcomeActive) hideWelcome();
+      this.sendText(text);
+      input.value = "";
+      input.style.height = "auto";
+    },
+    async sendText(text) {
+      if (isLoading) return;
+      isLoading = true;
+      if (welcomeActive) hideWelcome();
+      renderSuggs(false);
+      renderMsg(text, "user");
+      history.push({ role: "user", content: text });
+      const sendBtn = document.getElementById("chat-send-btn");
+      if (sendBtn) sendBtn.disabled = true;
+      setStatus("Digitando…");
+      renderTyping();
+      try {
+        const reply = await callAI(text);
+        removeTyping();
+        renderMsg(reply, "bot");
+        history.push({ role: "assistant", content: reply });
+        if (history.length > 40) history = history.slice(-40);
+        setStatus("Online agora");
+      } catch(e) {
+        removeTyping();
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
+        setStatus("Online agora");
+      } finally {
+        isLoading = false;
+        if (sendBtn) sendBtn.disabled = false;
+        renderSuggs(true);
+      }
+    }
+  };
+})();
+setTimeout(function(){ ranneChat.show(); }, 1200);
+</script>
+
 </body>
 </html>
