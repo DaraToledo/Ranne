@@ -755,6 +755,27 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 
 }
 
+/* ── Lei section responsive ── */
+.lei-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+@media(max-width:600px){
+  .lei-section { padding: 3rem 1rem !important; }
+  .lei-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    text-align: center;
+  }
+  .lei-grid > div:first-child {
+    margin: 0 auto;
+    max-width: 200px;
+  }
+  .lei-grid h3 br { display: none; }
+}
+
 /* ── MOBILE OVERFLOW — NUCLEAR FIX ── */
 html, body {
   overflow-x: hidden !important;
@@ -1224,9 +1245,9 @@ html, body {
 </section>
 
 <!-- LEI -->
-<section style="padding:5rem 5rem;background:var(--creme);border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid rgba(201,168,76,.15)">
+<section class="lei-section" style="padding:5rem 5rem;background:var(--creme);border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid rgba(201,168,76,.15)">
   <div style="max-width:960px;margin:0 auto">
-    <div class="fade" style="display:grid;grid-template-columns:auto 1fr;gap:4rem;align-items:center">
+    <div class="fade lei-grid">
       <div style="background:var(--verde-ink);padding:2rem 2.4rem;border-radius:4px;text-align:center;min-width:160px;flex-shrink:0;border:1px solid rgba(201,168,76,.15)">
         <div style="font-family:'Cormorant Garamond',serif;font-size:1.12rem;font-weight:300;color:rgba(255,255,255,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem">Lei Federal</div>
         <div style="font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:white;line-height:1.1">14.831<span style="font-size:1.12rem;color:var(--dourado)">/2024</span></div>
