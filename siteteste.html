@@ -726,30 +726,31 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 .chat-send-btn:disabled { opacity: .4; cursor: default; transform: none; }
 
 /* ══ MASCOTE — Como Funciona ══ */
-.ciclo-com-mascote{display:flex;flex-direction:column;gap:0;}
+.ciclo-com-mascote{display:flex;flex-direction:row;align-items:flex-end;gap:0;margin:2rem -60px 0;}
 .ciclo-mascote-wrap{
-  display:flex;align-items:flex-end;gap:.6rem;
-  margin-bottom:-2rem;padding-left:0;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
+  flex-shrink:0;width:220px;padding-bottom:0;
 }
 .ciclo-mascote-img{
-  height:clamp(200px,26vw,320px);width:auto;
-  object-fit:contain;object-position:center center;
+  height:clamp(260px,32vw,420px);width:auto;
+  object-fit:contain;object-position:center bottom;
   mix-blend-mode:lighten;
-  flex-shrink:0;
-  margin-left:-20px;
+  display:block;
 }
 .ciclo-mascote-fala{
   background:rgba(255,255,255,.12);
   border:1px solid rgba(255,255,255,.2);
-  border-radius:12px 12px 12px 0;
-  padding:.6rem 1rem;
+  border-radius:0 12px 12px 12px;
+  padding:.55rem .9rem;
   font-family:'Jost',sans-serif;
-  font-size:.88rem;font-weight:300;
+  font-size:.82rem;font-weight:300;
   color:rgba(255,255,255,.9);
-  margin-bottom:1.4rem;
-  max-width:200px;
+  margin-top:.5rem;
+  max-width:180px;
   line-height:1.5;
+  align-self:flex-start;
 }
+.ciclo-com-mascote .ciclo-steps{flex:1;margin-bottom:1.2rem;}
 
 /* ══ MASCOTE — CTA Final ══ */
 .cta-content{
@@ -781,7 +782,9 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
 
 /* Responsivo */
 @media(max-width:900px){
-  .ciclo-mascote-img{height:clamp(140px,18vw,200px);margin-left:-10px;}
+  .ciclo-com-mascote{flex-direction:column;margin:2rem 0 0;}
+  .ciclo-mascote-wrap{width:100%;flex-direction:row;align-items:flex-end;gap:.8rem;}
+  .ciclo-mascote-img{height:clamp(160px,22vw,240px);}
   .ciclo-mascote-fala{font-size:.78rem;max-width:160px;}
   .cta-mascote-wrap{right:8px;}
   .cta-mascote-img{height:clamp(140px,22vw,220px);opacity:.6;}
@@ -1578,7 +1581,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
