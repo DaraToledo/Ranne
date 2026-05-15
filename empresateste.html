@@ -5279,39 +5279,13 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div id="p-plano" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Plano de Ação</div><div class="page-sub">Gerado a partir do último diagnóstico</div></div></div>
         <div class="card" id="plano-card">
-          <div class="progress-bar-row"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:43%"></div></div><span class="prog-pct" id="plano-progresso-txt">3 de 7 — 43%</span></div>
-          <div class="tabs"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
+          <div class="progress-bar-row" id="plano-progress-row" style="display:none"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:0%"></div></div><span class="prog-pct" id="plano-progresso-txt">0 de 0 — 0%</span></div>
+          <div class="tabs" id="plano-tabs" style="display:none"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
           <div id="acoes-lista">
-            <div class="sec-hdr sh-red"><span class="sec-hdr alta">Alta Prioridade<span class="sh-pill">Crítico</span></span></div>
-            <div class="action-row" data-id="1" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Mapeamento e redistribuição de demandas</div><div class="a-meta"><span class="tag t-carga">Carga de Trabalho</span><span class="tag t-alta">Alta</span><span class="tag t-gray">Workshop · 3 sem</span></div></div>
-            </div>
-            <div class="action-row" data-id="2" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Política de desconexão digital</div><div class="a-meta"><span class="tag t-carga">Carga de Trabalho</span><span class="tag t-alta">Alta</span><span class="tag t-gray">Política · 1 sem</span></div></div>
-            </div>
-            <div class="action-row" data-id="3" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Implementar 1:1s quinzenais com líderes</div><div class="a-meta"><span class="tag t-lid">Liderança</span><span class="tag t-alta">Alta</span><span class="tag t-gray">1:1 · 1 sem</span></div></div>
-            </div>
-            <div class="sec-hdr sh-amber">🟡 MÉDIA PRIORIDADE</div>
-            <div class="action-row" data-id="4" data-status="concluida">
-              <div class="a-check a-done" onclick="toggleAcao(this)">✓</div>
-              <div><div class="a-title a-title-done">Treinamento de liderança situacional</div><div class="a-meta"><span class="tag t-lid">Liderança</span><span class="tag t-media">Média</span></div></div>
-            </div>
-            <div class="action-row" data-id="5" data-status="concluida">
-              <div class="a-check a-done" onclick="toggleAcao(this)">✓</div>
-              <div><div class="a-title a-title-done">Pesquisa de pulse mensal automatizada</div><div class="a-meta"><span class="tag t-cultura">Cultura</span><span class="tag t-media">Média</span></div></div>
-            </div>
-            <div class="action-row" data-id="6" data-status="concluida">
-              <div class="a-check a-done" onclick="toggleAcao(this)">✓</div>
-              <div><div class="a-title a-title-done">Fórum de reconhecimento mensal</div><div class="a-meta"><span class="tag t-cultura">Cultura</span><span class="tag t-ok">OK</span></div></div>
-            </div>
-            <div class="sec-hdr sh-green">🟢 BAIXA PRIORIDADE</div>
-            <div class="action-row" data-id="7" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Benchmark externo com setor</div><div class="a-meta"><span class="tag t-cultura">Cultura</span><span class="tag t-gray">Análise</span></div></div>
+            <div id="plano-empty" style="text-align:center;padding:48px 20px;">
+              <div style="font-size:32px;margin-bottom:12px">📋</div>
+              <div style="font-size:14px;font-weight:600;color:var(--card-text);margin-bottom:6px">Nenhum plano de ação ainda</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.6;max-width:280px;margin:0 auto">O plano será gerado automaticamente após o primeiro diagnóstico da empresa.</div>
             </div>
           </div>
         </div>
@@ -8717,7 +8691,7 @@ async function salvarCheckin() {
 function initPlano() {
   // Restaura estado salvo
   const saved = localStorage.getItem('ranne-acoes');
-  if (saved) {
+  if (saved && document.querySelectorAll('.action-row[data-id]').length > 0) {
     acoesState = JSON.parse(saved);
     document.querySelectorAll('.action-row[data-id]').forEach(row => {
       const id = row.dataset.id;
@@ -9435,14 +9409,7 @@ async function loadColaboradores() {
 
     renderColabs();
   } catch(e) {
-    // Fallback com dados de exemplo para apresentação
-    _todosColabs = [
-      { id: 'ex1', nome: 'João Silva', cargo: 'Vendedor Sênior', setor: 'Comercial', initials: 'JS', score: { score_geral: 49 }, risco: 'critico' },
-      { id: 'ex2', nome: 'Ana Martins', cargo: 'Analista', setor: 'Financeiro', initials: 'AM', score: { score_geral: 63 }, risco: 'atencao' },
-      { id: 'ex3', nome: 'Carlos Reis', cargo: 'Dev Backend', setor: 'TI', initials: 'CR', score: { score_geral: 84 }, risco: 'ok' },
-      { id: 'ex4', nome: 'Letícia Ferreira', cargo: 'Gestora', setor: 'Operações', initials: 'LF', score: { score_geral: 91 }, risco: 'ok' },
-      { id: 'ex5', nome: 'Marcos Pinto', cargo: 'Representante', setor: 'Comercial', initials: 'MP', score: null, risco: 'sem_resp' },
-    ];
+    _todosColabs = [];
     renderColabs();
   }
 }
