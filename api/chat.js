@@ -117,7 +117,7 @@ Diretrizes:
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1000,
         system: systemPrompt,
         messages: recentMessages,
@@ -127,7 +127,7 @@ Diretrizes:
     if (!anthropicRes.ok) {
       const errBody = await anthropicRes.text();
       console.error('Erro da API Anthropic:', anthropicRes.status, errBody);
-      return res.status(502).json({ error: 'Erro ao comunicar com o serviço de IA' });
+      return res.status(502).json({ error: 'Erro ao comunicar com o serviço de IA', detail: errBody });
     }
 
     const data = await anthropicRes.json();
