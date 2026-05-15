@@ -7941,6 +7941,10 @@ function showEmpresa() {
   document.getElementById('app-empresa').style.display = 'block';
   document.getElementById('app-colaborador').style.display = 'none';
   document.body.classList.remove('collab-ativo');
+  // Zera badge do plano se não há ações reais
+  localStorage.removeItem('ranne-acoes');
+  const badgeAcoes = document.getElementById('badge-acoes');
+  if (badgeAcoes) { badgeAcoes.textContent = '0'; badgeAcoes.style.display = 'none'; }
   const nome = currentEmpresa?.nome || 'Empresa';
   const ini  = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
   document.getElementById('sb-empresa-nome').textContent = nome;
@@ -8273,7 +8277,7 @@ async function loadMembros() {
 
   try {
     const { data: membros } = await db
-      .from('colaboradores')
+      .from('membros_empresa')
       .select('*')
       .eq('empresa_id', currentEmpresa?.id);
 
@@ -8550,30 +8554,36 @@ async function sendInvite() {
 
   try {
     // 1. Criar conta no Supabase Auth
+    let userId = null;
     const { data: signUpData, error: signUpErr } = await db.auth.signUp({
       email,
       password: senha,
       options: { data: { nome: nome || email.split('@')[0], role, empresa_id: currentEmpresa?.id } }
     });
 
-    if (signUpErr && !signUpErr.message.includes('already registered')) {
-      toast('⚠️ Erro ao criar conta: ' + signUpErr.message);
-      btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
-      return;
+    if (signUpErr) {
+      const msg = signUpErr.message?.toLowerCase() || '';
+      // 422 = email já cadastrado — continua sem criar auth, só salva na tabela
+      if (!msg.includes('already') && signUpErr.status !== 422) {
+        toast('⚠️ Erro ao criar conta: ' + signUpErr.message);
+        btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+        return;
+      }
+    } else {
+      userId = signUpData?.user?.id;
     }
 
-    const userId = signUpData?.user?.id;
-
-    // 2. Salvar na tabela colaboradores
-    await db.from('colaboradores').upsert({
+    // 2. Salvar na tabela membros_empresa
+    const { error: colabErr } = await db.from('membros_empresa').insert({
       empresa_id: currentEmpresa?.id,
-      user_id: userId || null,
       email,
       nome: nome || email.split('@')[0],
       role,
-      status: 'ativo',
-      criado_em: new Date().toISOString()
-    }, { onConflict: 'email,empresa_id' });
+      created_at: new Date().toISOString()
+    });
+    if (colabErr && !colabErr.message?.includes('duplicate')) {
+      console.warn('Aviso ao salvar membro:', colabErr.message);
+    }
 
     // 3. Enviar e-mail com credenciais
     await enviarEmailColab(nome || email.split('@')[0], email, senha);
@@ -8636,11 +8646,11 @@ async function importarCSV() {
       await db.auth.signUp({ email: c.email, password: c.senha,
         options: { data: { nome: c.nome, role: 'colaborador', empresa_id: currentEmpresa?.id } }
       });
-      await db.from('colaboradores').upsert({
+      await db.from('membros_empresa').insert({
         empresa_id: currentEmpresa?.id, email: c.email,
-        nome: c.nome, role: 'colaborador', status: 'ativo',
-        criado_em: new Date().toISOString()
-      }, { onConflict: 'email,empresa_id' });
+        nome: c.nome, role: 'colaborador',
+        created_at: new Date().toISOString()
+      });
       await enviarEmailColab(c.nome, c.email, c.senha);
       ok++;
     } catch { erros++; }
@@ -9391,7 +9401,7 @@ async function loadColaboradores() {
   try {
     // Buscar membros da empresa
     const { data: membros } = await db
-      .from('colaboradores')
+      .from('membros_empresa')
       .select('*')
       .eq('empresa_id', currentEmpresa?.id);
 
