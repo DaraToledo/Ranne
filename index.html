@@ -789,19 +789,60 @@ footer{padding:2.5rem 5rem;background:var(--creme);display:flex;justify-content:
   .cta-mascote-wrap{display:none;}
 }
 
-/* ── Global mobile overflow fix ── */
+/* ── MOBILE OVERFLOW — NUCLEAR FIX ── */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
 @media(max-width:600px){
-  *{max-width:100%;box-sizing:border-box;}
-  img{max-width:100%;height:auto;}
-  .hero-left{padding:1.5rem 1rem!important;width:100%!important;}
-  .hero-autoridade{white-space:normal;font-size:.7rem;}
-  .hero-deliverables{flex-wrap:wrap;}
-  .dl-tag{font-size:.75rem;}
-  .hero-soft-ctas{flex-wrap:wrap;gap:8px;}
-  .soft-link{font-size:.85rem;}
-  .hero-degust{font-size:.88rem;}
-  .ab-items{flex-direction:column;gap:.5rem;}
-  .ab-item{font-size:.85rem;white-space:normal;}
+  /* Reset all large paddings */
+  .hero-left{padding:1.5rem 1rem 1rem 1rem!important;}
+  .section{padding:3rem 1rem!important;}
+  .perfis-section{padding:3rem 1rem!important;}
+  .cta-section{padding:3.5rem 1rem!important;}
+  .autoridade-bar{padding:1.2rem 1rem!important;}
+  footer{padding:1.5rem 1rem!important;}
+  .footer-disclaimer{padding:1rem!important;}
+
+  /* Hero */
+  .hero{grid-template-columns:1fr!important;padding-top:60px!important;}
+  .hero-right{min-height:200px!important;max-height:260px!important;}
+  .hero-title{font-size:1.7rem!important;line-height:1.15!important;}
+  .hero-subtitle{font-size:.9rem!important;}
+  .hero-autoridade{font-size:.68rem!important;white-space:normal!important;padding:.3rem .6rem!important;}
+  .hero-deliverables{flex-wrap:wrap!important;gap:4px!important;}
+  .dl-tag{font-size:.72rem!important;padding:4px 8px!important;}
+  .hero-produtos{gap:.25rem!important;}
+  .hp-item{font-size:.76rem!important;}
+  .hp-sep{font-size:.76rem!important;}
+  .hp-link{font-size:.76rem!important;}
+  .hero-degust{font-size:.84rem!important;}
+  .hero-soft-ctas{flex-wrap:wrap!important;gap:6px!important;}
+  .soft-link{font-size:.82rem!important;}
+  .btn-p,.btn-o{font-size:.88rem!important;padding:.8rem 1rem!important;}
+
+  /* Nav */
+  nav{padding:.7rem 1rem!important;}
+  .nav-brand-text .nbn{font-size:1rem!important;}
+
+  /* Autoridade bar */
+  .ab-items{flex-direction:column!important;gap:.5rem!important;}
+  .ab-item{font-size:.84rem!important;white-space:normal!important;}
+
+  /* Sections inner max-width */
+  .section > div, .perfis-section > div{max-width:100%!important;padding:0!important;}
+
+  /* Watermarks */
+  .cta-bg{font-size:5rem!important;opacity:.05!important;}
+
+  /* Tables */
+  .roi-table-wrap{overflow-x:auto!important;}
+  table{font-size:.78rem!important;}
+
+  /* Cards */
+  .h-card-row{padding:.6rem .8rem!important;}
+  .hc-val{font-size:1.4rem!important;}
 }
 </style>
 </head>
