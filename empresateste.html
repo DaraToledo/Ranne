@@ -4717,6 +4717,10 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="sb-item" onclick="pg('ajuda',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></span> Ajuda & Tour</div>
       </nav>
       <div class="sb-footer">
+        <button class="dark-toggle" id="darkBtn" onclick="toggleDark()" title="Alternar tema" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:8px;border-radius:8px;justify-content:flex-start;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <span style="font-size:12px;font-weight:500;letter-spacing:.02em;" id="darkBtnLabel">Modo escuro</span>
+        </button>
         <div class="sb-user">
           <div class="sb-avatar" id="sb-avatar-txt">--</div>
           <div><div class="sb-uname" id="sb-empresa-nome">Carregando...</div><div class="sb-urole" id="sb-user-role">Admin</div></div>
@@ -4737,7 +4741,6 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <button class="dark-toggle" id="darkBtn" onclick="toggleDark()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
             <button class="btn btn-primary btn-sm" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
           </div>
         </div>
@@ -9034,7 +9037,8 @@ function copyLink() {
    ───────────────────────────────────── */
 function toggleDark() {
   const on = document.body.classList.toggle('dark');
-  document.getElementById('darkBtn').textContent = on ? '☀︎' : '☾';
+  const label = document.getElementById('darkBtnLabel');
+  if (label) label.textContent = on ? 'Modo claro' : 'Modo escuro';
   localStorage.setItem('ranne-dark', on ? '1' : '');
 }
 
