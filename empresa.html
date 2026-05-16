@@ -6630,8 +6630,8 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
           </div>
           <div style="display:flex;gap:8px;margin-top:14px;">
-            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="toast('Baixando relatório mensal...')">⬇ Baixar PDF</button>
-            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="toast('Link copiado para compartilhar!')">↗ Compartilhar</button>
+            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="baixarRelatorioMensal()">⬇ Baixar PDF</button>
+            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="compartilharRelatorioMensal()">↗ Compartilhar</button>
           </div>
         </div>
 
@@ -6639,7 +6639,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="card" style="margin-bottom:16px;">
           <div class="card-hdr">
             <span class="card-title">Histórico de Ciclos de Avaliação</span>
-            <button class="btn btn-outline btn-sm" onclick="toast('Exportando histórico...')">Exportar</button>
+            <button class="btn btn-outline btn-sm" onclick="exportarHistoricoCiclos()">Exportar</button>
           </div>
           <div style="display:flex;flex-direction:column;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
@@ -13028,6 +13028,267 @@ function salvarConfigAlerta() {
    RELATÓRIO DE CONFORMIDADE NR-1
    Gera PDF completo para fiscalização do Ministério do Trabalho
    ══════════════════════════════════════════════════════════ */
+
+async function exportarHistoricoCiclos() {
+  toast('⏳ Exportando histórico...');
+  try {
+    let diagnosticos = [];
+
+    if (db && currentEmpresa?.id) {
+      try {
+        const r = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false });
+        diagnosticos = r.data || [];
+      } catch {}
+    }
+
+    const empresa = currentEmpresa?.nome || 'Empresa';
+    const dataHoje = new Date().toLocaleDateString('pt-BR');
+
+    if (diagnosticos.length > 0) {
+      // Exporta CSV com dados reais
+      const header = ['Ciclo', 'Período', 'Score Geral', 'Taxa de Resposta (%)', 'Nº Respostas', 'Status'];
+      const rows = diagnosticos.map((d, i) => {
+        const data = d.created_at ? new Date(d.created_at) : null;
+        const periodo = data ? data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }) : '—';
+        const ciclo = `Q${Math.ceil(((data?.getMonth() ?? 0) + 1) / 3)}/${data?.getFullYear() ?? '—'}`;
+        return [
+          ciclo,
+          periodo,
+          d.score_geral ?? '—',
+          d.taxa_resposta ? Math.round(d.taxa_resposta) : '—',
+          d.total_respostas ?? '—',
+          i === 0 ? 'Ativo' : 'Concluído'
+        ];
+      });
+
+      const csvContent = [header, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const bom = '\uFEFF'; // BOM para Excel reconhecer UTF-8
+      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Historico_Ciclos_${empresa.replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('✅ Histórico exportado! Abra no Excel ou Google Sheets.');
+    } else {
+      // Fallback: exporta os dados estáticos exibidos no card
+      const dadosEstaticos = [
+        ['Q2/2026', 'Maio 2026', '74', '82', '—', 'Ativo'],
+        ['Q1/2026', 'Abril 2026', '68', '84', '—', 'Concluído'],
+        ['Q4/2025', 'Janeiro 2026', '71', '76', '—', 'Concluído'],
+        ['Q3/2025', 'Outubro 2025', '74', '91', '—', 'Concluído'],
+      ];
+      const header = ['Ciclo', 'Período', 'Score Geral', 'Taxa de Resposta (%)', 'Nº Respostas', 'Status'];
+      const csvContent = [header, ...dadosEstaticos].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const bom  = '\uFEFF';
+      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Historico_Ciclos_${empresa.replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('✅ Histórico exportado!');
+    }
+  } catch(e) {
+    console.error(e);
+    toast('❌ Erro ao exportar histórico.');
+  }
+}
+
+async function baixarRelatorioMensal() {
+  toast('⏳ Gerando relatório mensal...');
+  try {
+    const empresaData = currentEmpresa || {};
+    let diagnosticos = [], colaboradores = [], intervencoes = [];
+
+    if (db && currentEmpresa?.id) {
+      try { const r = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false }); diagnosticos = r.data || []; } catch {}
+      try { const r = await db.from('colaboradores').select('id, nome, cargo, setor').eq('empresa_id', currentEmpresa.id); colaboradores = r.data || []; } catch {}
+      try { const r = await db.from('intervencoes_rh').select('*').eq('empresa_id', currentEmpresa.id); intervencoes = r.data || []; } catch {}
+    }
+
+    const agora    = new Date();
+    const dataHoje = agora.toLocaleDateString('pt-BR');
+    const mesAno   = agora.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+
+    // Pega dados do card se disponíveis
+    const scoreGeral  = document.getElementById('rel-score-geral')?.textContent?.trim() || window._ultimoScoreGeral || '—';
+    const taxaResp    = document.getElementById('rel-taxa')?.textContent?.trim() || '—';
+    const nCols       = colaboradores.length || empresaData.size || '—';
+    const nDiags      = diagnosticos.length;
+    const nIntervs    = intervencoes.length;
+    const respNome    = document.getElementById('nr1-responsavel')?.value?.trim() || empresaData.resp_nome || 'Responsável de RH';
+    const respCargo   = empresaData.resp_cargo || 'RH';
+
+    // Score do mês anterior (penúltimo diagnóstico)
+    const scoreAnterior = diagnosticos[1]?.score_geral ?? null;
+    const delta = scoreAnterior && scoreGeral !== '—' ? parseInt(scoreGeral) - parseInt(scoreAnterior) : null;
+    const deltaStr = delta !== null ? (delta >= 0 ? `↑ +${delta}` : `↓ ${delta}`) + ' vs. mês anterior' : '';
+
+    const htmlRel = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório Mensal — ${empresaData.nome || 'Empresa'}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#fff; color:#1A2E20; font-size:10pt; line-height:1.6; padding:32px; }
+  h1 { font-size:20pt; font-weight:800; color:#2D5E4A; margin-bottom:4px; }
+  h2 { font-size:12pt; font-weight:700; color:#2D5E4A; margin:20px 0 8px; border-bottom:2px solid #e8f0ec; padding-bottom:4px; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; border-bottom:3px solid #2D5E4A; padding-bottom:16px; }
+  .header-logo { font-size:10pt; font-weight:700; color:#2D5E4A; letter-spacing:1px; }
+  .header-meta { font-size:9pt; color:#6B7F76; text-align:right; }
+  .metrics-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .metric-box { background:#F5F3EE; border-radius:10px; padding:12px 14px; border:1px solid #e0dbd0; }
+  .metric-label { font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#6B7F76; margin-bottom:4px; }
+  .metric-value { font-size:20pt; font-weight:800; color:#2D5E4A; }
+  .metric-sub { font-size:8.5pt; color:#6B7F76; margin-top:2px; }
+  .metric-box.alert { background:#FEF5E7; border-color:#f0d090; }
+  .metric-box.alert .metric-value { color:#D4891A; font-size:14pt; margin-top:4px; }
+  .metric-box.danger { background:#FDECEA; border-color:#f0c0bc; }
+  .metric-box.danger .metric-value { color:#C0392B; font-size:14pt; margin-top:4px; }
+  .rec-list { list-style:none; display:flex; flex-direction:column; gap:6px; }
+  .rec-list li { display:flex; gap:8px; font-size:10pt; }
+  .rec-list li::before { content:'✓'; color:#2D5E4A; font-weight:700; flex-shrink:0; }
+  .diag-table { width:100%; border-collapse:collapse; font-size:9.5pt; }
+  .diag-table th { background:#2D5E4A; color:#fff; padding:7px 10px; text-align:left; font-weight:600; font-size:9pt; }
+  .diag-table td { padding:7px 10px; border-bottom:1px solid #e8f0ec; }
+  .diag-table tr:last-child td { border-bottom:none; }
+  .footer { margin-top:32px; display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e0dbd0; padding-top:16px; }
+  .ass-linha { width:160px; border-top:1px solid #1A2E20; margin-bottom:4px; }
+  .ass-nome { font-size:10pt; font-weight:700; }
+  .ass-cargo { font-size:9pt; color:#6B7F76; }
+  .disclaimer { font-size:8pt; color:#9a9088; max-width:500px; margin-top:16px; line-height:1.5; }
+  @media print { body { padding:16px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">RANNE CARE</div>
+    <h1>Relatório Mensal</h1>
+    <div style="font-size:10pt;color:#6B7F76;margin-top:2px;">${empresaData.nome || 'Empresa'} · ${mesAno}</div>
+  </div>
+  <div class="header-meta">
+    <div>Gerado em ${dataHoje}</div>
+    <div style="margin-top:4px">Plataforma Ranne Care</div>
+    <div>rannecare.com.br</div>
+  </div>
+</div>
+
+<h2>1. Indicadores do Mês</h2>
+<div class="metrics-grid">
+  <div class="metric-box">
+    <div class="metric-label">Score Geral</div>
+    <div class="metric-value">${scoreGeral}</div>
+    <div class="metric-sub">${deltaStr || 'Índice de saúde organizacional'}</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-label">Taxa de Resposta</div>
+    <div class="metric-value">${taxaResp}</div>
+    <div class="metric-sub">participação da equipe</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-label">Colaboradores</div>
+    <div class="metric-value">${nCols}</div>
+    <div class="metric-sub">cadastrados na plataforma</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-label">Intervenções RH</div>
+    <div class="metric-value">${nIntervs}</div>
+    <div class="metric-sub">ações registradas</div>
+  </div>
+</div>
+
+<h2>2. Recomendações para o Próximo Ciclo</h2>
+<ul class="rec-list">
+  ${nIntervs === 0 ? '<li>Iniciar registro de intervenções de RH na plataforma para acompanhamento</li>' : ''}
+  <li>Manter a cadência de diagnósticos mensais para acompanhar evolução do score</li>
+  <li>Revisar os setores com scores abaixo de 60 e aplicar plano de ação direcionado</li>
+  <li>Compartilhar os resultados com lideranças para engajamento nos próximos ciclos</li>
+</ul>
+
+${nDiags > 0 ? `
+<h2>3. Histórico de Diagnósticos</h2>
+<table class="diag-table">
+  <thead><tr><th>#</th><th>Período</th><th>Score</th><th>Participação</th></tr></thead>
+  <tbody>
+    ${diagnosticos.slice(0,6).map((d,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${d.created_at ? new Date(d.created_at).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}) : '—'}</td>
+        <td style="font-weight:700;color:${(d.score_geral||0)>=75?'#2D6A4F':(d.score_geral||0)>=60?'#D97706':'#DC2626'}">${d.score_geral ?? '—'}</td>
+        <td>${d.taxa_resposta ? Math.round(d.taxa_resposta)+'%' : '—'}</td>
+      </tr>`).join('')}
+  </tbody>
+</table>` : '<p style="font-size:10pt;color:#6B7F76;margin-top:8px">Nenhum diagnóstico realizado ainda neste período.</p>'}
+
+<div class="footer">
+  <div>
+    <div class="ass-linha"></div>
+    <div class="ass-nome">${respNome}</div>
+    <div class="ass-cargo">${respCargo} — ${empresaData.nome || 'Empresa'}</div>
+  </div>
+  <div style="text-align:right;font-size:9pt;color:#6B7F76">
+    <div>Ranne Care · rannecare.com.br</div>
+    <div>${dataHoje}</div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  Este relatório é de uso exclusivo do RH e da diretoria. Os dados individuais dos colaboradores são protegidos e não constam neste documento, em conformidade com a LGPD (Lei 13.709/2018).
+</div>
+
+</body>
+</html>`;
+
+    const blob = new Blob([htmlRel], { type: 'text/html;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const win  = window.open(url, '_blank');
+    if (win) {
+      win.onload = () => setTimeout(() => { win.focus(); win.print(); }, 500);
+      toast('✅ Relatório aberto! Use Ctrl+P → "Salvar como PDF".');
+    } else {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Relatorio_Mensal_${(empresaData.nome||'Empresa').replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast('✅ Relatório baixado! Abra no navegador e use Ctrl+P → "Salvar como PDF".');
+    }
+  } catch(e) {
+    console.error(e);
+    toast('❌ Erro ao gerar relatório. Tente novamente.');
+  }
+}
+
+async function compartilharRelatorioMensal() {
+  try {
+    const scoreGeral = document.getElementById('rel-score-geral')?.textContent?.trim() || '—';
+    const taxaResp   = document.getElementById('rel-taxa')?.textContent?.trim() || '—';
+    const nome       = currentEmpresa?.nome || 'nossa empresa';
+    const mes        = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    const texto      = `📊 Relatório Mensal Ranne Care — ${mes}\n\n🏢 ${nome}\n✅ Score Geral: ${scoreGeral}\n📋 Taxa de Resposta: ${taxaResp}\n\nAcesse a plataforma completa em rannecare.com.br`;
+
+    if (navigator.share) {
+      await navigator.share({ title: `Relatório Mensal — ${nome}`, text: texto });
+      toast('✅ Relatório compartilhado!');
+    } else {
+      await navigator.clipboard.writeText(texto);
+      toast('✅ Resumo copiado! Cole onde quiser compartilhar.');
+    }
+  } catch(e) {
+    if (e.name !== 'AbortError') toast('❌ Não foi possível compartilhar.');
+  }
+}
 
 async function gerarRelatorioNR1() {
   const responsavel = (document.getElementById('nr1-resp-rel')?.value?.trim()) || document.getElementById('nr1-responsavel')?.value?.trim() || 'Responsável de RH';
