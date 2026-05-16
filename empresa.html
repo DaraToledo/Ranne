@@ -500,56 +500,93 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 
 /* ══════════ DARK MODE ══════════ */
 body.dark {
-  --bg:     #1E3528;
-  --white:  #364430;
-  --text:   #FFFFFF;
-  --muted:  rgba(255,255,255,0.65);
-  --muted-dark: rgba(255,255,255,0.4);
-  --border: rgba(255,255,255,0.12);
-  --card-border: rgba(78,203,160,0.15);
+  /* Base — verde petróleo profundo, mais quente que o verde puro */
+  --bg:          #1C2B25;
+  --white:       #243430;
+  --text:        #EDE8DF;
+  --muted:       rgba(220,210,195,0.65);
+  --muted-dark:  rgba(220,210,195,0.40);
+  --border:      rgba(180,165,140,0.14);
+  --card-border: rgba(160,200,170,0.18);
 
-  /* Cards escuros → texto claro */
-  --card-text:       #E8F4F0;
-  --card-text-muted: rgba(232,244,240,0.65);
-  --card-text-faint: rgba(232,244,240,0.40);
+  /* Cards — fundo levemente mais claro que o bg, tom creme-escuro */
+  --card-text:       #E8E0D4;
+  --card-text-muted: rgba(220,210,195,0.68);
+  --card-text-faint: rgba(220,210,195,0.40);
 
-  /* Superfícies de card (dark mode: tons verde escuro) */
-  --surface:     #253020;
-  --surface-alt: #2A3824;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.25), 0 1px 8px rgba(0,0,0,.15);
-  --shadow-md: 0 4px 16px rgba(0,0,0,.3), 0 1px 4px rgba(0,0,0,.2);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.25);
+  /* Superfícies */
+  --surface:     #243430;
+  --surface-alt: #2A3C36;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.22), 0 1px 8px rgba(0,0,0,.12);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.28), 0 1px 4px rgba(0,0,0,.18);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.36), 0 2px 8px rgba(0,0,0,.22);
 }
 
-body.dark .topbar { background: rgba(30,40,24,.92) !important; }
-body.dark .sidebar { background:#1E2A18; background-image: linear-gradient(180deg, #182215 0%, #1E2A18 60%, #141E12 100%); border-right-color: rgba(255,255,255,0.06); }
-body.dark .card { box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-body.dark .field-input { background:rgba(255,255,255,0.04); color:#fff; }
-body.dark .tab.active { background:rgba(78,203,160,.12); color:#E8F4F0; }
-body.dark .tabs { background:rgba(255,255,255,.08); }
-body.dark .tab { color: rgba(255,255,255,0.55); }
-body.dark .tab.active { background: rgba(255,255,255,0.18); color: #fff; }
-body.dark .metric { background:var(--white); }
-body.dark .scale-btn { border-color:#243020; color:#A8C4A0; background:#253020; }
-body.dark .em-btn-lt { background:#253020; border-color:#243020; }
-body.dark .em-btn-lt .el { color:#8BA5B5; }
-body.dark .res-card, body.dark .dim-card, body.dark .form-section { background:#253020; border-color:#364430; }
-body.dark .diag-item, body.dark .action-row, body.dark .member-row { border-color:#243020; }
-body.dark .diag-item { background:#253020; }
-body.dark .lib-card { background:#253020; border-color:#364430; }
-body.dark input, body.dark select, body.dark textarea { background:#253020!important; border-color:#364430!important; color:#E8F4F0!important; }
+/* Sidebar — verde-floresta escuro com leve gradiente quente */
+body.dark .sidebar {
+  background: #1A2820;
+  background-image: linear-gradient(180deg, #162218 0%, #1A2820 50%, #141E18 100%);
+  border-right-color: rgba(180,165,140,0.08);
+}
 
-body.dark .modal h3 { color: var(--card-text); }
-body.dark .modal p  { color: var(--card-text-muted); }
-body.dark .dark-toggle { color:#4ECBA0; border-color:rgba(78,203,160,.25); }
-body.dark .quote-card { background:#253020; }
-body.dark .bar-track { background:#364430; }
-body.dark .btn-ghost { border-color:#364430; color:#A8C4A0; background:#253020; }
-body.dark .search-wrap input { background:rgba(255,255,255,.06); border-color:rgba(78,203,160,.18); color:#E8F4F0; }
-body.dark .alert-crit { background:#2D1515; border-color:#5A2020; }
-body.dark .alert-warn { background:#2D2010; border-color:#5A4010; }
-body.dark .alert-info { background:#101D2D; border-color:#1E3A5A; }
-body.dark .perm-table th, body.dark .perm-table td { border-color:#243020; }
+/* Topbar */
+body.dark .topbar { background: rgba(28,43,37,.94) !important; backdrop-filter:blur(12px); }
+
+/* Cards */
+body.dark .card { background: #243430; border-color: rgba(160,200,170,0.14); box-shadow: 0 1px 4px rgba(0,0,0,.22); }
+
+/* Inputs */
+body.dark .field-input { background: rgba(255,255,255,.05); color: #E8E0D4; border-color: rgba(160,200,170,.2); }
+body.dark input, body.dark select, body.dark textarea { background:#2A3C36!important; border-color:rgba(160,200,170,.2)!important; color:#E8E0D4!important; }
+body.dark input::placeholder, body.dark textarea::placeholder { color: rgba(220,210,195,.35)!important; }
+
+/* Tabs */
+body.dark .tabs { background: rgba(255,255,255,.06); border-color: rgba(160,200,170,.12); }
+body.dark .tab { color: rgba(220,210,195,0.55); }
+body.dark .tab.active { background: rgba(74,122,110,.35); color: #C9E8DC; }
+
+/* Métricas e cards especiais */
+body.dark .metric { background: #2A3C36; }
+body.dark .scale-btn { border-color: rgba(160,200,170,.18); color: #A8C8B8; background: #2A3C36; }
+body.dark .em-btn-lt { background: #2A3C36; border-color: rgba(160,200,170,.18); }
+body.dark .em-btn-lt .el { color: #8BB8A8; }
+body.dark .res-card, body.dark .dim-card, body.dark .form-section { background: #2A3C36; border-color: rgba(160,200,170,.18); }
+body.dark .diag-item, body.dark .action-row, body.dark .member-row { border-color: rgba(160,200,170,.12); }
+body.dark .diag-item { background: #2A3C36; }
+body.dark .lib-card { background: #2A3C36; border-color: rgba(160,200,170,.18); }
+
+/* Modal */
+body.dark .modal { background: #243430; }
+body.dark .modal h3 { color: #E8E0D4; }
+body.dark .modal p  { color: rgba(220,210,195,.68); }
+
+/* Botões e badges */
+body.dark .dark-toggle { color: #7EC8A8; border-color: rgba(126,200,168,.25); }
+body.dark .btn-ghost { border-color: rgba(160,200,170,.22); color: #A8C8B8; background: #2A3C36; }
+body.dark .quote-card { background: #2A3C36; }
+body.dark .bar-track { background: rgba(160,200,170,.18); }
+body.dark .search-wrap input { background: rgba(255,255,255,.05); border-color: rgba(160,200,170,.2); color: #E8E0D4; }
+
+/* Alertas — tons mais quentes, menos saturados */
+body.dark .alert-crit { background: #2E1A1A; border-color: rgba(200,80,80,.3); }
+body.dark .alert-warn { background: #2A2010; border-color: rgba(200,150,60,.3); }
+body.dark .alert-info { background: #162228; border-color: rgba(80,150,200,.25); }
+
+/* Tabela de permissões */
+body.dark .perm-table th, body.dark .perm-table td { border-color: rgba(160,200,170,.12); }
+
+/* Chips e valores coloridos */
+body.dark .v-green { color: #7EC8A8; }
+body.dark .v-amber { color: #D4A855; }
+body.dark .v-red   { color: #C87878; }
+body.dark .chip-green { background: rgba(126,200,168,.12); color: #7EC8A8; border-color: rgba(126,200,168,.2); }
+body.dark .chip-amber { background: rgba(212,168,85,.12); color: #D4A855; border-color: rgba(212,168,85,.2); }
+body.dark .chip-red   { background: rgba(200,120,120,.12); color: #C87878; border-color: rgba(200,120,120,.2); }
+body.dark .chip-gray  { background: rgba(180,165,140,.1); color: #A8A090; border-color: transparent; }
+
+/* Page titles */
+body.dark .page-title { color: #EDE8DF !important; }
+body.dark .page-sub { color: rgba(220,210,195,0.6) !important; }
   
 /* ══════════════════════════════════════
    ACESSIBILIDADE — FOCO VISÍVEL
@@ -595,6 +632,7 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   align-items: center;
   justify-content: flex-start;
   padding: calc(env(safe-area-inset-top,0px) + 28px) 20px calc(env(safe-area-inset-bottom,0px) + 40px);
+  overflow-x: hidden;
 }
 
 /* Orbs decorativos removidos — clean */
@@ -608,8 +646,8 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   padding: 32px 28px 28px;
   width: 100%;
   max-width: 420px !important;
-  margin: 0 auto;
   position: relative;
+  box-sizing: border-box;
 }
 
 /* Step indicator dots */
@@ -746,6 +784,28 @@ input:focus-visible, select:focus-visible { outline: 2px solid #4ECBA0; outline-
   margin-bottom: 14px;
   display: block;
   box-shadow: 0 4px 14px rgba(27,61,47,.2);
+  box-sizing: border-box;
+  min-width: 0;
+}
+/* Botões lado a lado dentro do card */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.btn-row .btn-cta {
+  margin-bottom: 0;
+  flex: 1;
+  width: auto;
+}
+.btn-row .btn-back {
+  flex: 0 0 auto;
+  width: 52px;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid #E3DDD5;
+  color: #6B645D;
+  box-shadow: none;
 }
 .btn-cta:hover { background: #2D5E4A; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(27,61,47,.25); }
 .btn-cta:active { transform: translateY(0); box-shadow: none; }
@@ -2013,6 +2073,19 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
 .overlay.open { display:flex; }
 .modal { background:var(--white); border-radius:20px; padding:28px; max-width:400px; width:100%; }
+.modal-box {
+  background: #FFFFFF;
+  color: #1A2E20;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+body.dark .modal-box {
+  background: #243430;
+  color: #E8E0D4;
+}
+/* Textos dentro do modal-box */
+.modal-box h3, .modal-box h4 { color: #1A2E20; }
+body.dark .modal-box h3, body.dark .modal-box h4 { color: #E8E0D4; }
+.modal-box p, .modal-box div { color: inherit; }
 .modal h3 { font-size:17px; font-weight:800; margin-bottom:10px; }
 .modal p { font-size:13px; color:var(--card-text-muted); line-height:1.6; margin-bottom:24px; }
 .modal-btns { display:flex; gap:10px; justify-content:flex-end; }
@@ -4366,10 +4439,10 @@ body.dark .ob-btn { background: #2D5E4A; }
   </div>
 
   <!-- Mascote Ranne apontando para o card — desktop only -->
-  <div id="auth-mascot" style="position:fixed;bottom:0;left:clamp(20px,8vw,160px);z-index:2;pointer-events:none;display:flex;align-items:flex-end;">
-    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/GuDgg.jpg"
+  <div id="auth-mascot" style="position:fixed;bottom:0;left:0;z-index:2;pointer-events:none;display:flex;align-items:flex-end;">
+    <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ilz7n.png"
          alt="Ranne assistente"
-         style="height:clamp(240px,38vh,420px);width:auto;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 32px rgba(0,0,0,.25));"
+         style="height:clamp(360px,60vh,560px);width:auto;object-fit:contain;object-position:left bottom;mix-blend-mode:lighten;"
          onerror="this.parentElement.style.display='none'">
   </div>
 
@@ -4385,18 +4458,12 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div class="auth-eyebrow">Bem-vindo à Ranne</div>
           <h2>Como vai usar<br>a plataforma?</h2>
           <p class="auth-sub">Escolha o perfil certo para ter a melhor experiência.</p>
-          <div class="role-cards">
+          <div class="role-cards" style="grid-template-columns:1fr;max-width:240px;margin:0 auto;">
             <div class="role-card active" onclick="selRole('empresa',this)">
               <div class="rc-tick">✓</div>
               <span class="rc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M2 12h20"/></svg></span>
               <strong>Empresa</strong>
               <span>Gestor · RH · CEO</span>
-            </div>
-            <div class="role-card" onclick="selRole('pessoa',this)">
-              <div class="rc-tick">✓</div>
-              <span class="rc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
-              <strong>Pessoa Física</strong>
-              <span>Uso individual</span>
             </div>
           </div>
           <button class="btn-cta" onclick="goS(2)">Continuar →</button>
@@ -4541,9 +4608,9 @@ body.dark .ob-btn { background: #2D5E4A; }
               <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-dash" style="accent-color:#2D5E4A;"> Dashboard e relatórios RH</label>
               <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;"><input type="checkbox" id="exp-nr1" style="accent-color:#2D5E4A;"> Conformidade NR-1</label>
             </div>
-            <div style="display:flex;gap:8px;margin-top:16px;">
-              <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('a')">←</button>
-              <button class="btn-cta" style="flex:1;" onclick="s3SubProximo('c')">Continuar →</button>
+            <div class="btn-row">
+              <button class="btn-cta btn-back" onclick="s3SubVoltar('a')">←</button>
+              <button class="btn-cta" onclick="s3SubProximo('c')">Continuar →</button>
             </div>
           </div>
 
@@ -4572,9 +4639,9 @@ body.dark .ob-btn { background: #2D5E4A; }
             <textarea class="field-input" id="empresa-obs" placeholder="Informações adicionais sobre o contrato..." style="resize:vertical;min-height:56px;margin-top:4px;"></textarea>
 
             <div id="setup-error" style="color:#991B1B;font-size:12px;margin:12px 0 0;display:none;background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.14);border-radius:8px;padding:8px 12px"></div>
-            <div style="display:flex;gap:8px;margin-top:16px;">
-              <button class="btn-cta" style="background:transparent;border:1px solid #E3DDD5;color:#6B645D;flex:0 0 auto;padding:13px 16px;" onclick="s3SubVoltar('b')">←</button>
-              <button class="btn-cta" style="flex:1;" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
+            <div class="btn-row">
+              <button class="btn-cta btn-back" onclick="s3SubVoltar('b')">←</button>
+              <button class="btn-cta" id="setup-btn" onclick="setupEmpresa()">Entrar na plataforma →</button>
             </div>
           </div>
 
@@ -4644,12 +4711,16 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="sb-item" onclick="pg('formularios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Kit Formulários</div>
         <div class="sb-item" onclick="pg('colaboradores',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></span> Colaboradores</div>
         <div class="sb-item" onclick="pg('escuta-rh',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span> Canal de Escuta <span id="badge-escuta" style="display:none;background:#EF4444;color:#fff;border-radius:99px;padding:1px 6px;font-size:11.5px;font-weight:700;margin-left:4px">0</span></div>
-        <div class="sb-item" onclick="pg('equipe',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6"/><circle cx="18" cy="7" r="2.5"/><path d="M22 20c0-2.5-2-4.5-4.5-4.5"/></svg></span> Equipe</div>
+
         <div class="sb-item" onclick="pg('relatorios',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span> Relatórios & NR-1</div>
         <div class="sb-item" onclick="pg('config',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span> Configurações</div>
         <div class="sb-item" onclick="pg('ajuda',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></span> Ajuda & Tour</div>
       </nav>
       <div class="sb-footer">
+        <button id="darkBtn" onclick="toggleDark()" title="Alternar tema" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:8px;border-radius:8px;justify-content:flex-start;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);cursor:pointer;color:rgba(255,255,255,.75);transition:all .2s;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <span style="font-size:12px;font-weight:500;letter-spacing:.02em;" id="darkBtnLabel">Modo escuro</span>
+        </button>
         <div class="sb-user">
           <div class="sb-avatar" id="sb-avatar-txt">--</div>
           <div><div class="sb-uname" id="sb-empresa-nome">Carregando...</div><div class="sb-urole" id="sb-user-role">Admin</div></div>
@@ -4670,7 +4741,6 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <button class="dark-toggle" id="darkBtn" onclick="toggleDark()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
             <button class="btn btn-primary btn-sm" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
           </div>
         </div>
@@ -5193,22 +5263,92 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Novo Diagnóstico</div><div class="page-sub">Configure e envie para a sua equipe</div></div>
           <button class="btn btn-ghost btn-sm" onclick="pg('diagnosticos',null)">← Voltar</button>
         </div>
-        <div class="card" style="max-width:520px">
-          <div class="fi-group"><label class="fi-label">Nome do diagnóstico</label><input class="fi-input" id="nd-nome" placeholder='Ex: "Diagnóstico Q2 2026"'></div>
-          <div class="fi-row">
-            <div class="fi-group"><label class="fi-label">Público-alvo</label><select class="fi-select fi-input" id="nd-publico"><option value="todos">Todos os colaboradores</option><option value="liderancas">Lideranças</option><option value="operacional">Equipe Operacional</option></select></div>
-            <div class="fi-group"><label class="fi-label">Nº de convidados</label><input class="fi-input" type="number" id="nd-convidados" placeholder="Ex: 25"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:960px;">
+
+          <!-- Coluna 1: Configurações -->
+          <div class="card">
+            <div class="card-hdr"><span class="card-title">Configurações</span></div>
+            <div class="fi-group"><label class="fi-label">Nome do diagnóstico</label><input class="fi-input" id="nd-nome" placeholder='Ex: "Diagnóstico Q2 2026"'></div>
+            <div class="fi-row">
+              <div class="fi-group"><label class="fi-label">Público-alvo</label><select class="fi-select fi-input" id="nd-publico"><option value="todos">Todos os colaboradores</option><option value="liderancas">Lideranças</option><option value="operacional">Equipe Operacional</option></select></div>
+              <div class="fi-group"><label class="fi-label">Nº de convidados</label><input class="fi-input" type="number" id="nd-convidados" placeholder="Ex: 25"></div>
+            </div>
+            <div class="fi-row">
+              <div class="fi-group"><label class="fi-label">Encerra em</label><input class="fi-input" type="date" id="nd-data"></div>
+              <div class="fi-group"><label class="fi-label">Respostas</label><select class="fi-select fi-input" id="nd-tipo"><option value="anonimas">Anônimas (recomendado)</option><option value="identificadas">Identificadas</option></select></div>
+            </div>
+
+            <div style="border-top:1px solid var(--border);margin:16px 0 14px"></div>
+
+            <!-- Seleção de dimensões -->
+            <div class="fi-label" style="margin-bottom:10px">Dimensões a avaliar</div>
+            <div id="nd-dimensoes" style="display:flex;flex-direction:column;gap:8px;">
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim" value="burnout" checked onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🔥</span>
+                <span class="nd-dim-info"><strong>Burnout & Exaustão</strong><span>5 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim" value="estresse" checked onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">⚡</span>
+                <span class="nd-dim-info"><strong>Estresse & Reações Físicas</strong><span>5 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim" value="sono" checked onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">😴</span>
+                <span class="nd-dim-info"><strong>Sono & Fadiga Digital</strong><span>4 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim" value="social" checked onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🤝</span>
+                <span class="nd-dim-info"><strong>Relações & Clima Social</strong><span>3 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim" value="lideranca" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🎯</span>
+                <span class="nd-dim-info"><strong>Liderança & Gestão</strong><span>3 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim" value="cultura" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🏛️</span>
+                <span class="nd-dim-info"><strong>Cultura & Pertencimento</strong><span>3 perguntas</span></span>
+              </label>
+            </div>
+
+            <div id="nd-error" style="color:var(--red);font-size:12px;margin:12px 0;display:none"></div>
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Cancelar</button>
+              <button class="btn btn-primary" id="criar-diag-btn" onclick="criarDiagnostico()">Criar e gerar link →</button>
+            </div>
           </div>
-          <div class="fi-row">
-            <div class="fi-group"><label class="fi-label">Encerra em</label><input class="fi-input" type="date" id="nd-data"></div>
-            <div class="fi-group"><label class="fi-label">Respostas</label><select class="fi-select fi-input" id="nd-tipo"><option value="anonimas">Anônimas (recomendado)</option><option value="identificadas">Identificadas</option></select></div>
+
+          <!-- Coluna 2: Preview -->
+          <div class="card">
+            <div class="card-hdr"><span class="card-title">Preview do questionário</span></div>
+            <div id="nd-preview-count" style="font-size:13px;color:var(--muted);margin-bottom:14px">
+              <strong id="nd-total-perguntas">17</strong> perguntas selecionadas · tempo estimado: <strong id="nd-tempo-est">8 min</strong>
+            </div>
+            <div id="nd-preview-lista" style="display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto;">
+              <!-- preenchido via JS -->
+            </div>
           </div>
-          <div id="nd-error" style="color:var(--red);font-size:12px;margin-bottom:12px;display:none"></div>
-          <div style="display:flex;gap:10px;margin-top:8px">
-            <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Cancelar</button>
-            <button class="btn btn-primary" id="criar-diag-btn" onclick="criarDiagnostico()">Criar Diagnóstico →</button>
-          </div>
+
         </div>
+
+        <style>
+          .nd-dim-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; transition:all .15s; }
+          .nd-dim-item:hover { border-color:var(--mint); background:rgba(45,94,74,.04); }
+          .nd-dim-item input[type=checkbox] { width:16px; height:16px; accent-color:var(--mint); cursor:pointer; flex-shrink:0; }
+          .nd-dim-item input:checked ~ .nd-dim-info { color:var(--text); }
+          .nd-dim-icon { font-size:18px; flex-shrink:0; }
+          .nd-dim-info { display:flex; flex-direction:column; gap:2px; font-size:13px; }
+          .nd-dim-info strong { color:var(--card-text); font-weight:600; }
+          .nd-dim-info span { font-size:11px; color:var(--muted); }
+          .nd-dim-item:has(input:checked) { border-color:var(--mint); background:rgba(45,94,74,.05); }
+          .nd-preview-q { font-size:12px; color:var(--card-text-muted); padding:7px 10px; background:rgba(45,94,74,.04); border-radius:6px; line-height:1.5; border-left:3px solid var(--mint); }
+          .nd-preview-bloco { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--mint); margin-top:10px; margin-bottom:4px; }
+          @media(max-width:768px){ #p-novo-diagnostico .card + .card { margin-top:0; } #p-novo-diagnostico > div[style*="grid"] { grid-template-columns:1fr!important; } }
+        </style>
       </div>
 
       <!-- CONFIRMAÇÃO -->
@@ -5262,39 +5402,13 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div id="p-plano" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Plano de Ação</div><div class="page-sub">Gerado a partir do último diagnóstico</div></div></div>
         <div class="card" id="plano-card">
-          <div class="progress-bar-row"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:43%"></div></div><span class="prog-pct" id="plano-progresso-txt">3 de 7 — 43%</span></div>
-          <div class="tabs"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
+          <div class="progress-bar-row" id="plano-progress-row" style="display:none"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:0%"></div></div><span class="prog-pct" id="plano-progresso-txt">0 de 0 — 0%</span></div>
+          <div class="tabs" id="plano-tabs" style="display:none"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
           <div id="acoes-lista">
-            <div class="sec-hdr sh-red"><span class="sec-hdr alta">Alta Prioridade<span class="sh-pill">Crítico</span></span></div>
-            <div class="action-row" data-id="1" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Mapeamento e redistribuição de demandas</div><div class="a-meta"><span class="tag t-carga">Carga de Trabalho</span><span class="tag t-alta">Alta</span><span class="tag t-gray">Workshop · 3 sem</span></div></div>
-            </div>
-            <div class="action-row" data-id="2" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Política de desconexão digital</div><div class="a-meta"><span class="tag t-carga">Carga de Trabalho</span><span class="tag t-alta">Alta</span><span class="tag t-gray">Política · 1 sem</span></div></div>
-            </div>
-            <div class="action-row" data-id="3" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Implementar 1:1s quinzenais com líderes</div><div class="a-meta"><span class="tag t-lid">Liderança</span><span class="tag t-alta">Alta</span><span class="tag t-gray">1:1 · 1 sem</span></div></div>
-            </div>
-            <div class="sec-hdr sh-amber">🟡 MÉDIA PRIORIDADE</div>
-            <div class="action-row" data-id="4" data-status="concluida">
-              <div class="a-check a-done" onclick="toggleAcao(this)">✓</div>
-              <div><div class="a-title a-title-done">Treinamento de liderança situacional</div><div class="a-meta"><span class="tag t-lid">Liderança</span><span class="tag t-media">Média</span></div></div>
-            </div>
-            <div class="action-row" data-id="5" data-status="concluida">
-              <div class="a-check a-done" onclick="toggleAcao(this)">✓</div>
-              <div><div class="a-title a-title-done">Pesquisa de pulse mensal automatizada</div><div class="a-meta"><span class="tag t-cultura">Cultura</span><span class="tag t-media">Média</span></div></div>
-            </div>
-            <div class="action-row" data-id="6" data-status="concluida">
-              <div class="a-check a-done" onclick="toggleAcao(this)">✓</div>
-              <div><div class="a-title a-title-done">Fórum de reconhecimento mensal</div><div class="a-meta"><span class="tag t-cultura">Cultura</span><span class="tag t-ok">OK</span></div></div>
-            </div>
-            <div class="sec-hdr sh-green">🟢 BAIXA PRIORIDADE</div>
-            <div class="action-row" data-id="7" data-status="pendente">
-              <div class="a-check" onclick="toggleAcao(this)"></div>
-              <div><div class="a-title">Benchmark externo com setor</div><div class="a-meta"><span class="tag t-cultura">Cultura</span><span class="tag t-gray">Análise</span></div></div>
+            <div id="plano-empty" style="text-align:center;padding:48px 20px;">
+              <div style="font-size:32px;margin-bottom:12px">📋</div>
+              <div style="font-size:14px;font-weight:600;color:var(--card-text);margin-bottom:6px">Nenhum plano de ação ainda</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.6;max-width:280px;margin:0 auto">O plano será gerado automaticamente após o primeiro diagnóstico da empresa.</div>
             </div>
           </div>
         </div>
@@ -5436,7 +5550,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       </div>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn btn-ghost btn-sm" onclick="window._fichaFrom==='colaboradores' ? pg('colaboradores',null) : pg('equipe',null)">← Voltar</button>
+      <button class="btn btn-ghost btn-sm" onclick="window._fichaFrom==='colaboradores' ? pg('colaboradores',null) : pg('colaboradores',null)">← Voltar</button>
       <button class="btn btn-primary btn-sm" onclick="abrirModalIntervencao()">+ Registrar Intervenção</button>
     </div>
   </div>
@@ -5576,7 +5690,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="page-sub">Ranne Care · 6 formulários · Uso interno</div>
             </div>
           </div>
-          <button class="btn btn-outline btn-sm" onclick="window.print()">Imprimir</button>
+          
         </div>
 
         <!-- Intro -->
@@ -5644,7 +5758,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Há algo que a liderança poderia fazer diferente?</label><textarea class="fk-textarea"></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk2')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk2')">↺ Limpar</button>
             </div>
           </div>
@@ -5754,7 +5868,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Algo sobre sua saúde que gostaria de compartilhar?</label><textarea class="fk-textarea" placeholder="Informações que ajudem a personalizar sua jornada..."></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk3')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk3')">↺ Limpar</button>
             </div>
           </div>
@@ -5835,7 +5949,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Observações importantes</label><textarea class="fk-textarea" placeholder="Restrições, necessidades especiais, preferência de profissional..."></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk4')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk4')">↺ Limpar</button>
             </div>
           </div>
@@ -5897,7 +6011,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div class="fk-group"><label class="fk-label">Depoimento (opcional)</label><textarea class="fk-textarea" placeholder='"Trabalhar com a Ranne foi..."'></textarea></div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk5')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk5')">↺ Limpar</button>
             </div>
           </div>
@@ -5971,7 +6085,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               </div>
             </div>
             <div class="fk-actions">
-              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="window.print()">Imprimir</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="printForm('fk6')">🖨 Imprimir formulário</button>
               <button class="btn btn-outline btn-sm" onclick="limparFormulario('fk6')">↺ Limpar</button>
             </div>
           </div>
@@ -6064,39 +6178,38 @@ body.dark .ob-btn { background: #2D5E4A; }
             <span style="display:flex;align-items:center;flex-shrink:0;margin-top:1px;color:var(--teal)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
             <span style="font-size:13.0px;color:var(--muted);line-height:1.5;">Os colaboradores não visualizam dados uns dos outros. Scores e fichas individuais são visíveis apenas ao RH — LGPD compliant.</span>
           </div>
+
+          <!-- Membros com acesso -->
+          <div class="card" style="margin-top:16px;margin-bottom:16px">
+            <div class="card-hdr"><span class="card-title">Membros com acesso à plataforma</span></div>
+            <div id="membros-lista">
+              <div class="skel-card"><div class="skel skel-line" style="width:40%"></div></div>
+            </div>
+          </div>
+
+          <!-- Permissões -->
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-hdr"><span class="card-title">Permissões por perfil</span></div>
+            <table class="perm-table">
+              <tr><th>Funcionalidade</th><th>Admin</th><th>Líder</th><th>Colaborador</th></tr>
+              <tr><td>Criar diagnóstico</td><td>✅</td><td>❌</td><td>❌</td></tr>
+              <tr><td>Ver resultados</td><td>✅</td><td>✅</td><td>❌</td></tr>
+              <tr><td>Editar plano de ação</td><td>✅</td><td>✅</td><td>❌</td></tr>
+              <tr><td>Configurações da empresa</td><td>✅</td><td>❌</td><td>❌</td></tr>
+              <tr><td>Biblioteca e check-in</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            </table>
+          </div>
+
         </div>
       </div>
 
-      <!-- EQUIPE -->
-      <div id="p-equipe" style="display:none">
-        <div class="topbar">
-          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Equipe</div><div class="page-sub">Quem faz parte da plataforma</div></div>
-          <button class="btn btn-primary btn-sm" onclick="document.getElementById('modal-invite').classList.add('open')">+ Convidar Membro</button>
-        </div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-hdr"><span class="card-title">Membros ativos</span></div>
-          <div id="membros-lista">
-            <div class="skel-card"><div class="skel skel-line" style="width:40%"></div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-hdr"><span class="card-title">Permissões por perfil</span></div>
-          <table class="perm-table">
-            <tr><th>Funcionalidade</th><th>Admin</th><th>Líder</th><th>Colaborador</th></tr>
-            <tr><td>Criar diagnóstico</td><td>✅</td><td>❌</td><td>❌</td></tr>
-            <tr><td>Ver resultados</td><td>✅</td><td>✅</td><td>❌</td></tr>
-            <tr><td>Editar plano de ação</td><td>✅</td><td>✅</td><td>❌</td></tr>
-            <tr><td>Configurações da empresa</td><td>✅</td><td>❌</td><td>❌</td></tr>
-            <tr><td>Biblioteca e check-in</td><td>✅</td><td>✅</td><td>✅</td></tr>
-          </table>
-        </div>
-      </div>
 
       <!-- CONFIG -->
       <div id="p-config" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Configurações</div><div class="page-sub">Como sua conta está configurada</div></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
         <!-- ══ PERFIL DO USUÁRIO ══ -->
-<div class="card" style="max-width:480px;margin-bottom:20px">
+<div class="card" style="margin-bottom:0">
   <div class="card-hdr"><span class="card-title">Meu Perfil</span></div>
 
   <!-- Avatar -->
@@ -6124,52 +6237,58 @@ body.dark .ob-btn { background: #2D5E4A; }
 </div>
 
 <!-- ══ PREFERÊNCIAS ══ -->
-<div class="card" style="max-width:480px;margin-bottom:20px">
+<div class="card" style="margin-bottom:0">
   <div class="card-hdr"><span class="card-title">Preferências</span></div>
 
+  <style>
+    .pref-toggle input{opacity:0;width:0;height:0;position:absolute;}
+    .pref-toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;cursor:pointer;}
+    .pref-slider{position:absolute;inset:0;background:#ccc;border-radius:99px;transition:.3s;cursor:pointer;}
+    .pref-toggle input:checked + .pref-slider{background:var(--mint);}
+    .pref-slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
+    .pref-toggle input:checked + .pref-slider:before{transform:translateX(20px);}
+  </style>
   <div style="display:flex;flex-direction:column;gap:14px">
 
     <!-- Notificações -->
-    <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--text)">Notificações por e-mail</div>
-        <div style="font-size:13.0px;color:var(--muted);margin-top:2px">Receber resumos e alertas por e-mail</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Receber resumos e alertas por e-mail</div>
       </div>
-      <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
-        <input type="checkbox" id="pref-email-notif" style="opacity:0;width:0;height:0" checked>
-        <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;salvarPreferencias()" style="position:absolute;cursor:pointer;inset:0;background:var(--mint);border-radius:99px;transition:.3s"></span>
+      <label class="pref-toggle">
+        <input type="checkbox" id="pref-email-notif" checked onchange="salvarPreferencias()">
+        <span class="pref-slider"></span>
       </label>
     </div>
 
     <!-- Resumo semanal -->
-    <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--text)">Resumo semanal</div>
-        <div style="font-size:13.0px;color:var(--muted);margin-top:2px">Receber relatório toda segunda-feira</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Receber relatório toda segunda-feira</div>
       </div>
-      <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
-        <input type="checkbox" id="pref-resumo-semanal" style="opacity:0;width:0;height:0" checked>
-        <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;salvarPreferencias()" style="position:absolute;cursor:pointer;inset:0;background:var(--mint);border-radius:99px;transition:.3s"></span>
+      <label class="pref-toggle">
+        <input type="checkbox" id="pref-resumo-semanal" checked onchange="salvarPreferencias()">
+        <span class="pref-slider"></span>
       </label>
     </div>
 
     <!-- Alertas críticos -->
-    <div style="display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
       <div>
         <div style="font-size:13px;font-weight:600;color:var(--text)">Alertas de risco crítico</div>
-        <div style="font-size:13.0px;color:var(--muted);margin-top:2px">Notificar imediatamente ao detectar risco alto</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Notificar imediatamente ao detectar risco alto</div>
       </div>
-      <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
-        <input type="checkbox" id="pref-alerta-critico" style="opacity:0;width:0;height:0" checked>
-        <span onclick="this.previousElementSibling.checked=!this.previousElementSibling.checked;salvarPreferencias()" style="position:absolute;cursor:pointer;inset:0;background:var(--mint);border-radius:99px;transition:.3s"></span>
+      <label class="pref-toggle">
+        <input type="checkbox" id="pref-alerta-critico" checked onchange="salvarPreferencias()">
+        <span class="pref-slider"></span>
       </label>
     </div>
 
-
-
   </div>
 </div>
-        <div class="card" style="max-width:480px;margin-bottom:20px">
+        <div class="card" style="margin-bottom:0">
           <div class="card-hdr"><span class="card-title">Perfil da Empresa</span></div>
           <div class="fi-group"><label class="fi-label">Nome da empresa</label><input class="fi-input" id="cfg-nome"></div>
           <div class="fi-row">
@@ -6180,7 +6299,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         </div>
 
         <!-- Configurações de Alerta -->
-        <div class="card" style="max-width:480px;margin-bottom:20px;margin-top:20px">
+        <div class="card" style="margin-bottom:0">
           <div class="card-hdr"><span class="card-title">Alertas de Piora Individual</span></div>
           <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6">O app monitora automaticamente os scores entre diagnósticos e avisa quando um colaborador piora significativamente.</p>
           <div class="fi-row">
@@ -6230,7 +6349,7 @@ body.dark .ob-btn { background: #2D5E4A; }
             Gerar Relatório NR-1 — PDF
           </button>
         </div>
-
+        </div><!-- /config-grid -->
       </div><!-- /p-config -->
 
       
@@ -7157,6 +7276,27 @@ body.dark .ob-btn { background: #2D5E4A; }
       <button class="btn btn-pro btn-sm" onclick="toast('Upgrade Pro — em breve!')">Desbloquear relatório completo</button>
     </div>
 
+    <!-- ── FLAG VOLUNTÁRIO ── -->
+    <div id="qusp-flag-box" style="background:#FEF9EE;border:1.5px solid rgba(201,168,76,.35);border-radius:14px;padding:18px 20px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:#1A2E20;margin-bottom:6px;">💬 Está passando por algo difícil?</div>
+      <p style="font-size:12.5px;color:#5a5248;line-height:1.65;margin-bottom:14px;">Suas respostas são anônimas. Mas se você quiser conversar com alguém do RH sobre o que está sentindo, pode se identificar voluntariamente abaixo. Isso é opcional e não afeta seus resultados.</p>
+      <div id="qusp-flag-form" style="display:flex;flex-direction:column;gap:10px;">
+        <input id="qusp-flag-nome" class="fi-input" type="text" placeholder="Seu nome (opcional)" style="font-size:13px;">
+        <input id="qusp-flag-email" class="fi-input" type="email" placeholder="Seu e-mail (opcional)" style="font-size:13px;">
+        <textarea id="qusp-flag-msg" class="fi-input" rows="3" placeholder="O que você gostaria de compartilhar com o RH? (opcional)" style="font-size:13px;resize:none;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button onclick="qusp_enviarFlag()" style="flex:1;padding:11px;background:#2D5E4A;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">Enviar para o RH →</button>
+          <button onclick="document.getElementById('qusp-flag-box').style.display='none'" style="padding:11px 16px;background:transparent;border:1.5px solid var(--border);border-radius:10px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;">Pular</button>
+        </div>
+        <p style="font-size:11px;color:var(--muted);text-align:center;">Apenas o RH verá essas informações. Nunca aparece nos relatórios gerais.</p>
+      </div>
+      <div id="qusp-flag-sent" style="display:none;text-align:center;padding:12px 0;">
+        <div style="font-size:22px;margin-bottom:6px;">✅</div>
+        <div style="font-size:13px;font-weight:600;color:#2D5E4A;">Mensagem enviada!</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">O RH receberá seu contato em breve.</div>
+      </div>
+    </div>
+
     <button onclick="cpg('inicio')" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;">Voltar ao início</button>
   </div>
 
@@ -7950,6 +8090,10 @@ function showEmpresa() {
   document.getElementById('app-empresa').style.display = 'block';
   document.getElementById('app-colaborador').style.display = 'none';
   document.body.classList.remove('collab-ativo');
+  // Zera badge do plano se não há ações reais
+  localStorage.removeItem('ranne-acoes');
+  const badgeAcoes = document.getElementById('badge-acoes');
+  if (badgeAcoes) { badgeAcoes.textContent = '0'; badgeAcoes.style.display = 'none'; }
   const nome = currentEmpresa?.nome || 'Empresa';
   const ini  = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
   document.getElementById('sb-empresa-nome').textContent = nome;
@@ -7957,6 +8101,13 @@ function showEmpresa() {
   document.getElementById('dash-greeting').textContent = 'Olá, ' + nome;
   document.getElementById('dash-sub').textContent = 'Seu painel de saúde organizacional';
   document.getElementById('cfg-nome').value = currentEmpresa?.nome || '';
+  // Preenche campos de perfil pessoal
+  const cfgUserNome = document.getElementById('cfg-user-nome');
+  const cfgUserCargo = document.getElementById('cfg-user-cargo');
+  const cfgUserEmail = document.getElementById('cfg-user-email');
+  if (cfgUserNome) cfgUserNome.value = currentEmpresa?.resp_nome || db.auth.getUser().then(u => { if(cfgUserNome && u.data?.user?.user_metadata?.nome) cfgUserNome.value = u.data.user.user_metadata.nome; });
+  if (cfgUserCargo) cfgUserCargo.value = currentEmpresa?.resp_cargo || '';
+  if (cfgUserEmail) cfgUserEmail.value = currentUser?.email || '';
   setTimeout(() => {
     document.getElementById('skelWrap').style.display = 'none';
     document.getElementById('realMetrics').style.display = 'block';
@@ -8282,7 +8433,7 @@ async function loadMembros() {
 
   try {
     const { data: membros } = await db
-      .from('colaboradores')
+      .from('membros_empresa')
       .select('*')
       .eq('empresa_id', currentEmpresa?.id);
 
@@ -8327,6 +8478,16 @@ async function loadMembros() {
    CRIAR DIAGNÓSTICO
    ───────────────────────────────────── */
 async function criarDiagnostico() {
+  // Coleta dimensões selecionadas
+  const dimChecks = document.querySelectorAll('#nd-dimensoes input[name="nd-dim"]:checked');
+  const dimensoes = Array.from(dimChecks).map(c => c.value);
+  if (dimensoes.length === 0) {
+    document.getElementById('nd-error').textContent = 'Selecione ao menos uma dimensão.';
+    document.getElementById('nd-error').style.display = 'block';
+    return;
+  }
+  window._ndDimensoes = dimensoes; // passa para criarDiagnostico usar
+
   const nome = document.getElementById('nd-nome').value.trim();
   const publico = document.getElementById('nd-publico').value;
   const convidados = parseInt(document.getElementById('nd-convidados').value) || 0;
@@ -8346,7 +8507,11 @@ async function criarDiagnostico() {
   errEl.style.display = 'none';
 
   const diagId = crypto.randomUUID();
-  const link = `${window.location.origin}/?diag=${diagId}`;
+  // Usa sempre o domínio de produção para o link do colaborador
+  const baseUrl = window.location.hostname.includes('vercel.app') || window.location.hostname === 'localhost'
+    ? 'https://rannecare.com.br'
+    : window.location.origin;
+  const link = `${baseUrl}/empresa.html?diag=${diagId}`;
 
   try {
     // Tentativa 1: inserção completa
@@ -8559,37 +8724,44 @@ async function sendInvite() {
 
   try {
     // 1. Criar conta no Supabase Auth
+    let userId = null;
     const { data: signUpData, error: signUpErr } = await db.auth.signUp({
       email,
       password: senha,
       options: { data: { nome: nome || email.split('@')[0], role, empresa_id: currentEmpresa?.id } }
     });
 
-    if (signUpErr && !signUpErr.message.includes('already registered')) {
-      toast('⚠️ Erro ao criar conta: ' + signUpErr.message);
-      btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
-      return;
+    if (signUpErr) {
+      const msg = signUpErr.message?.toLowerCase() || '';
+      // 422 = email já cadastrado — continua sem criar auth, só salva na tabela
+      if (!msg.includes('already') && signUpErr.status !== 422) {
+        toast('⚠️ Erro ao criar conta: ' + signUpErr.message);
+        btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+        return;
+      }
+    } else {
+      userId = signUpData?.user?.id;
     }
 
-    const userId = signUpData?.user?.id;
-
-    // 2. Salvar na tabela colaboradores
-    await db.from('colaboradores').upsert({
+    // 2. Salvar na tabela membros_empresa
+    const { error: colabErr } = await db.from('membros_empresa').insert({
       empresa_id: currentEmpresa?.id,
-      user_id: userId || null,
       email,
       nome: nome || email.split('@')[0],
       role,
-      status: 'ativo',
-      criado_em: new Date().toISOString()
-    }, { onConflict: 'email,empresa_id' });
+      created_at: new Date().toISOString()
+    });
+    if (colabErr && !colabErr.message?.includes('duplicate')) {
+      console.warn('Aviso ao salvar membro:', colabErr.message);
+    }
 
     // 3. Enviar e-mail com credenciais
     await enviarEmailColab(nome || email.split('@')[0], email, senha);
 
     document.getElementById('modal-invite').classList.remove('open');
     resetModalInvite();
-    await loadColabs();
+    await loadColaboradores();
+    await loadMembros();
     toast('✅ Colaborador cadastrado! E-mail enviado com as credenciais.');
 
   } catch(e) {
@@ -8645,18 +8817,19 @@ async function importarCSV() {
       await db.auth.signUp({ email: c.email, password: c.senha,
         options: { data: { nome: c.nome, role: 'colaborador', empresa_id: currentEmpresa?.id } }
       });
-      await db.from('colaboradores').upsert({
+      await db.from('membros_empresa').insert({
         empresa_id: currentEmpresa?.id, email: c.email,
-        nome: c.nome, role: 'colaborador', status: 'ativo',
-        criado_em: new Date().toISOString()
-      }, { onConflict: 'email,empresa_id' });
+        nome: c.nome, role: 'colaborador',
+        created_at: new Date().toISOString()
+      });
       await enviarEmailColab(c.nome, c.email, c.senha);
       ok++;
-    } catch { erros++; }
+    } catch(e) { console.error('Erro ao importar:', e); erros++; }
   }
 
   document.getElementById('modal-import-csv').classList.remove('open');
-  await loadColabs();
+  await loadColaboradores();
+  await loadMembros();
   toast(`✅ ${ok} colaborador(es) importado(s)${erros ? ` · ${erros} erro(s)` : ''}`);
   btn.disabled = false; btn.textContent = 'Importar e enviar e-mails →';
 }
@@ -8698,9 +8871,16 @@ async function salvarCheckin() {
    PLANO DE AÇÃO
    ───────────────────────────────────── */
 function initPlano() {
+  // Limpa badge antigo do localStorage se não há ações reais
+  if (document.querySelectorAll('.action-row[data-id]').length === 0) {
+    localStorage.removeItem('ranne-acoes');
+    const badge = document.getElementById('badge-acoes');
+    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+    return;
+  }
   // Restaura estado salvo
   const saved = localStorage.getItem('ranne-acoes');
-  if (saved) {
+  if (saved && document.querySelectorAll('.action-row[data-id]').length > 0) {
     acoesState = JSON.parse(saved);
     document.querySelectorAll('.action-row[data-id]').forEach(row => {
       const id = row.dataset.id;
@@ -8908,13 +9088,12 @@ function abrirArtigo(titulo) {
 
   const modal = document.createElement('div');
   modal.id = 'modal-artigo-bib';
-  modal.className = 'modal open';
   modal.style.cssText = 'position:fixed;inset:0;z-index:8000;display:flex;align-items:center;justify-content:center;padding:20px;';
   
   if (!conteudo) {
     modal.innerHTML = `
       <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);" onclick="document.getElementById('modal-artigo-bib').remove()"></div>
-      <div class="modal-box" style="position:relative;z-index:1;max-width:480px;width:100%;border-radius:20px;padding:28px;">
+      <div class="modal-box" style="position:relative;z-index:1;max-width:520px;width:100%;border-radius:20px;padding:28px;">
         <div style="font-size:32px;margin-bottom:12px;">📖</div>
         <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;color:var(--card-text)">${titulo}</h3>
         <p style="font-size:13px;color:var(--card-text-muted);line-height:1.6;margin-bottom:20px;">Este conteúdo está sendo preparado pela equipe Ranne com curadoria especializada. Em breve disponível completo na plataforma.</p>
@@ -8922,30 +9101,37 @@ function abrirArtigo(titulo) {
       </div>`;
   } else {
     const topicosHTML = conteudo.topicos.map(t => `
-      <div style="padding:12px 14px;border-radius:10px;background:rgba(45,94,74,.05);border:1px solid rgba(45,94,74,.1);margin-bottom:8px;">
-        <div style="font-size:12px;font-weight:700;color:var(--card-text);margin-bottom:4px;">${t.titulo}</div>
-        <div style="font-size:12px;color:var(--card-text-muted);line-height:1.55;">${t.desc}</div>
+      <div style="padding:14px 16px;border-radius:10px;background:rgba(45,94,74,.06);border:1px solid rgba(45,94,74,.12);margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:5px;">${t.titulo}</div>
+        <div style="font-size:13px;line-height:1.6;opacity:.75;">${t.desc}</div>
       </div>`).join('');
     modal.innerHTML = `
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);" onclick="document.getElementById('modal-artigo-bib').remove()"></div>
-      <div class="modal-box" style="position:relative;z-index:1;max-width:500px;width:100%;border-radius:20px;padding:28px;max-height:88vh;overflow-y:auto;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div style="width:40px;height:40px;border-radius:12px;background:rgba(45,94,74,.1);display:flex;align-items:center;justify-content:center;font-size:20px;">${conteudo.emoji}</div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);" onclick="document.getElementById('modal-artigo-bib').remove()"></div>
+      <div class="modal-box" style="position:relative;z-index:1;width:100%;max-width:720px;border-radius:20px;padding:0;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;">
+        <!-- Header -->
+        <div style="padding:20px 28px 16px;border-bottom:1px solid rgba(45,94,74,.15);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(45,94,74,.1);display:flex;align-items:center;justify-content:center;font-size:22px;">${conteudo.emoji}</div>
             <div>
-              <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mint);">${conteudo.cat} · ${conteudo.tempo}</div>
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#3D7A62;margin-bottom:2px;">${conteudo.cat} · ${conteudo.tempo}</div>
+              <div style="font-size:16px;font-weight:700;line-height:1.3;">${titulo}</div>
             </div>
           </div>
-          <button onclick="document.getElementById('modal-artigo-bib').remove()" style="width:28px;height:28px;border-radius:8px;border:none;background:rgba(0,0,0,.06);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">✕</button>
+          <button onclick="document.getElementById('modal-artigo-bib').remove()" style="width:32px;height:32px;border-radius:8px;border:1px solid rgba(45,94,74,.15);background:transparent;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✕</button>
         </div>
-        <h3 style="font-size:17px;font-weight:700;color:var(--card-text);margin-bottom:10px;line-height:1.3;">${titulo}</h3>
-        <p style="font-size:13px;color:var(--card-text-muted);line-height:1.6;margin-bottom:16px;">${conteudo.intro}</p>
-        ${topicosHTML}
-        <div style="padding:12px 14px;border-radius:10px;background:linear-gradient(135deg,rgba(45,94,74,.08),rgba(61,122,98,.05));border-left:3px solid var(--mint);margin-top:12px;">
-          <div style="font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--mint);margin-bottom:4px;">💡 Dica prática</div>
-          <div style="font-size:12px;color:var(--card-text);line-height:1.55;">${conteudo.dica}</div>
+        <!-- Conteúdo com scroll -->
+        <div style="padding:24px 28px;overflow-y:auto;flex:1;">
+          <p style="font-size:14px;line-height:1.7;margin-bottom:20px;opacity:.8;">${conteudo.intro}</p>
+          ${topicosHTML}
+          <div style="padding:14px 18px;border-radius:12px;background:rgba(45,94,74,.07);border-left:3px solid #3D7A62;margin-top:16px;">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#3D7A62;margin-bottom:6px;">💡 Dica prática</div>
+            <div style="font-size:13px;line-height:1.6;">${conteudo.dica}</div>
+          </div>
         </div>
-        <button onclick="document.getElementById('modal-artigo-bib').remove()" class="btn btn-primary btn-sm" style="width:100%;margin-top:18px;">Fechar</button>
+        <!-- Footer fixo -->
+        <div style="padding:16px 28px;border-top:1px solid rgba(45,94,74,.12);flex-shrink:0;">
+          <button onclick="document.getElementById('modal-artigo-bib').remove()" class="btn btn-primary btn-sm" style="width:100%;">Fechar artigo</button>
+        </div>
       </div>`;
   }
   
@@ -8961,9 +9147,211 @@ function copyLink() {
 /* ─────────────────────────────────────
    DARK MODE
    ───────────────────────────────────── */
+function printForm(formId) {
+  const card = document.getElementById(formId);
+  if (!card) return;
+  const body = card.querySelector('.form-kit-body');
+  const title = card.querySelector('.form-kit-title')?.textContent || 'Formulário';
+  if (!body) return;
+
+  // Clona o conteúdo para preservar valores preenchidos
+  const clone = body.cloneNode(true);
+  // Copia valores dos inputs manualmente (cloneNode não copia estado)
+  const origInputs = body.querySelectorAll('input, textarea, select');
+  const cloneInputs = clone.querySelectorAll('input, textarea, select');
+  origInputs.forEach((el, i) => {
+    if (el.type === 'radio' || el.type === 'checkbox') {
+      cloneInputs[i].checked = el.checked;
+    } else {
+      cloneInputs[i].value = el.value;
+    }
+  });
+  // Remove botões
+  clone.querySelectorAll('.fk-actions').forEach(el => el.remove());
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>${title} — Ranne Care</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; color: #111; padding: 28px 32px; }
+  .print-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #2D5E4A; }
+  .print-brand { font-family: Georgia, serif; font-size: 20px; color: #2D5E4A; letter-spacing: .04em; }
+  .print-sub { font-size: 10px; color: #666; letter-spacing: .15em; text-transform: uppercase; margin-top: 3px; }
+  .print-meta { text-align: right; font-size: 11px; color: #888; line-height: 1.6; }
+  .fk-section { margin-bottom: 18px; }
+  .fk-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #2D5E4A; margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px solid #ddd; }
+  .fk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  .fk-row-1 { margin-bottom: 8px; }
+  .fk-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .fk-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #555; }
+  .fk-input { border: none; border-bottom: 1px solid #bbb; padding: 4px 2px; font-size: 13px; width: 100%; background: transparent; }
+  .fk-textarea { border: 1px solid #bbb; padding: 6px; font-size: 12px; width: 100%; min-height: 50px; background: transparent; resize: none; border-radius: 4px; }
+  .fk-select { border: 1px solid #bbb; padding: 4px; font-size: 13px; width: 100%; background: transparent; border-radius: 4px; }
+  .fk-likert-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 12px; }
+  .fk-likert-table th { text-align: center; padding: 5px 3px; background: #f5f5f5; font-size: 11px; }
+  .fk-likert-table th:first-child { text-align: left; }
+  .fk-likert-table td { padding: 6px 3px; border-bottom: 1px solid #eee; text-align: center; }
+  .fk-likert-table td:first-child { text-align: left; font-size: 12px; }
+  .fk-checks { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
+  .fk-grid-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 10px; }
+  .fk-check-row { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .fk-nps-row { display: flex; gap: 4px; margin-bottom: 6px; }
+  .fk-nps-btn { width: 28px; height: 28px; border: 1px solid #bbb; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .fk-nps-labels { display: flex; justify-content: space-between; font-size: 10px; color: #888; }
+  p { font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 10px; }
+  @media print { body { padding: 16px; } }
+</style>
+</head>
+<body>
+  <div class="print-header">
+    <div>
+      <div class="print-brand">RANNE CARE</div>
+      <div class="print-sub">Saúde Organizacional</div>
+    </div>
+    <div class="print-meta">${title}<br>${new Date().toLocaleDateString('pt-BR')}</div>
+  </div>
+  ${clone.innerHTML}
+</body>
+</html>`;
+
+  const win = window.open('', '_blank', 'width=800,height=900');
+  win.document.write(html);
+  win.document.close();
+  win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
+}
+
+
+/* ══════════ AEP — Avaliação de Risco Psicossocial ══════════ */
+let aepRespostas = {};
+
+function aepResponder(questao, resposta, btn) {
+  // Salva resposta
+  aepRespostas[questao] = resposta;
+
+  // Atualiza visual dos botões — busca o container .aep-opcoes
+  const grupo = btn.closest('.aep-opcoes') || btn.parentElement;
+  grupo.querySelectorAll('.aep-btn').forEach(b => {
+    b.classList.remove('aep-sel-nao', 'aep-sel-parc', 'aep-sel-sim', 'sel-nao', 'sel-parc', 'sel-sim');
+    b.style.background = '';
+    b.style.color = '';
+    b.style.borderColor = '';
+  });
+
+  // Aplica estilo visual no botão clicado
+  if (resposta === 'nao') {
+    btn.style.background = '#22C55E'; btn.style.color = '#fff'; btn.style.borderColor = '#22C55E';
+  } else if (resposta === 'parc') {
+    btn.style.background = '#F59E0B'; btn.style.color = '#fff'; btn.style.borderColor = '#F59E0B';
+  } else if (resposta === 'sim') {
+    btn.style.background = '#EF4444'; btn.style.color = '#fff'; btn.style.borderColor = '#EF4444';
+  }
+
+  // Marca o item pai
+  const item = btn.closest('.aep-item');
+  if (item) {
+    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');
+    item.classList.add('aep-' + resposta);
+  }
+
+  // Salva no localStorage
+  localStorage.setItem('ranne-aep-' + (currentEmpresa?.id || 'local'), JSON.stringify(aepRespostas));
+
+  // Atualiza contador
+  aepAtualizarResumo();
+}
+
+function aepCarregarSalvo() {
+  const saved = localStorage.getItem('ranne-aep-' + (currentEmpresa?.id || 'local'));
+  if (!saved) return;
+  try {
+    aepRespostas = JSON.parse(saved);
+    Object.entries(aepRespostas).forEach(([q, r]) => {
+      const btns = document.querySelectorAll(`[onclick*="aepResponder('${q}'"]`);
+      btns.forEach(btn => {
+        const onc = btn.getAttribute('onclick') || '';
+        if (onc.includes("'" + r + "'")) {
+          aepResponder(q, r, btn); // reutiliza a função para restaurar visual
+        }
+      });
+    });
+    aepAtualizarResumo();
+  } catch(e) { console.warn('AEP load error', e); }
+}
+
+function aepAtualizarResumo() {
+  const total = Object.keys(aepRespostas).length;
+  const sims = Object.values(aepRespostas).filter(r => r === 'sim').length;
+  const parcs = Object.values(aepRespostas).filter(r => r === 'parc').length;
+  const el = document.getElementById('aep-resumo');
+  if (el) {
+    el.textContent = `${total} respondidas · ${sims} sim · ${parcs} parcial`;
+  }
+}
+
+async function aepSalvarSupabase() {
+  if (!currentEmpresa?.id) { toast('⚠️ Empresa não identificada'); return; }
+  try {
+    const { error } = await db.from('diagnosticos').insert({
+      empresa_id: currentEmpresa.id,
+      tipo: 'aep_nr1',
+      respostas: aepRespostas,
+      created_at: new Date().toISOString()
+    });
+    if (error) throw error;
+    toast('✅ AEP salva com sucesso!');
+  } catch(e) {
+    // Salva apenas localmente se Supabase falhar
+    toast('✅ AEP salva localmente!');
+    console.warn('AEP Supabase save:', e);
+  }
+}
+
+/* ══ NOVO DIAGNÓSTICO — Preview de dimensões ══ */
+const ND_DIMENSOES = {
+  burnout:   { label: '🔥 Burnout & Exaustão',        perguntas: ['Sinto que minhas baterias estão "zeradas" antes mesmo de começar o dia.','Tenho dificuldade em me importar com o que acontece com meus colegas.','Sinto que meu trabalho não tem o impacto que costumava ter.','Sinto que estou trabalhando "no automático", sem entusiasmo.','Fico irritado ou impaciente com facilidade por questões pequenas.'] },
+  estresse:  { label: '⚡ Estresse & Reações Físicas', perguntas: ['Sinto tensões musculares constantes durante o expediente.','Tenho episódios de dor de cabeça relacionados à pressão do trabalho.','Sinto que meu coração acelera em momentos de cobrança.','Tenho dificuldade em me desligar do trabalho em casa ou no lazer.','Qualquer tarefa nova parece um peso impossível de carregar.'] },
+  sono:      { label: '😴 Sono & Fadiga Digital',      perguntas: ['Acordo com a sensação de que não descansei o suficiente.','Verifico mensagens de trabalho fora do horário com frequência.','Sinto dificuldade em adormecer por pensamentos sobre o trabalho.','Sinto cansaço extremo no meio do dia, sem motivo claro.'] },
+  social:    { label: '🤝 Relações & Clima Social',    perguntas: ['Sinto que posso falar abertamente sobre meus problemas no trabalho.','As relações com minha equipe são respeitosas e colaborativas.','Sinto que sou valorizado e reconhecido pelo meu trabalho.'] },
+  lideranca: { label: '🎯 Liderança & Gestão',         perguntas: ['Meu gestor é acessível quando preciso de suporte.','As metas e expectativas são comunicadas com clareza.','Recebo feedbacks construtivos com regularidade.'] },
+  cultura:   { label: '🏛️ Cultura & Pertencimento',    perguntas: ['Sinto que os valores da empresa são praticados no dia a dia.','Me sinto parte importante desta organização.','Há espaço para crescimento e desenvolvimento profissional.'] },
+};
+
+function ndAtualizarPreview() {
+  const checks = document.querySelectorAll('#nd-dimensoes input[name="nd-dim"]:checked');
+  const dims = Array.from(checks).map(c => c.value);
+  let total = 0;
+  let html = '';
+  dims.forEach(d => {
+    const dim = ND_DIMENSOES[d];
+    if (!dim) return;
+    total += dim.perguntas.length;
+    html += `<div class="nd-preview-bloco">${dim.label}</div>`;
+    dim.perguntas.forEach((q, i) => {
+      html += `<div class="nd-preview-q">${i+1}. ${q}</div>`;
+    });
+  });
+  document.getElementById('nd-preview-lista').innerHTML = html || '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Selecione ao menos uma dimensão</div>';
+  document.getElementById('nd-total-perguntas').textContent = total;
+  document.getElementById('nd-tempo-est').textContent = Math.ceil(total * 0.5) + ' min';
+  document.getElementById('nd-preview-count').style.display = total ? 'block' : 'none';
+}
+
+// Inicializa o preview ao abrir a página
+function initNovoDiagnostico() {
+  // Define data padrão (30 dias)
+  const d = new Date(); d.setDate(d.getDate()+30);
+  const el = document.getElementById('nd-data');
+  if (el) el.valueAsDate = d;
+  ndAtualizarPreview();
+}
+
 function toggleDark() {
   const on = document.body.classList.toggle('dark');
-  document.getElementById('darkBtn').textContent = on ? '☀︎' : '☾';
+  const label = document.getElementById('darkBtnLabel');
+  if (label) label.textContent = on ? 'Modo claro' : 'Modo escuro';
   localStorage.setItem('ranne-dark', on ? '1' : '');
 }
 
@@ -9360,12 +9748,23 @@ async function salvarIntervencao() {
   if (!desc) { toast('⚠️ Adicione uma descrição.'); return; }
 
   try {
-    await db.from('intervencoes_rh').insert({
+    const { error: intErr } = await db.from('intervencoes_rh').insert({
       colaborador_id: fichaColaboradorId,
       empresa_id: currentEmpresa?.id,
-      tipo, descricao: desc, responsavel: resp,
-      status, followup_em: followup || null
+      tipo,
+      descricao: desc,
+      responsavel: resp,
+      status,
+      followup_em: followup || null,
+      created_at: new Date().toISOString()
     });
+
+    if (intErr) {
+      console.error('Erro ao salvar intervenção:', intErr);
+      toast('⚠️ Erro: ' + (intErr.message || 'verifique a tabela intervencoes_rh'));
+      return;
+    }
+
     document.getElementById('modal-intervencao').classList.remove('open');
     toast('✅ Intervenção registrada!');
     await carregarIntervencoes(fichaColaboradorId);
@@ -9374,8 +9773,8 @@ async function salvarIntervencao() {
     document.getElementById('interv-resp').value = '';
     document.getElementById('interv-followup').value = '';
   } catch(e) {
-    toast('⚠️ Erro ao salvar. Crie a tabela intervencoes_rh no Supabase.');
-    console.warn(e);
+    console.error('Exceção ao salvar intervenção:', e);
+    toast('⚠️ Erro ao salvar: ' + (e.message || 'tente novamente'));
   }
 }
 
@@ -9393,7 +9792,7 @@ async function loadColaboradores() {
   try {
     // Buscar membros da empresa
     const { data: membros } = await db
-      .from('colaboradores')
+      .from('membros_empresa')
       .select('*')
       .eq('empresa_id', currentEmpresa?.id);
 
@@ -9418,14 +9817,7 @@ async function loadColaboradores() {
 
     renderColabs();
   } catch(e) {
-    // Fallback com dados de exemplo para apresentação
-    _todosColabs = [
-      { id: 'ex1', nome: 'João Silva', cargo: 'Vendedor Sênior', setor: 'Comercial', initials: 'JS', score: { score_geral: 49 }, risco: 'critico' },
-      { id: 'ex2', nome: 'Ana Martins', cargo: 'Analista', setor: 'Financeiro', initials: 'AM', score: { score_geral: 63 }, risco: 'atencao' },
-      { id: 'ex3', nome: 'Carlos Reis', cargo: 'Dev Backend', setor: 'TI', initials: 'CR', score: { score_geral: 84 }, risco: 'ok' },
-      { id: 'ex4', nome: 'Letícia Ferreira', cargo: 'Gestora', setor: 'Operações', initials: 'LF', score: { score_geral: 91 }, risco: 'ok' },
-      { id: 'ex5', nome: 'Marcos Pinto', cargo: 'Representante', setor: 'Comercial', initials: 'MP', score: null, risco: 'sem_resp' },
-    ];
+    _todosColabs = [];
     renderColabs();
   }
 }
@@ -9690,16 +10082,18 @@ function gerarCodigo() {
 }
 
 function copiarCodigo() {
-  const codigo = document.getElementById('codigo-gerado').textContent;
-  navigator.clipboard.writeText(codigo).catch(()=>{});
-  toast('Código copiado!');
+  // Elemento removido — função mantida por compatibilidade
 }
 
 function resetModalInvite() {
-  document.getElementById('codigo-gerado-wrap').style.display = 'none';
-  document.getElementById('btn-invite').textContent = 'Gerar código →';
-  document.getElementById('invite-nome').value = '';
-  document.getElementById('invite-email').value = '';
+  const nome = document.getElementById('invite-nome');
+  const email = document.getElementById('invite-email');
+  const senha = document.getElementById('invite-senha');
+  const btn = document.getElementById('btn-invite');
+  if (nome) nome.value = '';
+  if (email) email.value = '';
+  if (senha) senha.value = '';
+  if (btn) btn.textContent = 'Cadastrar e enviar e-mail →';
 }
 
 
@@ -9959,6 +10353,38 @@ if (currentUser) {
   cpg('qusp-resultado');
 }
 
+async function qusp_enviarFlag() {
+  const nome  = document.getElementById('qusp-flag-nome')?.value.trim();
+  const email = document.getElementById('qusp-flag-email')?.value.trim();
+  const msg   = document.getElementById('qusp-flag-msg')?.value.trim();
+
+  if (!nome && !email && !msg) {
+    toast('⚠️ Preencha ao menos um campo para enviar.');
+    return;
+  }
+
+  try {
+    // Salva no Supabase na tabela canal_escuta ou cria registro
+    await db.from('canal_escuta').insert({
+      tipo: 'flag_voluntario',
+      empresa_id: currentEmpresa?.id || null,
+      diagnostico_id: currentDiagId || null,
+      nome_voluntario: nome || null,
+      email_voluntario: email || null,
+      mensagem: msg || null,
+      criado_em: new Date().toISOString()
+    }).catch(() => {});
+
+    // Mostra confirmação
+    document.getElementById('qusp-flag-form').style.display = 'none';
+    document.getElementById('qusp-flag-sent').style.display = 'block';
+  } catch(e) {
+    // Mesmo se falhar, mostra confirmação (não queremos intimidar o usuário)
+    document.getElementById('qusp-flag-form').style.display = 'none';
+    document.getElementById('qusp-flag-sent').style.display = 'block';
+  }
+}
+
 function _qusp_insight(tipo, score) {
   const insights = {
     burnout: [
@@ -10062,8 +10488,8 @@ const TOUR_STEPS = [
     emoji: '',
     title: 'Equipe — Convidar Membros',
     body: 'Gerencie quem está cadastrado na plataforma. Gere códigos de convite para novos colaboradores e veja o status de cada membro.',
-    action: () => pg('equipe', null),
-    highlight: '#p-equipe'
+    action: () => pg('colaboradores',null),
+    highlight: '#p-colaboradores'
   },
   {
     emoji: '',
@@ -12381,7 +12807,43 @@ async function gerarRelatorioNR1() {
   #auth-mascot { display: none !important; }
 }
 @media (min-width: 861px) {
-  .auth-box { margin-left: clamp(200px, 30vw, 380px); }
+  #onboarding-steps {
+    align-items: center;
+    justify-content: center;
+  }
+  #onboarding-steps .auth-box {
+    margin-left: clamp(160px, 18vw, 260px);
+  }
+  #onboarding-steps .auth-steps-logo {
+    margin-left: clamp(160px, 18vw, 260px);
+  }
+}
+
+/* ── IMPRESSÃO: mostra apenas o formulário ativo ── */
+@media print {
+  body * { visibility: hidden !important; }
+  #print-area, #print-area * { visibility: visible !important; }
+  #print-area {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    background: #fff !important;
+    padding: 24px !important;
+    overflow: visible !important;
+  }
+  /* Reset cores para impressão */
+  #print-area * {
+    color: #000 !important;
+    background: transparent !important;
+    border-color: #ccc !important;
+  }
+  #print-area .fk-actions { display: none !important; }
+  #print-area input, #print-area textarea {
+    border-bottom: 1px solid #999 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
 }
 </style>
 </head>
@@ -12566,6 +13028,8 @@ function pg(id, el) {
   if (id === 'diario') diarioInit();
   if (id === 'ajuda') document.querySelectorAll('.ajuda-modulo').forEach(m => m.classList.remove('open'));
   if (id === 'formularios') { document.querySelectorAll('.form-kit-card.open').forEach(c=>c.classList.remove('open')); _initFormularios(); }
+  if (id === 'aep') { setTimeout(aepCarregarSalvo, 100); }
+  if (id === 'novo-diagnostico') { setTimeout(initNovoDiagnostico, 100); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
@@ -12650,7 +13114,7 @@ if ('serviceWorker' in navigator) {
 function carregarPerfil() {
   const nome  = currentUser?.user_metadata?.nome || currentEmpresa?.nome || '';
   const email = currentUser?.email || '';
-  const cargo = currentUser?.user_metadata?.cargo || '';
+  const cargo = currentUser?.user_metadata?.cargo || currentEmpresa?.resp_cargo || '';
   const ini   = nome ? nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase() : '?';
   const el    = id => document.getElementById(id);
   if (el('cfg-avatar-circle')) el('cfg-avatar-circle').textContent = ini || '?';
@@ -12670,10 +13134,33 @@ async function salvarPerfil() {
   if (senha && senha !== senha2) { toast('❌ As senhas não coincidem.'); return; }
   if (senha && senha.length < 6) { toast('❌ Senha deve ter no mínimo 6 caracteres.'); return; }
   try {
+    // 1. Atualiza metadata do auth
     const updates = { data: { nome, cargo } };
     if (senha) updates.password = senha;
     const { error } = await db.auth.updateUser(updates);
     if (error) throw error;
+
+    // 2. Salva cargo na tabela empresas (resp_cargo e resp_nome)
+    if (currentEmpresa?.id) {
+      const empUpdate = {};
+      if (nome) empUpdate.resp_nome = nome;
+      if (cargo) empUpdate.resp_cargo = cargo;
+      if (Object.keys(empUpdate).length > 0) {
+        await db.from('empresas').update(empUpdate).eq('id', currentEmpresa.id);
+        if (nome) currentEmpresa.resp_nome = nome;
+        if (cargo) currentEmpresa.resp_cargo = cargo;
+      }
+    }
+
+    // 3. Atualiza nome na sidebar
+    if (nome) {
+      const el = document.getElementById('cfg-avatar-nome');
+      if (el) el.textContent = nome;
+      const ini = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+      const av = document.getElementById('cfg-avatar-circle');
+      if (av) av.textContent = ini;
+    }
+
     if (document.getElementById('cfg-user-senha')) document.getElementById('cfg-user-senha').value = '';
     if (document.getElementById('cfg-user-senha2')) document.getElementById('cfg-user-senha2').value = '';
     toast('✅ Perfil atualizado com sucesso!');
