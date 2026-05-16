@@ -6639,7 +6639,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="card" style="margin-bottom:16px;">
           <div class="card-hdr">
             <span class="card-title">Histórico de Ciclos de Avaliação</span>
-            <button class="btn btn-outline btn-sm" onclick="toast('Exportando histórico...')">Exportar</button>
+            <button class="btn btn-outline btn-sm" onclick="exportarHistoricoCiclos()">Exportar</button>
           </div>
           <div style="display:flex;flex-direction:column;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
@@ -13028,6 +13028,78 @@ function salvarConfigAlerta() {
    RELATÓRIO DE CONFORMIDADE NR-1
    Gera PDF completo para fiscalização do Ministério do Trabalho
    ══════════════════════════════════════════════════════════ */
+
+async function exportarHistoricoCiclos() {
+  toast('⏳ Exportando histórico...');
+  try {
+    let diagnosticos = [];
+
+    if (db && currentEmpresa?.id) {
+      try {
+        const r = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false });
+        diagnosticos = r.data || [];
+      } catch {}
+    }
+
+    const empresa = currentEmpresa?.nome || 'Empresa';
+    const dataHoje = new Date().toLocaleDateString('pt-BR');
+
+    if (diagnosticos.length > 0) {
+      // Exporta CSV com dados reais
+      const header = ['Ciclo', 'Período', 'Score Geral', 'Taxa de Resposta (%)', 'Nº Respostas', 'Status'];
+      const rows = diagnosticos.map((d, i) => {
+        const data = d.created_at ? new Date(d.created_at) : null;
+        const periodo = data ? data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }) : '—';
+        const ciclo = `Q${Math.ceil(((data?.getMonth() ?? 0) + 1) / 3)}/${data?.getFullYear() ?? '—'}`;
+        return [
+          ciclo,
+          periodo,
+          d.score_geral ?? '—',
+          d.taxa_resposta ? Math.round(d.taxa_resposta) : '—',
+          d.total_respostas ?? '—',
+          i === 0 ? 'Ativo' : 'Concluído'
+        ];
+      });
+
+      const csvContent = [header, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const bom = '\uFEFF'; // BOM para Excel reconhecer UTF-8
+      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Historico_Ciclos_${empresa.replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('✅ Histórico exportado! Abra no Excel ou Google Sheets.');
+    } else {
+      // Fallback: exporta os dados estáticos exibidos no card
+      const dadosEstaticos = [
+        ['Q2/2026', 'Maio 2026', '74', '82', '—', 'Ativo'],
+        ['Q1/2026', 'Abril 2026', '68', '84', '—', 'Concluído'],
+        ['Q4/2025', 'Janeiro 2026', '71', '76', '—', 'Concluído'],
+        ['Q3/2025', 'Outubro 2025', '74', '91', '—', 'Concluído'],
+      ];
+      const header = ['Ciclo', 'Período', 'Score Geral', 'Taxa de Resposta (%)', 'Nº Respostas', 'Status'];
+      const csvContent = [header, ...dadosEstaticos].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const bom  = '\uFEFF';
+      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Historico_Ciclos_${empresa.replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('✅ Histórico exportado!');
+    }
+  } catch(e) {
+    console.error(e);
+    toast('❌ Erro ao exportar histórico.');
+  }
+}
 
 async function baixarRelatorioMensal() {
   toast('⏳ Gerando relatório mensal...');
