@@ -342,7 +342,8 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
           <div><div class="page-title" id="detalhe-title">—</div><div class="page-sub" id="detalhe-sub">—</div></div>
           <div style="display:flex;gap:8px">
             <button class="btn btn-ghost btn-sm" onclick="pg('empresas',null)">← Voltar</button>
-            <button class="btn btn-primary btn-sm" onclick="toast('📧 E-mail enviado para a empresa!')">Contatar</button>
+            <button class="btn btn-primary btn-sm" id="btn-toggle-status" onclick="toggleStatusEmpresa()">—</button>
+            <button class="btn btn-ghost btn-sm" onclick="toast('📧 E-mail enviado para a empresa!')">Contatar</button>
           </div>
         </div>
         <div class="detail-header">
@@ -688,15 +689,29 @@ function filterEmpresas(q) {
 }
 
 /* ── DETALHE EMPRESA ── */
+let detalheEmpresaId = null;
+
 function verDetalhe(id) {
   const e = empresasData.find(x => x.id === id);
   if (!e) return;
 
+  detalheEmpresaId = id;
+
   document.getElementById('detalhe-title').textContent = e.nome;
   document.getElementById('detalhe-sub').textContent = `${e.email} · ${e.cnpj||''}`;
   document.getElementById('detalhe-nome').textContent = e.nome;
-  document.getElementById('detalhe-email-p').textContent = `${e.email} · Plano ${e.plano} · ${e.status}`;
+
+  const statusMap = { ativa:'sp-ativa', trial:'sp-trial', inativa:'sp-inativa', inadimplente:'sp-inadim', bloqueada:'sp-inativa' };
+  document.getElementById('detalhe-email-p').innerHTML =
+    `${e.email} · Plano ${e.plano} · <span class="status-pill ${statusMap[e.status]||'sp-inativa'}" style="font-size:11px">${e.status}</span>`;
   document.getElementById('detalhe-avatar').textContent = e.nome.slice(0,2).toUpperCase();
+
+  // Atualizar botão de liberar/bloquear
+  const btnToggle = document.getElementById('btn-toggle-status');
+  const bloqueada = e.status === 'inativa' || e.status === 'bloqueada';
+  btnToggle.textContent = bloqueada ? '✅ Liberar acesso' : '🔒 Bloquear acesso';
+  btnToggle.style.background = bloqueada ? '#2D6A4F' : '#DC2626';
+  btnToggle.style.borderColor = bloqueada ? '#2D6A4F' : '#DC2626';
 
   const scoreColor = !e.score ? 'var(--muted)' : e.score >= 75 ? '#2D6A4F' : e.score >= 60 ? '#D97706' : '#DC2626';
   document.getElementById('detalhe-grid').innerHTML = `
@@ -710,6 +725,39 @@ function verDetalhe(id) {
     : `<p style="font-size:13px;color:var(--muted)">Nenhum diagnóstico realizado ainda.</p>`;
 
   pg('detalhe', null);
+}
+
+/* ── TOGGLE STATUS EMPRESA ── */
+async function toggleStatusEmpresa() {
+  if (!detalheEmpresaId) return;
+  const e = empresasData.find(x => x.id === detalheEmpresaId);
+  if (!e) return;
+
+  const bloqueada = e.status === 'inativa' || e.status === 'bloqueada';
+  const novoStatus = bloqueada ? 'ativa' : 'inativa';
+  const acao = bloqueada ? 'liberar' : 'bloquear';
+
+  if (!confirm(`Tem certeza que deseja ${acao} o acesso de "${e.nome}"?`)) return;
+
+  const btn = document.getElementById('btn-toggle-status');
+  btn.disabled = true;
+  btn.textContent = 'Salvando...';
+
+  try {
+    const { error } = await db.from('empresas').update({ status: novoStatus }).eq('id', e.id);
+    if (error) throw error;
+
+    // Atualiza local
+    e.status = novoStatus;
+    toast(bloqueada ? `✅ Acesso liberado para ${e.nome}` : `🔒 Acesso bloqueado para ${e.nome}`);
+    verDetalhe(detalheEmpresaId); // re-renderiza com novo status
+    renderEmpresas(empresasData);
+    updateMetrics();
+  } catch (err) {
+    console.error(err);
+    toast('❌ Erro ao atualizar status. Verifique o console.');
+    btn.disabled = false;
+  }
 }
 
 /* ── ALERTAS ── */
