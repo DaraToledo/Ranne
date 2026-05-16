@@ -6320,33 +6320,11 @@ body.dark .ob-btn { background: #2D5E4A; }
           <button class="btn btn-primary btn-sm" onclick="salvarConfigAlerta()">Salvar configuração de alertas →</button>
         </div>
 
-        <!-- Relatório NR-1 -->
-        <div class="card" style="max-width:480px;margin-bottom:20px;border:1.5px solid rgba(201,168,76,.3);background:linear-gradient(135deg,rgba(201,168,76,.04),rgba(232,201,122,.02))">
-          <div class="card-hdr">
-            <span class="card-title">Relatório de Conformidade NR-1</span>
-            <span class="chip chip-pro">✦ Exportar</span>
-          </div>
-          <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6">Comprova que sua empresa está cumprindo a NR-1 (atualizada 2025), que exige gestão ativa de riscos psicossociais. Pode ser apresentado em fiscalização do Ministério do Trabalho.</p>
-          <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:13.0px;color:var(--text);line-height:1.7">
-            <strong>O que o relatório inclui:</strong><br>
-            Identificação da empresa · Ciclos de diagnóstico realizados · Taxa de participação · Resultados por dimensão de risco · Intervenções tomadas · Evolução entre ciclos · Plano de ação vigente · Assinatura digital do RH
-          </div>
-          <div class="fi-row">
-            <div class="fi-group">
-              <label class="fi-label">Período do relatório</label>
-              <select class="fi-input fi-select" id="nr1-periodo">
-                <option value="6m">Últimos 6 meses</option>
-                <option value="12m">Último ano</option>
-                <option value="all">Todo o histórico</option>
-              </select>
-            </div>
-            <div class="fi-group">
-              <label class="fi-label">Responsável RH (assinatura)</label>
-              <input class="fi-input" id="nr1-responsavel" placeholder="Nome completo do RH">
-            </div>
-          </div>
-          <button class="btn btn-sm" style="background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#3D2800;font-weight:700;width:100%;padding:13px;border-radius:11px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;box-shadow:0 2px 8px rgba(201,168,76,.3)" onclick="gerarRelatorioNR1()">
-            Gerar Relatório NR-1 — PDF
+        <div class="card" style="margin-bottom:0;border:1px solid rgba(201,168,76,.2);background:rgba(201,168,76,.03)">
+          <div class="card-hdr"><span class="card-title">Relatório NR-1</span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.6">O relatório completo está disponível na seção <strong>Relatórios & NR-1</strong> no menu lateral.</p>
+          <button class="btn btn-outline btn-sm" onclick="pg('relatorios',null)" style="width:100%;">
+            Ir para Relatórios & NR-1 →
           </button>
         </div>
         </div><!-- /config-grid -->
