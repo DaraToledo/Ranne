@@ -5226,7 +5226,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           </div>
 
           <!-- RESUMO (aparece após finalizar) -->
-          <div class="aep-resumo" id="aep-resumo">
+          <div class="aep-resumo" id="aep-resumo" style="display:none">
             <h3>📋 Resumo dos Riscos Identificados</h3>
             <div id="aep-resumo-lista"></div>
             <div class="aep-resumo-acoes">
@@ -5235,7 +5235,7 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
             <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
               <button class="btn btn-primary" onclick="pg('diagnosticos',document.querySelector('.sb-item[onclick*=diagnosticos]'))">
-                Iniciar Diagnóstico →
+                Criar ciclo de avaliação →
               </button>
               <button class="btn btn-outline" onclick="aepNovo()">Refazer Avaliação</button>
               <button class="btn btn-outline" onclick="aepSalvarPDF()">Exportar Resumo</button>
@@ -6320,33 +6320,11 @@ body.dark .ob-btn { background: #2D5E4A; }
           <button class="btn btn-primary btn-sm" onclick="salvarConfigAlerta()">Salvar configuração de alertas →</button>
         </div>
 
-        <!-- Relatório NR-1 -->
-        <div class="card" style="max-width:480px;margin-bottom:20px;border:1.5px solid rgba(201,168,76,.3);background:linear-gradient(135deg,rgba(201,168,76,.04),rgba(232,201,122,.02))">
-          <div class="card-hdr">
-            <span class="card-title">Relatório de Conformidade NR-1</span>
-            <span class="chip chip-pro">✦ Exportar</span>
-          </div>
-          <p style="font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6">Comprova que sua empresa está cumprindo a NR-1 (atualizada 2025), que exige gestão ativa de riscos psicossociais. Pode ser apresentado em fiscalização do Ministério do Trabalho.</p>
-          <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:13.0px;color:var(--text);line-height:1.7">
-            <strong>O que o relatório inclui:</strong><br>
-            Identificação da empresa · Ciclos de diagnóstico realizados · Taxa de participação · Resultados por dimensão de risco · Intervenções tomadas · Evolução entre ciclos · Plano de ação vigente · Assinatura digital do RH
-          </div>
-          <div class="fi-row">
-            <div class="fi-group">
-              <label class="fi-label">Período do relatório</label>
-              <select class="fi-input fi-select" id="nr1-periodo">
-                <option value="6m">Últimos 6 meses</option>
-                <option value="12m">Último ano</option>
-                <option value="all">Todo o histórico</option>
-              </select>
-            </div>
-            <div class="fi-group">
-              <label class="fi-label">Responsável RH (assinatura)</label>
-              <input class="fi-input" id="nr1-responsavel" placeholder="Nome completo do RH">
-            </div>
-          </div>
-          <button class="btn btn-sm" style="background:linear-gradient(135deg,#C9A84C,#E8C97A);color:#3D2800;font-weight:700;width:100%;padding:13px;border-radius:11px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;box-shadow:0 2px 8px rgba(201,168,76,.3)" onclick="gerarRelatorioNR1()">
-            Gerar Relatório NR-1 — PDF
+        <div class="card" style="margin-bottom:0;border:1px solid rgba(201,168,76,.2);background:rgba(201,168,76,.03)">
+          <div class="card-hdr"><span class="card-title">Relatório NR-1</span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-bottom:12px;line-height:1.6">O relatório completo está disponível na seção <strong>Relatórios & NR-1</strong> no menu lateral.</p>
+          <button class="btn btn-outline btn-sm" onclick="pg('relatorios',null)" style="width:100%;">
+            Ir para Relatórios & NR-1 →
           </button>
         </div>
         </div><!-- /config-grid -->
@@ -7274,6 +7252,27 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="qr-pro-title">✦ Relatório Pro — Análise Clínica Completa</div>
       <div class="qr-pro-sub">O que o psicólogo diria sobre seus resultados, plano de ação personalizado e PDF para compartilhar com seu médico/terapeuta.</div>
       <button class="btn btn-pro btn-sm" onclick="toast('Upgrade Pro — em breve!')">Desbloquear relatório completo</button>
+    </div>
+
+    <!-- ── FLAG VOLUNTÁRIO ── -->
+    <div id="qusp-flag-box" style="background:#FEF9EE;border:1.5px solid rgba(201,168,76,.35);border-radius:14px;padding:18px 20px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:#1A2E20;margin-bottom:6px;">💬 Está passando por algo difícil?</div>
+      <p style="font-size:12.5px;color:#5a5248;line-height:1.65;margin-bottom:14px;">Suas respostas são anônimas. Mas se você quiser conversar com alguém do RH sobre o que está sentindo, pode se identificar voluntariamente abaixo. Isso é opcional e não afeta seus resultados.</p>
+      <div id="qusp-flag-form" style="display:flex;flex-direction:column;gap:10px;">
+        <input id="qusp-flag-nome" class="fi-input" type="text" placeholder="Seu nome (opcional)" style="font-size:13px;">
+        <input id="qusp-flag-email" class="fi-input" type="email" placeholder="Seu e-mail (opcional)" style="font-size:13px;">
+        <textarea id="qusp-flag-msg" class="fi-input" rows="3" placeholder="O que você gostaria de compartilhar com o RH? (opcional)" style="font-size:13px;resize:none;"></textarea>
+        <div style="display:flex;gap:8px;">
+          <button onclick="qusp_enviarFlag()" style="flex:1;padding:11px;background:#2D5E4A;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">Enviar para o RH →</button>
+          <button onclick="document.getElementById('qusp-flag-box').style.display='none'" style="padding:11px 16px;background:transparent;border:1.5px solid var(--border);border-radius:10px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;">Pular</button>
+        </div>
+        <p style="font-size:11px;color:var(--muted);text-align:center;">Apenas o RH verá essas informações. Nunca aparece nos relatórios gerais.</p>
+      </div>
+      <div id="qusp-flag-sent" style="display:none;text-align:center;padding:12px 0;">
+        <div style="font-size:22px;margin-bottom:6px;">✅</div>
+        <div style="font-size:13px;font-weight:600;color:#2D5E4A;">Mensagem enviada!</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">O RH receberá seu contato em breve.</div>
+      </div>
     </div>
 
     <button onclick="cpg('inicio')" style="width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:16px;">Voltar ao início</button>
@@ -9210,14 +9209,30 @@ function aepResponder(questao, resposta, btn) {
   // Salva resposta
   aepRespostas[questao] = resposta;
 
-  // Atualiza visual dos botões
-  const grupo = btn.closest('.aep-item') || btn.parentElement;
+  // Atualiza visual dos botões — busca o container .aep-opcoes
+  const grupo = btn.closest('.aep-opcoes') || btn.parentElement;
   grupo.querySelectorAll('.aep-btn').forEach(b => {
-    b.classList.remove('aep-sel-nao', 'aep-sel-parc', 'aep-sel-sim');
+    b.classList.remove('aep-sel-nao', 'aep-sel-parc', 'aep-sel-sim', 'sel-nao', 'sel-parc', 'sel-sim');
+    b.style.background = '';
+    b.style.color = '';
+    b.style.borderColor = '';
   });
-  if (resposta === 'nao') btn.classList.add('aep-sel-nao');
-  else if (resposta === 'parc') btn.classList.add('aep-sel-parc');
-  else if (resposta === 'sim') btn.classList.add('aep-sel-sim');
+
+  // Aplica estilo visual no botão clicado
+  if (resposta === 'nao') {
+    btn.style.background = '#22C55E'; btn.style.color = '#fff'; btn.style.borderColor = '#22C55E';
+  } else if (resposta === 'parc') {
+    btn.style.background = '#F59E0B'; btn.style.color = '#fff'; btn.style.borderColor = '#F59E0B';
+  } else if (resposta === 'sim') {
+    btn.style.background = '#EF4444'; btn.style.color = '#fff'; btn.style.borderColor = '#EF4444';
+  }
+
+  // Marca o item pai
+  const item = btn.closest('.aep-item');
+  if (item) {
+    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');
+    item.classList.add('aep-' + resposta);
+  }
 
   // Salva no localStorage
   localStorage.setItem('ranne-aep-' + (currentEmpresa?.id || 'local'), JSON.stringify(aepRespostas));
@@ -9236,7 +9251,7 @@ function aepCarregarSalvo() {
       btns.forEach(btn => {
         const onc = btn.getAttribute('onclick') || '';
         if (onc.includes("'" + r + "'")) {
-          btn.classList.add(r === 'nao' ? 'aep-sel-nao' : r === 'parc' ? 'aep-sel-parc' : 'aep-sel-sim');
+          aepResponder(q, r, btn); // reutiliza a função para restaurar visual
         }
       });
     });
@@ -9245,12 +9260,207 @@ function aepCarregarSalvo() {
 }
 
 function aepAtualizarResumo() {
+  const TOTAL_PERGUNTAS = document.querySelectorAll('.aep-item').length || 12;
   const total = Object.keys(aepRespostas).length;
-  const sims = Object.values(aepRespostas).filter(r => r === 'sim').length;
+  const sims  = Object.values(aepRespostas).filter(r => r === 'sim').length;
   const parcs = Object.values(aepRespostas).filter(r => r === 'parc').length;
-  const el = document.getElementById('aep-resumo');
-  if (el) {
-    el.textContent = `${total} respondidas · ${sims} sim · ${parcs} parcial`;
+
+  // Atualiza contador
+  const countEl = document.getElementById('aep-resp-count');
+  if (countEl) countEl.textContent = total;
+
+  // Atualiza barra de progresso
+  const fill = document.getElementById('aep-prog-fill');
+  if (fill) fill.style.width = Math.round((total / TOTAL_PERGUNTAS) * 100) + '%';
+
+  // Habilita botão quando tudo respondido
+  const btn = document.getElementById('aep-btn-finalizar');
+  if (btn) {
+    const completo = total >= TOTAL_PERGUNTAS;
+    btn.disabled = !completo;
+    btn.style.opacity = completo ? '1' : '0.4';
+    btn.style.cursor  = completo ? 'pointer' : 'not-allowed';
+    btn.textContent   = completo ? 'Gerar Resumo de Riscos →' : `Gerar Resumo (${total}/${TOTAL_PERGUNTAS})`;
+  }
+}
+
+function aepFinalizar() {
+  const sims  = Object.values(aepRespostas).filter(r => r === 'sim').length;
+  const parcs = Object.values(aepRespostas).filter(r => r === 'parc').length;
+  const nao   = Object.values(aepRespostas).filter(r => r === 'nao').length;
+
+  // Mapa de perguntas para labels legíveis
+  const labels = {};
+  document.querySelectorAll('.aep-item').forEach(item => {
+    const id = item.id.replace('aep-', '');
+    labels[id] = item.querySelector('strong')?.textContent || id;
+  });
+
+  // Gera lista de riscos identificados
+  const riscos = Object.entries(aepRespostas)
+    .filter(([_, r]) => r === 'sim' || r === 'parc')
+    .map(([q, r]) => ({ label: labels[q] || q, nivel: r === 'sim' ? 'Alto' : 'Médio' }));
+
+  const listaEl = document.getElementById('aep-resumo-lista');
+  if (listaEl) {
+    if (riscos.length === 0) {
+      listaEl.innerHTML = '<div style="color:#22C55E;font-size:13px;padding:12px 0;">✅ Nenhum risco crítico identificado. Ambiente com boas condições psicossociais.</div>';
+    } else {
+      listaEl.innerHTML = riscos.map(r => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;margin-bottom:6px;background:${r.nivel==='Alto'?'rgba(239,68,68,.07)':'rgba(245,158,11,.07)'};border-left:3px solid ${r.nivel==='Alto'?'#EF4444':'#F59E0B'}">
+          <span style="font-size:11px;font-weight:700;color:${r.nivel==='Alto'?'#EF4444':'#F59E0B'};min-width:40px">${r.nivel}</span>
+          <span style="font-size:13px;color:var(--card-text)">${r.label}</span>
+        </div>`).join('');
+    }
+  }
+
+  // Gera próximos passos
+  const acoes = document.getElementById('aep-resumo-acoes-lista');
+  if (acoes) {
+    const steps = [];
+    if (sims > 0) steps.push('Iniciar diagnóstico QUSP completo com a equipe afetada');
+    if (sims > 2) steps.push('Agendar reunião de alinhamento com lideranças');
+    if (parcs > 0) steps.push('Monitorar áreas com risco parcial nos próximos 30 dias');
+    steps.push('Registrar esta avaliação no relatório NR-1');
+    if (sims === 0 && parcs === 0) steps.push('Manter boas práticas e repetir avaliação em 3 meses');
+    acoes.innerHTML = steps.map(s => `<li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--card-text)">→ ${s}</li>`).join('');
+  }
+
+  // Mostra resumo
+  const resumo = document.getElementById('aep-resumo');
+  if (resumo) {
+    resumo.style.display = 'block';
+    resumo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Salva no Supabase
+  aepSalvarSupabase();
+
+  // Atualiza botão
+  const btn = document.getElementById('aep-btn-finalizar');
+  if (btn) { btn.textContent = '✅ Resumo gerado'; btn.disabled = true; }
+}
+
+function aepNovo() {
+  // Limpa respostas
+  aepRespostas = {};
+  localStorage.removeItem('ranne-aep-' + (currentEmpresa?.id || 'local'));
+
+  // Reseta visual dos botões
+  document.querySelectorAll('.aep-btn').forEach(btn => {
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+  });
+  document.querySelectorAll('.aep-item').forEach(item => {
+    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');
+  });
+
+  // Esconde resumo e reseta progresso
+  const resumo = document.getElementById('aep-resumo');
+  if (resumo) resumo.style.display = 'none';
+  aepAtualizarResumo();
+
+  // Scroll para o topo
+  document.getElementById('p-aep')?.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  toast('✅ Avaliação reiniciada!');
+}
+
+function aepSalvarPDF() {
+  // Gera uma janela de impressão com o resumo
+  const resumoEl = document.getElementById('aep-resumo');
+  const empresa  = currentEmpresa?.nome || 'Empresa';
+  const data     = new Date().toLocaleDateString('pt-BR');
+
+  const riscos = document.getElementById('aep-resumo-lista')?.innerHTML || '';
+  const acoes  = document.getElementById('aep-resumo-acoes-lista')?.innerHTML || '';
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>AEP — Avaliação de Risco Psicossocial — ${empresa}</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Arial,sans-serif; font-size:13px; color:#111; padding:32px; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #2D5E4A; }
+  .brand { font-family:Georgia,serif; font-size:22px; color:#2D5E4A; }
+  .brand-sub { font-size:10px; color:#888; letter-spacing:.15em; text-transform:uppercase; margin-top:3px; }
+  .meta { text-align:right; font-size:11px; color:#888; line-height:1.8; }
+  h2 { font-size:16px; color:#1A2E20; margin-bottom:6px; }
+  h3 { font-size:13px; font-weight:700; color:#1A2E20; margin:18px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
+  .risco { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:6px; margin-bottom:5px; }
+  .nivel { font-size:11px; font-weight:700; min-width:40px; }
+  li { padding:5px 0; border-bottom:1px solid #eee; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid #ddd; font-size:11px; color:#888; }
+  @media print { body { padding:16px; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="brand">RANNE CARE</div>
+      <div class="brand-sub">Saúde Organizacional</div>
+    </div>
+    <div class="meta">
+      <strong>AEP — Avaliação de Risco Psicossocial</strong><br>
+      Empresa: ${empresa}<br>
+      Data: ${data}<br>
+      Conformidade NR-1 / 2025
+    </div>
+  </div>
+  <h2>Resumo dos Riscos Identificados</h2>
+  <div>${riscos}</div>
+  <h3>Próximos Passos Recomendados</h3>
+  <ul style="list-style:none;padding:0">${acoes}</ul>
+  <div class="footer">
+    Documento gerado pela plataforma Ranne Care · ${data}<br>
+    A Ranne Care é uma plataforma de tecnologia para gestão de saúde organizacional. Não substitui avaliação clínica profissional.
+  </div>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank', 'width=800,height=900');
+  win.document.write(html);
+  win.document.close();
+  win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
+}
+
+/* ── escutaCarregarRH ── */
+async function escutaCarregarRH() {
+  const lista = document.getElementById('escuta-rh-lista');
+  if (!lista) return;
+  try {
+    const { data } = await db.from('canal_escuta')
+      .select('*')
+      .eq('empresa_id', currentEmpresa?.id)
+      .order('criado_em', { ascending: false });
+
+    const relatos = data || [];
+    document.getElementById('escuta-total').textContent = relatos.length;
+    document.getElementById('escuta-novos').textContent = relatos.filter(r => {
+      const d = new Date(r.criado_em);
+      return (Date.now() - d) < 7 * 24 * 3600 * 1000;
+    }).length;
+    document.getElementById('escuta-assedio').textContent = relatos.filter(r => r.tipo === 'assedio').length;
+
+    if (relatos.length === 0) {
+      lista.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato recebido ainda.<br>Os relatos dos colaboradores aparecerão aqui.</p></div>';
+      return;
+    }
+
+    lista.innerHTML = relatos.map(r => `
+      <div class="escuta-item" style="padding:14px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="chip chip-${r.tipo==='assedio'?'red':r.tipo==='sobrecarga'?'amber':'gray'}" style="font-size:11px;">${r.tipo || 'geral'}</span>
+          <span style="font-size:11px;color:var(--muted)">${new Date(r.criado_em).toLocaleDateString('pt-BR')}</span>
+        </div>
+        <div style="font-size:13px;color:var(--card-text);line-height:1.6">${r.mensagem || r.descricao || '—'}</div>
+        ${r.nome_voluntario ? `<div style="font-size:11px;color:var(--mint);margin-top:6px;">👤 ${r.nome_voluntario}${r.email_voluntario ? ' · ' + r.email_voluntario : ''}</div>` : ''}
+      </div>`).join('');
+  } catch(e) {
+    lista.innerHTML = '<div class="escuta-vazio"><p>Erro ao carregar relatos.</p></div>';
   }
 }
 
@@ -10316,6 +10526,38 @@ if (currentUser) {
   cpg('qusp-resultado');
 }
 
+async function qusp_enviarFlag() {
+  const nome  = document.getElementById('qusp-flag-nome')?.value.trim();
+  const email = document.getElementById('qusp-flag-email')?.value.trim();
+  const msg   = document.getElementById('qusp-flag-msg')?.value.trim();
+
+  if (!nome && !email && !msg) {
+    toast('⚠️ Preencha ao menos um campo para enviar.');
+    return;
+  }
+
+  try {
+    // Salva no Supabase na tabela canal_escuta ou cria registro
+    await db.from('canal_escuta').insert({
+      tipo: 'flag_voluntario',
+      empresa_id: currentEmpresa?.id || null,
+      diagnostico_id: currentDiagId || null,
+      nome_voluntario: nome || null,
+      email_voluntario: email || null,
+      mensagem: msg || null,
+      criado_em: new Date().toISOString()
+    }).catch(() => {});
+
+    // Mostra confirmação
+    document.getElementById('qusp-flag-form').style.display = 'none';
+    document.getElementById('qusp-flag-sent').style.display = 'block';
+  } catch(e) {
+    // Mesmo se falhar, mostra confirmação (não queremos intimidar o usuário)
+    document.getElementById('qusp-flag-form').style.display = 'none';
+    document.getElementById('qusp-flag-sent').style.display = 'block';
+  }
+}
+
 function _qusp_insight(tipo, score) {
   const insights = {
     burnout: [
@@ -10381,60 +10623,46 @@ const TOUR_KEY = 'ranne-tour-v2-done';
 
 const TOUR_STEPS = [
   {
-    emoji: '',
-    title: 'Bem-vindo ao painel RH!',
-    body: 'Este é o painel exclusivo do RH do Ranne Care. Vamos conhecer cada seção em 8 passos rápidos. Clique em Próximo para começar.',
-    action: () => pg('dashboard', document.querySelector('.sb-item')),
-    highlight: null
+    title: 'Bem-vindo ao painel RH! 👋',
+    body: 'Este é seu painel exclusivo de saúde organizacional. Vamos conhecer cada seção em 6 passos rápidos.',
+    action: () => pg('dashboard', null),
+    selector: null,
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Dashboard — Saúde da Equipe',
-    body: 'Veja o score geral (ISA), quantos colaboradores estão em risco, as 4 dimensões psicossociais (Burnout, Estresse, Sono, Social) e alertas automáticos — tudo em tempo real.',
-    action: () => pg('dashboard', document.querySelector('.sb-item')),
-    highlight: '#p-dashboard .metrics'
+    title: '📊 Dashboard',
+    body: 'Aqui você vê o score geral da empresa, colaboradores em risco, as 4 dimensões (Burnout, Estresse, Sono, Social) e alertas automáticos em tempo real.',
+    action: () => pg('dashboard', null),
+    selector: '#p-dashboard',
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Diagnósticos QUSP',
-    body: 'Crie um ciclo de diagnóstico, gere o link QUSP e envie por WhatsApp ou e-mail. Acompanhe quem respondeu em tempo real e reenvie lembretes para pendentes.',
+    title: '🔗 Enviar Questionário',
+    body: 'Crie um ciclo de avaliação, selecione as dimensões que quer medir e gere um link para enviar à equipe por WhatsApp ou e-mail. Anônimo e rápido.',
     action: () => pg('diagnosticos', null),
-    highlight: '#p-diagnosticos'
+    selector: '#p-diagnosticos',
+    position: 'center'
   },
   {
-    emoji: '✅',
-    title: 'Plano de Ação',
-    body: 'O app gera automaticamente ações priorizadas (Crítico, Alta, Média, Baixa) com base nos resultados do QUSP. Marque ações concluídas, defina responsáveis e exporte em PDF.',
+    title: '🎯 Plano de Ação',
+    body: 'Após cada ciclo, o app gera ações priorizadas automaticamente. Marque como concluídas, defina responsáveis e acompanhe o progresso.',
     action: () => pg('plano', null),
-    highlight: '#p-plano'
+    selector: '#p-plano',
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Colaboradores — Ficha Individual',
-    body: 'Clique em qualquer colaborador para ver score, histórico mensal e scores por dimensão. Registre intervenções (1:1, encaminhamento, afastamento) — visível apenas ao RH.',
+    title: '👥 Colaboradores',
+    body: 'Veja a ficha individual de cada colaborador com score, histórico e dimensões. Registre intervenções confidenciais — visível apenas ao RH.',
     action: () => pg('colaboradores', null),
-    highlight: '#p-colaboradores'
+    selector: '#p-colaboradores',
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Equipe — Convidar Membros',
-    body: 'Gerencie quem está cadastrado na plataforma. Gere códigos de convite para novos colaboradores e veja o status de cada membro.',
-    action: () => pg('colaboradores',null),
-    highlight: '#p-colaboradores'
-  },
-  {
-    emoji: '',
-    title: 'Relatórios & NR-1',
-    body: 'Gere o Relatório de Conformidade NR-1 em PDF com um clique — comprova gestão ativa de riscos psicossociais para o Ministério do Trabalho. Relatório mensal automático também disponível.',
+    title: '📄 Relatórios & NR-1',
+    body: 'Gere o relatório de conformidade NR-1 com um clique — prova gestão ativa de riscos psicossociais conforme exigido pela lei 14.831/2024.',
     action: () => pg('relatorios', null),
-    highlight: '#p-relatorios'
-  },
-  {
-    emoji: '',
-    title: 'Tudo pronto!',
-    body: 'Comece criando seu primeiro diagnóstico. Vá em Diagnósticos → + Novo Diagnóstico, gere o link e envie para a equipe. Em minutos você terá os primeiros dados.',
-    action: () => pg('diagnosticos', null),
-    highlight: null,
+    selector: '#p-relatorios',
+    position: 'center',
     isLast: true
   }
 ];
@@ -10721,10 +10949,15 @@ function renderTourStep() {
   const step = TOUR_STEPS[_tourStep];
   if (!step) { encerrarTour(); return; }
 
-  if (step.beforeShow) step.beforeShow();
+  // Navega para a página do passo
+  if (step.action) {
+    try { step.action(); } catch(e) {}
+  }
 
-  // Atualiza conteúdo do card
-  document.getElementById('tc-step').textContent = `Passo ${_tourStep + 1} de ${TOUR_STEPS.length}`;
+  // Aguarda a navegação antes de posicionar o card
+  setTimeout(() => {
+    // Atualiza conteúdo do card
+    document.getElementById('tc-step').textContent = `Passo ${_tourStep + 1} de ${TOUR_STEPS.length}`;
   document.getElementById('tc-title').textContent = step.title;
   document.getElementById('tc-body').textContent = step.body;
 
@@ -10746,26 +10979,27 @@ function renderTourStep() {
   back.classList.remove('hidden');
   card.style.display = 'block';
 
+  let positioned = false;
   if (!step.selector || step.position === 'center') {
-    // Sem spotlight — card centralizado
     spot.style.display = 'none';
     arrow.style.display = 'none';
     card.style.top = '50%';
     card.style.left = '50%';
     card.style.transform = 'translate(-50%, -50%)';
-    return;
+    positioned = true;
   }
 
+  if (!positioned) {
   const el = document.querySelector(step.selector);
   if (!el) {
-    // Elemento não visível agora — só centra o card
     spot.style.display = 'none';
     arrow.style.display = 'none';
     card.style.top = '50%';
     card.style.left = '50%';
     card.style.transform = 'translate(-50%, -50%)';
-    return;
+    positioned = true;
   }
+  if (!positioned) {
 
   const rect = el.getBoundingClientRect();
   const pad  = 10;
@@ -10813,8 +11047,11 @@ function renderTourStep() {
     }
     card.style.top  = cardTop + 'px';
     card.style.left = Math.max(MARGIN, cardLeft) + 'px';
-    arrow.style.display = 'none'; // sem arrow lateral por simplicidade
+    arrow.style.display = 'none';
   }
+  } // fim if(!positioned) el
+  } // fim if(!positioned) center
+  }, 300); // fim setTimeout
 }
 
 function tourProximo() {
@@ -12961,6 +13198,7 @@ function pg(id, el) {
   if (id === 'formularios') { document.querySelectorAll('.form-kit-card.open').forEach(c=>c.classList.remove('open')); _initFormularios(); }
   if (id === 'aep') { setTimeout(aepCarregarSalvo, 100); }
   if (id === 'novo-diagnostico') { setTimeout(initNovoDiagnostico, 100); }
+  if (id === 'escuta-rh') { setTimeout(escutaCarregarRH, 100); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
