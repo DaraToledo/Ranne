@@ -10450,60 +10450,46 @@ const TOUR_KEY = 'ranne-tour-v2-done';
 
 const TOUR_STEPS = [
   {
-    emoji: '',
-    title: 'Bem-vindo ao painel RH!',
-    body: 'Este é o painel exclusivo do RH do Ranne Care. Vamos conhecer cada seção em 8 passos rápidos. Clique em Próximo para começar.',
-    action: () => pg('dashboard', document.querySelector('.sb-item')),
-    highlight: null
+    title: 'Bem-vindo ao painel RH! 👋',
+    body: 'Este é seu painel exclusivo de saúde organizacional. Vamos conhecer cada seção em 6 passos rápidos.',
+    action: () => pg('dashboard', document.querySelector('[onclick*="pg('dashboard'"]')),
+    selector: null,
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Dashboard — Saúde da Equipe',
-    body: 'Veja o score geral (ISA), quantos colaboradores estão em risco, as 4 dimensões psicossociais (Burnout, Estresse, Sono, Social) e alertas automáticos — tudo em tempo real.',
-    action: () => pg('dashboard', document.querySelector('.sb-item')),
-    highlight: '#p-dashboard .metrics'
+    title: '📊 Dashboard',
+    body: 'Aqui você vê o score geral da empresa, colaboradores em risco, as 4 dimensões (Burnout, Estresse, Sono, Social) e alertas automáticos em tempo real.',
+    action: () => pg('dashboard', null),
+    selector: '#p-dashboard',
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Diagnósticos QUSP',
-    body: 'Crie um ciclo de diagnóstico, gere o link QUSP e envie por WhatsApp ou e-mail. Acompanhe quem respondeu em tempo real e reenvie lembretes para pendentes.',
+    title: '🔗 Enviar Questionário',
+    body: 'Crie um ciclo de avaliação, selecione as dimensões que quer medir e gere um link para enviar à equipe por WhatsApp ou e-mail. Anônimo e rápido.',
     action: () => pg('diagnosticos', null),
-    highlight: '#p-diagnosticos'
+    selector: '#p-diagnosticos',
+    position: 'center'
   },
   {
-    emoji: '✅',
-    title: 'Plano de Ação',
-    body: 'O app gera automaticamente ações priorizadas (Crítico, Alta, Média, Baixa) com base nos resultados do QUSP. Marque ações concluídas, defina responsáveis e exporte em PDF.',
+    title: '🎯 Plano de Ação',
+    body: 'Após cada ciclo, o app gera ações priorizadas automaticamente. Marque como concluídas, defina responsáveis e acompanhe o progresso.',
     action: () => pg('plano', null),
-    highlight: '#p-plano'
+    selector: '#p-plano',
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Colaboradores — Ficha Individual',
-    body: 'Clique em qualquer colaborador para ver score, histórico mensal e scores por dimensão. Registre intervenções (1:1, encaminhamento, afastamento) — visível apenas ao RH.',
+    title: '👥 Colaboradores',
+    body: 'Veja a ficha individual de cada colaborador com score, histórico e dimensões. Registre intervenções confidenciais — visível apenas ao RH.',
     action: () => pg('colaboradores', null),
-    highlight: '#p-colaboradores'
+    selector: '#p-colaboradores',
+    position: 'center'
   },
   {
-    emoji: '',
-    title: 'Equipe — Convidar Membros',
-    body: 'Gerencie quem está cadastrado na plataforma. Gere códigos de convite para novos colaboradores e veja o status de cada membro.',
-    action: () => pg('colaboradores',null),
-    highlight: '#p-colaboradores'
-  },
-  {
-    emoji: '',
-    title: 'Relatórios & NR-1',
-    body: 'Gere o Relatório de Conformidade NR-1 em PDF com um clique — comprova gestão ativa de riscos psicossociais para o Ministério do Trabalho. Relatório mensal automático também disponível.',
+    title: '📄 Relatórios & NR-1',
+    body: 'Gere o relatório de conformidade NR-1 com um clique — prova gestão ativa de riscos psicossociais conforme exigido pela lei 14.831/2024.',
     action: () => pg('relatorios', null),
-    highlight: '#p-relatorios'
-  },
-  {
-    emoji: '',
-    title: 'Tudo pronto!',
-    body: 'Comece criando seu primeiro diagnóstico. Vá em Diagnósticos → + Novo Diagnóstico, gere o link e envie para a equipe. Em minutos você terá os primeiros dados.',
-    action: () => pg('diagnosticos', null),
-    highlight: null,
+    selector: '#p-relatorios',
+    position: 'center',
     isLast: true
   }
 ];
@@ -10790,10 +10776,15 @@ function renderTourStep() {
   const step = TOUR_STEPS[_tourStep];
   if (!step) { encerrarTour(); return; }
 
-  if (step.beforeShow) step.beforeShow();
+  // Navega para a página do passo
+  if (step.action) {
+    try { step.action(); } catch(e) {}
+  }
 
-  // Atualiza conteúdo do card
-  document.getElementById('tc-step').textContent = `Passo ${_tourStep + 1} de ${TOUR_STEPS.length}`;
+  // Aguarda a navegação antes de posicionar o card
+  setTimeout(() => {
+    // Atualiza conteúdo do card
+    document.getElementById('tc-step').textContent = `Passo ${_tourStep + 1} de ${TOUR_STEPS.length}`;
   document.getElementById('tc-title').textContent = step.title;
   document.getElementById('tc-body').textContent = step.body;
 
@@ -10884,9 +10875,8 @@ function renderTourStep() {
     card.style.left = Math.max(MARGIN, cardLeft) + 'px';
     arrow.style.display = 'none'; // sem arrow lateral por simplicidade
   }
+  }, 300); // fim setTimeout navegação
 }
-
-function tourProximo() {
   _tourStep++;
   if (_tourStep >= TOUR_STEPS.length) {
     encerrarTour();
@@ -13934,7 +13924,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
