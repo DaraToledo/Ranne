@@ -8427,18 +8427,52 @@ async function loadMembros() {
       'linear-gradient(135deg,#0EA5E9,#0284C7)'
     ];
 
-    lista.innerHTML = membros.map((m, i) => {
-      const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
-      return `<div class="member-row">
-        <div class="m-avatar" style="background:${cores[i%cores.length]};color:#fff">${initials}</div>
-        <div style="flex:1">
-          <div class="m-name">${m.nome || '—'}</div>
-          <div class="m-email">${m.email || '—'}</div>
-        </div>
-        <span class="r-tag r-colab">Colaborador</span>
-        <button class="btn btn-primary btn-sm" style="margin-left:8px" onclick="abrirFicha('${m.id}')">Ver ficha →</button>
-      </div>`;
-    }).join('');
+    // Barra de ações em massa
+    lista.innerHTML = `
+      <div id="membros-bulk-bar" style="display:none;padding:10px 14px;background:rgba(45,94,74,.07);border-radius:8px;margin-bottom:10px;display:none;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span id="membros-sel-count" style="font-size:13px;font-weight:600;color:var(--text)">0 selecionados</span>
+        <button class="btn btn-outline btn-sm" onclick="membrosInativarSelecionados()" style="color:#F59E0B;border-color:#F59E0B;">⏸ Inativar selecionados</button>
+        <button class="btn btn-outline btn-sm" onclick="membrosExcluirSelecionados()" style="color:#EF4444;border-color:#EF4444;">🗑 Excluir selecionados</button>
+        <button class="btn btn-ghost btn-sm" onclick="membrosDesmarcarTodos()">Desmarcar todos</button>
+      </div>
+      ${membros.filter(m => m.status !== 'inativo').map((m, i) => {
+        const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+        const ativo = m.status !== 'inativo';
+        return `<div class="member-row" id="mrow-${m.id}" style="${!ativo?'opacity:.5':''}">
+          <input type="checkbox" class="member-check" data-id="${m.id}" onchange="membrosAtualizarBulk()" style="width:16px;height:16px;accent-color:var(--mint);cursor:pointer;flex-shrink:0;">
+          <div class="m-avatar" style="background:${cores[i%cores.length]};color:#fff">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="m-name">${m.nome || '—'}</div>
+            <div class="m-email" style="font-size:11px;color:var(--muted)">${m.email || '—'} · ${m.role || 'colaborador'}</div>
+          </div>
+          <span class="chip ${ativo?'chip-green':'chip-gray'}" style="font-size:11px;">${ativo?'Ativo':'Inativo'}</span>
+          <div style="display:flex;gap:6px;margin-left:8px;flex-shrink:0;">
+            <button class="btn btn-outline btn-sm" title="${ativo?'Inativar':'Reativar'}" onclick="membrosToggleStatus('${m.id}','${ativo?'inativo':'ativo'}')" style="padding:4px 8px;color:${ativo?'#F59E0B':'#22C55E'};border-color:${ativo?'#F59E0B':'#22C55E'};">${ativo?'⏸':'▶'}</button>
+            <button class="btn btn-outline btn-sm" title="Excluir" onclick="membrosExcluir('${m.id}','${m.nome||m.email}')" style="padding:4px 8px;color:#EF4444;border-color:#EF4444;">🗑</button>
+          </div>
+        </div>`;
+      }).join('')}
+      ${membros.some(m => m.status === 'inativo') ? `
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;">Inativos</div>
+          ${membros.filter(m => m.status === 'inativo').map((m,i) => {
+            const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+            return `<div class="member-row" style="opacity:.45" id="mrow-${m.id}">
+              <input type="checkbox" class="member-check" data-id="${m.id}" onchange="membrosAtualizarBulk()" style="width:16px;height:16px;accent-color:var(--mint);cursor:pointer;flex-shrink:0;">
+              <div class="m-avatar" style="background:#aaa;color:#fff">${initials}</div>
+              <div style="flex:1;min-width:0;">
+                <div class="m-name" style="text-decoration:line-through">${m.nome || '—'}</div>
+                <div class="m-email" style="font-size:11px;color:var(--muted)">${m.email || '—'}</div>
+              </div>
+              <span class="chip chip-gray" style="font-size:11px;">Inativo</span>
+              <div style="display:flex;gap:6px;margin-left:8px;">
+                <button class="btn btn-outline btn-sm" onclick="membrosToggleStatus('${m.id}','ativo')" style="padding:4px 8px;color:#22C55E;border-color:#22C55E;">▶ Reativar</button>
+                <button class="btn btn-outline btn-sm" onclick="membrosExcluir('${m.id}','${m.nome||m.email}')" style="padding:4px 8px;color:#EF4444;border-color:#EF4444;">🗑</button>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>` : ''}
+    `;
   } catch {
     lista.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Erro ao carregar colaboradores.</div>`;
   }
@@ -9432,6 +9466,65 @@ function aepSalvarPDF() {
   win.document.write(html);
   win.document.close();
   win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
+}
+
+/* ══ MEMBROS — Ações individuais e em massa ══ */
+function membrosAtualizarBulk() {
+  const checks = document.querySelectorAll('.member-check:checked');
+  const bar = document.getElementById('membros-bulk-bar');
+  const count = document.getElementById('membros-sel-count');
+  if (bar) bar.style.display = checks.length > 0 ? 'flex' : 'none';
+  if (count) count.textContent = `${checks.length} selecionado(s)`;
+}
+
+function membrosDesmarcarTodos() {
+  document.querySelectorAll('.member-check').forEach(c => c.checked = false);
+  membrosAtualizarBulk();
+}
+
+async function membrosToggleStatus(id, novoStatus) {
+  try {
+    const { error } = await db.from('membros_empresa').update({ status: novoStatus }).eq('id', id);
+    if (error) { toast('⚠️ Erro: ' + error.message); return; }
+    toast(novoStatus === 'inativo' ? '⏸ Colaborador inativado' : '✅ Colaborador reativado');
+    await loadMembros();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
+}
+
+async function membrosExcluir(id, nome) {
+  if (!confirm(`Excluir "${nome}" permanentemente? Esta ação não pode ser desfeita.`)) return;
+  try {
+    const { error } = await db.from('membros_empresa').delete().eq('id', id);
+    if (error) { toast('⚠️ Erro: ' + error.message); return; }
+    toast('🗑 Colaborador excluído');
+    await loadMembros();
+    await loadColaboradores();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
+}
+
+async function membrosInativarSelecionados() {
+  const ids = Array.from(document.querySelectorAll('.member-check:checked')).map(c => c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Inativar ${ids.length} colaborador(es)?`)) return;
+  try {
+    await db.from('membros_empresa').update({ status: 'inativo' }).in('id', ids);
+    toast(`⏸ ${ids.length} colaborador(es) inativado(s)`);
+    membrosDesmarcarTodos();
+    await loadMembros();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
+}
+
+async function membrosExcluirSelecionados() {
+  const ids = Array.from(document.querySelectorAll('.member-check:checked')).map(c => c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Excluir ${ids.length} colaborador(es) permanentemente?`)) return;
+  try {
+    await db.from('membros_empresa').delete().in('id', ids);
+    toast(`🗑 ${ids.length} colaborador(es) excluído(s)`);
+    membrosDesmarcarTodos();
+    await loadMembros();
+    await loadColaboradores();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
 }
 
 /* ── escutaCarregarRH ── */
@@ -14110,7 +14203,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
