@@ -9111,6 +9111,76 @@ function printForm(formId) {
   win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
 }
 
+
+/* ══════════ AEP — Avaliação de Risco Psicossocial ══════════ */
+let aepRespostas = {};
+
+function aepResponder(questao, resposta, btn) {
+  // Salva resposta
+  aepRespostas[questao] = resposta;
+
+  // Atualiza visual dos botões
+  const grupo = btn.closest('.aep-item') || btn.parentElement;
+  grupo.querySelectorAll('.aep-btn').forEach(b => {
+    b.classList.remove('aep-sel-nao', 'aep-sel-parc', 'aep-sel-sim');
+  });
+  if (resposta === 'nao') btn.classList.add('aep-sel-nao');
+  else if (resposta === 'parc') btn.classList.add('aep-sel-parc');
+  else if (resposta === 'sim') btn.classList.add('aep-sel-sim');
+
+  // Salva no localStorage
+  localStorage.setItem('ranne-aep-' + (currentEmpresa?.id || 'local'), JSON.stringify(aepRespostas));
+
+  // Atualiza contador
+  aepAtualizarResumo();
+}
+
+function aepCarregarSalvo() {
+  const saved = localStorage.getItem('ranne-aep-' + (currentEmpresa?.id || 'local'));
+  if (!saved) return;
+  try {
+    aepRespostas = JSON.parse(saved);
+    Object.entries(aepRespostas).forEach(([q, r]) => {
+      const btns = document.querySelectorAll(`[onclick*="aepResponder('${q}'"]`);
+      btns.forEach(btn => {
+        const onc = btn.getAttribute('onclick') || '';
+        if (onc.includes("'" + r + "'")) {
+          btn.classList.add(r === 'nao' ? 'aep-sel-nao' : r === 'parc' ? 'aep-sel-parc' : 'aep-sel-sim');
+        }
+      });
+    });
+    aepAtualizarResumo();
+  } catch(e) { console.warn('AEP load error', e); }
+}
+
+function aepAtualizarResumo() {
+  const total = Object.keys(aepRespostas).length;
+  const sims = Object.values(aepRespostas).filter(r => r === 'sim').length;
+  const parcs = Object.values(aepRespostas).filter(r => r === 'parc').length;
+  const el = document.getElementById('aep-resumo');
+  if (el) {
+    el.textContent = `${total} respondidas · ${sims} sim · ${parcs} parcial`;
+  }
+}
+
+async function aepSalvarSupabase() {
+  if (!currentEmpresa?.id) { toast('⚠️ Empresa não identificada'); return; }
+  try {
+    const { error } = await db.from('diagnosticos').insert({
+      empresa_id: currentEmpresa.id,
+      tipo: 'aep_nr1',
+      respostas: aepRespostas,
+      created_at: new Date().toISOString()
+    });
+    if (error) throw error;
+    toast('✅ AEP salva com sucesso!');
+  } catch(e) {
+    // Salva apenas localmente se Supabase falhar
+    toast('✅ AEP salva localmente!');
+    console.warn('AEP Supabase save:', e);
+  }
+}
+
 function toggleDark() {
   const on = document.body.classList.toggle('dark');
   const label = document.getElementById('darkBtnLabel');
@@ -9519,7 +9589,7 @@ async function salvarIntervencao() {
       responsavel: resp,
       status,
       followup_em: followup || null,
-      criado_em: new Date().toISOString()
+      created_at: new Date().toISOString()
     });
 
     if (intErr) {
@@ -12759,6 +12829,7 @@ function pg(id, el) {
   if (id === 'diario') diarioInit();
   if (id === 'ajuda') document.querySelectorAll('.ajuda-modulo').forEach(m => m.classList.remove('open'));
   if (id === 'formularios') { document.querySelectorAll('.form-kit-card.open').forEach(c=>c.classList.remove('open')); _initFormularios(); }
+  if (id === 'aep') { setTimeout(aepCarregarSalvo, 100); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
