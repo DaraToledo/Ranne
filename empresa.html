@@ -10806,26 +10806,27 @@ function renderTourStep() {
   back.classList.remove('hidden');
   card.style.display = 'block';
 
+  let positioned = false;
   if (!step.selector || step.position === 'center') {
-    // Sem spotlight — card centralizado
     spot.style.display = 'none';
     arrow.style.display = 'none';
     card.style.top = '50%';
     card.style.left = '50%';
     card.style.transform = 'translate(-50%, -50%)';
-    return;
+    positioned = true;
   }
 
+  if (!positioned) {
   const el = document.querySelector(step.selector);
   if (!el) {
-    // Elemento não visível agora — só centra o card
     spot.style.display = 'none';
     arrow.style.display = 'none';
     card.style.top = '50%';
     card.style.left = '50%';
     card.style.transform = 'translate(-50%, -50%)';
-    return;
+    positioned = true;
   }
+  if (!positioned) {
 
   const rect = el.getBoundingClientRect();
   const pad  = 10;
@@ -10873,10 +10874,14 @@ function renderTourStep() {
     }
     card.style.top  = cardTop + 'px';
     card.style.left = Math.max(MARGIN, cardLeft) + 'px';
-    arrow.style.display = 'none'; // sem arrow lateral por simplicidade
+    arrow.style.display = 'none';
   }
-  }, 300); // fim setTimeout navegação
+  } // fim if(!positioned) el
+  } // fim if(!positioned) center
+  }, 300); // fim setTimeout
 }
+
+function tourProximo() {
   _tourStep++;
   if (_tourStep >= TOUR_STEPS.length) {
     encerrarTour();
