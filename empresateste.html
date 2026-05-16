@@ -4702,7 +4702,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="sb-section">Principal</div>
         <div class="sb-item active" onclick="pg('dashboard',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg></span> Dashboard</div>
         <div class="sb-item" onclick="pg('aep',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span> AEP — Riscos NR-1</div>
-        <div class="sb-item" onclick="pg('diagnosticos',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> Diagnósticos</div>
+        <div class="sb-item" onclick="pg('diagnosticos',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> Ciclos de Avaliação</div>
         <div class="sb-item" onclick="pg('plano',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></span> Plano de Ação <span class="sb-badge" id="badge-acoes">0</span></div>
         <div class="sb-item" onclick="pg('progresso',this)"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span> Progresso</div>
         <div class="sb-section">Conteúdo</div>
@@ -4741,7 +4741,7 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <button class="btn btn-primary btn-sm" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
+            <button class="btn btn-primary btn-sm" onclick="pg('novo-diagnostico',null)">+ Novo Ciclo</button>
           </div>
         </div>
 
@@ -5235,7 +5235,7 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
             <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
               <button class="btn btn-primary" onclick="pg('diagnosticos',document.querySelector('.sb-item[onclick*=diagnosticos]'))">
-                Criar ciclo de avaliação →
+                Iniciar ciclo de avaliação →
               </button>
               <button class="btn btn-outline" onclick="aepNovo()">Refazer Avaliação</button>
               <button class="btn btn-outline" onclick="aepSalvarPDF()">Exportar Resumo</button>
@@ -5248,8 +5248,8 @@ body.dark .ob-btn { background: #2D5E4A; }
 
       <div id="p-diagnosticos" style="display:none">
         <div class="topbar">
-          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Diagnósticos</div><div class="page-sub">Diagnósticos de clima em andamento</div></div>
-          <button class="btn btn-primary" onclick="pg('novo-diagnostico',null)">+ Novo Diagnóstico</button>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Ciclos de Avaliação</div><div class="page-sub">Ciclos de Avaliação de clima em andamento</div></div>
+          <button class="btn btn-primary" onclick="pg('novo-diagnostico',null)">+ Novo Ciclo</button>
         </div>
         <div id="diagnosticos-lista">
           <div class="skel-card" style="margin-bottom:10px"><div class="skel skel-line" style="width:40%"></div><div class="skel skel-line" style="width:60%;margin-top:8px"></div></div>
@@ -5260,7 +5260,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       <!-- NOVO DIAGNÓSTICO -->
       <div id="p-novo-diagnostico" style="display:none">
         <div class="topbar">
-          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Novo Diagnóstico</div><div class="page-sub">Configure e envie para a sua equipe</div></div>
+          <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Novo Ciclo de Avaliação</div><div class="page-sub">Configure e envie para a sua equipe</div></div>
           <button class="btn btn-ghost btn-sm" onclick="pg('diagnosticos',null)">← Voltar</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:960px;">
@@ -5318,7 +5318,7 @@ body.dark .ob-btn { background: #2D5E4A; }
             <div id="nd-error" style="color:var(--red);font-size:12px;margin:12px 0;display:none"></div>
             <div style="display:flex;gap:10px;margin-top:16px">
               <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Cancelar</button>
-              <button class="btn btn-primary" id="criar-diag-btn" onclick="criarDiagnostico()">Criar e gerar link →</button>
+              <button class="btn btn-primary" id="criar-diag-btn" onclick="criarDiagnostico()">Criar ciclo e gerar link →</button>
             </div>
           </div>
 
@@ -5360,7 +5360,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div class="link-box" id="diag-link" onclick="copyLink()">Aguarde, gerando link...</div>
           <div style="display:flex;gap:10px;justify-content:center">
             <button class="btn btn-primary" onclick="copyLink()">Copiar Link</button>
-            <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Ver Diagnósticos</button>
+            <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Ver Ciclos de Avaliação</button>
           </div>
           <p style="font-size:12px;color:var(--muted);margin-top:16px">O link pode ser compartilhado por e-mail, WhatsApp ou intranet.</p>
         </div>
@@ -5460,7 +5460,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div class="metric m-amber"><div class="metric-label">Score Atual</div><div class="metric-value v-amber">68</div><div class="metric-sub">Q1 2026</div></div>
           <div class="metric m-red"><div class="metric-label">Variação</div><div class="metric-value v-red">−4</div><div class="metric-sub">vs. anterior</div></div>
           <div class="metric m-green"><div class="metric-label">Melhor Score</div><div class="metric-value v-green">78</div><div class="metric-sub">Q1 2025</div></div>
-          <div class="metric m-blue"><div class="metric-label">Diagnósticos</div><div class="metric-value">5</div><div class="metric-sub">no histórico</div></div>
+          <div class="metric m-blue"><div class="metric-label">Ciclos de Avaliação</div><div class="metric-value">5</div><div class="metric-sub">no histórico</div></div>
         </div>
       </div>
 
@@ -5575,7 +5575,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="metric-sub">último diagnóstico</div>
     </div>
     <div class="metric m-blue">
-      <div class="metric-label">Diagnósticos</div>
+      <div class="metric-label">Ciclos de Avaliação</div>
       <div class="metric-value" id="ficha-total-diags">—</div>
       <div class="metric-sub">respondidos</div>
     </div>
@@ -6630,15 +6630,15 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
           </div>
           <div style="display:flex;gap:8px;margin-top:14px;">
-            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="toast('Baixando relatório mensal...')">⬇ Baixar PDF</button>
-            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="toast('Link copiado para compartilhar!')">↗ Compartilhar</button>
+            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="baixarRelatorioMensal()">⬇ Baixar PDF</button>
+            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="compartilharRelatorioMensal()">↗ Compartilhar</button>
           </div>
         </div>
 
         <!-- Histórico de Ciclos -->
         <div class="card" style="margin-bottom:16px;">
           <div class="card-hdr">
-            <span class="card-title">Histórico de Diagnósticos</span>
+            <span class="card-title">Histórico de Ciclos de Avaliação</span>
             <button class="btn btn-outline btn-sm" onclick="toast('Exportando histórico...')">Exportar</button>
           </div>
           <div style="display:flex;flex-direction:column;">
@@ -8027,7 +8027,16 @@ async function rotearUsuario() {
   // 1. Verifica se é empresa
   try {
     const { data: emp, error: empErr } = await db.from('empresas').select('*').eq('user_id', currentUser.id).maybeSingle();
-    if (emp && !empErr) { currentEmpresa = emp; currentRole = 'empresa'; showEmpresa(); return; }
+    if (emp && !empErr) {
+      currentEmpresa = emp;
+      currentRole = 'empresa';
+      if (emp.status === 'inativa' || emp.status === 'bloqueada') {
+        showBloqueio();
+      } else {
+        showEmpresa();
+      }
+      return;
+    }
   } catch {}
 
   // 2. Verifica se é colaborador ou pessoa física
@@ -8059,6 +8068,41 @@ function showDemo() {
   showEmpresa();
 }
 
+
+function showBloqueio() {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('onboarding-steps').style.display = 'none';
+  document.getElementById('app-empresa').style.display = 'none';
+  document.getElementById('app-colaborador').style.display = 'none';
+  let bloqEl = document.getElementById('app-bloqueio');
+  if (!bloqEl) {
+    bloqEl = document.createElement('div');
+    bloqEl.id = 'app-bloqueio';
+    bloqEl.style.cssText = 'position:fixed;inset:0;background:#F5F3EE;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;padding:32px;text-align:center;';
+    bloqEl.innerHTML = `
+      <div style="max-width:380px;width:100%">
+        <div style="font-size:52px;margin-bottom:20px">🔒</div>
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#2D5E4A;margin-bottom:12px">Acesso suspenso</div>
+        <h2 style="font-size:22px;font-weight:800;color:#1A2E20;margin:0 0 12px">Sua conta está inativa</h2>
+        <p style="font-size:14px;color:#6B7F76;line-height:1.6;margin-bottom:28px">
+          O acesso à plataforma foi suspenso. Entre em contato com a equipe Ranne Care para reativar sua conta.
+        </p>
+        <a href="https://wa.me/5511941918177" target="_blank"
+          style="display:inline-flex;align-items:center;gap:8px;background:#2D5E4A;color:#fff;font-size:14px;font-weight:700;padding:14px 28px;border-radius:12px;text-decoration:none;">
+          💬 Falar com a Ranne Care
+        </a>
+        <div style="margin-top:20px">
+          <button onclick="doLogout()" style="background:none;border:none;font-size:13px;color:#9a9088;cursor:pointer;text-decoration:underline;">
+            Sair da conta
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(bloqEl);
+  }
+  bloqEl.style.display = 'flex';
+}
 
 function showEmpresa() {
   ranneChat.show();
@@ -8427,18 +8471,52 @@ async function loadMembros() {
       'linear-gradient(135deg,#0EA5E9,#0284C7)'
     ];
 
-    lista.innerHTML = membros.map((m, i) => {
-      const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
-      return `<div class="member-row">
-        <div class="m-avatar" style="background:${cores[i%cores.length]};color:#fff">${initials}</div>
-        <div style="flex:1">
-          <div class="m-name">${m.nome || '—'}</div>
-          <div class="m-email">${m.email || '—'}</div>
-        </div>
-        <span class="r-tag r-colab">Colaborador</span>
-        <button class="btn btn-primary btn-sm" style="margin-left:8px" onclick="abrirFicha('${m.id}')">Ver ficha →</button>
-      </div>`;
-    }).join('');
+    // Barra de ações em massa
+    lista.innerHTML = `
+      <div id="membros-bulk-bar" style="display:none;padding:10px 14px;background:rgba(45,94,74,.07);border-radius:8px;margin-bottom:10px;display:none;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span id="membros-sel-count" style="font-size:13px;font-weight:600;color:var(--text)">0 selecionados</span>
+        <button class="btn btn-outline btn-sm" onclick="membrosInativarSelecionados()" style="color:#F59E0B;border-color:#F59E0B;">⏸ Inativar selecionados</button>
+        <button class="btn btn-outline btn-sm" onclick="membrosExcluirSelecionados()" style="color:#EF4444;border-color:#EF4444;">🗑 Excluir selecionados</button>
+        <button class="btn btn-ghost btn-sm" onclick="membrosDesmarcarTodos()">Desmarcar todos</button>
+      </div>
+      ${membros.filter(m => m.status !== 'inativo').map((m, i) => {
+        const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+        const ativo = m.status !== 'inativo';
+        return `<div class="member-row" id="mrow-${m.id}" style="${!ativo?'opacity:.5':''}">
+          <input type="checkbox" class="member-check" data-id="${m.id}" onchange="membrosAtualizarBulk()" style="width:16px;height:16px;accent-color:var(--mint);cursor:pointer;flex-shrink:0;">
+          <div class="m-avatar" style="background:${cores[i%cores.length]};color:#fff">${initials}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="m-name">${m.nome || '—'}</div>
+            <div class="m-email" style="font-size:11px;color:var(--muted)">${m.email || '—'} · ${m.role || 'colaborador'}</div>
+          </div>
+          <span class="chip ${ativo?'chip-green':'chip-gray'}" style="font-size:11px;">${ativo?'Ativo':'Inativo'}</span>
+          <div style="display:flex;gap:6px;margin-left:8px;flex-shrink:0;">
+            <button class="btn btn-outline btn-sm" title="${ativo?'Inativar':'Reativar'}" onclick="membrosToggleStatus('${m.id}','${ativo?'inativo':'ativo'}')" style="padding:4px 8px;color:${ativo?'#F59E0B':'#22C55E'};border-color:${ativo?'#F59E0B':'#22C55E'};">${ativo?'⏸':'▶'}</button>
+            <button class="btn btn-outline btn-sm" title="Excluir" onclick="membrosExcluir('${m.id}','${m.nome||m.email}')" style="padding:4px 8px;color:#EF4444;border-color:#EF4444;">🗑</button>
+          </div>
+        </div>`;
+      }).join('')}
+      ${membros.some(m => m.status === 'inativo') ? `
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;">Inativos</div>
+          ${membros.filter(m => m.status === 'inativo').map((m,i) => {
+            const initials = (m.nome || 'CB').split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+            return `<div class="member-row" style="opacity:.45" id="mrow-${m.id}">
+              <input type="checkbox" class="member-check" data-id="${m.id}" onchange="membrosAtualizarBulk()" style="width:16px;height:16px;accent-color:var(--mint);cursor:pointer;flex-shrink:0;">
+              <div class="m-avatar" style="background:#aaa;color:#fff">${initials}</div>
+              <div style="flex:1;min-width:0;">
+                <div class="m-name" style="text-decoration:line-through">${m.nome || '—'}</div>
+                <div class="m-email" style="font-size:11px;color:var(--muted)">${m.email || '—'}</div>
+              </div>
+              <span class="chip chip-gray" style="font-size:11px;">Inativo</span>
+              <div style="display:flex;gap:6px;margin-left:8px;">
+                <button class="btn btn-outline btn-sm" onclick="membrosToggleStatus('${m.id}','ativo')" style="padding:4px 8px;color:#22C55E;border-color:#22C55E;">▶ Reativar</button>
+                <button class="btn btn-outline btn-sm" onclick="membrosExcluir('${m.id}','${m.nome||m.email}')" style="padding:4px 8px;color:#EF4444;border-color:#EF4444;">🗑</button>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>` : ''}
+    `;
   } catch {
     lista.innerHTML = `<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px">Erro ao carregar colaboradores.</div>`;
   }
@@ -8729,8 +8807,14 @@ async function sendInvite() {
       role,
       created_at: new Date().toISOString()
     });
-    if (colabErr && !colabErr.message?.includes('duplicate')) {
-      console.warn('Aviso ao salvar membro:', colabErr.message);
+
+    if (colabErr) {
+      console.error('Erro membros_empresa:', colabErr);
+      if (!colabErr.message?.includes('duplicate')) {
+        toast('⚠️ Erro ao salvar: ' + colabErr.message);
+        btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+        return;
+      }
     }
 
     // 3. Enviar e-mail com credenciais
@@ -8743,6 +8827,7 @@ async function sendInvite() {
     toast('✅ Colaborador cadastrado! E-mail enviado com as credenciais.');
 
   } catch(e) {
+    console.error('sendInvite exception:', e);
     toast('⚠️ Erro: ' + (e.message || 'tente novamente'));
   } finally {
     btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
@@ -9425,6 +9510,65 @@ function aepSalvarPDF() {
   win.document.write(html);
   win.document.close();
   win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
+}
+
+/* ══ MEMBROS — Ações individuais e em massa ══ */
+function membrosAtualizarBulk() {
+  const checks = document.querySelectorAll('.member-check:checked');
+  const bar = document.getElementById('membros-bulk-bar');
+  const count = document.getElementById('membros-sel-count');
+  if (bar) bar.style.display = checks.length > 0 ? 'flex' : 'none';
+  if (count) count.textContent = `${checks.length} selecionado(s)`;
+}
+
+function membrosDesmarcarTodos() {
+  document.querySelectorAll('.member-check').forEach(c => c.checked = false);
+  membrosAtualizarBulk();
+}
+
+async function membrosToggleStatus(id, novoStatus) {
+  try {
+    const { error } = await db.from('membros_empresa').update({ status: novoStatus }).eq('id', id);
+    if (error) { toast('⚠️ Erro: ' + error.message); return; }
+    toast(novoStatus === 'inativo' ? '⏸ Colaborador inativado' : '✅ Colaborador reativado');
+    await loadMembros();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
+}
+
+async function membrosExcluir(id, nome) {
+  if (!confirm(`Excluir "${nome}" permanentemente? Esta ação não pode ser desfeita.`)) return;
+  try {
+    const { error } = await db.from('membros_empresa').delete().eq('id', id);
+    if (error) { toast('⚠️ Erro: ' + error.message); return; }
+    toast('🗑 Colaborador excluído');
+    await loadMembros();
+    await loadColaboradores();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
+}
+
+async function membrosInativarSelecionados() {
+  const ids = Array.from(document.querySelectorAll('.member-check:checked')).map(c => c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Inativar ${ids.length} colaborador(es)?`)) return;
+  try {
+    await db.from('membros_empresa').update({ status: 'inativo' }).in('id', ids);
+    toast(`⏸ ${ids.length} colaborador(es) inativado(s)`);
+    membrosDesmarcarTodos();
+    await loadMembros();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
+}
+
+async function membrosExcluirSelecionados() {
+  const ids = Array.from(document.querySelectorAll('.member-check:checked')).map(c => c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Excluir ${ids.length} colaborador(es) permanentemente?`)) return;
+  try {
+    await db.from('membros_empresa').delete().in('id', ids);
+    toast(`🗑 ${ids.length} colaborador(es) excluído(s)`);
+    membrosDesmarcarTodos();
+    await loadMembros();
+    await loadColaboradores();
+  } catch(e) { toast('⚠️ Erro: ' + e.message); }
 }
 
 /* ── escutaCarregarRH ── */
@@ -12885,6 +13029,195 @@ function salvarConfigAlerta() {
    Gera PDF completo para fiscalização do Ministério do Trabalho
    ══════════════════════════════════════════════════════════ */
 
+async function baixarRelatorioMensal() {
+  toast('⏳ Gerando relatório mensal...');
+  try {
+    const empresaData = currentEmpresa || {};
+    let diagnosticos = [], colaboradores = [], intervencoes = [];
+
+    if (db && currentEmpresa?.id) {
+      try { const r = await db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id).order('created_at', { ascending: false }); diagnosticos = r.data || []; } catch {}
+      try { const r = await db.from('colaboradores').select('id, nome, cargo, setor').eq('empresa_id', currentEmpresa.id); colaboradores = r.data || []; } catch {}
+      try { const r = await db.from('intervencoes_rh').select('*').eq('empresa_id', currentEmpresa.id); intervencoes = r.data || []; } catch {}
+    }
+
+    const agora    = new Date();
+    const dataHoje = agora.toLocaleDateString('pt-BR');
+    const mesAno   = agora.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+
+    // Pega dados do card se disponíveis
+    const scoreGeral  = document.getElementById('rel-score-geral')?.textContent?.trim() || window._ultimoScoreGeral || '—';
+    const taxaResp    = document.getElementById('rel-taxa')?.textContent?.trim() || '—';
+    const nCols       = colaboradores.length || empresaData.size || '—';
+    const nDiags      = diagnosticos.length;
+    const nIntervs    = intervencoes.length;
+    const respNome    = document.getElementById('nr1-responsavel')?.value?.trim() || empresaData.resp_nome || 'Responsável de RH';
+    const respCargo   = empresaData.resp_cargo || 'RH';
+
+    // Score do mês anterior (penúltimo diagnóstico)
+    const scoreAnterior = diagnosticos[1]?.score_geral ?? null;
+    const delta = scoreAnterior && scoreGeral !== '—' ? parseInt(scoreGeral) - parseInt(scoreAnterior) : null;
+    const deltaStr = delta !== null ? (delta >= 0 ? `↑ +${delta}` : `↓ ${delta}`) + ' vs. mês anterior' : '';
+
+    const htmlRel = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório Mensal — ${empresaData.nome || 'Empresa'}</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#fff; color:#1A2E20; font-size:10pt; line-height:1.6; padding:32px; }
+  h1 { font-size:20pt; font-weight:800; color:#2D5E4A; margin-bottom:4px; }
+  h2 { font-size:12pt; font-weight:700; color:#2D5E4A; margin:20px 0 8px; border-bottom:2px solid #e8f0ec; padding-bottom:4px; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; border-bottom:3px solid #2D5E4A; padding-bottom:16px; }
+  .header-logo { font-size:10pt; font-weight:700; color:#2D5E4A; letter-spacing:1px; }
+  .header-meta { font-size:9pt; color:#6B7F76; text-align:right; }
+  .metrics-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .metric-box { background:#F5F3EE; border-radius:10px; padding:12px 14px; border:1px solid #e0dbd0; }
+  .metric-label { font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#6B7F76; margin-bottom:4px; }
+  .metric-value { font-size:20pt; font-weight:800; color:#2D5E4A; }
+  .metric-sub { font-size:8.5pt; color:#6B7F76; margin-top:2px; }
+  .metric-box.alert { background:#FEF5E7; border-color:#f0d090; }
+  .metric-box.alert .metric-value { color:#D4891A; font-size:14pt; margin-top:4px; }
+  .metric-box.danger { background:#FDECEA; border-color:#f0c0bc; }
+  .metric-box.danger .metric-value { color:#C0392B; font-size:14pt; margin-top:4px; }
+  .rec-list { list-style:none; display:flex; flex-direction:column; gap:6px; }
+  .rec-list li { display:flex; gap:8px; font-size:10pt; }
+  .rec-list li::before { content:'✓'; color:#2D5E4A; font-weight:700; flex-shrink:0; }
+  .diag-table { width:100%; border-collapse:collapse; font-size:9.5pt; }
+  .diag-table th { background:#2D5E4A; color:#fff; padding:7px 10px; text-align:left; font-weight:600; font-size:9pt; }
+  .diag-table td { padding:7px 10px; border-bottom:1px solid #e8f0ec; }
+  .diag-table tr:last-child td { border-bottom:none; }
+  .footer { margin-top:32px; display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e0dbd0; padding-top:16px; }
+  .ass-linha { width:160px; border-top:1px solid #1A2E20; margin-bottom:4px; }
+  .ass-nome { font-size:10pt; font-weight:700; }
+  .ass-cargo { font-size:9pt; color:#6B7F76; }
+  .disclaimer { font-size:8pt; color:#9a9088; max-width:500px; margin-top:16px; line-height:1.5; }
+  @media print { body { padding:16px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">RANNE CARE</div>
+    <h1>Relatório Mensal</h1>
+    <div style="font-size:10pt;color:#6B7F76;margin-top:2px;">${empresaData.nome || 'Empresa'} · ${mesAno}</div>
+  </div>
+  <div class="header-meta">
+    <div>Gerado em ${dataHoje}</div>
+    <div style="margin-top:4px">Plataforma Ranne Care</div>
+    <div>rannecare.com.br</div>
+  </div>
+</div>
+
+<h2>1. Indicadores do Mês</h2>
+<div class="metrics-grid">
+  <div class="metric-box">
+    <div class="metric-label">Score Geral</div>
+    <div class="metric-value">${scoreGeral}</div>
+    <div class="metric-sub">${deltaStr || 'Índice de saúde organizacional'}</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-label">Taxa de Resposta</div>
+    <div class="metric-value">${taxaResp}</div>
+    <div class="metric-sub">participação da equipe</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-label">Colaboradores</div>
+    <div class="metric-value">${nCols}</div>
+    <div class="metric-sub">cadastrados na plataforma</div>
+  </div>
+  <div class="metric-box">
+    <div class="metric-label">Intervenções RH</div>
+    <div class="metric-value">${nIntervs}</div>
+    <div class="metric-sub">ações registradas</div>
+  </div>
+</div>
+
+<h2>2. Recomendações para o Próximo Ciclo</h2>
+<ul class="rec-list">
+  ${nIntervs === 0 ? '<li>Iniciar registro de intervenções de RH na plataforma para acompanhamento</li>' : ''}
+  <li>Manter a cadência de diagnósticos mensais para acompanhar evolução do score</li>
+  <li>Revisar os setores com scores abaixo de 60 e aplicar plano de ação direcionado</li>
+  <li>Compartilhar os resultados com lideranças para engajamento nos próximos ciclos</li>
+</ul>
+
+${nDiags > 0 ? `
+<h2>3. Histórico de Diagnósticos</h2>
+<table class="diag-table">
+  <thead><tr><th>#</th><th>Período</th><th>Score</th><th>Participação</th></tr></thead>
+  <tbody>
+    ${diagnosticos.slice(0,6).map((d,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${d.created_at ? new Date(d.created_at).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}) : '—'}</td>
+        <td style="font-weight:700;color:${(d.score_geral||0)>=75?'#2D6A4F':(d.score_geral||0)>=60?'#D97706':'#DC2626'}">${d.score_geral ?? '—'}</td>
+        <td>${d.taxa_resposta ? Math.round(d.taxa_resposta)+'%' : '—'}</td>
+      </tr>`).join('')}
+  </tbody>
+</table>` : '<p style="font-size:10pt;color:#6B7F76;margin-top:8px">Nenhum diagnóstico realizado ainda neste período.</p>'}
+
+<div class="footer">
+  <div>
+    <div class="ass-linha"></div>
+    <div class="ass-nome">${respNome}</div>
+    <div class="ass-cargo">${respCargo} — ${empresaData.nome || 'Empresa'}</div>
+  </div>
+  <div style="text-align:right;font-size:9pt;color:#6B7F76">
+    <div>Ranne Care · rannecare.com.br</div>
+    <div>${dataHoje}</div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  Este relatório é de uso exclusivo do RH e da diretoria. Os dados individuais dos colaboradores são protegidos e não constam neste documento, em conformidade com a LGPD (Lei 13.709/2018).
+</div>
+
+</body>
+</html>`;
+
+    const blob = new Blob([htmlRel], { type: 'text/html;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const win  = window.open(url, '_blank');
+    if (win) {
+      win.onload = () => setTimeout(() => { win.focus(); win.print(); }, 500);
+      toast('✅ Relatório aberto! Use Ctrl+P → "Salvar como PDF".');
+    } else {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Relatorio_Mensal_${(empresaData.nome||'Empresa').replace(/\s+/g,'_')}_${dataHoje.replace(/\//g,'-')}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast('✅ Relatório baixado! Abra no navegador e use Ctrl+P → "Salvar como PDF".');
+    }
+  } catch(e) {
+    console.error(e);
+    toast('❌ Erro ao gerar relatório. Tente novamente.');
+  }
+}
+
+async function compartilharRelatorioMensal() {
+  try {
+    const scoreGeral = document.getElementById('rel-score-geral')?.textContent?.trim() || '—';
+    const taxaResp   = document.getElementById('rel-taxa')?.textContent?.trim() || '—';
+    const nome       = currentEmpresa?.nome || 'nossa empresa';
+    const mes        = new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    const texto      = `📊 Relatório Mensal Ranne Care — ${mes}\n\n🏢 ${nome}\n✅ Score Geral: ${scoreGeral}\n📋 Taxa de Resposta: ${taxaResp}\n\nAcesse a plataforma completa em rannecare.com.br`;
+
+    if (navigator.share) {
+      await navigator.share({ title: `Relatório Mensal — ${nome}`, text: texto });
+      toast('✅ Relatório compartilhado!');
+    } else {
+      await navigator.clipboard.writeText(texto);
+      toast('✅ Resumo copiado! Cole onde quiser compartilhar.');
+    }
+  } catch(e) {
+    if (e.name !== 'AbortError') toast('❌ Não foi possível compartilhar.');
+  }
+}
+
 async function gerarRelatorioNR1() {
   const responsavel = (document.getElementById('nr1-resp-rel')?.value?.trim()) || document.getElementById('nr1-responsavel')?.value?.trim() || 'Responsável de RH';
   const periodo     = (document.getElementById('nr1-periodo-rel')?.value) || document.getElementById('nr1-periodo')?.value || '6m';
@@ -14103,7 +14436,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
