@@ -8729,8 +8729,14 @@ async function sendInvite() {
       role,
       created_at: new Date().toISOString()
     });
-    if (colabErr && !colabErr.message?.includes('duplicate')) {
-      console.warn('Aviso ao salvar membro:', colabErr.message);
+
+    if (colabErr) {
+      console.error('Erro membros_empresa:', colabErr);
+      if (!colabErr.message?.includes('duplicate')) {
+        toast('⚠️ Erro ao salvar: ' + colabErr.message);
+        btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+        return;
+      }
     }
 
     // 3. Enviar e-mail com credenciais
@@ -8743,6 +8749,7 @@ async function sendInvite() {
     toast('✅ Colaborador cadastrado! E-mail enviado com as credenciais.');
 
   } catch(e) {
+    console.error('sendInvite exception:', e);
     toast('⚠️ Erro: ' + (e.message || 'tente novamente'));
   } finally {
     btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
@@ -9339,6 +9346,129 @@ function aepFinalizar() {
   // Atualiza botão
   const btn = document.getElementById('aep-btn-finalizar');
   if (btn) { btn.textContent = '✅ Resumo gerado'; btn.disabled = true; }
+}
+
+function aepNovo() {
+  // Limpa respostas
+  aepRespostas = {};
+  localStorage.removeItem('ranne-aep-' + (currentEmpresa?.id || 'local'));
+
+  // Reseta visual dos botões
+  document.querySelectorAll('.aep-btn').forEach(btn => {
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+  });
+  document.querySelectorAll('.aep-item').forEach(item => {
+    item.classList.remove('aep-sim', 'aep-nao', 'aep-parc');
+  });
+
+  // Esconde resumo e reseta progresso
+  const resumo = document.getElementById('aep-resumo');
+  if (resumo) resumo.style.display = 'none';
+  aepAtualizarResumo();
+
+  // Scroll para o topo
+  document.getElementById('p-aep')?.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  toast('✅ Avaliação reiniciada!');
+}
+
+function aepSalvarPDF() {
+  // Gera uma janela de impressão com o resumo
+  const resumoEl = document.getElementById('aep-resumo');
+  const empresa  = currentEmpresa?.nome || 'Empresa';
+  const data     = new Date().toLocaleDateString('pt-BR');
+
+  const riscos = document.getElementById('aep-resumo-lista')?.innerHTML || '';
+  const acoes  = document.getElementById('aep-resumo-acoes-lista')?.innerHTML || '';
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>AEP — Avaliação de Risco Psicossocial — ${empresa}</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Arial,sans-serif; font-size:13px; color:#111; padding:32px; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #2D5E4A; }
+  .brand { font-family:Georgia,serif; font-size:22px; color:#2D5E4A; }
+  .brand-sub { font-size:10px; color:#888; letter-spacing:.15em; text-transform:uppercase; margin-top:3px; }
+  .meta { text-align:right; font-size:11px; color:#888; line-height:1.8; }
+  h2 { font-size:16px; color:#1A2E20; margin-bottom:6px; }
+  h3 { font-size:13px; font-weight:700; color:#1A2E20; margin:18px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
+  .risco { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:6px; margin-bottom:5px; }
+  .nivel { font-size:11px; font-weight:700; min-width:40px; }
+  li { padding:5px 0; border-bottom:1px solid #eee; }
+  .footer { margin-top:32px; padding-top:16px; border-top:1px solid #ddd; font-size:11px; color:#888; }
+  @media print { body { padding:16px; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="brand">RANNE CARE</div>
+      <div class="brand-sub">Saúde Organizacional</div>
+    </div>
+    <div class="meta">
+      <strong>AEP — Avaliação de Risco Psicossocial</strong><br>
+      Empresa: ${empresa}<br>
+      Data: ${data}<br>
+      Conformidade NR-1 / 2025
+    </div>
+  </div>
+  <h2>Resumo dos Riscos Identificados</h2>
+  <div>${riscos}</div>
+  <h3>Próximos Passos Recomendados</h3>
+  <ul style="list-style:none;padding:0">${acoes}</ul>
+  <div class="footer">
+    Documento gerado pela plataforma Ranne Care · ${data}<br>
+    A Ranne Care é uma plataforma de tecnologia para gestão de saúde organizacional. Não substitui avaliação clínica profissional.
+  </div>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank', 'width=800,height=900');
+  win.document.write(html);
+  win.document.close();
+  win.onload = () => { setTimeout(() => { win.focus(); win.print(); }, 400); };
+}
+
+/* ── escutaCarregarRH ── */
+async function escutaCarregarRH() {
+  const lista = document.getElementById('escuta-rh-lista');
+  if (!lista) return;
+  try {
+    const { data } = await db.from('canal_escuta')
+      .select('*')
+      .eq('empresa_id', currentEmpresa?.id)
+      .order('criado_em', { ascending: false });
+
+    const relatos = data || [];
+    document.getElementById('escuta-total').textContent = relatos.length;
+    document.getElementById('escuta-novos').textContent = relatos.filter(r => {
+      const d = new Date(r.criado_em);
+      return (Date.now() - d) < 7 * 24 * 3600 * 1000;
+    }).length;
+    document.getElementById('escuta-assedio').textContent = relatos.filter(r => r.tipo === 'assedio').length;
+
+    if (relatos.length === 0) {
+      lista.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato recebido ainda.<br>Os relatos dos colaboradores aparecerão aqui.</p></div>';
+      return;
+    }
+
+    lista.innerHTML = relatos.map(r => `
+      <div class="escuta-item" style="padding:14px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span class="chip chip-${r.tipo==='assedio'?'red':r.tipo==='sobrecarga'?'amber':'gray'}" style="font-size:11px;">${r.tipo || 'geral'}</span>
+          <span style="font-size:11px;color:var(--muted)">${new Date(r.criado_em).toLocaleDateString('pt-BR')}</span>
+        </div>
+        <div style="font-size:13px;color:var(--card-text);line-height:1.6">${r.mensagem || r.descricao || '—'}</div>
+        ${r.nome_voluntario ? `<div style="font-size:11px;color:var(--mint);margin-top:6px;">👤 ${r.nome_voluntario}${r.email_voluntario ? ' · ' + r.email_voluntario : ''}</div>` : ''}
+      </div>`).join('');
+  } catch(e) {
+    lista.innerHTML = '<div class="escuta-vazio"><p>Erro ao carregar relatos.</p></div>';
+  }
 }
 
 async function aepSalvarSupabase() {
@@ -13075,6 +13205,7 @@ function pg(id, el) {
   if (id === 'formularios') { document.querySelectorAll('.form-kit-card.open').forEach(c=>c.classList.remove('open')); _initFormularios(); }
   if (id === 'aep') { setTimeout(aepCarregarSalvo, 100); }
   if (id === 'novo-diagnostico') { setTimeout(initNovoDiagnostico, 100); }
+  if (id === 'escuta-rh') { setTimeout(escutaCarregarRH, 100); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') carregarDadosRelatorio();
   if (id === 'config') {
@@ -13979,7 +14110,7 @@ const ranneChat = (() => {
         setStatus("Online agora");
       } catch(e) {
         removeTyping();
-        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes. 🌿", "bot");
+        renderMsg("Ops, tive um problema de conexão. Tente novamente em instantes.", "bot");
         setStatus("Online agora");
       } finally {
         isLoading = false;
