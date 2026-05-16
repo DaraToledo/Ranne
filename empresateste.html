@@ -8648,7 +8648,8 @@ async function sendInvite() {
 
     document.getElementById('modal-invite').classList.remove('open');
     resetModalInvite();
-    await loadColabs();
+    await loadColaboradores();
+    await loadMembros();
     toast('✅ Colaborador cadastrado! E-mail enviado com as credenciais.');
 
   } catch(e) {
@@ -8711,11 +8712,12 @@ async function importarCSV() {
       });
       await enviarEmailColab(c.nome, c.email, c.senha);
       ok++;
-    } catch { erros++; }
+    } catch(e) { console.error('Erro ao importar:', e); erros++; }
   }
 
   document.getElementById('modal-import-csv').classList.remove('open');
-  await loadColabs();
+  await loadColaboradores();
+  await loadMembros();
   toast(`✅ ${ok} colaborador(es) importado(s)${erros ? ` · ${erros} erro(s)` : ''}`);
   btn.disabled = false; btn.textContent = 'Importar e enviar e-mails →';
 }
