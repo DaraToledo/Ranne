@@ -5226,7 +5226,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           </div>
 
           <!-- RESUMO (aparece após finalizar) -->
-          <div class="aep-resumo" id="aep-resumo">
+          <div class="aep-resumo" id="aep-resumo" style="display:none">
             <h3>📋 Resumo dos Riscos Identificados</h3>
             <div id="aep-resumo-lista"></div>
             <div class="aep-resumo-acoes">
@@ -5235,7 +5235,7 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
             <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
               <button class="btn btn-primary" onclick="pg('diagnosticos',document.querySelector('.sb-item[onclick*=diagnosticos]'))">
-                Iniciar Diagnóstico →
+                Criar ciclo de avaliação →
               </button>
               <button class="btn btn-outline" onclick="aepNovo()">Refazer Avaliação</button>
               <button class="btn btn-outline" onclick="aepSalvarPDF()">Exportar Resumo</button>
@@ -9282,13 +9282,85 @@ function aepCarregarSalvo() {
 }
 
 function aepAtualizarResumo() {
+  const TOTAL_PERGUNTAS = document.querySelectorAll('.aep-item').length || 12;
   const total = Object.keys(aepRespostas).length;
-  const sims = Object.values(aepRespostas).filter(r => r === 'sim').length;
+  const sims  = Object.values(aepRespostas).filter(r => r === 'sim').length;
   const parcs = Object.values(aepRespostas).filter(r => r === 'parc').length;
-  const el = document.getElementById('aep-resumo');
-  if (el) {
-    el.textContent = `${total} respondidas · ${sims} sim · ${parcs} parcial`;
+
+  // Atualiza contador
+  const countEl = document.getElementById('aep-resp-count');
+  if (countEl) countEl.textContent = total;
+
+  // Atualiza barra de progresso
+  const fill = document.getElementById('aep-prog-fill');
+  if (fill) fill.style.width = Math.round((total / TOTAL_PERGUNTAS) * 100) + '%';
+
+  // Habilita botão quando tudo respondido
+  const btn = document.getElementById('aep-btn-finalizar');
+  if (btn) {
+    const completo = total >= TOTAL_PERGUNTAS;
+    btn.disabled = !completo;
+    btn.style.opacity = completo ? '1' : '0.4';
+    btn.style.cursor  = completo ? 'pointer' : 'not-allowed';
+    btn.textContent   = completo ? 'Gerar Resumo de Riscos →' : `Gerar Resumo (${total}/${TOTAL_PERGUNTAS})`;
   }
+}
+
+function aepFinalizar() {
+  const sims  = Object.values(aepRespostas).filter(r => r === 'sim').length;
+  const parcs = Object.values(aepRespostas).filter(r => r === 'parc').length;
+  const nao   = Object.values(aepRespostas).filter(r => r === 'nao').length;
+
+  // Mapa de perguntas para labels legíveis
+  const labels = {};
+  document.querySelectorAll('.aep-item').forEach(item => {
+    const id = item.id.replace('aep-', '');
+    labels[id] = item.querySelector('strong')?.textContent || id;
+  });
+
+  // Gera lista de riscos identificados
+  const riscos = Object.entries(aepRespostas)
+    .filter(([_, r]) => r === 'sim' || r === 'parc')
+    .map(([q, r]) => ({ label: labels[q] || q, nivel: r === 'sim' ? 'Alto' : 'Médio' }));
+
+  const listaEl = document.getElementById('aep-resumo-lista');
+  if (listaEl) {
+    if (riscos.length === 0) {
+      listaEl.innerHTML = '<div style="color:#22C55E;font-size:13px;padding:12px 0;">✅ Nenhum risco crítico identificado. Ambiente com boas condições psicossociais.</div>';
+    } else {
+      listaEl.innerHTML = riscos.map(r => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;margin-bottom:6px;background:${r.nivel==='Alto'?'rgba(239,68,68,.07)':'rgba(245,158,11,.07)'};border-left:3px solid ${r.nivel==='Alto'?'#EF4444':'#F59E0B'}">
+          <span style="font-size:11px;font-weight:700;color:${r.nivel==='Alto'?'#EF4444':'#F59E0B'};min-width:40px">${r.nivel}</span>
+          <span style="font-size:13px;color:var(--card-text)">${r.label}</span>
+        </div>`).join('');
+    }
+  }
+
+  // Gera próximos passos
+  const acoes = document.getElementById('aep-resumo-acoes-lista');
+  if (acoes) {
+    const steps = [];
+    if (sims > 0) steps.push('Iniciar diagnóstico QUSP completo com a equipe afetada');
+    if (sims > 2) steps.push('Agendar reunião de alinhamento com lideranças');
+    if (parcs > 0) steps.push('Monitorar áreas com risco parcial nos próximos 30 dias');
+    steps.push('Registrar esta avaliação no relatório NR-1');
+    if (sims === 0 && parcs === 0) steps.push('Manter boas práticas e repetir avaliação em 3 meses');
+    acoes.innerHTML = steps.map(s => `<li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--card-text)">→ ${s}</li>`).join('');
+  }
+
+  // Mostra resumo
+  const resumo = document.getElementById('aep-resumo');
+  if (resumo) {
+    resumo.style.display = 'block';
+    resumo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Salva no Supabase
+  aepSalvarSupabase();
+
+  // Atualiza botão
+  const btn = document.getElementById('aep-btn-finalizar');
+  if (btn) { btn.textContent = '✅ Resumo gerado'; btn.disabled = true; }
 }
 
 async function aepSalvarSupabase() {
