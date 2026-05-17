@@ -10420,7 +10420,13 @@ function resetModalInvite() {
 function cpg(id) {
   document.querySelectorAll('.col-page').forEach(p => p.classList.remove('active'));
   const page = document.getElementById('cp-' + id);
-  if (page) page.classList.add('active');
+  if (page) {
+    page.classList.add('active');
+    // Rola pro topo — tenta o container correto
+    const scrollEl = document.getElementById('app-colaborador') || document.scrollingElement || document.body;
+    scrollEl.scrollTop = 0;
+    page.scrollTop = 0;
+  }
 
   // Atualiza nav inferior
   document.querySelectorAll('.cn-item').forEach(i => i.classList.remove('active'));
