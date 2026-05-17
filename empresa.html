@@ -4506,7 +4506,7 @@ body.dark .ob-btn { background: #2D5E4A; }
   </div>
 
   <!-- Mascote Ranne apontando para o card — desktop only -->
-  <div id="auth-mascot" style="position:fixed;bottom:0;left:0;z-index:2;pointer-events:none;align-items:flex-end;">
+  <div id="auth-mascot" style="position:fixed;bottom:0;left:0;z-index:2;pointer-events:none;display:flex;align-items:flex-end;">
     <img src="https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ilz7n.png"
          alt="Ranne assistente"
          style="height:clamp(360px,60vh,560px);width:auto;object-fit:contain;object-position:left bottom;mix-blend-mode:lighten;"
@@ -9794,6 +9794,8 @@ function goSStep(id) {
   var stepsPanel = document.getElementById('onboarding-steps');
   if (newOb) newOb.style.display = 'none';
   if (stepsPanel) stepsPanel.style.display = 'flex';
+  var mascot = document.getElementById('auth-mascot');
+  if (mascot) mascot.style.display = window.innerWidth >= 861 ? 'flex' : 'none';
   const current = document.querySelector('.step.active');
   if (current) {
     current.classList.add('step-out');
@@ -13469,7 +13471,6 @@ async function gerarRelatorioNR1() {
   #auth-mascot { display: none !important; }
 }
 @media (min-width: 861px) {
-  #auth-mascot { display: flex !important; }
   #onboarding-steps {
     align-items: center;
     justify-content: center;
