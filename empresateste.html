@@ -3281,7 +3281,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .tb-notif:hover { background:var(--green-light); }
 
 /* Tela de teste — overlay full screen, scroll interno */
-#cp-clin-teste {
+#cp-clin-teste,
+#cp-clin-resultado {
   position: fixed !important;
   inset: 0 !important;
   z-index: 500 !important;
@@ -3289,7 +3290,8 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
   background: #F5EDE3 !important;
   padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
 }
-#cp-clin-teste.active { display: block !important; }
+#cp-clin-teste.active,
+#cp-clin-resultado.active { display: block !important; }
 
 /* ══════ PÁGINAS ══════ */
 .page { display:none; padding:20px; }
@@ -11990,12 +11992,12 @@ function clin_render() {
 
   // Opções
   const optsEl = document.getElementById('clin-opts');
+  const isInvertida = clinAtual.invertidas && clinAtual.invertidas.includes(clinQAtual);
   optsEl.innerHTML = opcoesQ.map((opt, i) => {
     const isSel = clinResps[clinQAtual] !== null && clinResps[clinQAtual] === i;
     return `<div class="clin-opt${isSel ? ' sel' : ''}" onclick="clin_select(this,${i},${opt.pts})">
       <div class="clin-opt-dot"></div>
       <span>${opt.label}</span>
-      <span class="clin-opt-pts">${opt.pts} pt${opt.pts !== 1 ? 's' : ''}</span>
     </div>`;
   }).join('');
   clinSel = clinResps[clinQAtual] !== null ? clinResps[clinQAtual] : null;
@@ -12115,6 +12117,8 @@ function clin_calcular() {
   profEl.innerHTML = _prof_html(t.id, nivel.tipo);
 
   cpg('clin-resultado');
+  const telaR = document.getElementById('cp-clin-resultado');
+  if (telaR) telaR.scrollTop = 0;
 }
 
 function _enc_html(tipo, cor) {
