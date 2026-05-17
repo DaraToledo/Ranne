@@ -338,147 +338,57 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
   color: var(--card-text) !important;
 }
 
-/* ══ Saúde Feminina — contraste completo ══ */
+/* ══ Saúde Feminina — estilos corrigidos ══ */
 
-/* Todos os textos dentro dos cards brancos/claros */
-#p-feminina, #cp-feminina .card,
-#p-feminina, #cp-feminina [style*="background:var(--surface-alt"] {
-  color: var(--card-text) !important;
-}
-
-/* Textos genéricos com var(--text) dentro dos cards */
-#p-feminina, #cp-feminina .card [style*="color:var(--text)"],
-#p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"] {
-  color: var(--card-text) !important;
-}
-
-/* Textos secundários com var(--muted) dentro dos cards */
-#p-feminina, #cp-feminina .card [style*="color:var(--muted)"],
-#p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"] {
-  color: var(--card-text-muted) !important;
-}
-
-/* Labels das seções dentro do card check-in */
-#p-feminina, #cp-feminina .card label {
-  color: var(--card-text-muted) !important;
-}
-#p-feminina, #cp-feminina .card label[style*="font-weight:600"],
-#p-feminina, #cp-feminina .card > div > label {
-  color: var(--card-text) !important;
-}
-
-/* Botões fem-opt-btn e fem-tag-btn: texto legível em fundo claro */
-#p-feminina, #cp-feminina .fem-opt-btn,
-#p-feminina, #cp-feminina .fem-tag-btn {
-  background: rgba(45,94,74,0.08) !important;
-  color: var(--card-text) !important;
-  border: 1.5px solid rgba(45,94,74,0.18) !important;
-  border-radius: 8px !important;
-  padding: 6px 10px !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: background .15s, border-color .15s !important;
-}
-#p-feminina, #cp-feminina .fem-opt-btn:hover,
-#p-feminina, #cp-feminina .fem-tag-btn:hover {
-  background: rgba(45,94,74,0.14) !important;
-  border-color: rgba(45,94,74,0.35) !important;
-}
-#p-feminina, #cp-feminina .fem-opt-btn.sel,
-#p-feminina, #cp-feminina .fem-tag-btn.sel {
-  background: var(--mint) !important;
-  color: #ffffff !important;
-  border-color: var(--mint) !important;
-}
-
-/* Texto do card-hdr e card-title dentro de p-feminina */
-#p-feminina, #cp-feminina .card-hdr .card-title,
-#p-feminina, #cp-feminina .card-title {
-  color: var(--card-text) !important;
-}
-#p-feminina, #cp-feminina .card-hdr span[style*="color:var(--muted)"] {
-  color: var(--card-text-muted) !important;
-}
-
-/* Aviso de privacidade no banner verde escuro — texto branco */
-#p-feminina, #cp-feminina > div[style*="background:linear-gradient"],
-#p-feminina, #cp-feminina > div[style*="background:linear-gradient"] * {
-  color: #ffffff !important;
-}
-
-/* Aviso de privacidade no fundo verde suave — muted escuro */
-#p-feminina, #cp-feminina > div[style*="background:rgba(61"] {
-  color: var(--card-text-muted) !important;
-}
-#p-feminina, #cp-feminina > div[style*="background:rgba(61"] strong {
-  color: var(--card-text) !important;
-}
-
-/* Texto da dica */
-#p-feminina, #cp-feminina #fem-dica-texto {
-  color: var(--card-text-muted) !important;
-}
-
-/* Botão "Ver outra dica" */
-#p-feminina, #cp-feminina button[style*="color:var(--mint)"] {
-  color: var(--mint) !important;
-}
-
-/* Textarea dentro do card */
-#p-feminina, #cp-feminina #fem-sinto {
+/* Light mode */
+#cp-feminina { color: #1A2E20; }
+#cp-feminina .fem-opt-btn,
+#cp-feminina .fem-tag-btn {
+  background: #fff !important;
   color: #1A2E20 !important;
-  background: #F7F4EE !important;
+  border: 1.5px solid rgba(45,94,74,0.2) !important;
+  font-weight: 600 !important;
 }
-
-/* Título da seção de labels (Sono · Energia · Humor · Foco) */
-#p-feminina, #cp-feminina .card > div[style*="text-transform:uppercase"] {
-  color: var(--card-text-muted) !important;
+#cp-feminina .fem-opt-btn:hover,
+#cp-feminina .fem-tag-btn:hover {
+  background: rgba(45,94,74,0.08) !important;
+  border-color: #2D5E4A !important;
 }
+#cp-feminina .fem-opt-btn.sel,
+#cp-feminina .fem-opt-btn.selected,
+#cp-feminina .fem-tag-btn.sel {
+  color: #fff !important;
+  border-color: transparent !important;
+}
+#cp-feminina .fem-opt-btn.sel.fem-bad,
+#cp-feminina .fem-opt-btn.selected.fem-bad   { background: #EF4444 !important; }
+#cp-feminina .fem-opt-btn.sel.fem-mid,
+#cp-feminina .fem-opt-btn.selected.fem-mid   { background: #F59E0B !important; }
+#cp-feminina .fem-opt-btn.sel.fem-good,
+#cp-feminina .fem-opt-btn.selected.fem-good  { background: #22C55E !important; }
+#cp-feminina .fem-tag-btn.sel                { background: #2D5E4A !important; }
+#cp-feminina .fem-grupo-label { color: #1A2E20 !important; }
+#cp-feminina label { color: #1A2E20 !important; }
+#cp-feminina #fem-sinto { color: #1A2E20 !important; background: #F7F4EE !important; }
+#cp-feminina #fem-dica-texto { color: #4D6B5C !important; }
+#cp-feminina .card-title { color: #1A2E20 !important; }
 
-/* dark mode — reverter para branco nos cards escuros */
-body.dark #p-feminina, #cp-feminina .fem-opt-btn,
-body.dark #p-feminina, #cp-feminina .fem-tag-btn {
+/* Dark mode */
+body.dark #cp-feminina { color: #EDE8DF; }
+body.dark #cp-feminina .fem-opt-btn,
+body.dark #cp-feminina .fem-tag-btn {
   background: rgba(255,255,255,0.08) !important;
-  color: rgba(255,255,255,0.85) !important;
+  color: #EDE8DF !important;
   border-color: rgba(255,255,255,0.15) !important;
 }
-body.dark #p-feminina, #cp-feminina .fem-opt-btn.sel,
-body.dark #p-feminina, #cp-feminina .fem-tag-btn.sel {
-  background: var(--mint) !important;
-  color: #ffffff !important;
-  border-color: var(--mint) !important;
-}
-
-/* dark mode — todos os textos na área feminina usam cores claras */
-body.dark #p-feminina, #cp-feminina .card [style*="color:var(--text)"],
-body.dark #p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--text)"],
-body.dark #p-feminina, #cp-feminina .card [style*="font-weight:700"] {
-  color: #E8F4F0 !important;
-}
-body.dark #p-feminina, #cp-feminina .card [style*="color:var(--muted)"],
-body.dark #p-feminina, #cp-feminina [style*="background:var(--surface-alt"] [style*="color:var(--muted)"],
-body.dark #p-feminina, #cp-feminina .card label,
-body.dark #p-feminina, #cp-feminina #fem-dica-texto {
-  color: rgba(232,244,240,0.65) !important;
-}
-body.dark #p-feminina, #cp-feminina .card .card-title,
-body.dark #p-feminina, #cp-feminina .card-title {
-  color: #E8F4F0 !important;
-}
-body.dark #p-feminina, #cp-feminina .card .card-hdr span {
-  color: rgba(232,244,240,0.55) !important;
-}
-body.dark #p-feminina, #cp-feminina #fem-sinto {
-  color: #E8F4F0 !important;
-  background: rgba(255,255,255,0.06) !important;
-}
-body.dark #p-feminina, #cp-feminina > div[style*="background:rgba(61"] {
-  color: rgba(232,244,240,0.70) !important;
-}
-body.dark #p-feminina, #cp-feminina > div[style*="background:rgba(61"] strong {
-  color: #E8F4F0 !important;
-}
+body.dark #cp-feminina .fem-opt-btn.sel,
+body.dark #cp-feminina .fem-opt-btn.selected,
+body.dark #cp-feminina .fem-tag-btn.sel { color: #fff !important; }
+body.dark #cp-feminina .fem-grupo-label { color: #EDE8DF !important; }
+body.dark #cp-feminina label { color: #EDE8DF !important; }
+body.dark #cp-feminina #fem-sinto { color: #EDE8DF !important; background: rgba(255,255,255,0.06) !important; }
+body.dark #cp-feminina #fem-dica-texto { color: rgba(220,210,195,0.68) !important; }
+body.dark #cp-feminina .card-title { color: #EDE8DF !important; }
 
 /* Score num "—" invisível dentro de cards */
 .card .score-num[style*="color:var(--muted)"] {
@@ -1261,9 +1171,9 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 .ob-hero {
   position: relative;
   width: 100%;
-  height: 46vh;
-  min-height: 220px;
-  max-height: 380px;
+  height: 52vh;
+  min-height: 260px;
+  max-height: 420px;
   overflow: hidden;
   flex-shrink: 0;
   background: linear-gradient(160deg, #1A2B14 0%, #2D5E4A 60%, #3D7A60 100%);
@@ -1271,7 +1181,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 .ob-hero img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center top;
   display: block;
 }
 .ob-hero::after {
@@ -2795,15 +2705,153 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   --text: #1A2E20;
   --muted: rgba(26,46,32,0.65);
   --border: rgba(26,46,32,0.1);
+  --card-text: #1A2E20;
+  --card-text-muted: #4D6B5C;
+  --card-text-faint: #7A9A8B;
+  --surface: #EDE8E0;
+  --surface-alt: #E5DDD0;
+  --teal: #2D5E4A;
+  --mint: #4ECBA0;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --nav-h: 64px;
   font-family: 'Inter', sans-serif;
   background: var(--bg);
-  color:#1A2E20;
+  color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  transition: background .3s, color .3s;
 }
+
+/* Dark mode — colaborador */
+body.dark #app-colaborador {
+  --bg: #1C2B25;
+  --white: #243430;
+  --green: #4ECBA0;
+  --green-light: #2A3C36;
+  --green-mid: #52B788;
+  --text: #EDE8DF;
+  --muted: rgba(220,210,195,0.65);
+  --border: rgba(180,165,140,0.14);
+  --card-text: #E8E0D4;
+  --card-text-muted: rgba(220,210,195,0.68);
+  --card-text-faint: rgba(220,210,195,0.40);
+  --surface: #243430;
+  --surface-alt: #2A3C36;
+  --teal: #4ECBA0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── Dark: textos gerais do colaborador ── */
+body.dark #app-colaborador,
+body.dark #app-colaborador p,
+body.dark #app-colaborador span,
+body.dark #app-colaborador div,
+body.dark #app-colaborador h1,
+body.dark #app-colaborador h2,
+body.dark #app-colaborador h3,
+body.dark #app-colaborador label,
+body.dark #app-colaborador strong { color: inherit; }
+
+/* Cards */
+body.dark #app-colaborador .card,
+body.dark #app-colaborador .fem-grupo,
+body.dark #app-colaborador .ins-card,
+body.dark #app-colaborador .pausa-card,
+body.dark #app-colaborador .bc-card,
+body.dark #app-colaborador .trilha-card,
+body.dark #app-colaborador .test-card,
+body.dark #app-colaborador .acao-card { background: var(--surface) !important; border-color: var(--border) !important; }
+
+/* Textos dos cards */
+body.dark #app-colaborador .card-title,
+body.dark #app-colaborador .test-card-title,
+body.dark #app-colaborador .test-card-fonte,
+body.dark #app-colaborador .test-card-desc,
+body.dark #app-colaborador .ins-from,
+body.dark #app-colaborador .ins-text,
+body.dark #app-colaborador .ins-when,
+body.dark #app-colaborador .pausa-card-body strong,
+body.dark #app-colaborador .pausa-card-body span,
+body.dark #app-colaborador .acao-card-title,
+body.dark #app-colaborador .acao-card-sub { color: var(--card-text) !important; }
+
+/* Opções de teste (clin-opt) */
+body.dark #app-colaborador .clin-opt {
+  background: var(--surface) !important;
+  color: var(--card-text) !important;
+  border-color: rgba(180,165,140,0.2) !important;
+}
+body.dark #app-colaborador .clin-opt:hover {
+  background: var(--surface-alt) !important;
+  border-color: var(--teal) !important;
+}
+body.dark #app-colaborador .clin-opt.sel {
+  background: rgba(78,203,160,0.15) !important;
+  border-color: var(--teal) !important;
+  color: var(--teal) !important;
+}
+
+/* Saúde feminina — botões de seleção */
+body.dark #cp-feminina .fem-opt-btn,
+body.dark #cp-feminina .fem-tag-btn {
+  background: var(--surface) !important;
+  color: var(--card-text) !important;
+  border-color: rgba(180,165,140,0.2) !important;
+}
+body.dark #cp-feminina .fem-opt-btn.sel,
+body.dark #cp-feminina .fem-opt-btn.selected,
+body.dark #cp-feminina .fem-tag-btn.sel {
+  color: #fff !important;
+  border-color: transparent !important;
+}
+body.dark #cp-feminina .fem-grupo { background: var(--surface) !important; border-color: var(--border) !important; }
+body.dark #cp-feminina .fem-grupo-label { color: var(--card-text) !important; }
+
+/* Check-in emocional */
+body.dark #app-colaborador .ci-em { background: var(--surface) !important; border-color: var(--border) !important; }
+body.dark #app-colaborador .ci-em .cl { color: var(--card-text-muted) !important; }
+body.dark #app-colaborador .ci-em.sel { border-color: var(--teal) !important; background: rgba(78,203,160,0.12) !important; }
+
+/* Textos de seção */
+body.dark #app-colaborador .acoes-title,
+body.dark #app-colaborador .insight-section .ins-title,
+body.dark #app-colaborador .inicio-body > div > span,
+body.dark #app-colaborador .checkin-hero .ch-title { color: var(--text) !important; }
+
+/* Pill/tag de teste */
+body.dark #app-colaborador .test-card-pill { background: rgba(78,203,160,0.1) !important; color: var(--teal) !important; }
+
+/* Barra de progresso */
+body.dark #app-colaborador .clin-prog-bar { background: rgba(255,255,255,0.08) !important; }
+
+/* Header do teste */
+body.dark #cp-clin-teste,
+body.dark #cp-clin-resultado { background: #1C2B25 !important; }
+body.dark #app-colaborador .clin-header { background: var(--surface) !important; }
+body.dark #app-colaborador .clin-nome-header,
+body.dark #app-colaborador .clin-instrucao-header,
+body.dark #app-colaborador .clin-q-text,
+body.dark #app-colaborador .clin-q-num,
+body.dark #app-colaborador .clin-prog-lbl,
+body.dark #app-colaborador .clin-prog-pct { color: var(--card-text) !important; }
+
+/* Nav inferior */
+body.dark #app-colaborador .col-nav { background: rgba(28,43,37,0.97) !important; border-top-color: rgba(180,165,140,0.12) !important; }
+body.dark #app-colaborador .cn-item { color: var(--card-text-muted) !important; }
+body.dark #app-colaborador .cn-item.active { color: var(--teal) !important; }
+
+/* Inputs e textareas */
+body.dark #app-colaborador textarea,
+body.dark #app-colaborador input[type="text"],
+body.dark #app-colaborador input[type="email"] {
+  background: var(--surface) !important;
+  color: var(--card-text) !important;
+  border-color: var(--border) !important;
+}
+
+
 
 /* ══════ LOADING ══════ */
 #loading {
@@ -2886,7 +2934,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 .tb-notif:hover { background:var(--green-light); }
 
 /* ══════ PÁGINAS ══════ */
-.col-page { display:none; padding:20px; }
+.col-page { display:none; padding:20px; padding-bottom:calc(64px + 24px + env(safe-area-inset-bottom, 0px)); }
 .col-page.active { display:block; animation:pgIn .3s ease both; }
 @keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -3280,6 +3328,20 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 }
 .tb-notif:hover { background:var(--green-light); }
 
+/* Tela de teste — overlay full screen, scroll interno */
+#cp-clin-teste,
+#cp-clin-resultado {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 500 !important;
+  overflow-y: auto !important;
+  background: #F5EDE3 !important;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+  display: none !important;
+}
+#cp-clin-teste.active,
+#cp-clin-resultado.active { display: block !important; }
+
 /* ══════ PÁGINAS ══════ */
 .page { display:none; padding:20px; }
 .page.active { display:block; animation:pgIn .3s ease both; }
@@ -3389,51 +3451,52 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 .bv-inner {
   position:relative; z-index:2;
   display:flex; flex-direction:column; align-items:center;
-  text-align:center; padding:0 36px; gap:0;
+  text-align:center; padding:clamp(12px,3dvh,32px) 36px;
+  gap:0; width:100%; max-width:420px;
 }
 .bv-mark {
-  width:72px; height:72px;
+  width:clamp(44px,7dvh,72px); height:clamp(44px,7dvh,72px);
   display:flex; align-items:center; justify-content:center;
-  margin-bottom:28px;
+  margin-bottom:clamp(8px,2dvh,16px);
   opacity:0; transform:scale(.7);
   animation:bvPop .6s .2s cubic-bezier(.16,1,.3,1) forwards;
 }
-.bv-mark img { width:72px; height:72px; object-fit:contain; filter:drop-shadow(0 4px 16px rgba(201,168,76,.4)); }
+.bv-mark img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 4px 16px rgba(201,168,76,.4)); }
 @keyframes bvPop { to{opacity:1;transform:scale(1)} }
 
 .bv-hi {
   font-size:13px; font-weight:500; letter-spacing:.1em;
   color:rgba(78,203,160,.7); text-transform:uppercase;
-  margin-bottom:10px;
+  margin-bottom:clamp(4px,1dvh,10px);
   opacity:0; transform:translateY(14px);
   animation:bvUp .6s .45s cubic-bezier(.16,1,.3,1) forwards;
 }
 @keyframes bvUp { to{opacity:1;transform:translateY(0)} }
 
 .bv-nome {
-  font-family:'Fraunces',serif; font-size:42px; font-weight:400;
+  font-family:'Fraunces',serif; font-size:clamp(28px,5dvh,42px); font-weight:400;
   color:#fff; font-style:italic; line-height:1.05; letter-spacing:-1px;
-  margin-bottom:14px;
+  margin-bottom:clamp(6px,1.5dvh,14px);
   opacity:0; transform:translateY(18px);
   animation:bvUp .65s .6s cubic-bezier(.16,1,.3,1) forwards;
 }
 .bv-tagline {
   font-size:14px; font-weight:300; color:rgba(255,255,255,.38);
   letter-spacing:.04em; line-height:1.6; max-width:240px;
-  margin-bottom:40px;
+  margin-bottom:clamp(12px,2.5dvh,24px);
   opacity:0; transform:translateY(14px);
   animation:bvUp .65s .75s cubic-bezier(.16,1,.3,1) forwards;
 }
 
 /* Slides de features */
 .bv-features {
-  display:flex; flex-direction:column; gap:10px; width:100%; max-width:300px;
-  margin-bottom:44px;
+  display:flex; flex-direction:column; gap:clamp(5px,1dvh,8px); width:100%; max-width:300px;
+  margin-bottom:clamp(12px,2.5dvh,24px);
 }
 .bv-feat {
   display:flex; align-items:center; gap:14px;
   background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07);
-  border-radius:14px; padding:14px 16px;
+  border-radius:14px; padding:clamp(8px,1.5dvh,14px) 16px;
   opacity:0; transform:translateX(-16px);
 }
 .bv-feat:nth-child(1) { animation:bvSlide .55s .9s cubic-bezier(.16,1,.3,1) forwards; }
@@ -3518,6 +3581,9 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
   font-size:14px; cursor:pointer; transition:all .2s; color:rgba(26,46,32,0.65);
 }
 .tb-logout:hover { background:#FEE2E2; border-color:#FECACA; color:#DC2626; }
+body.dark .tb-logout { color:#EDE8DF; background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.12); }
+body.dark .tb-user { color:#EDE8DF !important; }
+body.dark .col-topbar { background:rgba(28,43,37,0.97); border-bottom-color:rgba(180,165,140,0.12); }
 
 /* ── Hero inicio ── */
 .inicio-hero {
@@ -4010,6 +4076,7 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
 /* ══ Check-in Feminino — redesign ══ */
+
 .fem-grupo {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -6710,21 +6777,21 @@ body.dark .ob-btn { background: #2D5E4A; }
 
     <div class="bv-features">
       <div class="bv-feat">
-        <div class="bv-feat-icon" style="background:rgba(45,90,61,.08)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A4.5 4.5 0 005 6.5V8a4 4 0 00-1 7.9V17a3 3 0 003 3h2v-2h4v2h2a3 3 0 003-3v-1.1A4 4 0 0019 8V6.5A4.5 4.5 0 0014.5 2h-5z"/></svg></div>
+        <div class="bv-feat-icon" style="background:rgba(45,90,61,.15);font-size:20px">🧠</div>
         <div class="bv-feat-body">
           <strong>Autoconhecimento & Bem-estar</strong>
           <span>6 instrumentos de autoavaliação revisados por profissionais de saúde</span>
         </div>
       </div>
       <div class="bv-feat">
-        <div class="bv-feat-icon" style="background:rgba(45,90,61,.06)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="bv-feat-icon" style="background:rgba(78,203,160,.12);font-size:20px">✅</div>
         <div class="bv-feat-body">
           <strong>Check-in Semanal</strong>
           <span>Acompanhe seu humor, energia e foco</span>
         </div>
       </div>
       <div class="bv-feat">
-        <div class="bv-feat-icon" style="background:rgba(184,151,90,.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22c0 0 4-2 8-8 4-6 12-8 12-8s-2 8-8 12c-6 4-12 4-12 4z"/><path d="M12 14c-2-4 0-10 0-10"/></svg></div>
+        <div class="bv-feat-icon" style="background:rgba(184,151,90,.15);font-size:20px">🌱</div>
         <div class="bv-feat-body">
           <strong>5 Trilhas de Bem-estar</strong>
           <span>26 aulas revisadas por Psicóloga CRP 06/215926</span>
@@ -6845,7 +6912,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           <span class="ins-link" onclick="toast('Em breve — todos os insights')">Ver todos</span>
         </div>
 
-        <div class="ins-card">
+        <div class="ins-card" onclick="cpg('checkin')" style="cursor:pointer">
           <div class="ins-icon" style="background:#E8F2EC"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
           <div class="ins-body">
             <div class="ins-from">Plataforma Ranne</div>
@@ -6855,7 +6922,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           </div>
         </div>
 
-        <div class="ins-card" style="animation-delay:.1s">
+        <div class="ins-card" style="animation-delay:.1s;cursor:pointer" onclick="cpg('decomp')">
           <div class="ins-icon" style="background:#FEF3C7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></div>
           <div class="ins-body">
             <div class="ins-from">Dica personalizada</div>
@@ -7402,8 +7469,6 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="test-card-arr">›</div>
     </div>
 
-  </div>
-
   <!-- RISCO DE BURNOUT (Ranne) -->
     <div class="test-card" onclick="iniciarTeste('burnout_ranne')" id="tc-burnout_ranne">
       <div class="test-card-badge" style="background:#FEF2F2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 017 7c0 4-3 6-4 9H9c-1-3-4-5-4-9a7 7 0 017-7z"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
@@ -7532,6 +7597,8 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="test-card-arr">›</div>
     </div>
 
+  </div><!-- /cp-clinico -->
+
   <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
   <div class="col-page" id="cp-clin-teste">
 
@@ -7615,7 +7682,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       <button onclick="cpg('clinico')" style="flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">← Outros testes</button>
       <button onclick="cpg('inicio')" style="flex:1;padding:13px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Voltar ao início</button>
     </div>
-  </div>
+  </div><!-- /cp-clin-resultado -->
 
 
   <!-- ══ SAÚDE FEMININA ══ -->
@@ -7945,6 +8012,10 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
       <span class="cn-label">Saúde ♀</span>
     </div>
+    <div class="cn-item" onclick="toggleDark()" title="Alternar tema" id="cn-dark">
+      <span class="cn-icon" id="cn-dark-icon">🌙</span>
+      <span class="cn-label" id="cn-dark-label">Tema</span>
+    </div>
   </nav>
 
 </div><!-- /app -->
@@ -7988,7 +8059,11 @@ let deferredInstall = null;
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', async () => {
-  if (localStorage.getItem('ranne-dark') === '1') document.body.classList.add('dark');
+  if (localStorage.getItem('ranne-dark') === '1') {
+    document.body.classList.add('dark');
+    const cnIcon = document.getElementById('cn-dark-icon');
+    if (cnIcon) cnIcon.textContent = '☀️';
+  }
 
   // Hard timeout — esconde loading screen em 1.5s SEMPRE, sem exceção
   setTimeout(() => {
@@ -8148,6 +8223,7 @@ function showColaborador(nome) {
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'block';
   document.body.classList.add('collab-ativo');
+  cpg('inicio'); // garante que apenas o início está ativo
   const nameEl = document.getElementById('collab-user-name');
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
@@ -9669,6 +9745,8 @@ function toggleDark() {
   const on = document.body.classList.toggle('dark');
   const label = document.getElementById('darkBtnLabel');
   if (label) label.textContent = on ? 'Modo claro' : 'Modo escuro';
+  const cnIcon = document.getElementById('cn-dark-icon');
+  if (cnIcon) cnIcon.textContent = on ? '☀️' : '🌙';
   localStorage.setItem('ranne-dark', on ? '1' : '');
 }
 
@@ -10419,7 +10497,13 @@ function resetModalInvite() {
 function cpg(id) {
   document.querySelectorAll('.col-page').forEach(p => p.classList.remove('active'));
   const page = document.getElementById('cp-' + id);
-  if (page) page.classList.add('active');
+  if (page) {
+    page.classList.add('active');
+    // Rola pro topo — tenta o container correto
+    const scrollEl = document.getElementById('app-colaborador') || document.scrollingElement || document.body;
+    scrollEl.scrollTop = 0;
+    page.scrollTop = 0;
+  }
 
   // Atualiza nav inferior
   document.querySelectorAll('.cn-item').forEach(i => i.classList.remove('active'));
@@ -11940,6 +12024,9 @@ function iniciarTeste(id) {
 
   clin_render();
   cpg('clin-teste');
+  // Rola o overlay do teste pro topo
+  const telaT = document.getElementById('cp-clin-teste');
+  if (telaT) telaT.scrollTop = 0;
 }
 
 /* ── Render pergunta ── */
@@ -11969,12 +12056,12 @@ function clin_render() {
 
   // Opções
   const optsEl = document.getElementById('clin-opts');
+  const isInvertida = clinAtual.invertidas && clinAtual.invertidas.includes(clinQAtual);
   optsEl.innerHTML = opcoesQ.map((opt, i) => {
     const isSel = clinResps[clinQAtual] !== null && clinResps[clinQAtual] === i;
     return `<div class="clin-opt${isSel ? ' sel' : ''}" onclick="clin_select(this,${i},${opt.pts})">
       <div class="clin-opt-dot"></div>
       <span>${opt.label}</span>
-      <span class="clin-opt-pts">${opt.pts} pt${opt.pts !== 1 ? 's' : ''}</span>
     </div>`;
   }).join('');
   clinSel = clinResps[clinQAtual] !== null ? clinResps[clinQAtual] : null;
@@ -12094,6 +12181,8 @@ function clin_calcular() {
   profEl.innerHTML = _prof_html(t.id, nivel.tipo);
 
   cpg('clin-resultado');
+  const telaR = document.getElementById('cp-clin-resultado');
+  if (telaR) telaR.scrollTop = 0;
 }
 
 function _enc_html(tipo, cor) {
