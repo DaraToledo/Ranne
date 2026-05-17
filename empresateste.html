@@ -360,6 +360,13 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
   color: #fff !important;
   border-color: transparent !important;
 }
+#cp-feminina .fem-opt-btn.sel.fem-bad,
+#cp-feminina .fem-opt-btn.selected.fem-bad   { background: #EF4444 !important; }
+#cp-feminina .fem-opt-btn.sel.fem-mid,
+#cp-feminina .fem-opt-btn.selected.fem-mid   { background: #F59E0B !important; }
+#cp-feminina .fem-opt-btn.sel.fem-good,
+#cp-feminina .fem-opt-btn.selected.fem-good  { background: #22C55E !important; }
+#cp-feminina .fem-tag-btn.sel                { background: #2D5E4A !important; }
 #cp-feminina .fem-grupo-label { color: #1A2E20 !important; }
 #cp-feminina label { color: #1A2E20 !important; }
 #cp-feminina #fem-sinto { color: #1A2E20 !important; background: #F7F4EE !important; }
@@ -2735,6 +2742,116 @@ body.dark #app-colaborador {
   background: var(--bg);
   color: var(--text);
 }
+
+/* ── Dark: textos gerais do colaborador ── */
+body.dark #app-colaborador,
+body.dark #app-colaborador p,
+body.dark #app-colaborador span,
+body.dark #app-colaborador div,
+body.dark #app-colaborador h1,
+body.dark #app-colaborador h2,
+body.dark #app-colaborador h3,
+body.dark #app-colaborador label,
+body.dark #app-colaborador strong { color: inherit; }
+
+/* Cards */
+body.dark #app-colaborador .card,
+body.dark #app-colaborador .fem-grupo,
+body.dark #app-colaborador .ins-card,
+body.dark #app-colaborador .pausa-card,
+body.dark #app-colaborador .bc-card,
+body.dark #app-colaborador .trilha-card,
+body.dark #app-colaborador .test-card,
+body.dark #app-colaborador .acao-card { background: var(--surface) !important; border-color: var(--border) !important; }
+
+/* Textos dos cards */
+body.dark #app-colaborador .card-title,
+body.dark #app-colaborador .test-card-title,
+body.dark #app-colaborador .test-card-fonte,
+body.dark #app-colaborador .test-card-desc,
+body.dark #app-colaborador .ins-from,
+body.dark #app-colaborador .ins-text,
+body.dark #app-colaborador .ins-when,
+body.dark #app-colaborador .pausa-card-body strong,
+body.dark #app-colaborador .pausa-card-body span,
+body.dark #app-colaborador .acao-card-title,
+body.dark #app-colaborador .acao-card-sub { color: var(--card-text) !important; }
+
+/* Opções de teste (clin-opt) */
+body.dark #app-colaborador .clin-opt {
+  background: var(--surface) !important;
+  color: var(--card-text) !important;
+  border-color: rgba(180,165,140,0.2) !important;
+}
+body.dark #app-colaborador .clin-opt:hover {
+  background: var(--surface-alt) !important;
+  border-color: var(--teal) !important;
+}
+body.dark #app-colaborador .clin-opt.sel {
+  background: rgba(78,203,160,0.15) !important;
+  border-color: var(--teal) !important;
+  color: var(--teal) !important;
+}
+
+/* Saúde feminina — botões de seleção */
+body.dark #cp-feminina .fem-opt-btn,
+body.dark #cp-feminina .fem-tag-btn {
+  background: var(--surface) !important;
+  color: var(--card-text) !important;
+  border-color: rgba(180,165,140,0.2) !important;
+}
+body.dark #cp-feminina .fem-opt-btn.sel,
+body.dark #cp-feminina .fem-opt-btn.selected,
+body.dark #cp-feminina .fem-tag-btn.sel {
+  color: #fff !important;
+  border-color: transparent !important;
+}
+body.dark #cp-feminina .fem-grupo { background: var(--surface) !important; border-color: var(--border) !important; }
+body.dark #cp-feminina .fem-grupo-label { color: var(--card-text) !important; }
+
+/* Check-in emocional */
+body.dark #app-colaborador .ci-em { background: var(--surface) !important; border-color: var(--border) !important; }
+body.dark #app-colaborador .ci-em .cl { color: var(--card-text-muted) !important; }
+body.dark #app-colaborador .ci-em.sel { border-color: var(--teal) !important; background: rgba(78,203,160,0.12) !important; }
+
+/* Textos de seção */
+body.dark #app-colaborador .acoes-title,
+body.dark #app-colaborador .insight-section .ins-title,
+body.dark #app-colaborador .inicio-body > div > span,
+body.dark #app-colaborador .checkin-hero .ch-title { color: var(--text) !important; }
+
+/* Pill/tag de teste */
+body.dark #app-colaborador .test-card-pill { background: rgba(78,203,160,0.1) !important; color: var(--teal) !important; }
+
+/* Barra de progresso */
+body.dark #app-colaborador .clin-prog-bar { background: rgba(255,255,255,0.08) !important; }
+
+/* Header do teste */
+body.dark #cp-clin-teste,
+body.dark #cp-clin-resultado { background: #1C2B25 !important; }
+body.dark #app-colaborador .clin-header { background: var(--surface) !important; }
+body.dark #app-colaborador .clin-nome-header,
+body.dark #app-colaborador .clin-instrucao-header,
+body.dark #app-colaborador .clin-q-text,
+body.dark #app-colaborador .clin-q-num,
+body.dark #app-colaborador .clin-prog-lbl,
+body.dark #app-colaborador .clin-prog-pct { color: var(--card-text) !important; }
+
+/* Nav inferior */
+body.dark #app-colaborador .col-nav { background: rgba(28,43,37,0.97) !important; border-top-color: rgba(180,165,140,0.12) !important; }
+body.dark #app-colaborador .cn-item { color: var(--card-text-muted) !important; }
+body.dark #app-colaborador .cn-item.active { color: var(--teal) !important; }
+
+/* Inputs e textareas */
+body.dark #app-colaborador textarea,
+body.dark #app-colaborador input[type="text"],
+body.dark #app-colaborador input[type="email"] {
+  background: var(--surface) !important;
+  color: var(--card-text) !important;
+  border-color: var(--border) !important;
+}
+
+
 
 /* ══════ LOADING ══════ */
 #loading {
