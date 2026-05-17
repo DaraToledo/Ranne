@@ -2795,14 +2795,42 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   --text: #1A2E20;
   --muted: rgba(26,46,32,0.65);
   --border: rgba(26,46,32,0.1);
+  --card-text: #1A2E20;
+  --card-text-muted: #4D6B5C;
+  --card-text-faint: #7A9A8B;
+  --surface: #EDE8E0;
+  --surface-alt: #E5DDD0;
+  --teal: #2D5E4A;
+  --mint: #4ECBA0;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --nav-h: 64px;
   font-family: 'Inter', sans-serif;
   background: var(--bg);
-  color:#1A2E20;
+  color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  transition: background .3s, color .3s;
+}
+
+/* Dark mode — colaborador */
+body.dark #app-colaborador {
+  --bg: #1C2B25;
+  --white: #243430;
+  --green: #4ECBA0;
+  --green-light: #2A3C36;
+  --green-mid: #52B788;
+  --text: #EDE8DF;
+  --muted: rgba(220,210,195,0.65);
+  --border: rgba(180,165,140,0.14);
+  --card-text: #E8E0D4;
+  --card-text-muted: rgba(220,210,195,0.68);
+  --card-text-faint: rgba(220,210,195,0.40);
+  --surface: #243430;
+  --surface-alt: #2A3C36;
+  --teal: #4ECBA0;
+  background: var(--bg);
+  color: var(--text);
 }
 
 /* ══════ LOADING ══════ */
@@ -4025,16 +4053,6 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 
 
 /* ══ Check-in Feminino — redesign ══ */
-
-/* Variáveis que cp-feminina precisa mas não herda do app-colaborador */
-#cp-feminina {
-  --card-text: #1A2E20;
-  --card-text-muted: #4D6B5C;
-  --surface: #EDE8E0;
-  --white: #FFFCF8;
-  --border: rgba(26,46,32,0.12);
-  --teal: #2D5E4A;
-}
 
 .fem-grupo {
   background: var(--surface);
@@ -7971,6 +7989,10 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
       <span class="cn-label">Saúde ♀</span>
     </div>
+    <div class="cn-item" onclick="toggleDark()" title="Alternar tema" id="cn-dark">
+      <span class="cn-icon" id="cn-dark-icon">🌙</span>
+      <span class="cn-label" id="cn-dark-label">Tema</span>
+    </div>
   </nav>
 
 </div><!-- /app -->
@@ -8014,7 +8036,11 @@ let deferredInstall = null;
 
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', async () => {
-  if (localStorage.getItem('ranne-dark') === '1') document.body.classList.add('dark');
+  if (localStorage.getItem('ranne-dark') === '1') {
+    document.body.classList.add('dark');
+    const cnIcon = document.getElementById('cn-dark-icon');
+    if (cnIcon) cnIcon.textContent = '☀️';
+  }
 
   // Hard timeout — esconde loading screen em 1.5s SEMPRE, sem exceção
   setTimeout(() => {
@@ -9696,6 +9722,8 @@ function toggleDark() {
   const on = document.body.classList.toggle('dark');
   const label = document.getElementById('darkBtnLabel');
   if (label) label.textContent = on ? 'Modo claro' : 'Modo escuro';
+  const cnIcon = document.getElementById('cn-dark-icon');
+  if (cnIcon) cnIcon.textContent = on ? '☀️' : '🌙';
   localStorage.setItem('ranne-dark', on ? '1' : '');
 }
 
