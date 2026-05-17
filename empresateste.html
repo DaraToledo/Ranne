@@ -3280,6 +3280,17 @@ body.dark .cn-label { color: rgba(255,255,255,.35); }
 }
 .tb-notif:hover { background:var(--green-light); }
 
+/* Tela de teste — overlay full screen, scroll interno */
+#cp-clin-teste {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 500 !important;
+  overflow-y: auto !important;
+  background: #F5EDE3 !important;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+}
+#cp-clin-teste.active { display: block !important; }
+
 /* ══════ PÁGINAS ══════ */
 .page { display:none; padding:20px; }
 .page.active { display:block; animation:pgIn .3s ease both; }
@@ -11947,6 +11958,9 @@ function iniciarTeste(id) {
 
   clin_render();
   cpg('clin-teste');
+  // Rola o overlay do teste pro topo
+  const telaT = document.getElementById('cp-clin-teste');
+  if (telaT) telaT.scrollTop = 0;
 }
 
 /* ── Render pergunta ── */
