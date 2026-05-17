@@ -8163,6 +8163,7 @@ function showColaborador(nome) {
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'block';
   document.body.classList.add('collab-ativo');
+  cpg('inicio'); // garante que apenas o início está ativo
   const nameEl = document.getElementById('collab-user-name');
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
