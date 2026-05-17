@@ -2886,7 +2886,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 .tb-notif:hover { background:var(--green-light); }
 
 /* ══════ PÁGINAS ══════ */
-.col-page { display:none; padding:20px; }
+.col-page { display:none; padding:20px; padding-bottom:calc(64px + 24px + env(safe-area-inset-bottom, 0px)); }
 .col-page.active { display:block; animation:pgIn .3s ease both; }
 @keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
