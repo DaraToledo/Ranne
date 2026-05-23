@@ -5702,29 +5702,29 @@ body.dark .ob-btn { background: #2D5E4A; }
             <h3>Como está seu humor hoje?</h3>
             <p>Resposta privada — só você vê o seu score individual</p>
             <div class="em-row" id="checkin-humor">
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😐</span><span class="el">Neutro</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">🙂</span><span class="el">Bem</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😄</span><span class="el">Ótimo</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="10"><span class="em">😔</span><span class="el">Muito mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="30"><span class="em">😕</span><span class="el">Mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="55"><span class="em">😐</span><span class="el">Neutro</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="75"><span class="em">🙂</span><span class="el">Bem</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="100"><span class="em">😄</span><span class="el">Ótimo</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Nível de energia</span></div>
             <div class="em-row" id="checkin-energia">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">⚡</span><span class="el">Muito alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">🔋</span><span class="el">Alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😴</span><span class="el">Baixa</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😪</span><span class="el">Esgotado</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="100"><span class="em">⚡</span><span class="el">Muito alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="70"><span class="em">🔋</span><span class="el">Alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="35"><span class="em">😴</span><span class="el">Baixa</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="10"><span class="em">😪</span><span class="el">Esgotado</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Carga de trabalho</span></div>
             <div class="em-row" id="checkin-carga">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😌</span><span class="el">Tranquila</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">👍</span><span class="el">Razoável</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😰</span><span class="el">Pesada</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">🔥</span><span class="el">Excessiva</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="10"><span class="em">😌</span><span class="el">Tranquila</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="35"><span class="em">👍</span><span class="el">Razoável</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="70"><span class="em">😰</span><span class="el">Pesada</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="100"><span class="em">🔥</span><span class="el">Excessiva</span></div>
             </div>
           </div>
           <button class="btn btn-primary btn-lg" style="width:100%" onclick="salvarCheckin()">Enviar Check-in ✓</button>
@@ -9506,22 +9506,32 @@ async function buscarProfissionais() {
 }
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
-  const humor = cs.humor;
-  const energia = cs.energia;
-  const carga = cs.carga;
+
+  // Garante que são números — converte se ainda vier como texto (retrocompatibilidade)
+  const toNum = (v, fallback) => {
+    const n = parseInt(v);
+    return isNaN(n) ? fallback : n;
+  };
+  const humor   = toNum(cs.humor,   50);
+  const energia = toNum(cs.energia, 50);
+  const carga   = toNum(cs.carga,   50);
+  const focoVal = toNum(cs.foco,    Math.round(humor * 0.7 + energia * 0.3));
 
   try {
-    const focoVal = cs.foco ?? Math.round((humor * 0.7 + energia * 0.3));
     await db.from('checkins').insert({
-      empresa_id: currentEmpresa?.id,
-      user_id: currentUser?.id,
+      empresa_id: currentEmpresa?.id || null,
+      user_id:    currentUser?.id,
       humor, energia, carga,
-      foco: focoVal,
+      foco:   focoVal,
       semana: getWeekNumber()
     });
-  } catch {}
+  } catch(e) { console.warn('[salvarCheckin]', e); }
 
   await carregarDadosHomeColaborador();
+  // Fecha streak popup se aberto
+  const spDismissed = 'ranne-sp-dismissed-week';
+  if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
+  try { localStorage.setItem(spDismissed, String(getWeekNumber())); } catch {}
   toast('✅ Check-in enviado! Obrigado.');
 }
 
@@ -9656,8 +9666,10 @@ function selEm(btn, group) {
   const row = btn.closest('.em-row');
   row.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  checkinState[group] = btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent;
-  window.ciState[group] = checkinState[group]; // sincroniza ambos
+  // Salva valor numérico (data-score), não o texto do emoji
+  const val = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : 50;
+  checkinState[group] = val;
+  window.ciState[group] = val;
 }
 
 /* ─────────────────────────────────────
@@ -11947,8 +11959,7 @@ async function carregarDadosHomeColaborador() {
   if (!currentUser?.id) return;
 
   try {
-    // Busca último check-in
-    const semAtual = getWeekNumber();
+    // ── 1. Busca último check-in ──────────────────────────────
     const { data: checkins } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
@@ -11956,30 +11967,63 @@ async function carregarDadosHomeColaborador() {
       .order('created_at', { ascending: false })
       .limit(4);
 
+    // ── 2. Busca testes dos últimos 30 dias ───────────────────
+    const limite30dias = new Date(Date.now() - 30 * 86400000).toISOString();
+    const { data: testesFeitos } = await db
+      .from('testes_realizados')
+      .select('teste_id, score, nivel, tipo, realizado_em')
+      .eq('user_id', currentUser.id)
+      .gte('realizado_em', limite30dias.split('T')[0])
+      .order('realizado_em', { ascending: false });
+
+    // ── 3. Normaliza score dos testes (tipo → 0-100, invertido) ──
+    // tipo: baixo=90, medio=60, alto=30, critico=10
+    // Se não tem testes → scoresTestes = null (não entra no cálculo)
+    const TIPO_SCORE = { baixo: 90, medio: 60, alto: 30, critico: 10 };
+    let scoresTestes = null;
+    if (testesFeitos && testesFeitos.length > 0) {
+      // Pega apenas o mais recente de cada teste (já ordenado por data desc)
+      const vistos = new Set();
+      const ultimos = testesFeitos.filter(t => {
+        if (vistos.has(t.teste_id)) return false;
+        vistos.add(t.teste_id);
+        return true;
+      });
+      const vals = ultimos.map(t => TIPO_SCORE[t.tipo] ?? 60);
+      scoresTestes = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+    }
+
+    // ── 4. Score final: 70% check-in + 30% testes ────────────
     if (checkins && checkins.length > 0) {
-      const ultimo = checkins[0];
+      const ultimo  = checkins[0];
       const humor   = Math.round(ultimo.humor   ?? 0);
       const energia = Math.round(ultimo.energia  ?? 0);
       const carga   = Math.round(ultimo.carga    ?? 0);
-      const foco    = Math.round(ultimo.foco     ?? humor); // foco pode não existir
-      const score   = Math.round((humor + energia + (100 - carga) + foco) / 4);
+      const foco    = Math.round(ultimo.foco     ?? humor);
+      const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
 
-      // Atualiza score ring
+      // Se tem testes → composição 70/30; senão 100% check-in
+      const score = scoresTestes !== null
+        ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
+        : scoreCI;
+
+      // ── 5. Atualiza UI ────────────────────────────────────────
       const scoreEl = document.getElementById('ih-score-num');
       const ringEl  = document.getElementById('ih-ring-fill');
       const chipEl  = document.getElementById('ih-chip');
+
       if (scoreEl) scoreEl.textContent = score;
       if (ringEl) {
         const offset = Math.round(263 - (score / 100) * 263);
         ringEl.style.setProperty('--ih-offset', offset);
       }
       if (chipEl) {
-        if (score >= 70) { chipEl.textContent = 'Você está bem'; chipEl.className = 'ih-score-chip ih-chip-good'; }
-        else if (score >= 50) { chipEl.textContent = 'Atenção ao seu bem-estar'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
-        else { chipEl.textContent = 'Cuide de você'; chipEl.className = 'ih-score-chip ih-chip-bad'; }
+        if      (score >= 70) { chipEl.textContent = 'Você está bem 💚';          chipEl.className = 'ih-score-chip ih-chip-good'; }
+        else if (score >= 50) { chipEl.textContent = 'Atenção ao seu bem-estar';  chipEl.className = 'ih-score-chip ih-chip-warn'; }
+        else                  { chipEl.textContent = 'Cuide de você 💙';           chipEl.className = 'ih-score-chip ih-chip-bad'; }
       }
 
-      // Atualiza dimensões
+      // Dimensões do check-in
       const dims = { humor, energia, carga, foco };
       for (const [k, v] of Object.entries(dims)) {
         const valEl = document.getElementById('ih-val-' + k);
@@ -11988,15 +12032,15 @@ async function carregarDadosHomeColaborador() {
         if (barEl) barEl.style.width = v + '%';
       }
 
-      // Streak (semanas consecutivas com check-in)
-      const semanasUnicas = [...new Set(checkins.map(c => c.semana))];
-      const streakEl = document.getElementById('ih-streak-num');
-      if (streakEl) streakEl.textContent = semanasUnicas.length;
+      // Tooltip indicando composição do score
+      if (scoreEl && scoresTestes !== null) {
+        scoreEl.title = `Check-in: ${scoreCI} · Testes: ${scoresTestes} → Score composto (70/30)`;
+      }
 
-      // Salva para uso offline
-      window._ultimoCheckin = { humor, energia, carga, foco, score };
+      window._ultimoCheckin = { humor, energia, carga, foco, score, scoreCI, scoresTestes };
+
     } else {
-      // Sem dados — mantém placeholders com dashes
+      // Sem check-in — placeholders
       ['humor','energia','carga','foco'].forEach(k => {
         const el = document.getElementById('ih-val-' + k);
         if (el) el.textContent = '—';
@@ -12006,6 +12050,7 @@ async function carregarDadosHomeColaborador() {
       const chipEl = document.getElementById('ih-chip');
       if (chipEl) { chipEl.textContent = 'Faça seu primeiro check-in'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
     }
+
   } catch(e) {
     console.warn('[home collab]', e);
   }
