@@ -8415,7 +8415,7 @@ async function rotearUsuario() {
 }
 
 function showDemo() {
-  ranneChat.show();
+  if (typeof ranneChat !== "undefined" && ranneChat.show) ranneChat.show();
   currentUser = { id:'demo', email:'demo@ranne.app' };
   currentEmpresa = { id:'demo', nome:'Empresa Demo', cnpj:'', size:10, setor:'Tecnologia', plan:'free' };
   showEmpresa();
@@ -8458,7 +8458,7 @@ function showBloqueio() {
 }
 
 function showEmpresa() {
-  ranneChat.show();
+  if (typeof ranneChat !== "undefined" && ranneChat.show) ranneChat.show();
   document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
@@ -8494,7 +8494,7 @@ function showEmpresa() {
 }
 
 function showColaborador(nome) {
-  ranneChat.show();
+  if (typeof ranneChat !== "undefined" && ranneChat.show) ranneChat.show();
   document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
@@ -9074,13 +9074,17 @@ async function salvarConfig() {
   const size = parseInt(document.getElementById('cfg-size').value) || 0;
 
   try {
-    await db.from('empresas').update({ nome, setor, size }).eq('id', currentEmpresa.id);
+    const { error } = await db.from('empresas').update({ nome, setor, size }).eq('id', currentEmpresa.id);
+    if (error) throw error;
+    // Fix: só atualiza estado local após confirmar sucesso no banco
     currentEmpresa = { ...currentEmpresa, nome, setor, size };
     document.getElementById('sb-empresa-nome').textContent = nome;
     document.getElementById('dash-greeting').textContent = `Olá, ${nome}`;
-  } catch {}
-
-  toast('✅ Configurações salvas!');
+    toast('✅ Configurações salvas!');
+  } catch(e) {
+    console.warn('[salvarConfig]', e);
+    toast('❌ Erro ao salvar. Verifique sua conexão.');
+  }
 }
 
 /* ─────────────────────────────────────
@@ -9504,6 +9508,156 @@ async function buscarProfissionais() {
     }
   });
 }
+
+/* ══════════════════════════════════════════════════════════
+   CANAL DE ESCUTA — Funções do colaborador e do RH
+   ══════════════════════════════════════════════════════════ */
+
+// Cache dos relatos para filtro no RH
+let _escutaRelatos = [];
+
+/* Colaborador — envia relato anônimo */
+async function escutaEnviar() {
+  const categoria = document.getElementById('escuta-categoria')?.value;
+  const texto     = document.getElementById('escuta-texto')?.value?.trim();
+
+  if (!categoria) { toast('⚠ Selecione uma categoria.'); return; }
+  if (!texto || texto.length < 10) { toast('⚠ Descreva a situação (mínimo 10 caracteres).'); return; }
+
+  const btn = document.querySelector('#cp-escuta .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
+
+  try {
+    const { error } = await db.from('canal_escuta').insert({
+      empresa_id: currentEmpresa?.id || null,
+      tipo: categoria,          // campo da tabela é 'tipo'
+      mensagem: texto,          // campo da tabela é 'mensagem'
+      criado_em: new Date().toISOString()
+    });
+    if (error) throw error;
+
+    // Mostra confirmação, esconde form
+    const formWrap = document.getElementById('escuta-form-wrap');
+    const conf     = document.getElementById('escuta-confirmacao');
+    if (formWrap) formWrap.style.display = 'none';
+    if (conf)     conf.style.display     = 'block';
+  } catch(e) {
+    console.warn('[escutaEnviar]', e);
+    toast('❌ Erro ao enviar. Tente novamente.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Enviar relato anonimamente'; }
+  }
+}
+
+/* Colaborador — limpa form para novo relato */
+function escutaNovo() {
+  const formWrap = document.getElementById('escuta-form-wrap');
+  const conf     = document.getElementById('escuta-confirmacao');
+  const catEl    = document.getElementById('escuta-categoria');
+  const txtEl    = document.getElementById('escuta-texto');
+  if (formWrap) formWrap.style.display = 'block';
+  if (conf)     conf.style.display     = 'none';
+  if (catEl)    catEl.value            = '';
+  if (txtEl)    txtEl.value            = '';
+}
+
+/* RH — filtra relatos por categoria */
+function escutaFiltrar(categoria, btn) {
+  // Atualiza chip ativo
+  document.querySelectorAll('.escuta-rh-chip').forEach(c => c.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const filtrados = categoria === 'todos'
+    ? _escutaRelatos
+    : _escutaRelatos.filter(r => r.tipo === categoria); // campo correto é 'tipo'
+
+  renderEscutaLista(filtrados);
+}
+
+/* RH — exporta relatos como CSV */
+function escutaRhExportar() {
+  if (!_escutaRelatos.length) { toast('Nenhum relato para exportar.'); return; }
+
+  const linhas = [
+    ['Data', 'Categoria', 'Relato', 'Lido'].join(';'),
+    ..._escutaRelatos.map(r => [
+      new Date(r.criado_em).toLocaleDateString('pt-BR'),
+      r.tipo || '',
+      '"' + (r.mensagem || r.descricao || '').replace(/"/g, '""') + '"',
+      r.lido ? 'Sim' : 'Não'
+    ].join(';'))
+  ];
+
+  const blob = new Blob(['\ufeff' + linhas.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: 'escuta-anonima.csv' });
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('✅ CSV exportado!');
+}
+
+/* RH — carrega e renderiza lista de relatos */
+async function carregarEscutaRh() {
+  try {
+    const { data, error } = await db
+      .from('canal_escuta')
+      .select('*')
+      .eq('empresa_id', currentEmpresa?.id)
+      .order('criado_em', { ascending: false });
+
+    if (error) throw error;
+    _escutaRelatos = data || [];
+
+    // Atualiza métricas
+    const agora7d = new Date(Date.now() - 7 * 86400000).toISOString();
+    const total   = _escutaRelatos.length;
+    const novos   = _escutaRelatos.filter(r => r.criado_em >= agora7d).length;
+    const assedio = _escutaRelatos.filter(r => r.tipo === 'assedio').length;
+
+    const elTotal   = document.getElementById('escuta-total');
+    const elNovos   = document.getElementById('escuta-novos');
+    const elAssedio = document.getElementById('escuta-assedio');
+    if (elTotal)   elTotal.textContent   = total;
+    if (elNovos)   elNovos.textContent   = novos;
+    if (elAssedio) elAssedio.textContent = assedio;
+
+    renderEscutaLista(_escutaRelatos);
+  } catch(e) {
+    console.warn('[carregarEscutaRh]', e);
+  }
+}
+
+/* Renderiza lista de relatos no painel RH */
+function renderEscutaLista(relatos) {
+  const lista = document.getElementById('escuta-rh-lista');
+  if (!lista) return;
+
+  if (!relatos.length) {
+    lista.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato nesta categoria.</p></div>';
+    return;
+  }
+
+  const catLabel = { assedio:'Assédio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };
+  const catCor   = { assedio:'#EF4444', sobrecarga:'#F59E0B', conflito:'#3B82F6', outro:'#6B7280' };
+
+  lista.innerHTML = relatos.map(r => {
+    const data = new Date(r.criado_em).toLocaleDateString('pt-BR', { day:'numeric', month:'short', year:'numeric' });
+    const cor  = catCor[r.tipo]   || '#6B7280';
+    const cat  = catLabel[r.tipo] || r.tipo || 'Geral';
+    const msg  = r.mensagem || r.descricao || '—';
+    return `
+      <div style="padding:14px 0;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;font-weight:700;color:${cor};text-transform:uppercase;letter-spacing:.5px">${cat}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:auto">${data}</span>
+          ${!r.lido ? '<span style="background:#EF4444;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px">Novo</span>' : ''}
+        </div>
+        <p style="font-size:13px;color:var(--text);line-height:1.6;margin:0">${msg}</p>
+        ${r.nome_voluntario ? `<div style="font-size:11px;color:var(--mint);margin-top:6px;">👤 ${r.nome_voluntario}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
 
@@ -11177,7 +11331,7 @@ function qusp_next() {
   if (qusp_selecionado === null) return;
   qusp_resps[qusp_atual] = qusp_selecionado;
   qusp_selecionado = null;
-  if (qusp_atual < 19) {
+  if (qusp_atual < QUSP_PERGUNTAS.length - 1) { // Fix: limite dinâmico
     qusp_atual++;
     qusp_render();
   } else {
