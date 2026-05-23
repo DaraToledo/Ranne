@@ -2776,6 +2776,169 @@ body.dark .vid-tag.purple { background: #2e1065; color: #a78bfa; }
 }
 .med-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
+
+/* ══════════════════════════════════════════════════════════
+   CUIDADO — Página de atendimento (mapa + teleatendimento)
+   ══════════════════════════════════════════════════════════ */
+
+/* Hero */
+.cuidado-hero {
+  background: linear-gradient(135deg, #1A2E20 0%, #2D5E4A 100%);
+  border-radius: 18px;
+  padding: 22px 20px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.ch2-eye  { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #4ECBA0; margin-bottom: 6px; }
+.ch2-title { font-size: 22px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
+.ch2-sub  { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.5; }
+
+/* Teleatendimento — card em breve */
+.tele-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1.5px dashed var(--border);
+  position: relative;
+  overflow: hidden;
+  opacity: .75;
+}
+.tele-badge-soon {
+  position: absolute; top: 14px; right: 14px;
+  background: #FEF3C7; color: #92400E;
+  font-size: 10px; font-weight: 800;
+  padding: 3px 10px; border-radius: 99px;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.tele-icon { font-size: 32px; margin-bottom: 10px; }
+.tele-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.tele-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+.tele-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.tele-chip  {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 12px; border-radius: 99px;
+  background: var(--surface); color: var(--muted);
+}
+.tele-btn-disabled {
+  width: 100%; padding: 13px;
+  background: var(--surface); color: var(--muted);
+  border: none; border-radius: 12px;
+  font-size: 14px; font-weight: 700;
+  cursor: not-allowed; font-family: 'Inter', sans-serif;
+}
+
+/* Busca de profissionais */
+.prof-search-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.prof-search-title {
+  font-size: 15px; font-weight: 800; color: var(--text);
+  margin-bottom: 14px;
+}
+.prof-field {
+  margin-bottom: 12px;
+}
+.prof-field label {
+  display: block; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  color: var(--muted); margin-bottom: 5px;
+}
+.prof-field input, .prof-field select {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 14px;
+  background: var(--surface); color: var(--text);
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  transition: border-color .2s;
+}
+.prof-field input:focus, .prof-field select:focus {
+  outline: none; border-color: #4ECBA0;
+}
+.prof-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.prof-btn-buscar {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, #4ECBA0, #2D5E4A);
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: opacity .2s, transform .1s;
+  margin-top: 4px;
+}
+.prof-btn-buscar:active { transform: scale(.98); opacity: .9; }
+.prof-btn-buscar:disabled { opacity: .6; cursor: not-allowed; }
+
+/* Filtros rápidos */
+.prof-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.prof-filter {
+  padding: 6px 14px; border-radius: 99px;
+  font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  cursor: pointer; transition: all .2s;
+}
+.prof-filter.active {
+  background: #4ECBA0; color: #fff; border-color: #4ECBA0;
+}
+
+/* Mapa */
+#prof-map {
+  width: 100%; height: 320px;
+  border-radius: 16px; overflow: hidden;
+  background: #e5ece8;
+  margin-bottom: 14px;
+  border: 1.5px solid var(--border);
+}
+.prof-map-loading {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; gap: 10px;
+  color: var(--muted); font-size: 13px;
+}
+
+/* Lista de resultados */
+.prof-results { margin-bottom: 80px; }
+.prof-result-item {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex; gap: 12px; align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  cursor: pointer;
+  transition: transform .15s;
+}
+.prof-result-item:active { transform: scale(.98); }
+.prof-result-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: #E8F2EC; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.prof-result-body { flex: 1; min-width: 0; }
+.prof-result-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.prof-result-type { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.prof-result-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.prof-result-tag {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 99px;
+}
+.prt-green  { background: #E8F2EC; color: #2D5E4A; }
+.prt-blue   { background: #EFF6FF; color: #1D4ED8; }
+.prt-orange { background: #FEF3C7; color: #92400E; }
+.prt-purple { background: #EDE9FE; color: #6D28D9; }
+.prof-result-dist { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+.prof-empty {
+  text-align: center; padding: 32px 20px;
+  color: var(--muted); font-size: 13px; line-height: 1.6;
+}
+.prof-empty-icon { font-size: 36px; margin-bottom: 8px; }
+
 /* ══════ VARS COLABORADOR — escopadas para não vazar no painel empresa ══════ */
 #app-colaborador {
   --bg: #F5EDE3;
@@ -5653,29 +5816,29 @@ body.dark .ob-btn { background: #2D5E4A; }
             <h3>Como está seu humor hoje?</h3>
             <p>Resposta privada — só você vê o seu score individual</p>
             <div class="em-row" id="checkin-humor">
-              <div class="em-btn" onclick="selEm(this,'humor')" data-score="10"><span class="em">😔</span><span class="el">Muito mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')" data-score="30"><span class="em">😕</span><span class="el">Mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')" data-score="55"><span class="em">😐</span><span class="el">Neutro</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')" data-score="75"><span class="em">🙂</span><span class="el">Bem</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')" data-score="100"><span class="em">😄</span><span class="el">Ótimo</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😐</span><span class="el">Neutro</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">🙂</span><span class="el">Bem</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😄</span><span class="el">Ótimo</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Nível de energia</span></div>
             <div class="em-row" id="checkin-energia">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="100"><span class="em">⚡</span><span class="el">Muito alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="70"><span class="em">🔋</span><span class="el">Alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="35"><span class="em">😴</span><span class="el">Baixa</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="10"><span class="em">😪</span><span class="el">Esgotado</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">⚡</span><span class="el">Muito alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">🔋</span><span class="el">Alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😴</span><span class="el">Baixa</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😪</span><span class="el">Esgotado</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Carga de trabalho</span></div>
             <div class="em-row" id="checkin-carga">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="10"><span class="em">😌</span><span class="el">Tranquila</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="35"><span class="em">👍</span><span class="el">Razoável</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="70"><span class="em">😰</span><span class="el">Pesada</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="100"><span class="em">🔥</span><span class="el">Excessiva</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😌</span><span class="el">Tranquila</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">👍</span><span class="el">Razoável</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😰</span><span class="el">Pesada</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">🔥</span><span class="el">Excessiva</span></div>
             </div>
           </div>
           <button class="btn btn-primary btn-lg" style="width:100%" onclick="salvarCheckin()">Enviar Check-in ✓</button>
@@ -7830,6 +7993,98 @@ body.dark .ob-btn { background: #2D5E4A; }
 
 
   <!-- ══ SAÚDE FEMININA ══ -->
+
+  <!-- ══════════ CUIDADO — Mapa + Teleatendimento ══════════ -->
+  <div class="col-page" id="cp-cuidado">
+
+    <div class="cuidado-hero">
+      <div class="ch2-eye">Ranne Care · Saúde Mental</div>
+      <div class="ch2-title">Encontre cuidado<br>perto de você 💚</div>
+      <div class="ch2-sub">Psicólogos, psiquiatras e serviços de saúde mental — gratuitos, conveniados ou particulares — na sua região.</div>
+    </div>
+
+    <!-- Teleatendimento Em Breve -->
+    <div class="sec-title">📱 Teleatendimento</div>
+    <div class="tele-card">
+      <div class="tele-badge-soon">Em breve</div>
+      <div class="tele-icon">🎥</div>
+      <div class="tele-title">Atendimento online com psicólogos</div>
+      <div class="tele-desc">Sessões por videochamada com profissionais parceiros da Ranne. Agende no horário que funciona para você, sem sair de casa.</div>
+      <div class="tele-chips">
+        <span class="tele-chip">💚 Profissionais verificados</span>
+        <span class="tele-chip">🔒 Sigilo total</span>
+        <span class="tele-chip">📅 Agendamento flexível</span>
+        <span class="tele-chip">💳 Pague por sessão</span>
+      </div>
+      <button class="tele-btn-disabled" disabled>🔒 Disponível em breve</button>
+    </div>
+
+    <!-- Busca de profissionais -->
+    <div class="sec-title">🗺 Profissionais próximos</div>
+
+    <div class="prof-search-card">
+      <div class="prof-search-title">Buscar na minha região</div>
+
+      <div class="prof-field">
+        <label>CEP ou cidade</label>
+        <input type="text" id="prof-cep" placeholder="Ex: 01310-100 ou São Paulo, SP" maxlength="40"
+          onkeydown="if(event.key==='Enter') buscarProfissionais()">
+      </div>
+
+      <div class="prof-row">
+        <div class="prof-field">
+          <label>Tipo</label>
+          <select id="prof-tipo">
+            <option value="">Todos</option>
+            <option value="psicologo">Psicólogo</option>
+            <option value="psiquiatra">Psiquiatra</option>
+            <option value="medico">Médico Geral</option>
+            <option value="caps">CAPS</option>
+            <option value="ubs">UBS</option>
+          </select>
+        </div>
+        <div class="prof-field">
+          <label>Atendimento</label>
+          <select id="prof-cobertura" onchange="toggleConvenioField()">
+            <option value="">Todos</option>
+            <option value="sus">🆓 Gratuito / SUS</option>
+            <option value="convenio">🏥 Convênio</option>
+            <option value="particular">💳 Particular</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="prof-field" id="prof-convenio-wrap" style="display:none">
+        <label>Nome do convênio</label>
+        <input type="text" id="prof-convenio" placeholder="Ex: Unimed, Amil, Bradesco Saúde…">
+      </div>
+
+      <button class="prof-btn-buscar" id="prof-btn-buscar" onclick="buscarProfissionais()">
+        🔍 Buscar profissionais
+      </button>
+    </div>
+
+    <!-- Filtros rápidos -->
+    <div class="prof-filters" id="prof-filters" style="display:none">
+      <button class="prof-filter active" onclick="filtrarProfs(this,'todos')">Todos</button>
+      <button class="prof-filter" onclick="filtrarProfs(this,'sus')">🆓 Gratuito/SUS</button>
+      <button class="prof-filter" onclick="filtrarProfs(this,'convenio')">🏥 Convênio</button>
+      <button class="prof-filter" onclick="filtrarProfs(this,'particular')">💳 Particular</button>
+    </div>
+
+    <!-- Mapa Leaflet (OpenStreetMap — gratuito) -->
+    <div id="prof-map">
+      <div class="prof-map-loading" id="prof-map-placeholder">
+        <span style="font-size:36px">🗺</span>
+        <span>Informe seu CEP ou cidade para ver o mapa</span>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="prof-results" id="prof-results"></div>
+
+  </div>
+
 <div class="col-page" id="cp-feminina">
 
   <!-- Banner -->
@@ -8151,6 +8406,10 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div class="cn-item" id="cn-biblioteca" onclick="cpg('biblioteca')">
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
       <span class="cn-label">Trilhas</span>
+    </div>
+    <div class="cn-item" id="cn-cuidado" onclick="cpg('cuidado')">
+      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+      <span class="cn-label">Cuidado</span>
     </div>
     <div class="cn-item" id="cn-feminina" onclick="cpg('feminina')">
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
@@ -9154,45 +9413,296 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMedModal(); });
 
-async function salvarCheckin() {
-  const cs = Object.assign({}, checkinState, window.ciState || {});
-  const humor   = typeof cs.humor   === 'number' ? cs.humor   : 50;
-  const energia = typeof cs.energia === 'number' ? cs.energia : 50;
-  const carga   = typeof cs.carga   === 'number' ? cs.carga   : 50;
-  const focoVal = typeof cs.foco    === 'number' ? cs.foco    : Math.round(humor * 0.7 + energia * 0.3);
+
+/* ══════════════════════════════════════════════════════════
+   CUIDADO — Mapa de profissionais (OpenStreetMap + Overpass API)
+   ══════════════════════════════════════════════════════════ */
+
+let profMap = null;
+let profMarkers = [];
+let profResultsCache = [];
+let profFiltroAtivo = 'todos';
+
+function toggleConvenioField() {
+  const cob = document.getElementById('prof-cobertura')?.value;
+  const wrap = document.getElementById('prof-convenio-wrap');
+  if (wrap) wrap.style.display = cob === 'convenio' ? 'block' : 'none';
+}
+
+/* Inicializa o mapa Leaflet (roda uma vez) */
+function initProfMap(lat, lon) {
+  const mapEl = document.getElementById('prof-map');
+  if (!mapEl) return;
+  // Carrega Leaflet CSS + JS de forma lazy
+  if (!document.querySelector('link[href*="leaflet"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+  }
+  // Se Leaflet JS ainda não carregou, carrega e aguarda
+  if (typeof L === 'undefined') {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = () => initProfMap(lat, lon);
+    document.head.appendChild(s);
+    return;
+  }
+
+  // Remove placeholder
+  const ph = document.getElementById('prof-map-placeholder');
+  if (ph) ph.remove();
+
+  if (profMap) {
+    profMap.setView([lat, lon], 14);
+    return;
+  }
+
+  profMap = L.map('prof-map').setView([lat, lon], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom: 19
+  }).addTo(profMap);
+}
+
+/* Limpa marcadores do mapa */
+function limparMarcadores() {
+  profMarkers.forEach(m => profMap?.removeLayer(m));
+  profMarkers = [];
+}
+
+/* Ícone customizado por tipo */
+function iconePorTipo(tipo) {
+  const cores = { psicologo:'#4ECBA0', psiquiatra:'#7C3AED', medico:'#3B82F6', caps:'#F97316', ubs:'#10B981', saude:'#6B7280' };
+  const cor = cores[tipo] || cores.saude;
+  return L.divIcon({
+    html: `<div style="width:28px;height:28px;border-radius:50%;background:${cor};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:12px">📍</div>`,
+    className: '',
+    iconSize: [28, 28],
+    iconAnchor: [14, 28],
+    popupAnchor: [0, -28]
+  });
+}
+
+/* Converte CEP em coordenadas via Nominatim */
+async function geocodificar(local) {
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(local + ', Brasil')}&format=json&limit=1&addressdetails=1`;
+  const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR' } });
+  const data = await res.json();
+  if (!data || data.length === 0) throw new Error('Local não encontrado');
+  return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), nome: data[0].display_name };
+}
+
+/* Busca profissionais via Overpass API */
+async function buscarOverpass(lat, lon, tipo) {
+  const raio = 5000; // 5km
+  const tipoMap = {
+    psicologo:  '["healthcare"="psychotherapist"]["healthcare"!~"x"]',
+    psiquiatra: '["healthcare"="psychiatrist"]',
+    medico:     '["amenity"="doctors"]',
+    caps:       '["name"~"CAPS",i]',
+    ubs:        '["name"~"UBS|Unidade Básica",i]',
+    '':         '["amenity"~"doctors|hospital|clinic"]["healthcare"]'
+  };
+  const filtro = tipoMap[tipo] || tipoMap[''];
+
+  // Busca nós e relações
+  const query = `
+    [out:json][timeout:20];
+    (
+      node${filtro}(around:${raio},${lat},${lon});
+      way${filtro}(around:${raio},${lat},${lon});
+    );
+    out center 30;
+  `;
+
+  const res = await fetch('https://overpass-api.de/api/interpreter', {
+    method: 'POST',
+    body: 'data=' + encodeURIComponent(query)
+  });
+  const data = await res.json();
+  return data.elements || [];
+}
+
+/* Distância em km entre dois pontos */
+function distKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+/* Normaliza elemento Overpass em objeto padrão */
+function normalizarElemento(el, latRef, lonRef) {
+  const tags = el.tags || {};
+  const lat  = el.lat || el.center?.lat;
+  const lon  = el.lon || el.center?.lon;
+  if (!lat || !lon) return null;
+
+  const nome = tags.name || tags['name:pt'] || 'Estabelecimento de saúde';
+  const hc   = tags.healthcare || '';
+  const am   = tags.amenity    || '';
+
+  let tipo = 'saude';
+  let emoji = '🏥';
+  let tipoLabel = 'Saúde mental';
+  if (hc === 'psychotherapist' || hc === 'psychologist') { tipo = 'psicologo'; emoji = '🧠'; tipoLabel = 'Psicólogo/Psicoterapeuta'; }
+  else if (hc === 'psychiatrist') { tipo = 'psiquiatra'; emoji = '🩺'; tipoLabel = 'Psiquiatra'; }
+  else if (/CAPS/i.test(nome))   { tipo = 'caps'; emoji = '🏥'; tipoLabel = 'CAPS'; }
+  else if (/UBS|unidade básica/i.test(nome)) { tipo = 'ubs'; emoji = '🏥'; tipoLabel = 'UBS'; }
+  else if (am === 'doctors')     { tipo = 'medico'; emoji = '👨‍⚕️'; tipoLabel = 'Clínica / Consultório'; }
+
+  // Cobertura inferida
+  let cobertura = 'particular';
+  if (/CAPS|CRAS|CREAS|NASF|UBS|SUS|PSF|ESF|unidade básica|centro de saúde/i.test(nome)) cobertura = 'sus';
+  else if (tags['healthcare:speciality'] || tags.phone) cobertura = 'particular';
+
+  const dist = distKm(latRef, lonRef, lat, lon);
+  const convenios = tags['payment:insurance'] || tags.insurance || '';
+
+  return { nome, tipo, tipoLabel, emoji, lat, lon, dist, cobertura, convenios,
+           endereco: [tags['addr:street'], tags['addr:housenumber'], tags['addr:suburb']].filter(Boolean).join(', ') || '',
+           telefone: tags.phone || tags['contact:phone'] || '',
+           website: tags.website || tags['contact:website'] || '' };
+}
+
+/* Renderiza cards de resultado */
+function renderizarResultados(itens, latRef, lonRef) {
+  const el = document.getElementById('prof-results');
+  if (!el) return;
+
+  if (itens.length === 0) {
+    el.innerHTML = `<div class="prof-empty"><div class="prof-empty-icon">🔍</div>Nenhum resultado encontrado nessa área.<br>Tente ampliar a busca ou mudar os filtros.</div>`;
+    return;
+  }
+
+  el.innerHTML = itens.map((p, i) => {
+    const distStr = p.dist < 1 ? Math.round(p.dist * 1000) + 'm' : p.dist.toFixed(1) + 'km';
+    const cobTag = p.cobertura === 'sus' ? '<span class="prof-result-tag prt-green">🆓 Gratuito/SUS</span>'
+                 : p.cobertura === 'convenio' ? '<span class="prof-result-tag prt-blue">🏥 Convênio</span>'
+                 : '<span class="prof-result-tag prt-orange">💳 Particular</span>';
+    const telTag = p.telefone ? `<span class="prof-result-tag prt-purple">📞 ${p.telefone}</span>` : '';
+    return `
+      <div class="prof-result-item" onclick="centralizarMarcador(${i})">
+        <div class="prof-result-icon">${p.emoji}</div>
+        <div class="prof-result-body">
+          <div class="prof-result-name">${p.nome}</div>
+          <div class="prof-result-type">${p.tipoLabel}${p.endereco ? ' · ' + p.endereco : ''}</div>
+          <div class="prof-result-tags">${cobTag}${telTag}</div>
+          <div class="prof-result-dist">📍 ${distStr} de distância</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* Centraliza no marcador ao clicar no card */
+function centralizarMarcador(idx) {
+  if (!profMap || !profMarkers[idx]) return;
+  profMap.setView(profMarkers[idx].getLatLng(), 16);
+  profMarkers[idx].openPopup();
+}
+
+/* Filtra resultados por cobertura */
+function filtrarProfs(btn, tipo) {
+  document.querySelectorAll('.prof-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  profFiltroAtivo = tipo;
+  const filtrados = tipo === 'todos' ? profResultsCache : profResultsCache.filter(p => p.cobertura === tipo);
+  renderizarResultados(filtrados);
+  limparMarcadores();
+  filtrados.forEach((p, i) => adicionarMarcador(p, i));
+}
+
+function adicionarMarcador(p, i) {
+  if (!profMap) return;
+  const m = L.marker([p.lat, p.lon], { icon: iconePorTipo(p.tipo) })
+    .addTo(profMap)
+    .bindPopup(`<strong>${p.nome}</strong><br>${p.tipoLabel}${p.telefone ? '<br>📞 ' + p.telefone : ''}`);
+  profMarkers.push(m);
+}
+
+/* Função principal de busca */
+async function buscarProfissionais() {
+  const cep   = document.getElementById('prof-cep')?.value.trim();
+  const tipo  = document.getElementById('prof-tipo')?.value || '';
+  const btn   = document.getElementById('prof-btn-buscar');
+
+  if (!cep) { toast('⚠ Informe o CEP ou cidade'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '🔍 Buscando…';
 
   try {
-    // Tabela checkins — usada pelo dash do colaborador
+    // 1. Geocodificar
+    const { lat, lon } = await geocodificar(cep);
+
+    // 2. Inicializa mapa
+    initProfMap(lat, lon);
+
+    // Marcador da posição do usuário
+    limparMarcadores();
+    L.circle([lat, lon], { radius: 5000, color: '#4ECBA0', fillOpacity: .08, weight: 1.5 }).addTo(profMap);
+    L.marker([lat, lon], {
+      icon: L.divIcon({
+        html: '<div style="width:16px;height:16px;border-radius:50%;background:#4ECBA0;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>',
+        className: '', iconSize: [16,16], iconAnchor: [8,8]
+      })
+    }).addTo(profMap).bindPopup('Você está aqui').openPopup();
+
+    // 3. Busca Overpass
+    const elementos = await buscarOverpass(lat, lon, tipo);
+
+    // 4. Normaliza e ordena por distância
+    profResultsCache = elementos
+      .map(el => normalizarElemento(el, lat, lon))
+      .filter(Boolean)
+      .sort((a, b) => a.dist - b.dist)
+      .slice(0, 30);
+
+    // 5. Adiciona marcadores
+    profResultsCache.forEach((p, i) => adicionarMarcador(p, i));
+
+    // 6. Renderiza lista
+    renderizarResultados(profResultsCache);
+
+    // 7. Mostra filtros
+    const filters = document.getElementById('prof-filters');
+    if (filters) filters.style.display = 'flex';
+
+    if (profResultsCache.length === 0) {
+      toast('Nenhum profissional encontrado em 5km. Tente outra busca.');
+    } else {
+      toast(`✅ ${profResultsCache.length} profissional(is) encontrado(s)`);
+    }
+
+  } catch(e) {
+    toast('⚠ Não foi possível encontrar esse local. Tente com cidade ou estado.');
+    console.warn('[buscarProfissionais]', e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Buscar profissionais';
+  }
+}
+
+async function salvarCheckin() {
+  const cs = Object.assign({}, checkinState, window.ciState || {});
+  const humor = cs.humor;
+  const energia = cs.energia;
+  const carga = cs.carga;
+
+  try {
+    const focoVal = cs.foco ?? Math.round((humor * 0.7 + energia * 0.3));
     await db.from('checkins').insert({
-      empresa_id: currentEmpresa?.id || null,
-      user_id:    currentUser?.id,
+      empresa_id: currentEmpresa?.id,
+      user_id: currentUser?.id,
       humor, energia, carga,
-      foco:   focoVal,
+      foco: focoVal,
       semana: getWeekNumber()
     });
-
-    // Tabela respostas — usada pelo painel da empresa (analytics)
-    let colaboradorId = null;
-    try {
-      const { data: col } = await db.from('colaboradores')
-        .select('id').eq('user_id', currentUser.id).maybeSingle();
-      colaboradorId = col?.id || null;
-    } catch {}
-
-    await db.from('respostas').insert({
-      colaborador_id: colaboradorId,
-      empresa_id:     currentEmpresa?.id || null,
-      scores_json:    { humor, energia, carga, foco: focoVal,
-                        geral: Math.round((humor + energia + (100 - carga) + focoVal) / 4) },
-      respostas:      { tipo: 'checkin', humor, energia, carga, foco: focoVal },
-      enviado_em:     new Date().toISOString()
-    }).catch(() => {});
   } catch {}
 
   await carregarDadosHomeColaborador();
-  // Fecha streak popup se aberto
-  if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
-  localStorage.setItem('ranne-sp-dismissed-week', String(getWeekNumber()));
   toast('✅ Check-in enviado! Obrigado.');
 }
 
@@ -9327,10 +9837,8 @@ function selEm(btn, group) {
   const row = btn.closest('.em-row');
   row.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  // Bug A fix: salva o score numérico (data-score), não o emoji/texto
-  const score = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : (btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent);
-  checkinState[group] = score;
-  window.ciState[group] = score;
+  checkinState[group] = btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent;
+  window.ciState[group] = checkinState[group]; // sincroniza ambos
 }
 
 /* ─────────────────────────────────────
@@ -11608,8 +12116,6 @@ function atualizarInicioColaborador(nome) {
 
   // Carrega dados reais do Supabase
   carregarDadosHomeColaborador();
-  // Bug B fix: restaura testes realizados hoje
-  setTimeout(restaurarTestesRealizados, 800);
 }
 
 async function carregarDadosHomeColaborador() {
@@ -11618,16 +12124,12 @@ async function carregarDadosHomeColaborador() {
   try {
     // Busca último check-in
     const semAtual = getWeekNumber();
-    // Bug C fix: dash mostra dados do MÊS ATUAL — reseta automaticamente todo dia 1
-    const agora = new Date();
-    const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1).toISOString();
     const { data: checkins } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
       .eq('user_id', currentUser.id)
-      .gte('created_at', inicioMes)
       .order('created_at', { ascending: false })
-      .limit(10);
+      .limit(4);
 
     if (checkins && checkins.length > 0) {
       const ultimo = checkins[0];
@@ -12208,65 +12710,6 @@ let clinAtual = null;
 let clinQAtual = 0;
 let clinResps  = [];
 let clinSel    = null;
-
-/* ══ RESTAURAR TESTES REALIZADOS ao entrar no app ══
-   - Testes: válidos só no dia atual (resetam no dia seguinte)
-   - Dash: resetar só fim do mês (controlado por carregarDadosHomeColaborador)
-*/
-async function restaurarTestesRealizados() {
-  const hoje = new Date().toISOString().split('T')[0];
-
-  // 1. Tenta Supabase primeiro
-  if (db && currentUser?.id) {
-    try {
-      const { data: feitos } = await db.from('testes_realizados')
-        .select('teste_id, score, nivel, tipo, realizado_em')
-        .eq('user_id', currentUser.id)
-        .eq('realizado_em', hoje); // só hoje — amanhã reseta automaticamente
-
-      if (feitos && feitos.length > 0) {
-        feitos.forEach(f => {
-          clinDone[f.teste_id] = { score: f.score, nivel: f.nivel, tipo: f.tipo };
-          const card = document.getElementById('tc-' + f.teste_id);
-          if (card && !card.classList.contains('done')) {
-            card.classList.add('done');
-            if (!card.querySelector('.test-done-chip')) {
-              const chip = document.createElement('div');
-              chip.className = 'test-done-chip';
-              chip.textContent = '✓ ' + f.nivel;
-              card.appendChild(chip);
-            }
-          }
-        });
-        // Sincroniza localStorage
-        const local = {};
-        feitos.forEach(f => { local[f.teste_id] = { score: f.score, nivel: f.nivel, tipo: f.tipo, data: hoje }; });
-        localStorage.setItem('ranne-testes-done', JSON.stringify(local));
-        return;
-      }
-    } catch {}
-  }
-
-  // 2. Fallback: localStorage (offline)
-  try {
-    const local = JSON.parse(localStorage.getItem('ranne-testes-done') || '{}');
-    Object.entries(local).forEach(([id, dados]) => {
-      if (dados.data !== hoje) return; // expirado — ignora
-      clinDone[id] = { score: dados.score, nivel: dados.nivel, tipo: dados.tipo };
-      const card = document.getElementById('tc-' + id);
-      if (card && !card.classList.contains('done')) {
-        card.classList.add('done');
-        if (!card.querySelector('.test-done-chip')) {
-          const chip = document.createElement('div');
-          chip.className = 'test-done-chip';
-          chip.textContent = '✓ ' + dados.nivel;
-          card.appendChild(chip);
-        }
-      }
-    });
-  } catch {}
-}
-
 const clinDone = {};
 
 /* ── Iniciar teste ── */
@@ -12364,7 +12807,7 @@ function clin_next() {
 }
 
 /* ── Calcular resultado ── */
-async function clin_calcular() {
+function clin_calcular() {
   const t = clinAtual;
   let total = 0;
 
@@ -12393,30 +12836,8 @@ async function clin_calcular() {
     if (total >= n.min && total <= n.max) { nivel = n; break; }
   }
 
-  // Bug B fix: persiste resultado no Supabase E no localStorage (fallback offline)
+  // Marcar como feito
   clinDone[t.id] = { score: total, nivel: nivel.nivel, tipo: nivel.tipo };
-  const hoje = new Date().toISOString().split('T')[0];
-  try {
-    // Salva/atualiza em testes_realizados (upsert por user_id + teste_id + data)
-    if (db && currentUser?.id) {
-      await db.from('testes_realizados').upsert({
-        user_id:    currentUser.id,
-        empresa_id: currentEmpresa?.id || null,
-        teste_id:   t.id,
-        score:      total,
-        nivel:      nivel.nivel,
-        tipo:       nivel.tipo,
-        realizado_em: hoje
-      }, { onConflict: 'user_id,teste_id,realizado_em' }).catch(() => {});
-    }
-  } catch {}
-  // Persiste localmente como fallback
-  try {
-    const local = JSON.parse(localStorage.getItem('ranne-testes-done') || '{}');
-    local[t.id] = { score: total, nivel: nivel.nivel, tipo: nivel.tipo, data: hoje };
-    localStorage.setItem('ranne-testes-done', JSON.stringify(local));
-  } catch {}
-
   const card = document.getElementById('tc-' + t.id);
   if (card) {
     card.classList.add('done');
