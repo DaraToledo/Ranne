@@ -359,6 +359,7 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
 #cp-feminina .fem-tag-btn.sel {
   color: #fff !important;
   border-color: transparent !important;
+  background: #2D5E4A !important; /* Bug 4 fix: garante fundo escuro para texto branco ficar visível */
 }
 #cp-feminina .fem-opt-btn.sel.fem-bad,
 #cp-feminina .fem-opt-btn.selected.fem-bad   { background: #EF4444 !important; }
@@ -2778,166 +2779,51 @@ body.dark .vid-tag.purple { background: #2e1065; color: #a78bfa; }
 
 
 /* ══════════════════════════════════════════════════════════
-   CUIDADO — Página de atendimento (mapa + teleatendimento)
+   CUIDADO — Mapa + Teleatendimento
    ══════════════════════════════════════════════════════════ */
-
-/* Hero */
-.cuidado-hero {
-  background: linear-gradient(135deg, #1A2E20 0%, #2D5E4A 100%);
-  border-radius: 18px;
-  padding: 22px 20px;
-  margin-bottom: 20px;
-  color: #fff;
-}
-.ch2-eye  { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #4ECBA0; margin-bottom: 6px; }
-.ch2-title { font-size: 22px; font-weight: 800; line-height: 1.2; margin-bottom: 6px; }
-.ch2-sub  { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.5; }
-
-/* Teleatendimento — card em breve */
-.tele-card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 1.5px dashed var(--border);
-  position: relative;
-  overflow: hidden;
-  opacity: .75;
-}
-.tele-badge-soon {
-  position: absolute; top: 14px; right: 14px;
-  background: #FEF3C7; color: #92400E;
-  font-size: 10px; font-weight: 800;
-  padding: 3px 10px; border-radius: 99px;
-  letter-spacing: .5px; text-transform: uppercase;
-}
-.tele-icon { font-size: 32px; margin-bottom: 10px; }
-.tele-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-.tele-desc  { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
-.tele-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-.tele-chip  {
-  font-size: 11px; font-weight: 600;
-  padding: 4px 12px; border-radius: 99px;
-  background: var(--surface); color: var(--muted);
-}
-.tele-btn-disabled {
-  width: 100%; padding: 13px;
-  background: var(--surface); color: var(--muted);
-  border: none; border-radius: 12px;
-  font-size: 14px; font-weight: 700;
-  cursor: not-allowed; font-family: 'Inter', sans-serif;
-}
-
-/* Busca de profissionais */
-.prof-search-card {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 14px;
-}
-.prof-search-title {
-  font-size: 15px; font-weight: 800; color: var(--text);
-  margin-bottom: 14px;
-}
-.prof-field {
-  margin-bottom: 12px;
-}
-.prof-field label {
-  display: block; font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .5px;
-  color: var(--muted); margin-bottom: 5px;
-}
-.prof-field input, .prof-field select {
-  width: 100%; padding: 11px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: 10px; font-size: 14px;
-  background: var(--surface); color: var(--text);
-  font-family: 'Inter', sans-serif;
-  box-sizing: border-box;
-  transition: border-color .2s;
-}
-.prof-field input:focus, .prof-field select:focus {
-  outline: none; border-color: #4ECBA0;
-}
-.prof-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.prof-btn-buscar {
-  width: 100%; padding: 13px;
-  background: linear-gradient(135deg, #4ECBA0, #2D5E4A);
-  color: #fff; border: none; border-radius: 12px;
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  transition: opacity .2s, transform .1s;
-  margin-top: 4px;
-}
-.prof-btn-buscar:active { transform: scale(.98); opacity: .9; }
-.prof-btn-buscar:disabled { opacity: .6; cursor: not-allowed; }
-
-/* Filtros rápidos */
-.prof-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-.prof-filter {
-  padding: 6px 14px; border-radius: 99px;
-  font-size: 12px; font-weight: 600;
-  border: 1.5px solid var(--border);
-  background: var(--surface); color: var(--muted);
-  cursor: pointer; transition: all .2s;
-}
-.prof-filter.active {
-  background: #4ECBA0; color: #fff; border-color: #4ECBA0;
-}
-
-/* Mapa */
-#prof-map {
-  width: 100%; height: 320px;
-  border-radius: 16px; overflow: hidden;
-  background: #e5ece8;
-  margin-bottom: 14px;
-  border: 1.5px solid var(--border);
-}
-.prof-map-loading {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  height: 100%; gap: 10px;
-  color: var(--muted); font-size: 13px;
-}
-
-/* Lista de resultados */
-.prof-results { margin-bottom: 80px; }
-.prof-result-item {
-  background: var(--card);
-  border-radius: 14px;
-  padding: 15px;
-  margin-bottom: 10px;
-  display: flex; gap: 12px; align-items: flex-start;
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
-  cursor: pointer;
-  transition: transform .15s;
-}
-.prof-result-item:active { transform: scale(.98); }
-.prof-result-icon {
-  width: 42px; height: 42px; border-radius: 12px;
-  background: #E8F2EC; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-}
-.prof-result-body { flex: 1; min-width: 0; }
-.prof-result-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-.prof-result-type { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-.prof-result-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.prof-result-tag {
-  font-size: 10px; font-weight: 600;
-  padding: 2px 8px; border-radius: 99px;
-}
-.prt-green  { background: #E8F2EC; color: #2D5E4A; }
-.prt-blue   { background: #EFF6FF; color: #1D4ED8; }
-.prt-orange { background: #FEF3C7; color: #92400E; }
-.prt-purple { background: #EDE9FE; color: #6D28D9; }
-.prof-result-dist { font-size: 11px; color: var(--muted); margin-top: 4px; }
-
-.prof-empty {
-  text-align: center; padding: 32px 20px;
-  color: var(--muted); font-size: 13px; line-height: 1.6;
-}
-.prof-empty-icon { font-size: 36px; margin-bottom: 8px; }
+.cuidado-hero { background:linear-gradient(135deg,#1A2E20,#2D5E4A); border-radius:18px; padding:22px 20px; margin-bottom:20px; color:#fff; }
+.ch2-eye  { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#4ECBA0; margin-bottom:6px; }
+.ch2-title { font-size:22px; font-weight:800; line-height:1.2; margin-bottom:6px; }
+.ch2-sub  { font-size:13px; color:rgba(255,255,255,.7); line-height:1.5; }
+.tele-card { background:var(--card); border-radius:16px; padding:20px; margin-bottom:20px; border:1.5px dashed var(--border); position:relative; overflow:hidden; opacity:.8; }
+.tele-badge-soon { position:absolute; top:14px; right:14px; background:#FEF3C7; color:#92400E; font-size:10px; font-weight:800; padding:3px 10px; border-radius:99px; letter-spacing:.5px; text-transform:uppercase; }
+.tele-icon { font-size:32px; margin-bottom:10px; }
+.tele-title { font-size:16px; font-weight:800; color:var(--text); margin-bottom:6px; }
+.tele-desc  { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+.tele-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.tele-chip  { font-size:11px; font-weight:600; padding:4px 12px; border-radius:99px; background:var(--surface); color:var(--muted); }
+.tele-btn-disabled { width:100%; padding:13px; background:var(--surface); color:var(--muted); border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:not-allowed; font-family:'Inter',sans-serif; }
+.prof-search-card { background:var(--card); border-radius:16px; padding:18px; margin-bottom:14px; }
+.prof-search-title { font-size:15px; font-weight:800; color:var(--text); margin-bottom:14px; }
+.prof-field { margin-bottom:12px; }
+.prof-field label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:5px; }
+.prof-field input, .prof-field select { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:14px; background:var(--surface); color:var(--text); font-family:'Inter',sans-serif; box-sizing:border-box; transition:border-color .2s; }
+.prof-field input:focus, .prof-field select:focus { outline:none; border-color:#4ECBA0; }
+.prof-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.prof-btn-buscar { width:100%; padding:13px; background:linear-gradient(135deg,#4ECBA0,#2D5E4A); color:#fff; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:opacity .2s,transform .1s; margin-top:4px; }
+.prof-btn-buscar:active { transform:scale(.98); opacity:.9; }
+.prof-btn-buscar:disabled { opacity:.6; cursor:not-allowed; }
+.prof-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.prof-filter { padding:6px 14px; border-radius:99px; font-size:12px; font-weight:600; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all .2s; }
+.prof-filter.active { background:#4ECBA0; color:#fff; border-color:#4ECBA0; }
+#prof-map { width:100%; height:320px; border-radius:16px; overflow:hidden; background:#e5ece8; margin-bottom:14px; border:1.5px solid var(--border); }
+.prof-map-loading { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:10px; color:var(--muted); font-size:13px; }
+.prof-results { margin-bottom:80px; }
+.prof-result-item { background:var(--card); border-radius:14px; padding:15px; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start; box-shadow:0 2px 8px rgba(0,0,0,.05); cursor:pointer; transition:transform .15s; }
+.prof-result-item:active { transform:scale(.98); }
+.prof-result-icon { width:42px; height:42px; border-radius:12px; background:#E8F2EC; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.prof-result-body { flex:1; min-width:0; }
+.prof-result-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.prof-result-type { font-size:12px; color:var(--muted); margin-bottom:6px; }
+.prof-result-tags { display:flex; gap:6px; flex-wrap:wrap; }
+.prof-result-tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:99px; }
+.prt-green  { background:#E8F2EC; color:#2D5E4A; }
+.prt-blue   { background:#EFF6FF; color:#1D4ED8; }
+.prt-orange { background:#FEF3C7; color:#92400E; }
+.prt-purple { background:#EDE9FE; color:#6D28D9; }
+.prof-result-dist { font-size:11px; color:var(--muted); margin-top:4px; }
+.prof-empty { text-align:center; padding:32px 20px; color:var(--muted); font-size:13px; line-height:1.6; }
+.prof-empty-icon { font-size:36px; margin-bottom:8px; }
 
 /* ══════ VARS COLABORADOR — escopadas para não vazar no painel empresa ══════ */
 #app-colaborador {
@@ -8003,13 +7889,12 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="ch2-sub">Psicólogos, psiquiatras e serviços de saúde mental — gratuitos, conveniados ou particulares — na sua região.</div>
     </div>
 
-    <!-- Teleatendimento Em Breve -->
     <div class="sec-title">📱 Teleatendimento</div>
     <div class="tele-card">
       <div class="tele-badge-soon">Em breve</div>
       <div class="tele-icon">🎥</div>
       <div class="tele-title">Atendimento online com psicólogos</div>
-      <div class="tele-desc">Sessões por videochamada com profissionais parceiros da Ranne. Agende no horário que funciona para você, sem sair de casa.</div>
+      <div class="tele-desc">Sessões por videochamada com profissionais parceiros da Ranne. Agende no horário que funciona pra você, sem sair de casa.</div>
       <div class="tele-chips">
         <span class="tele-chip">💚 Profissionais verificados</span>
         <span class="tele-chip">🔒 Sigilo total</span>
@@ -8019,18 +7904,14 @@ body.dark .ob-btn { background: #2D5E4A; }
       <button class="tele-btn-disabled" disabled>🔒 Disponível em breve</button>
     </div>
 
-    <!-- Busca de profissionais -->
     <div class="sec-title">🗺 Profissionais próximos</div>
-
     <div class="prof-search-card">
       <div class="prof-search-title">Buscar na minha região</div>
-
       <div class="prof-field">
         <label>CEP ou cidade</label>
-        <input type="text" id="prof-cep" placeholder="Ex: 01310-100 ou São Paulo, SP" maxlength="40"
+        <input type="text" id="prof-cep" placeholder="Ex: 08571-410 ou Ferraz de Vasconcelos" maxlength="40"
           onkeydown="if(event.key==='Enter') buscarProfissionais()">
       </div>
-
       <div class="prof-row">
         <div class="prof-field">
           <label>Tipo</label>
@@ -8053,18 +7934,15 @@ body.dark .ob-btn { background: #2D5E4A; }
           </select>
         </div>
       </div>
-
       <div class="prof-field" id="prof-convenio-wrap" style="display:none">
         <label>Nome do convênio</label>
         <input type="text" id="prof-convenio" placeholder="Ex: Unimed, Amil, Bradesco Saúde…">
       </div>
-
       <button class="prof-btn-buscar" id="prof-btn-buscar" onclick="buscarProfissionais()">
         🔍 Buscar profissionais
       </button>
     </div>
 
-    <!-- Filtros rápidos -->
     <div class="prof-filters" id="prof-filters" style="display:none">
       <button class="prof-filter active" onclick="filtrarProfs(this,'todos')">Todos</button>
       <button class="prof-filter" onclick="filtrarProfs(this,'sus')">🆓 Gratuito/SUS</button>
@@ -8072,7 +7950,6 @@ body.dark .ob-btn { background: #2D5E4A; }
       <button class="prof-filter" onclick="filtrarProfs(this,'particular')">💳 Particular</button>
     </div>
 
-    <!-- Mapa Leaflet (OpenStreetMap — gratuito) -->
     <div id="prof-map">
       <div class="prof-map-loading" id="prof-map-placeholder">
         <span style="font-size:36px">🗺</span>
@@ -8080,9 +7957,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       </div>
     </div>
 
-    <!-- Resultados -->
     <div class="prof-results" id="prof-results"></div>
-
   </div>
 
 <div class="col-page" id="cp-feminina">
@@ -9415,125 +9290,87 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMedMod
 
 
 /* ══════════════════════════════════════════════════════════
-   CUIDADO — Mapa de profissionais (OpenStreetMap + Overpass API)
+   CUIDADO — Mapa (OpenStreetMap + Overpass + Nominatim)
    ══════════════════════════════════════════════════════════ */
-
-let profMap = null;
-let profMarkers = [];
-let profResultsCache = [];
-let profFiltroAtivo = 'todos';
+let profMap = null, profMarkers = [], profResultsCache = [], profCircle = null;
 
 function toggleConvenioField() {
-  const cob = document.getElementById('prof-cobertura')?.value;
-  const wrap = document.getElementById('prof-convenio-wrap');
-  if (wrap) wrap.style.display = cob === 'convenio' ? 'block' : 'none';
+  const v = document.getElementById('prof-cobertura')?.value;
+  const w = document.getElementById('prof-convenio-wrap');
+  if (w) w.style.display = v === 'convenio' ? 'block' : 'none';
 }
 
-/* Inicializa o mapa Leaflet (roda uma vez) */
-function initProfMap(lat, lon) {
-  const mapEl = document.getElementById('prof-map');
-  if (!mapEl) return;
-  // Carrega Leaflet CSS + JS de forma lazy
+function carregarLeaflet(cb) {
+  if (typeof L !== 'undefined') { cb(); return; }
   if (!document.querySelector('link[href*="leaflet"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
     document.head.appendChild(link);
   }
-  // Se Leaflet JS ainda não carregou, carrega e aguarda
-  if (typeof L === 'undefined') {
-    const s = document.createElement('script');
-    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    s.onload = () => initProfMap(lat, lon);
-    document.head.appendChild(s);
-    return;
-  }
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload = cb;
+  document.head.appendChild(s);
+}
 
-  // Remove placeholder
+function initProfMap(lat, lon) {
+  const mapEl = document.getElementById('prof-map');
+  if (!mapEl) return;
   const ph = document.getElementById('prof-map-placeholder');
   if (ph) ph.remove();
-
-  if (profMap) {
-    profMap.setView([lat, lon], 14);
-    return;
-  }
-
-  profMap = L.map('prof-map').setView([lat, lon], 14);
+  if (profMap) { profMap.setView([lat, lon], 14); return; }
+  profMap = L.map('prof-map', { zoomControl: true }).setView([lat, lon], 14);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-    maxZoom: 19
+    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 19
   }).addTo(profMap);
 }
 
-/* Limpa marcadores do mapa */
 function limparMarcadores() {
   profMarkers.forEach(m => profMap?.removeLayer(m));
   profMarkers = [];
+  if (profCircle) { profMap?.removeLayer(profCircle); profCircle = null; }
 }
 
-/* Ícone customizado por tipo */
-function iconePorTipo(tipo) {
-  const cores = { psicologo:'#4ECBA0', psiquiatra:'#7C3AED', medico:'#3B82F6', caps:'#F97316', ubs:'#10B981', saude:'#6B7280' };
-  const cor = cores[tipo] || cores.saude;
-  return L.divIcon({
-    html: `<div style="width:28px;height:28px;border-radius:50%;background:${cor};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:12px">📍</div>`,
-    className: '',
-    iconSize: [28, 28],
-    iconAnchor: [14, 28],
-    popupAnchor: [0, -28]
-  });
+function distKm(lat1, lon1, lat2, lon2) {
+  const R = 6371, dL = (lat2-lat1)*Math.PI/180, dO = (lon2-lon1)*Math.PI/180;
+  return R * 2 * Math.atan2(Math.sqrt(Math.sin(dL/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dO/2)**2), Math.sqrt(1-Math.sin(dL/2)**2 - Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dO/2)**2));
 }
 
-/* Converte CEP em coordenadas via Nominatim */
 async function geocodificar(local) {
-  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(local + ', Brasil')}&format=json&limit=1&addressdetails=1`;
-  const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR' } });
-  const data = await res.json();
-  if (!data || data.length === 0) throw new Error('Local não encontrado');
-  return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), nome: data[0].display_name };
+  // Tenta com Brasil primeiro, depois sem
+  const tentativas = [
+    `${local}, Brasil`,
+    local
+  ];
+  for (const q of tentativas) {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br`, { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneApp/1.0' } });
+    const data = await res.json();
+    if (data && data.length > 0) return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  }
+  throw new Error('Local não encontrado');
 }
 
-/* Busca profissionais via Overpass API */
 async function buscarOverpass(lat, lon, tipo) {
-  const raio = 5000; // 5km
-  const tipoMap = {
-    psicologo:  '["healthcare"="psychotherapist"]["healthcare"!~"x"]',
-    psiquiatra: '["healthcare"="psychiatrist"]',
-    medico:     '["amenity"="doctors"]',
-    caps:       '["name"~"CAPS",i]',
-    ubs:        '["name"~"UBS|Unidade Básica",i]',
-    '':         '["amenity"~"doctors|hospital|clinic"]["healthcare"]'
+  const raio = 8000;
+  // Bug 3 fix: query mais abrangente para o Brasil onde OSM tem menos dados
+  const queries = {
+    psicologo:  `node["healthcare"~"psychotherapist|psychologist"](around:${raio},${lat},${lon}); way["healthcare"~"psychotherapist|psychologist"](around:${raio},${lat},${lon});`,
+    psiquiatra: `node["healthcare"="psychiatrist"](around:${raio},${lat},${lon}); way["healthcare"="psychiatrist"](around:${raio},${lat},${lon});`,
+    medico:     `node["amenity"="doctors"](around:${raio},${lat},${lon}); way["amenity"="doctors"](around:${raio},${lat},${lon});`,
+    caps:       `node["name"~"CAPS|Centro de Atenção Psicossocial",i](around:${raio},${lat},${lon}); way["name"~"CAPS|Centro de Atenção Psicossocial",i](around:${raio},${lat},${lon});`,
+    ubs:        `node["name"~"UBS|Unidade Básica|ESF|Posto de Saúde|PSF",i](around:${raio},${lat},${lon}); way["name"~"UBS|Unidade Básica|ESF|Posto de Saúde|PSF",i](around:${raio},${lat},${lon});`,
+    '':         `node["amenity"~"doctors|hospital|clinic|pharmacy"](around:${raio},${lat},${lon}); way["amenity"~"doctors|hospital|clinic"](around:${raio},${lat},${lon}); node["healthcare"](around:${raio},${lat},${lon}); node["name"~"CAPS|UBS|ESF|PSF|Posto de Saúde|Clínica|Consultório",i](around:${raio},${lat},${lon});`
   };
-  const filtro = tipoMap[tipo] || tipoMap[''];
 
-  // Busca nós e relações
-  const query = `
-    [out:json][timeout:20];
-    (
-      node${filtro}(around:${raio},${lat},${lon});
-      way${filtro}(around:${raio},${lat},${lon});
-    );
-    out center 30;
-  `;
-
+  const q = `[out:json][timeout:25]; ( ${queries[tipo] || queries['']} ); out center 40;`;
   const res = await fetch('https://overpass-api.de/api/interpreter', {
-    method: 'POST',
-    body: 'data=' + encodeURIComponent(query)
+    method: 'POST', body: 'data=' + encodeURIComponent(q)
   });
   const data = await res.json();
   return data.elements || [];
 }
 
-/* Distância em km entre dois pontos */
-function distKm(lat1, lon1, lat2, lon2) {
-  const R = 6371;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-/* Normaliza elemento Overpass em objeto padrão */
 function normalizarElemento(el, latRef, lonRef) {
   const tags = el.tags || {};
   const lat  = el.lat || el.center?.lat;
@@ -9541,150 +9378,132 @@ function normalizarElemento(el, latRef, lonRef) {
   if (!lat || !lon) return null;
 
   const nome = tags.name || tags['name:pt'] || 'Estabelecimento de saúde';
-  const hc   = tags.healthcare || '';
-  const am   = tags.amenity    || '';
+  const hc   = (tags.healthcare || '').toLowerCase();
+  const am   = (tags.amenity    || '').toLowerCase();
 
-  let tipo = 'saude';
-  let emoji = '🏥';
-  let tipoLabel = 'Saúde mental';
-  if (hc === 'psychotherapist' || hc === 'psychologist') { tipo = 'psicologo'; emoji = '🧠'; tipoLabel = 'Psicólogo/Psicoterapeuta'; }
-  else if (hc === 'psychiatrist') { tipo = 'psiquiatra'; emoji = '🩺'; tipoLabel = 'Psiquiatra'; }
-  else if (/CAPS/i.test(nome))   { tipo = 'caps'; emoji = '🏥'; tipoLabel = 'CAPS'; }
-  else if (/UBS|unidade básica/i.test(nome)) { tipo = 'ubs'; emoji = '🏥'; tipoLabel = 'UBS'; }
-  else if (am === 'doctors')     { tipo = 'medico'; emoji = '👨‍⚕️'; tipoLabel = 'Clínica / Consultório'; }
+  let tipo = 'saude', emoji = '🏥', tipoLabel = 'Saúde';
+  if (/psychotherapist|psychologist/.test(hc)) { tipo='psicologo'; emoji='🧠'; tipoLabel='Psicólogo/Psicoterapeuta'; }
+  else if (hc === 'psychiatrist')               { tipo='psiquiatra'; emoji='🩺'; tipoLabel='Psiquiatra'; }
+  else if (/CAPS|atenção psicossocial/i.test(nome)) { tipo='caps'; emoji='💚'; tipoLabel='CAPS'; }
+  else if (/UBS|unidade básica|ESF|PSF|posto de saúde/i.test(nome)) { tipo='ubs'; emoji='🏥'; tipoLabel='UBS / Posto de Saúde'; }
+  else if (am === 'hospital')  { tipo='hospital'; emoji='🏥'; tipoLabel='Hospital'; }
+  else if (am === 'clinic' || am === 'doctors') { tipo='medico'; emoji='👨‍⚕️'; tipoLabel='Clínica / Consultório'; }
+  else if (am === 'pharmacy')  { tipo='farmacia'; emoji='💊'; tipoLabel='Farmácia'; }
 
-  // Cobertura inferida
   let cobertura = 'particular';
-  if (/CAPS|CRAS|CREAS|NASF|UBS|SUS|PSF|ESF|unidade básica|centro de saúde/i.test(nome)) cobertura = 'sus';
-  else if (tags['healthcare:speciality'] || tags.phone) cobertura = 'particular';
+  if (/CAPS|CRAS|CREAS|UBS|SUS|PSF|ESF|unidade básica|posto de saúde|centro de saúde|municipal|prefeitura/i.test(nome)) cobertura = 'sus';
+  if (tags['payment:insurance'] || /convênio|convenio/i.test(tags.description || '')) cobertura = 'convenio';
 
   const dist = distKm(latRef, lonRef, lat, lon);
-  const convenios = tags['payment:insurance'] || tags.insurance || '';
-
-  return { nome, tipo, tipoLabel, emoji, lat, lon, dist, cobertura, convenios,
-           endereco: [tags['addr:street'], tags['addr:housenumber'], tags['addr:suburb']].filter(Boolean).join(', ') || '',
-           telefone: tags.phone || tags['contact:phone'] || '',
-           website: tags.website || tags['contact:website'] || '' };
+  return {
+    nome, tipo, tipoLabel, emoji, lat, lon, dist, cobertura,
+    endereco: [tags['addr:street'], tags['addr:housenumber']].filter(Boolean).join(', '),
+    telefone: tags.phone || tags['contact:phone'] || ''
+  };
 }
 
-/* Renderiza cards de resultado */
-function renderizarResultados(itens, latRef, lonRef) {
+function adicionarMarcador(p, i) {
+  if (!profMap) return;
+  const cores = { psicologo:'#4ECBA0', psiquiatra:'#7C3AED', medico:'#3B82F6', caps:'#F97316', ubs:'#10B981', hospital:'#EF4444', farmacia:'#F59E0B', saude:'#6B7280' };
+  const cor = cores[p.tipo] || cores.saude;
+  const icon = L.divIcon({
+    html: `<div style="width:28px;height:28px;border-radius:50%;background:${cor};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:13px">${p.emoji}</div>`,
+    className: '', iconSize:[28,28], iconAnchor:[14,28], popupAnchor:[0,-28]
+  });
+  const m = L.marker([p.lat, p.lon], { icon })
+    .addTo(profMap)
+    .bindPopup(`<strong>${p.nome}</strong><br><small>${p.tipoLabel}${p.telefone ? '<br>📞 '+p.telefone : ''}</small>`);
+  profMarkers.push(m);
+}
+
+function renderizarResultados(itens) {
   const el = document.getElementById('prof-results');
   if (!el) return;
-
-  if (itens.length === 0) {
-    el.innerHTML = `<div class="prof-empty"><div class="prof-empty-icon">🔍</div>Nenhum resultado encontrado nessa área.<br>Tente ampliar a busca ou mudar os filtros.</div>`;
+  if (!itens.length) {
+    el.innerHTML = '<div class="prof-empty"><div class="prof-empty-icon">🔍</div>Nenhum resultado em 8km.<br>Tente buscar por cidade ou mudar o filtro de tipo.</div>';
     return;
   }
-
   el.innerHTML = itens.map((p, i) => {
-    const distStr = p.dist < 1 ? Math.round(p.dist * 1000) + 'm' : p.dist.toFixed(1) + 'km';
-    const cobTag = p.cobertura === 'sus' ? '<span class="prof-result-tag prt-green">🆓 Gratuito/SUS</span>'
-                 : p.cobertura === 'convenio' ? '<span class="prof-result-tag prt-blue">🏥 Convênio</span>'
+    const d = p.dist < 1 ? Math.round(p.dist*1000)+'m' : p.dist.toFixed(1)+'km';
+    const cobTag = p.cobertura==='sus' ? '<span class="prof-result-tag prt-green">🆓 Gratuito/SUS</span>'
+                 : p.cobertura==='convenio' ? '<span class="prof-result-tag prt-blue">🏥 Convênio</span>'
                  : '<span class="prof-result-tag prt-orange">💳 Particular</span>';
-    const telTag = p.telefone ? `<span class="prof-result-tag prt-purple">📞 ${p.telefone}</span>` : '';
-    return `
-      <div class="prof-result-item" onclick="centralizarMarcador(${i})">
-        <div class="prof-result-icon">${p.emoji}</div>
-        <div class="prof-result-body">
-          <div class="prof-result-name">${p.nome}</div>
-          <div class="prof-result-type">${p.tipoLabel}${p.endereco ? ' · ' + p.endereco : ''}</div>
-          <div class="prof-result-tags">${cobTag}${telTag}</div>
-          <div class="prof-result-dist">📍 ${distStr} de distância</div>
-        </div>
-      </div>`;
+    const tel = p.telefone ? `<span class="prof-result-tag prt-purple">📞 ${p.telefone}</span>` : '';
+    return `<div class="prof-result-item" onclick="centralizarMarcador(${i})">
+      <div class="prof-result-icon">${p.emoji}</div>
+      <div class="prof-result-body">
+        <div class="prof-result-name">${p.nome}</div>
+        <div class="prof-result-type">${p.tipoLabel}${p.endereco?' · '+p.endereco:''}</div>
+        <div class="prof-result-tags">${cobTag}${tel}</div>
+        <div class="prof-result-dist">📍 ${d} de distância</div>
+      </div></div>`;
   }).join('');
 }
 
-/* Centraliza no marcador ao clicar no card */
 function centralizarMarcador(idx) {
   if (!profMap || !profMarkers[idx]) return;
   profMap.setView(profMarkers[idx].getLatLng(), 16);
   profMarkers[idx].openPopup();
 }
 
-/* Filtra resultados por cobertura */
 function filtrarProfs(btn, tipo) {
   document.querySelectorAll('.prof-filter').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  profFiltroAtivo = tipo;
-  const filtrados = tipo === 'todos' ? profResultsCache : profResultsCache.filter(p => p.cobertura === tipo);
-  renderizarResultados(filtrados);
+  const filtrados = tipo==='todos' ? profResultsCache : profResultsCache.filter(p => p.cobertura===tipo);
   limparMarcadores();
-  filtrados.forEach((p, i) => adicionarMarcador(p, i));
+  if (profMap && profResultsCache.length) {
+    profCircle = L.circle([profResultsCache[0]._latRef||0, profResultsCache[0]._lonRef||0], { radius:8000, color:'#4ECBA0', fillOpacity:.06, weight:1.5 }).addTo(profMap);
+  }
+  filtrados.forEach((p,i) => adicionarMarcador(p,i));
+  renderizarResultados(filtrados);
 }
 
-function adicionarMarcador(p, i) {
-  if (!profMap) return;
-  const m = L.marker([p.lat, p.lon], { icon: iconePorTipo(p.tipo) })
-    .addTo(profMap)
-    .bindPopup(`<strong>${p.nome}</strong><br>${p.tipoLabel}${p.telefone ? '<br>📞 ' + p.telefone : ''}`);
-  profMarkers.push(m);
-}
-
-/* Função principal de busca */
 async function buscarProfissionais() {
-  const cep   = document.getElementById('prof-cep')?.value.trim();
-  const tipo  = document.getElementById('prof-tipo')?.value || '';
-  const btn   = document.getElementById('prof-btn-buscar');
-
+  const cep  = document.getElementById('prof-cep')?.value.trim();
+  const tipo = document.getElementById('prof-tipo')?.value || '';
+  const btn  = document.getElementById('prof-btn-buscar');
   if (!cep) { toast('⚠ Informe o CEP ou cidade'); return; }
 
-  btn.disabled = true;
-  btn.textContent = '🔍 Buscando…';
+  btn.disabled = true; btn.textContent = '⏳ Buscando…';
 
-  try {
-    // 1. Geocodificar
-    const { lat, lon } = await geocodificar(cep);
+  carregarLeaflet(async () => {
+    try {
+      const { lat, lon } = await geocodificar(cep);
+      initProfMap(lat, lon);
 
-    // 2. Inicializa mapa
-    initProfMap(lat, lon);
+      limparMarcadores();
+      // Marcador do usuário
+      L.marker([lat, lon], { icon: L.divIcon({ html:'<div style="width:16px;height:16px;border-radius:50%;background:#4ECBA0;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>', className:'', iconSize:[16,16], iconAnchor:[8,8] }) }).addTo(profMap).bindPopup('Você está aqui').openPopup();
+      profCircle = L.circle([lat, lon], { radius:8000, color:'#4ECBA0', fillOpacity:.06, weight:1.5 }).addTo(profMap);
 
-    // Marcador da posição do usuário
-    limparMarcadores();
-    L.circle([lat, lon], { radius: 5000, color: '#4ECBA0', fillOpacity: .08, weight: 1.5 }).addTo(profMap);
-    L.marker([lat, lon], {
-      icon: L.divIcon({
-        html: '<div style="width:16px;height:16px;border-radius:50%;background:#4ECBA0;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>',
-        className: '', iconSize: [16,16], iconAnchor: [8,8]
-      })
-    }).addTo(profMap).bindPopup('Você está aqui').openPopup();
+      const elementos = await buscarOverpass(lat, lon, tipo);
+      profResultsCache = elementos
+        .map(el => normalizarElemento(el, lat, lon))
+        .filter(Boolean)
+        .sort((a,b) => a.dist - b.dist)
+        .slice(0, 40);
 
-    // 3. Busca Overpass
-    const elementos = await buscarOverpass(lat, lon, tipo);
+      // Guarda referência para filtros
+      profResultsCache.forEach(p => { p._latRef = lat; p._lonRef = lon; });
+      profResultsCache.forEach((p,i) => adicionarMarcador(p,i));
 
-    // 4. Normaliza e ordena por distância
-    profResultsCache = elementos
-      .map(el => normalizarElemento(el, lat, lon))
-      .filter(Boolean)
-      .sort((a, b) => a.dist - b.dist)
-      .slice(0, 30);
+      const filters = document.getElementById('prof-filters');
+      if (filters) filters.style.display = 'flex';
+      renderizarResultados(profResultsCache);
 
-    // 5. Adiciona marcadores
-    profResultsCache.forEach((p, i) => adicionarMarcador(p, i));
-
-    // 6. Renderiza lista
-    renderizarResultados(profResultsCache);
-
-    // 7. Mostra filtros
-    const filters = document.getElementById('prof-filters');
-    if (filters) filters.style.display = 'flex';
-
-    if (profResultsCache.length === 0) {
-      toast('Nenhum profissional encontrado em 5km. Tente outra busca.');
-    } else {
-      toast(`✅ ${profResultsCache.length} profissional(is) encontrado(s)`);
+      if (!profResultsCache.length) {
+        toast('Nenhum resultado em 8km. Tente buscar por município.');
+      } else {
+        toast('✅ ' + profResultsCache.length + ' local(is) encontrado(s)');
+      }
+    } catch(e) {
+      console.warn('[buscarProfissionais]', e);
+      toast('⚠ Não encontramos esse local. Tente: "Ferraz de Vasconcelos, SP"');
+    } finally {
+      btn.disabled = false; btn.textContent = '🔍 Buscar profissionais';
     }
-
-  } catch(e) {
-    toast('⚠ Não foi possível encontrar esse local. Tente com cidade ou estado.');
-    console.warn('[buscarProfissionais]', e);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '🔍 Buscar profissionais';
-  }
+  });
 }
-
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
   const humor = cs.humor;
@@ -11201,10 +11020,16 @@ function cpg(id) {
   const page = document.getElementById('cp-' + id);
   if (page) {
     page.classList.add('active');
-    // Rola pro topo — tenta o container correto
-    const scrollEl = document.getElementById('app-colaborador') || document.scrollingElement || document.body;
-    scrollEl.scrollTop = 0;
-    page.scrollTop = 0;
+    // Bug 1 fix: scroll pro topo em todos os containers possíveis
+    setTimeout(() => {
+      page.scrollTop = 0;
+      page.scrollIntoView({ block: 'start' });
+      const appEl = document.getElementById('app-colaborador');
+      if (appEl) appEl.scrollTop = 0;
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 10);
   }
 
   // Atualiza nav inferior
@@ -12846,6 +12671,16 @@ function clin_calcular() {
       chip.className = 'test-done-chip';
       chip.textContent = '✓ ' + nivel.nivel;
       card.appendChild(chip);
+    }
+    // Bug 2 fix: mostra botão "Ver resultado" no card
+    const existingBtn = card.querySelector('.test-ver-btn');
+    if (!existingBtn) {
+      const btn = document.createElement('button');
+      btn.className = 'test-ver-btn';
+      btn.textContent = 'Ver resultado →';
+      btn.style.cssText = 'display:block;width:100%;margin-top:10px;padding:10px;background:linear-gradient(135deg,#4ECBA0,#2D5E4A);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif';
+      btn.onclick = (e) => { e.stopPropagation(); clinAtual = t; cpg("clin-resultado"); };
+      card.appendChild(btn);
     }
   }
 
