@@ -2723,29 +2723,26 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center top;
 }
 .vid-play-btn {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(10,20,15,.3);
+  background: rgba(10,20,15,.28);
   transition: background .2s;
 }
-.vid-card:hover .vid-play-btn { background: rgba(10,20,15,.48); }
+.vid-card:hover .vid-play-btn { background: rgba(10,20,15,.45); }
 .vid-play-circle {
   width: 40px; height: 40px;
-  background: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.92);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+  box-shadow: 0 2px 12px rgba(0,0,0,.22);
 }
 .vid-play-circle svg { margin-left: 2px; }
 .vid-info { padding: 10px 10px 12px; }
 .vid-title { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 5px; }
-.vid-tag {
-  font-size: 10px; font-weight: 600;
-  padding: 2px 8px; border-radius: 99px;
-  display: inline-block;
-}
+.vid-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; display: inline-block; }
 .vid-tag.green  { background: #E8F2EC; color: #2D5E4A; }
 .vid-tag.purple { background: #EDE9FE; color: #6D28D9; }
 body.dark .vid-tag.green  { background: #1a3028; color: #4ECBA0; }
@@ -2753,37 +2750,28 @@ body.dark .vid-tag.purple { background: #2e1065; color: #a78bfa; }
 
 /* Modal */
 #med-modal {
-  display: none;
-  position: fixed; inset: 0;
-  z-index: 11000;
-  background: rgba(0,0,0,.92);
-  flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 20px;
-  animation: medFadeIn .22s ease;
+  display: none; position: fixed; inset: 0;
+  z-index: 11000; background: rgba(0,0,0,.92);
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px; animation: medFadeIn .22s ease;
 }
 #med-modal.show { display: flex; }
 @keyframes medFadeIn { from{opacity:0} to{opacity:1} }
 .med-modal-close {
   position: absolute; top: 16px; right: 16px;
-  background: rgba(255,255,255,.12); border: none;
-  color: #fff; font-size: 22px;
-  width: 40px; height: 40px; border-radius: 50%;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.12); border: none; color: #fff;
+  font-size: 22px; width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background .2s;
 }
 .med-modal-close:hover { background: rgba(255,255,255,.22); }
 .med-modal-title {
   color: #fff; font-size: 13px; font-weight: 700;
-  text-align: center; margin-bottom: 12px;
-  max-width: 320px; line-height: 1.4;
+  text-align: center; margin-bottom: 12px; max-width: 320px; line-height: 1.4;
 }
 .med-iframe-wrap {
-  width: 100%; max-width: 320px;
-  aspect-ratio: 9/16;
-  border-radius: 14px; overflow: hidden;
-  background: #000;
+  width: 100%; max-width: 320px; aspect-ratio: 9/16;
+  border-radius: 14px; overflow: hidden; background: #000;
   box-shadow: 0 8px 40px rgba(0,0,0,.6);
 }
 .med-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
@@ -6907,8 +6895,7 @@ body.dark .ob-btn { background: #2D5E4A; }
   <div class="med-iframe-wrap">
     <iframe id="med-iframe" src=""
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
+      allowfullscreen></iframe>
   </div>
 </div>
 
@@ -7157,40 +7144,21 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">
       Luana Medina · Professora de Yoga
     </div>
-
     <div class="vid-grid">
 
       <div class="vid-card" onclick="abrirMedModal('sDeAru8nIcs','Meditação Guiada · 1')">
-        <div class="vid-thumb">
-          <img src="https://img.youtube.com/vi/sDeAru8nIcs/mqdefault.jpg" alt="Meditação 1" loading="lazy">
-          <div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        </div>
-        <div class="vid-info">
-          <div class="vid-title">Iniciante</div>
-          <span class="vid-tag green">🌱 Yoga</span>
-        </div>
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/sDeAru8nIcs/maxresdefault.jpg" alt="Meditação 1" loading="lazy" onerror="this.src='https://img.youtube.com/vi/sDeAru8nIcs/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Iniciante</div><span class="vid-tag green">🌱 Yoga</span></div>
       </div>
 
       <div class="vid-card" onclick="abrirMedModal('vLVJCclOxQc','Meditação Guiada · 2')">
-        <div class="vid-thumb">
-          <img src="https://img.youtube.com/vi/vLVJCclOxQc/mqdefault.jpg" alt="Meditação 2" loading="lazy">
-          <div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        </div>
-        <div class="vid-info">
-          <div class="vid-title">Relaxamento</div>
-          <span class="vid-tag green">💆 Yoga</span>
-        </div>
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/vLVJCclOxQc/maxresdefault.jpg" alt="Meditação 2" loading="lazy" onerror="this.src='https://img.youtube.com/vi/vLVJCclOxQc/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Relaxamento</div><span class="vid-tag green">💆 Yoga</span></div>
       </div>
 
       <div class="vid-card" onclick="abrirMedModal('zJ3siyxnJME','Meditação Guiada · 3')">
-        <div class="vid-thumb">
-          <img src="https://img.youtube.com/vi/zJ3siyxnJME/mqdefault.jpg" alt="Meditação 3" loading="lazy">
-          <div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        </div>
-        <div class="vid-info">
-          <div class="vid-title">Foco & Equilíbrio</div>
-          <span class="vid-tag green">🎯 Yoga</span>
-        </div>
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/zJ3siyxnJME/maxresdefault.jpg" alt="Meditação 3" loading="lazy" onerror="this.src='https://img.youtube.com/vi/zJ3siyxnJME/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Foco & Equilíbrio</div><span class="vid-tag green">🎯 Yoga</span></div>
       </div>
 
     </div>
@@ -7200,40 +7168,21 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">
       Viviani Alexandre Rufino · Psicóloga Clínica CRP 06/215926
     </div>
-
     <div class="vid-grid">
 
       <div class="vid-card" onclick="abrirMedModal('5LbqfQSOX0E','Momento com a Psicóloga · 1')">
-        <div class="vid-thumb">
-          <img src="https://img.youtube.com/vi/5LbqfQSOX0E/mqdefault.jpg" alt="Psicóloga 1" loading="lazy">
-          <div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        </div>
-        <div class="vid-info">
-          <div class="vid-title">Dica #1</div>
-          <span class="vid-tag purple">Short</span>
-        </div>
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/5LbqfQSOX0E/maxresdefault.jpg" alt="Psicóloga 1" loading="lazy" onerror="this.src='https://img.youtube.com/vi/5LbqfQSOX0E/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Dica #1</div><span class="vid-tag purple">Short</span></div>
       </div>
 
       <div class="vid-card" onclick="abrirMedModal('nogZ5evLo8M','Momento com a Psicóloga · 2')">
-        <div class="vid-thumb">
-          <img src="https://img.youtube.com/vi/nogZ5evLo8M/mqdefault.jpg" alt="Psicóloga 2" loading="lazy">
-          <div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        </div>
-        <div class="vid-info">
-          <div class="vid-title">Dica #2</div>
-          <span class="vid-tag purple">Short</span>
-        </div>
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/nogZ5evLo8M/maxresdefault.jpg" alt="Psicóloga 2" loading="lazy" onerror="this.src='https://img.youtube.com/vi/nogZ5evLo8M/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Dica #2</div><span class="vid-tag purple">Short</span></div>
       </div>
 
       <div class="vid-card" onclick="abrirMedModal('nYZaEr5Nue4','Momento com a Psicóloga · 3')">
-        <div class="vid-thumb">
-          <img src="https://img.youtube.com/vi/nYZaEr5Nue4/mqdefault.jpg" alt="Psicóloga 3" loading="lazy">
-          <div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
-        </div>
-        <div class="vid-info">
-          <div class="vid-title">Dica #3</div>
-          <span class="vid-tag purple">Short</span>
-        </div>
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/nYZaEr5Nue4/maxresdefault.jpg" alt="Psicóloga 3" loading="lazy" onerror="this.src='https://img.youtube.com/vi/nYZaEr5Nue4/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Dica #3</div><span class="vid-tag purple">Short</span></div>
       </div>
 
     </div>
@@ -9203,9 +9152,7 @@ function fecharMedModal() {
 document.addEventListener('click', e => {
   if (e.target === document.getElementById('med-modal')) fecharMedModal();
 });
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') fecharMedModal();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMedModal(); });
 
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
