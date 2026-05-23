@@ -1171,9 +1171,9 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 .ob-hero {
   position: relative;
   width: 100%;
-  height: 46vh;
-  min-height: 220px;
-  max-height: 380px;
+  height: 52vh;
+  min-height: 260px;
+  max-height: 420px;
   overflow: hidden;
   flex-shrink: 0;
   background: linear-gradient(160deg, #1A2B14 0%, #2D5E4A 60%, #3D7A60 100%);
@@ -1181,7 +1181,7 @@ body.dark .tour-arrow-bottom { border-top-color: #1A2318; }
 .ob-hero img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center top;
   display: block;
 }
 .ob-hero::after {
@@ -2692,6 +2692,163 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 }
 
 /* ══ COLLAB SPECIFIC ══ */
+
+
+/* ══════════════════════════════════════════════════════════
+   MEDITAÇÃO & PSICÓLOGA — Seções de vídeo na página Pausa
+   ══════════════════════════════════════════════════════════ */
+
+/* Card horizontal de vídeo (meditação — landscape) */
+.med-card {
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  transition: transform .18s;
+  cursor: pointer;
+}
+.med-card:active { transform: scale(.98); }
+
+.med-thumb {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #1A2E20;
+  overflow: hidden;
+}
+.med-thumb img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.med-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10,20,15,.35);
+  transition: background .2s;
+}
+.med-card:hover .med-play-btn { background: rgba(10,20,15,.5); }
+.med-play-circle {
+  width: 56px; height: 56px;
+  background: rgba(255,255,255,.92);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
+}
+.med-play-circle svg { margin-left: 3px; }
+.med-duration {
+  position: absolute; bottom: 10px; right: 10px;
+  background: rgba(0,0,0,.72); color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 6px;
+}
+.med-info { padding: 14px 16px 16px; }
+.med-num {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: #4ECBA0; margin-bottom: 4px;
+}
+.med-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.med-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.med-tags  { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.med-tag   { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: #E8F2EC; color: #2D5E4A; }
+body.dark .med-tag { background: #1a3028; color: #4ECBA0; }
+
+/* Card vertical de short (psicóloga — 9:16) */
+.psi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.psi-card {
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  cursor: pointer;
+  transition: transform .18s;
+}
+.psi-card:active { transform: scale(.96); }
+
+.psi-thumb {
+  position: relative;
+  width: 100%;
+  padding-bottom: 177.78%; /* 9:16 */
+  background: #1A2E20;
+  overflow: hidden;
+}
+.psi-thumb img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.psi-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10,20,15,.3);
+}
+.psi-play-circle {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,.9);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.psi-play-circle svg { margin-left: 2px; }
+
+.psi-info { padding: 10px 10px 12px; }
+.psi-title { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+.psi-tag {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 99px;
+  background: #EDE9FE; color: #6D28D9;
+  display: inline-block;
+}
+body.dark .psi-tag { background: #2e1065; color: #a78bfa; }
+
+/* ── Modal de vídeo ── */
+#med-modal {
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 11000;
+  background: rgba(0,0,0,.92);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  animation: medFadeIn .22s ease;
+}
+#med-modal.show { display: flex; }
+@keyframes medFadeIn { from { opacity:0 } to { opacity:1 } }
+
+.med-modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(255,255,255,.12); border: none;
+  color: #fff; font-size: 22px;
+  width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.med-modal-close:hover { background: rgba(255,255,255,.22); }
+
+.med-modal-title {
+  color: #fff; font-size: 14px; font-weight: 700;
+  text-align: center; margin-bottom: 14px;
+  max-width: 360px; line-height: 1.4;
+}
+.med-iframe-wrap {
+  width: 100%; max-width: 560px;
+  border-radius: 14px; overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6);
+}
+/* Landscape (meditação) */
+.med-iframe-wrap.landscape { aspect-ratio: 16/9; }
+/* Portrait (shorts) */
+.med-iframe-wrap.portrait  { aspect-ratio: 9/16; max-width: 320px; }
+
+.med-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
 /* ══════ VARS COLABORADOR — escopadas para não vazar no painel empresa ══════ */
 #app-colaborador {
@@ -6804,6 +6961,19 @@ body.dark .ob-btn { background: #2D5E4A; }
   </div>
 </div>
 
+
+<!-- ══════════ MODAL VÍDEO (meditação & psicóloga) ══════════ -->
+<div id="med-modal">
+  <button class="med-modal-close" onclick="fecharMedModal()">✕</button>
+  <div class="med-modal-title" id="med-modal-title"></div>
+  <div class="med-iframe-wrap landscape" id="med-iframe-wrap">
+    <iframe id="med-iframe" src=""
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
 <!-- ══════════ APP COLABORADOR ══════════ -->
 <div id="app-colaborador" style="display:none">
 
@@ -7043,8 +7213,97 @@ body.dark .ob-btn { background: #2D5E4A; }
       <button class="btn-breath" id="btn-breath" onclick="toggleBreath()">Começar exercício</button>
     </div>
 
+
+    <!-- ── Meditações guiadas ── -->
+    <div class="sec-title" style="margin-top:24px">🧘 Meditações guiadas</div>
+
+    <div class="med-card" onclick="abrirMedModal('sDeAru8nIcs','Meditação Guiada · Iniciante','landscape')">
+      <div class="med-thumb">
+        <img src="https://img.youtube.com/vi/sDeAru8nIcs/mqdefault.jpg" alt="Meditação 1" loading="lazy">
+        <div class="med-play-btn"><div class="med-play-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="med-duration">Vídeo 1</div>
+      </div>
+      <div class="med-info">
+        <div class="med-num">Meditação · 1</div>
+        <div class="med-title">Meditação Guiada para Iniciantes</div>
+        <div class="med-desc">Um ponto de partida suave para quem está começando a meditar. Respire, observe e solte.</div>
+        <div class="med-tags"><span class="med-tag">🌱 Iniciante</span><span class="med-tag">Mindfulness</span></div>
+      </div>
+    </div>
+
+    <div class="med-card" onclick="abrirMedModal('vLVJCclOxQc','Meditação Guiada · Relaxamento','landscape')">
+      <div class="med-thumb">
+        <img src="https://img.youtube.com/vi/vLVJCclOxQc/mqdefault.jpg" alt="Meditação 2" loading="lazy">
+        <div class="med-play-btn"><div class="med-play-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="med-duration">Vídeo 2</div>
+      </div>
+      <div class="med-info">
+        <div class="med-num">Meditação · 2</div>
+        <div class="med-title">Meditação para Relaxamento</div>
+        <div class="med-desc">Solte a tensão do dia e deixe o corpo entrar em modo de descanso consciente.</div>
+        <div class="med-tags"><span class="med-tag">💆 Relaxamento</span><span class="med-tag">Estresse</span></div>
+      </div>
+    </div>
+
+    <div class="med-card" onclick="abrirMedModal('zJ3siyxnJME','Meditação Guiada · Foco & Equilíbrio','landscape')">
+      <div class="med-thumb">
+        <img src="https://img.youtube.com/vi/zJ3siyxnJME/mqdefault.jpg" alt="Meditação 3" loading="lazy">
+        <div class="med-play-btn"><div class="med-play-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        <div class="med-duration">Vídeo 3</div>
+      </div>
+      <div class="med-info">
+        <div class="med-num">Meditação · 3</div>
+        <div class="med-title">Meditação para Foco e Equilíbrio</div>
+        <div class="med-desc">Recupere a clareza mental e o equilíbrio emocional em poucos minutos.</div>
+        <div class="med-tags"><span class="med-tag">🎯 Foco</span><span class="med-tag">Equilíbrio</span></div>
+      </div>
+    </div>
+
+    <!-- ── Momento com a Psicóloga ── -->
+    <div class="sec-title" style="margin-top:24px">👩‍⚕️ Momento com a Psicóloga</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5;">
+      Viviani Alexandre Rufino · Psicóloga Clínica CRP 06/215926
+    </div>
+
+    <div class="psi-grid">
+
+      <div class="psi-card" onclick="abrirMedModal('5LbqfQSOX0E','Momento com a Psicóloga · 1','portrait')">
+        <div class="psi-thumb">
+          <img src="https://img.youtube.com/vi/5LbqfQSOX0E/mqdefault.jpg" alt="Psicóloga 1" loading="lazy">
+          <div class="psi-play-btn"><div class="psi-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="psi-info">
+          <div class="psi-title">Dica da Psicóloga #1</div>
+          <span class="psi-tag">Short</span>
+        </div>
+      </div>
+
+      <div class="psi-card" onclick="abrirMedModal('nogZ5evLo8M','Momento com a Psicóloga · 2','portrait')">
+        <div class="psi-thumb">
+          <img src="https://img.youtube.com/vi/nogZ5evLo8M/mqdefault.jpg" alt="Psicóloga 2" loading="lazy">
+          <div class="psi-play-btn"><div class="psi-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="psi-info">
+          <div class="psi-title">Dica da Psicóloga #2</div>
+          <span class="psi-tag">Short</span>
+        </div>
+      </div>
+
+      <div class="psi-card" onclick="abrirMedModal('nYZaEr5Nue4','Momento com a Psicóloga · 3','portrait')">
+        <div class="psi-thumb">
+          <img src="https://img.youtube.com/vi/nYZaEr5Nue4/mqdefault.jpg" alt="Psicóloga 3" loading="lazy">
+          <div class="psi-play-btn"><div class="psi-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+        </div>
+        <div class="psi-info">
+          <div class="psi-title">Dica da Psicóloga #3</div>
+          <span class="psi-tag">Short</span>
+        </div>
+      </div>
+
+    </div>
+
     <!-- Dicas de descompressão -->
-    <div class="sec-title" style="margin-top:8px">Dicas rápidas</div>
+    <div class="sec-title" style="margin-top:24px">Dicas rápidas</div>
 
     <div class="tip-card" onclick="openTip(0)">
       <div class="tip-icon" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.5"/><path d="M9 19l1-6 2 3 2-8"/><path d="M7 13l2-2 3 1"/></svg></div>
@@ -8985,6 +9244,50 @@ function baixarModeloCSV() {
 /* ─────────────────────────────────────
    SALVAR CHECK-IN
    ───────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════════════
+   MODAL DE VÍDEO — meditação (landscape) & shorts psicóloga (portrait)
+   ══════════════════════════════════════════════════════════ */
+function abrirMedModal(videoId, titulo, orientacao) {
+  const modal = document.getElementById('med-modal');
+  const iframe = document.getElementById('med-iframe');
+  const wrap   = document.getElementById('med-iframe-wrap');
+  const title  = document.getElementById('med-modal-title');
+  if (!modal || !iframe) return;
+
+  // Ajusta proporção conforme tipo
+  const isPortrait = orientacao === 'portrait';
+  if (wrap) {
+    wrap.classList.toggle('portrait', isPortrait);
+    wrap.classList.toggle('landscape', !isPortrait);
+  }
+
+  // Shorts usam /embed/ normal — YT redireciona corretamente
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  if (title) title.textContent = titulo;
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharMedModal() {
+  const modal  = document.getElementById('med-modal');
+  const iframe = document.getElementById('med-iframe');
+  if (!modal) return;
+  if (iframe) iframe.src = '';
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// Fecha ao clicar no fundo
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('med-modal');
+  if (modal && e.target === modal) fecharMedModal();
+});
+// Fecha com Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') fecharMedModal();
+});
+
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
   const humor = cs.humor;
@@ -9794,6 +10097,8 @@ function goSStep(id) {
   var stepsPanel = document.getElementById('onboarding-steps');
   if (newOb) newOb.style.display = 'none';
   if (stepsPanel) stepsPanel.style.display = 'flex';
+  var mascot = document.getElementById('auth-mascot');
+  if (mascot) mascot.style.display = window.innerWidth >= 861 ? 'flex' : 'none';
   const current = document.querySelector('.step.active');
   if (current) {
     current.classList.add('step-out');
