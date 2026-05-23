@@ -5653,29 +5653,29 @@ body.dark .ob-btn { background: #2D5E4A; }
             <h3>Como está seu humor hoje?</h3>
             <p>Resposta privada — só você vê o seu score individual</p>
             <div class="em-row" id="checkin-humor">
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😐</span><span class="el">Neutro</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">🙂</span><span class="el">Bem</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😄</span><span class="el">Ótimo</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="10"><span class="em">😔</span><span class="el">Muito mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="30"><span class="em">😕</span><span class="el">Mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="55"><span class="em">😐</span><span class="el">Neutro</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="75"><span class="em">🙂</span><span class="el">Bem</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="100"><span class="em">😄</span><span class="el">Ótimo</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Nível de energia</span></div>
             <div class="em-row" id="checkin-energia">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">⚡</span><span class="el">Muito alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">🔋</span><span class="el">Alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😴</span><span class="el">Baixa</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😪</span><span class="el">Esgotado</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="100"><span class="em">⚡</span><span class="el">Muito alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="70"><span class="em">🔋</span><span class="el">Alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="35"><span class="em">😴</span><span class="el">Baixa</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="10"><span class="em">😪</span><span class="el">Esgotado</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Carga de trabalho</span></div>
             <div class="em-row" id="checkin-carga">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😌</span><span class="el">Tranquila</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">👍</span><span class="el">Razoável</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😰</span><span class="el">Pesada</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">🔥</span><span class="el">Excessiva</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="10"><span class="em">😌</span><span class="el">Tranquila</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="35"><span class="em">👍</span><span class="el">Razoável</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="70"><span class="em">😰</span><span class="el">Pesada</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="100"><span class="em">🔥</span><span class="el">Excessiva</span></div>
             </div>
           </div>
           <button class="btn btn-primary btn-lg" style="width:100%" onclick="salvarCheckin()">Enviar Check-in ✓</button>
@@ -9156,22 +9156,43 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMedMod
 
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
-  const humor = cs.humor;
-  const energia = cs.energia;
-  const carga = cs.carga;
+  const humor   = typeof cs.humor   === 'number' ? cs.humor   : 50;
+  const energia = typeof cs.energia === 'number' ? cs.energia : 50;
+  const carga   = typeof cs.carga   === 'number' ? cs.carga   : 50;
+  const focoVal = typeof cs.foco    === 'number' ? cs.foco    : Math.round(humor * 0.7 + energia * 0.3);
 
   try {
-    const focoVal = cs.foco ?? Math.round((humor * 0.7 + energia * 0.3));
+    // Tabela checkins — usada pelo dash do colaborador
     await db.from('checkins').insert({
-      empresa_id: currentEmpresa?.id,
-      user_id: currentUser?.id,
+      empresa_id: currentEmpresa?.id || null,
+      user_id:    currentUser?.id,
       humor, energia, carga,
-      foco: focoVal,
+      foco:   focoVal,
       semana: getWeekNumber()
     });
+
+    // Tabela respostas — usada pelo painel da empresa (analytics)
+    let colaboradorId = null;
+    try {
+      const { data: col } = await db.from('colaboradores')
+        .select('id').eq('user_id', currentUser.id).maybeSingle();
+      colaboradorId = col?.id || null;
+    } catch {}
+
+    await db.from('respostas').insert({
+      colaborador_id: colaboradorId,
+      empresa_id:     currentEmpresa?.id || null,
+      scores_json:    { humor, energia, carga, foco: focoVal,
+                        geral: Math.round((humor + energia + (100 - carga) + focoVal) / 4) },
+      respostas:      { tipo: 'checkin', humor, energia, carga, foco: focoVal },
+      enviado_em:     new Date().toISOString()
+    }).catch(() => {});
   } catch {}
 
   await carregarDadosHomeColaborador();
+  // Fecha streak popup se aberto
+  if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
+  localStorage.setItem('ranne-sp-dismissed-week', String(getWeekNumber()));
   toast('✅ Check-in enviado! Obrigado.');
 }
 
@@ -9306,8 +9327,10 @@ function selEm(btn, group) {
   const row = btn.closest('.em-row');
   row.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  checkinState[group] = btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent;
-  window.ciState[group] = checkinState[group]; // sincroniza ambos
+  // Bug A fix: salva o score numérico (data-score), não o emoji/texto
+  const score = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : (btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent);
+  checkinState[group] = score;
+  window.ciState[group] = score;
 }
 
 /* ─────────────────────────────────────
@@ -11585,6 +11608,8 @@ function atualizarInicioColaborador(nome) {
 
   // Carrega dados reais do Supabase
   carregarDadosHomeColaborador();
+  // Bug B fix: restaura testes realizados hoje
+  setTimeout(restaurarTestesRealizados, 800);
 }
 
 async function carregarDadosHomeColaborador() {
@@ -11593,12 +11618,16 @@ async function carregarDadosHomeColaborador() {
   try {
     // Busca último check-in
     const semAtual = getWeekNumber();
+    // Bug C fix: dash mostra dados do MÊS ATUAL — reseta automaticamente todo dia 1
+    const agora = new Date();
+    const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1).toISOString();
     const { data: checkins } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
       .eq('user_id', currentUser.id)
+      .gte('created_at', inicioMes)
       .order('created_at', { ascending: false })
-      .limit(4);
+      .limit(10);
 
     if (checkins && checkins.length > 0) {
       const ultimo = checkins[0];
@@ -12179,6 +12208,65 @@ let clinAtual = null;
 let clinQAtual = 0;
 let clinResps  = [];
 let clinSel    = null;
+
+/* ══ RESTAURAR TESTES REALIZADOS ao entrar no app ══
+   - Testes: válidos só no dia atual (resetam no dia seguinte)
+   - Dash: resetar só fim do mês (controlado por carregarDadosHomeColaborador)
+*/
+async function restaurarTestesRealizados() {
+  const hoje = new Date().toISOString().split('T')[0];
+
+  // 1. Tenta Supabase primeiro
+  if (db && currentUser?.id) {
+    try {
+      const { data: feitos } = await db.from('testes_realizados')
+        .select('teste_id, score, nivel, tipo, realizado_em')
+        .eq('user_id', currentUser.id)
+        .eq('realizado_em', hoje); // só hoje — amanhã reseta automaticamente
+
+      if (feitos && feitos.length > 0) {
+        feitos.forEach(f => {
+          clinDone[f.teste_id] = { score: f.score, nivel: f.nivel, tipo: f.tipo };
+          const card = document.getElementById('tc-' + f.teste_id);
+          if (card && !card.classList.contains('done')) {
+            card.classList.add('done');
+            if (!card.querySelector('.test-done-chip')) {
+              const chip = document.createElement('div');
+              chip.className = 'test-done-chip';
+              chip.textContent = '✓ ' + f.nivel;
+              card.appendChild(chip);
+            }
+          }
+        });
+        // Sincroniza localStorage
+        const local = {};
+        feitos.forEach(f => { local[f.teste_id] = { score: f.score, nivel: f.nivel, tipo: f.tipo, data: hoje }; });
+        localStorage.setItem('ranne-testes-done', JSON.stringify(local));
+        return;
+      }
+    } catch {}
+  }
+
+  // 2. Fallback: localStorage (offline)
+  try {
+    const local = JSON.parse(localStorage.getItem('ranne-testes-done') || '{}');
+    Object.entries(local).forEach(([id, dados]) => {
+      if (dados.data !== hoje) return; // expirado — ignora
+      clinDone[id] = { score: dados.score, nivel: dados.nivel, tipo: dados.tipo };
+      const card = document.getElementById('tc-' + id);
+      if (card && !card.classList.contains('done')) {
+        card.classList.add('done');
+        if (!card.querySelector('.test-done-chip')) {
+          const chip = document.createElement('div');
+          chip.className = 'test-done-chip';
+          chip.textContent = '✓ ' + dados.nivel;
+          card.appendChild(chip);
+        }
+      }
+    });
+  } catch {}
+}
+
 const clinDone = {};
 
 /* ── Iniciar teste ── */
@@ -12276,7 +12364,7 @@ function clin_next() {
 }
 
 /* ── Calcular resultado ── */
-function clin_calcular() {
+async function clin_calcular() {
   const t = clinAtual;
   let total = 0;
 
@@ -12305,8 +12393,30 @@ function clin_calcular() {
     if (total >= n.min && total <= n.max) { nivel = n; break; }
   }
 
-  // Marcar como feito
+  // Bug B fix: persiste resultado no Supabase E no localStorage (fallback offline)
   clinDone[t.id] = { score: total, nivel: nivel.nivel, tipo: nivel.tipo };
+  const hoje = new Date().toISOString().split('T')[0];
+  try {
+    // Salva/atualiza em testes_realizados (upsert por user_id + teste_id + data)
+    if (db && currentUser?.id) {
+      await db.from('testes_realizados').upsert({
+        user_id:    currentUser.id,
+        empresa_id: currentEmpresa?.id || null,
+        teste_id:   t.id,
+        score:      total,
+        nivel:      nivel.nivel,
+        tipo:       nivel.tipo,
+        realizado_em: hoje
+      }, { onConflict: 'user_id,teste_id,realizado_em' }).catch(() => {});
+    }
+  } catch {}
+  // Persiste localmente como fallback
+  try {
+    const local = JSON.parse(localStorage.getItem('ranne-testes-done') || '{}');
+    local[t.id] = { score: total, nivel: nivel.nivel, tipo: nivel.tipo, data: hoje };
+    localStorage.setItem('ranne-testes-done', JSON.stringify(local));
+  } catch {}
+
   const card = document.getElementById('tc-' + t.id);
   if (card) {
     card.classList.add('done');
