@@ -9625,15 +9625,39 @@ async function buscarOverpass(lat, lon, tipo) {
     'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
     'https://overpass-api.de/api/interpreter'
   ];
-  let res;
+  // Tenta com fetch primeiro, depois XMLHttpRequest (às vezes passa CORS)
+  let data = null;
+
   for (const ep of endpoints) {
     try {
-      res = await fetch(ep, { method: 'POST', body: 'data=' + encodeURIComponent(q) });
-      if (res.ok) break;
+      const res = await fetch(ep, {
+        method: 'POST',
+        mode: 'cors',
+        body: 'data=' + encodeURIComponent(q),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+      if (res.ok) { data = await res.json(); break; }
+    } catch {}
+
+    // Fallback XHR (sem preflight em alguns casos)
+    try {
+      data = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', ep, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.timeout = 8000;
+        xhr.onload = () => {
+          try { resolve(JSON.parse(xhr.responseText)); }
+          catch { reject(new Error('parse error')); }
+        };
+        xhr.onerror = xhr.ontimeout = () => reject(new Error('xhr failed'));
+        xhr.send('data=' + encodeURIComponent(q));
+      });
+      if (data) break;
     } catch {}
   }
-  if (!res || !res.ok) throw new Error('Overpass indisponível');
-  const data = await res.json();
+
+  if (!data) throw new Error('Overpass indisponível');
   return data.elements || [];
 }
 
@@ -9764,7 +9788,24 @@ async function buscarProfissionais() {
       }
     } catch(e) {
       console.warn('[buscarProfissionais]', e);
-      toast('⚠ Não encontramos esse local. Tente: "Ferraz de Vasconcelos, SP"');
+      // Fallback: abre Google Maps com busca na região
+      const cepVal = document.getElementById('prof-cep')?.value.trim() || '';
+      const tipoVal = document.getElementById('prof-tipo')?.value || 'psicólogo';
+      const gmQuery = encodeURIComponent((tipoVal || 'psicólogo clínica') + ' próximo ' + cepVal + ' Brasil');
+      const gmUrl = 'https://www.google.com/maps/search/' + gmQuery;
+
+      const resultDiv = document.getElementById('prof-resultados');
+      if (resultDiv) {
+        resultDiv.innerHTML = `
+          <div style="padding:20px;text-align:center;background:var(--surface);border-radius:12px;border:1px solid var(--border)">
+            <div style="font-size:24px;margin-bottom:10px">🗺️</div>
+            <div style="font-weight:700;color:var(--text);margin-bottom:6px">Busca direta no mapa não disponível</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:14px">O serviço de mapa está temporariamente indisponível.<br>Tente buscar pelo Google Maps:</div>
+            <a href="${gmUrl}" target="_blank" style="display:inline-block;padding:10px 20px;background:var(--green);color:#fff;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none">
+              Buscar no Google Maps →
+            </a>
+          </div>`;
+      }
     } finally {
       if (btn) { btn.disabled = false; btn.textContent = '🔍 Buscar profissionais'; }
     }
@@ -9784,6 +9825,7 @@ async function salvarCheckin() {
   if (btn) { btn.disabled = true; btn.textContent = 'Salvando…'; }
 
   // ── Atualiza dashboard IMEDIATAMENTE com valores locais (sem esperar banco) ──
+  window._ultimoCheckinLocal = Date.now(); // timestamp para evitar race condition
   atualizarDashboardLocal({ humor, energia, carga, foco: focoVal });
 
   // ── Salva no banco em background ──
@@ -9797,11 +9839,13 @@ async function salvarCheckin() {
   }).then(({ error }) => {
     if (error) {
       console.warn('[checkin insert]', error.message);
-    } else {
-      // Recarrega dashboard para refletir o novo check-in
-      if (typeof loadDashboardData === 'function') loadDashboardData();
-      if (typeof carregarDadosHomeColaborador === 'function') carregarDadosHomeColaborador();
     }
+    // Aguarda 2s para o banco processar antes de recarregar
+    // (evita race condition onde a query retorna dados pré-insert)
+    setTimeout(() => {
+      window._lastDashLoad = 0; // força reload
+      if (typeof carregarDadosHomeColaborador === 'function') carregarDadosHomeColaborador();
+    }, 2000);
   }).catch(e => console.warn('[checkin]', e));
 
   if (btn) { btn.disabled = false; btn.textContent = 'Enviar Check-in ✓'; }
@@ -15170,13 +15214,12 @@ carregarPreferencias();
   }
 }
 
-// SERVICE WORKER — Limpa cache antigo e registra novo
+// SERVICE WORKER — Desregistrado para evitar cache stale
 // ══════════════════════════════════════════════════════════
-// Detecta se SW está servindo versão antiga e força reload
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    // Novo SW ativado — recarrega para pegar versão fresh
-    console.log('[PWA] Novo SW ativo — recarregando para versão atualizada');
+  // Desregistra todos os SWs antigos que possam estar cacheando a página
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.unregister());
   });
 }
 if ('serviceWorker' in navigator) {
