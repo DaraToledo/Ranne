@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -9548,7 +9551,21 @@ function carregarLeaflet(cb) {
   }
   const s = document.createElement('script');
   s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-  s.onload = cb;
+
+  // Timeout: se Leaflet não carregar em 12s libera o botão
+  const leafletTimer = setTimeout(() => {
+    const btn = document.querySelector('#cuidado button, [onclick*="buscarProfissionais"]');
+    if (btn) { btn.disabled = false; btn.textContent = '🔍 Buscar profissionais'; }
+    toast('⚠ Mapa não carregou. Verifique sua conexão.');
+  }, 12000);
+
+  s.onload = () => { clearTimeout(leafletTimer); cb(); };
+  s.onerror = () => {
+    clearTimeout(leafletTimer);
+    const btn = document.querySelector('#cuidado button, [onclick*="buscarProfissionais"]');
+    if (btn) { btn.disabled = false; btn.textContent = '🔍 Buscar profissionais'; }
+    toast('⚠ Erro ao carregar o mapa. Tente novamente.');
+  };
   document.head.appendChild(s);
 }
 
@@ -9796,6 +9813,8 @@ async function salvarCheckin() {
   document.querySelectorAll('#p-checkin .em-btn.sel, #cp-checkin .em-btn.sel')
     .forEach(b => b.classList.remove('sel'));
   toast('✅ Check-in enviado! Obrigado.');
+  // Navega para início para mostrar dashboard atualizado
+  setTimeout(() => cpg('inicio'), 600);
 }
 
 /* Atualiza dashboard instantaneamente com valores locais */
@@ -9806,18 +9825,14 @@ function atualizarDashboardLocal({ humor, energia, carga, foco }) {
     ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
     : scoreCI;
 
-  console.log('[DASH] atualizarDashboardLocal chamado', { humor, energia, carga, foco, score });
 
   const scoreEl = document.getElementById('ih-score-num');
   const ringEl  = document.getElementById('ih-ring-fill');
   const chipEl  = document.getElementById('ih-chip');
   const subEl   = document.getElementById('ih-score-sub');
 
-  console.log('[DASH] elementos encontrados:', {
-    scoreEl: !!scoreEl, ringEl: !!ringEl, chipEl: !!chipEl, subEl: !!subEl
-  });
 
-  if (scoreEl) { scoreEl.textContent = score; console.log('[DASH] score atualizado para', score); }
+  if (scoreEl) scoreEl.textContent = score;
   if (ringEl) {
     const offset = Math.round(263 - (score / 100) * 263);
     ringEl.style.setProperty('--ih-offset', offset);
@@ -9974,7 +9989,7 @@ function selEm(btn, group) {
   const val = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : 50;
   checkinState[group] = val;
   window.ciState[group] = val;
-  console.log('[CHECKIN] selEm:', group, '=', val, '| estado atual:', JSON.stringify(checkinState));
+
 }
 
 /* ─────────────────────────────────────
@@ -12286,7 +12301,7 @@ async function carregarDadosHomeColaborador() {
 
     const checkins    = ciRes.data || [];
     const testesFeitos = trRes.data || [];
-    console.log('[DASH] carregarDados: checkins=', checkins.length, 'testes=', testesFeitos.length, 'ciErr=', ciRes.error?.message);
+
 
 
 
@@ -15157,6 +15172,13 @@ carregarPreferencias();
 
 // SERVICE WORKER — Limpa cache antigo e registra novo
 // ══════════════════════════════════════════════════════════
+// Detecta se SW está servindo versão antiga e força reload
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // Novo SW ativado — recarrega para pegar versão fresh
+    console.log('[PWA] Novo SW ativo — recarregando para versão atualizada');
+  });
+}
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
