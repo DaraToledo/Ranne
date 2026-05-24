@@ -6991,7 +6991,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         </div>
         <div class="ih-score-info">
           <div class="ih-score-title">Seu bem-estar<br>esta semana</div>
-          <div class="ih-score-sub" id="ih-score-sub">Nenhum check-in este mês</div>
+          <div class="ih-score-sub"><span id="ih-score-sub">Carregando...</span></div>
           <div class="ih-score-chip ih-chip-good" id="ih-chip">Você está bem</div>
         </div>
       </div>
@@ -8344,7 +8344,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (cnIcon) cnIcon.textContent = '☀️';
   }
 
-  // Hard timeout — 3s, mas só se não estiver roteando
   setTimeout(() => {
     const ls = document.getElementById('loading-screen');
     if (ls && !window._roteandoUsuario) ls.style.display = 'none';
@@ -9569,21 +9568,62 @@ async function salvarCheckin() {
   const btn = document.querySelector('#cp-checkin .btn-primary');
   if (btn) { btn.disabled = true; btn.textContent = 'Salvando…'; }
 
-  try {
-    const { error } = await db.from('checkins').insert({
-      empresa_id: currentEmpresa?.id || null,
-      user_id:    currentUser?.id,
-      humor, energia, carga,
-      foco:   focoVal,
-      semana: String(getWeekNumber()) // banco usa tipo TEXT
-    });
-    if (error) console.warn('[checkin error]', error.message, error.details);
-  } catch(e) { console.warn('[salvarCheckin]', e); }
+  // ── Atualiza dashboard IMEDIATAMENTE com valores locais (sem esperar banco) ──
+  atualizarDashboardLocal({ humor, energia, carga, foco: focoVal });
 
-  await carregarDadosHomeColaborador();
-  if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
+  // ── Salva no banco em background ──
+  db.from('checkins').insert({
+    empresa_id: currentEmpresa?.id || null,
+    user_id:    currentUser?.id,
+    humor, energia, carga,
+    foco:   focoVal,
+    semana: String(getWeekNumber())
+  }).then(({ error }) => {
+    if (error) console.warn('[checkin insert]', error.message);
+    // Confirma com dados reais do banco (assíncrono, não bloqueia UI)
+    carregarDadosHomeColaborador();
+  }).catch(e => console.warn('[checkin]', e));
+
   if (btn) { btn.disabled = false; btn.textContent = 'Enviar Check-in ✓'; }
+  if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
   toast('✅ Check-in enviado! Obrigado.');
+}
+
+/* Atualiza dashboard instantaneamente com valores locais */
+function atualizarDashboardLocal({ humor, energia, carga, foco }) {
+  const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
+  // Considera testes já carregados se houver
+  const scoresTestes = window._ultimoCheckin?.scoresTestes ?? null;
+  const score = scoresTestes !== null
+    ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
+    : scoreCI;
+
+  const scoreEl = document.getElementById('ih-score-num');
+  const ringEl  = document.getElementById('ih-ring-fill');
+  const chipEl  = document.getElementById('ih-chip');
+  const subEl   = document.getElementById('ih-score-sub');
+
+  if (scoreEl) scoreEl.textContent = score;
+  if (ringEl) {
+    const offset = Math.round(263 - (score / 100) * 263);
+    ringEl.style.setProperty('--ih-offset', offset);
+  }
+  if (chipEl) {
+    if      (score >= 70) { chipEl.textContent = 'Você está bem 💚';     chipEl.className = 'ih-score-chip ih-chip-good'; }
+    else if (score >= 50) { chipEl.textContent = 'Atenção ao bem-estar'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
+    else                  { chipEl.textContent = 'Cuide de você 💙';      chipEl.className = 'ih-score-chip ih-chip-bad';  }
+  }
+  if (subEl) subEl.textContent = 'Atualizado agora';
+
+  ['humor','energia','carga','foco'].forEach(k => {
+    const val = k==='humor'?humor : k==='energia'?energia : k==='carga'?carga : foco;
+    const valEl = document.getElementById('ih-val-'+k);
+    const barEl = document.getElementById('ih-bar-'+k);
+    if (valEl) valEl.textContent = val;
+    if (barEl) barEl.style.width = val + '%';
+  });
+
+  window._ultimoCheckin = { humor, energia, carga, foco, score, scoreCI, scoresTestes };
 }
 
 /* ─────────────────────────────────────
@@ -12007,112 +12047,86 @@ function atualizarInicioColaborador(nome) {
 
 async function carregarDadosHomeColaborador() {
   if (!currentUser?.id) return;
-
   try {
-    // ── 1. Busca check-ins do mês atual ──────────────────────────────────
+    // Queries em paralelo para reduzir latência
     const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+    const limite30  = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
 
-    const ciQuery = await db
-      .from('checkins')
-      .select('humor, energia, carga, foco, semana, tipo, created_at')
-      .eq('user_id', currentUser.id)
-      .gte('created_at', inicioMes)
-      .order('created_at', { ascending: false })
-      .limit(10);
+    const [ciRes, trRes] = await Promise.all([
+      db.from('checkins')
+        .select('humor, energia, carga, foco, semana, tipo, created_at')
+        .eq('user_id', currentUser.id)
+        .gte('created_at', inicioMes)
+        .order('created_at', { ascending: false })
+        .limit(10),
+      db.from('testes_realizados')
+        .select('teste_id, score, nivel, tipo, realizado_em')
+        .eq('user_id', currentUser.id)
+        .gte('realizado_em', limite30)
+        .order('realizado_em', { ascending: false })
+    ]);
 
-    const checkins = ciQuery.data || [];
-    if (ciQuery.error) console.warn('[dash ci]', ciQuery.error.message);
+    const checkins    = ciRes.data || [];
+    const testesFeitos = trRes.data || [];
+    if (ciRes.error) console.warn('[dash ci]', ciRes.error.message);
 
-    // ── 2. Busca testes dos últimos 30 dias ──────────────────────────────
-    const limite30 = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
-
-    const trQuery = await db
-      .from('testes_realizados')
-      .select('teste_id, score, nivel, tipo, realizado_em')
-      .eq('user_id', currentUser.id)
-      .gte('realizado_em', limite30)
-      .order('realizado_em', { ascending: false });
-
-    const testesFeitos = trQuery.data || [];
-
-    // ── 3. Score dos testes (tipo → 0-100 invertido) ─────────────────────
+    // Score testes
     const TIPO_SCORE = { baixo:90, medio:60, alto:30, critico:10 };
     let scoresTestes = null;
     if (testesFeitos.length > 0) {
       const vistos = new Set();
-      const ultimos = testesFeitos.filter(t => {
-        if (vistos.has(t.teste_id)) return false;
-        vistos.add(t.teste_id); return true;
-      });
-      const vals = ultimos.map(t => TIPO_SCORE[t.tipo] ?? 60);
-      scoresTestes = Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
+      const vals = testesFeitos
+        .filter(t => { if(vistos.has(t.teste_id)) return false; vistos.add(t.teste_id); return true; })
+        .map(t => TIPO_SCORE[t.tipo] ?? 60);
+      scoresTestes = Math.round(vals.reduce((a,b)=>a+b,0) / vals.length);
     }
 
-    // ── 4. Calcula score a partir do check-in mais recente ────────────────
     if (checkins.length > 0) {
-      const ultimo  = checkins[0];
-      const humor   = Math.round(ultimo.humor   ?? 50);
-      const energia = Math.round(ultimo.energia  ?? 50);
-      const carga   = Math.round(ultimo.carga    ?? 50);
-      const foco    = Math.round(ultimo.foco     ?? Math.round(humor * 0.7 + energia * 0.3));
-
-      // Score check-in (carga é inverso — menor carga = melhor)
+      const u       = checkins[0];
+      const humor   = Math.round(u.humor   ?? 50);
+      const energia = Math.round(u.energia  ?? 50);
+      const carga   = Math.round(u.carga    ?? 50);
+      const foco    = Math.round(u.foco     ?? Math.round(humor*0.7+energia*0.3));
       const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
-
-      // Composto: 70% check-in + 30% testes (só se tiver testes)
-      const score = scoresTestes !== null
+      const score   = scoresTestes !== null
         ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
         : scoreCI;
 
-      // ── 5. Atualiza UI ────────────────────────────────────────────────
       const scoreEl = document.getElementById('ih-score-num');
       const ringEl  = document.getElementById('ih-ring-fill');
       const chipEl  = document.getElementById('ih-chip');
       const subEl   = document.getElementById('ih-score-sub');
 
       if (scoreEl) scoreEl.textContent = score;
-      if (ringEl) {
-        const offset = Math.round(263 - (score / 100) * 263);
-        ringEl.style.setProperty('--ih-offset', offset);
-      }
+      if (ringEl) ringEl.style.setProperty('--ih-offset', Math.round(263-(score/100)*263));
       if (chipEl) {
-        if      (score >= 70) { chipEl.textContent = 'Você está bem 💚';         chipEl.className = 'ih-score-chip ih-chip-good'; }
-        else if (score >= 50) { chipEl.textContent = 'Atenção ao bem-estar';     chipEl.className = 'ih-score-chip ih-chip-warn'; }
-        else                  { chipEl.textContent = 'Cuide de você 💙';          chipEl.className = 'ih-score-chip ih-chip-bad';  }
+        if      (score>=70) { chipEl.textContent='Você está bem 💚';     chipEl.className='ih-score-chip ih-chip-good'; }
+        else if (score>=50) { chipEl.textContent='Atenção ao bem-estar'; chipEl.className='ih-score-chip ih-chip-warn'; }
+        else                { chipEl.textContent='Cuide de você 💙';      chipEl.className='ih-score-chip ih-chip-bad';  }
       }
-      // Remove "Baseado nos seus check-ins" — substitui por composição real
       if (subEl) subEl.textContent = scoresTestes !== null
-        ? 'Check-in + testes (' + checkins.length + ' registros)'
+        ? 'Check-in + ' + testesFeitos.length + ' teste(s)'
         : checkins.length + ' check-in(s) este mês';
 
-      // Dimensões
       ['humor','energia','carga','foco'].forEach(k => {
-        const val = k === 'humor' ? humor : k === 'energia' ? energia : k === 'carga' ? carga : foco;
-        const valEl = document.getElementById('ih-val-' + k);
-        const barEl = document.getElementById('ih-bar-' + k);
-        if (valEl) valEl.textContent = val;
-        if (barEl) barEl.style.width = val + '%';
+        const val = k==='humor'?humor:k==='energia'?energia:k==='carga'?carga:foco;
+        const el=document.getElementById('ih-val-'+k), br=document.getElementById('ih-bar-'+k);
+        if(el) el.textContent=val;
+        if(br) br.style.width=val+'%';
       });
 
       window._ultimoCheckin = { humor, energia, carga, foco, score, scoreCI, scoresTestes };
 
     } else {
-      // Sem check-in — placeholders
       ['humor','energia','carga','foco'].forEach(k => {
-        const el = document.getElementById('ih-val-' + k);
-        if (el) el.textContent = '—';
+        const el=document.getElementById('ih-val-'+k); if(el) el.textContent='—';
       });
-      const scoreEl = document.getElementById('ih-score-num');
-      if (scoreEl) scoreEl.textContent = '—';
-      const chipEl = document.getElementById('ih-chip');
-      if (chipEl) { chipEl.textContent = 'Faça seu primeiro check-in'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
-      const subEl = document.getElementById('ih-score-sub');
-      if (subEl) subEl.textContent = 'Nenhum check-in este mês';
+      const se=document.getElementById('ih-score-num'); if(se) se.textContent='—';
+      const ce=document.getElementById('ih-chip');
+      if(ce){ ce.textContent='Faça seu primeiro check-in'; ce.className='ih-score-chip ih-chip-warn'; }
+      const su=document.getElementById('ih-score-sub'); if(su) su.textContent='Nenhum check-in este mês';
     }
-
-  } catch(e) {
-    console.warn('[home collab]', e);
-  }
+  } catch(e) { console.warn('[home collab]', e); }
 }
 
 
@@ -14644,11 +14658,13 @@ async function salvarCheckinFeminino() {
         energia:    energia ?? 50,
         carga,
         foco:       focoVal,
-        semana:     String(getWeekNumber()), // banco TEXT
+        semana:     String(getWeekNumber()),
         tipo:       'feminino',
         nota:       sinto || null
       });
-      if (femErr) console.warn('[femCheckin Supabase]', femErr.message);
+      if (femErr) console.warn('[femCheckin]', femErr.message);
+      // Atualiza dashboard instantaneamente
+      atualizarDashboardLocal({ humor: humor??50, energia: energia??50, carga, foco: focoVal });
     }
 
     // Salva localmente também
