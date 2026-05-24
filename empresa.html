@@ -9576,40 +9576,16 @@ function distKm(lat1, lon1, lat2, lon2) {
 }
 
 async function geocodificar(local) {
-  const isCep = /^\d{5}-?\d{3}$/.test(local.trim());
-  const tentativas = isCep
-    ? [local.replace('-','') + ', Brasil', local + ', São Paulo, Brasil', local + ', Brasil']
-    : [local + ', Brasil', local + ', SP, Brasil', local];
-
+  // Tenta com Brasil primeiro, depois sem
+  const tentativas = [
+    `${local}, Brasil`,
+    local
+  ];
   for (const q of tentativas) {
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br`,
-        { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneCarePlatform/1.0' } }
-      );
-      const data = await res.json();
-      if (data && data.length > 0) return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
-    } catch {}
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br`, { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneApp/1.0' } });
+    const data = await res.json();
+    if (data && data.length > 0) return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
   }
-
-  // Fallback ViaCEP para CEP → cidade
-  if (isCep) {
-    try {
-      const cepLimpo = local.replace(/\D/g, '');
-      const vRes = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-      const vData = await vRes.json();
-      if (!vData.erro) {
-        const cidade = `${vData.localidade}, ${vData.uf}, Brasil`;
-        const res2 = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cidade)}&format=json&limit=1&countrycodes=br`,
-          { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneCarePlatform/1.0' } }
-        );
-        const data2 = await res2.json();
-        if (data2 && data2.length > 0) return { lat: parseFloat(data2[0].lat), lon: parseFloat(data2[0].lon) };
-      }
-    } catch {}
-  }
-
   throw new Error('Local não encontrado');
 }
 
@@ -9820,25 +9796,28 @@ async function salvarCheckin() {
   document.querySelectorAll('#p-checkin .em-btn.sel, #cp-checkin .em-btn.sel')
     .forEach(b => b.classList.remove('sel'));
   toast('✅ Check-in enviado! Obrigado.');
-  // Navega para início para mostrar dashboard atualizado
-  setTimeout(() => cpg('inicio'), 800);
 }
 
 /* Atualiza dashboard instantaneamente com valores locais */
 function atualizarDashboardLocal({ humor, energia, carga, foco }) {
   const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
-  // Considera testes já carregados se houver
   const scoresTestes = window._ultimoCheckin?.scoresTestes ?? null;
   const score = scoresTestes !== null
     ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
     : scoreCI;
+
+  console.log('[DASH] atualizarDashboardLocal chamado', { humor, energia, carga, foco, score });
 
   const scoreEl = document.getElementById('ih-score-num');
   const ringEl  = document.getElementById('ih-ring-fill');
   const chipEl  = document.getElementById('ih-chip');
   const subEl   = document.getElementById('ih-score-sub');
 
-  if (scoreEl) scoreEl.textContent = score;
+  console.log('[DASH] elementos encontrados:', {
+    scoreEl: !!scoreEl, ringEl: !!ringEl, chipEl: !!chipEl, subEl: !!subEl
+  });
+
+  if (scoreEl) { scoreEl.textContent = score; console.log('[DASH] score atualizado para', score); }
   if (ringEl) {
     const offset = Math.round(263 - (score / 100) * 263);
     ringEl.style.setProperty('--ih-offset', offset);
@@ -9995,6 +9974,7 @@ function selEm(btn, group) {
   const val = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : 50;
   checkinState[group] = val;
   window.ciState[group] = val;
+  console.log('[CHECKIN] selEm:', group, '=', val, '| estado atual:', JSON.stringify(checkinState));
 }
 
 /* ─────────────────────────────────────
@@ -11384,16 +11364,6 @@ function cpg(id) {
     qusp_selecionado = null;
     qusp_render();
   }
-
-  // Ao voltar para início, recarrega dashboard do colaborador
-  if (id === 'inicio' && currentUser?.id && typeof carregarDadosHomeColaborador === 'function') {
-    // Só recarrega se não há dados recentes (evita chamada dupla)
-    const agora = Date.now();
-    if (!window._lastDashLoad || agora - window._lastDashLoad > 30000) {
-      window._lastDashLoad = agora;
-      carregarDadosHomeColaborador();
-    }
-  }
 }
 
 /* ── CANVAS PARTÍCULAS ── */
@@ -12316,6 +12286,7 @@ async function carregarDadosHomeColaborador() {
 
     const checkins    = ciRes.data || [];
     const testesFeitos = trRes.data || [];
+    console.log('[DASH] carregarDados: checkins=', checkins.length, 'testes=', testesFeitos.length, 'ciErr=', ciRes.error?.message);
 
 
 
