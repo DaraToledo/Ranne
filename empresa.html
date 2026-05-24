@@ -12068,7 +12068,12 @@ async function carregarDadosHomeColaborador() {
 
     const checkins    = ciRes.data || [];
     const testesFeitos = trRes.data || [];
-    if (ciRes.error) console.warn('[dash ci]', ciRes.error.message);
+
+    // DEBUG — remover após confirmar
+    console.log('[dash] user_id:', currentUser?.id);
+    console.log('[dash] checkins encontrados:', checkins.length, checkins);
+    console.log('[dash] ci error:', ciRes.error?.message || 'nenhum');
+    console.log('[dash] testes:', testesFeitos.length);
 
     // Score testes
     const TIPO_SCORE = { baixo:90, medio:60, alto:30, critico:10 };
