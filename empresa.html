@@ -6991,7 +6991,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         </div>
         <div class="ih-score-info">
           <div class="ih-score-title">Seu bem-estar<br>esta semana</div>
-          <div class="ih-score-sub">Baseado nos seus check-ins</div>
+          <div class="ih-score-sub" id="ih-score-sub">Nenhum check-in este mês</div>
           <div class="ih-score-chip ih-chip-good" id="ih-chip">Você está bem</div>
         </div>
       </div>
@@ -8344,13 +8344,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (cnIcon) cnIcon.textContent = '☀️';
   }
 
-  // Hard timeout — só esconde loading se não estiver autenticando (evita flash)
+  // Hard timeout — 3s, mas só se não estiver roteando
   setTimeout(() => {
     const ls = document.getElementById('loading-screen');
     if (ls && !window._roteandoUsuario) ls.style.display = 'none';
   }, 3000);
 
-  // Timeout de segurança — aumentado para 15s (Supabase cold start pode levar ~10s)
+  // Timeout de segurança — se Supabase demorar >2.5s, vai para onboarding
   const safetyTimer = setTimeout(() => {
     document.getElementById('loading-screen').style.display = 'none';
     showOnboarding();
@@ -8372,15 +8372,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('loading-screen').style.display = 'none';
   initPlano();
 
-  // Escuta mudanças de autenticação (ex: token refresh, login em outra aba)
   db.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session?.user && !currentUser) {
-      currentUser = session.user;
-      rotearUsuario();
+      currentUser = session.user; rotearUsuario();
     } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      currentEmpresa = null;
-      showOnboarding();
+      currentUser = null; currentEmpresa = null; showOnboarding();
     } else if (event === 'TOKEN_REFRESHED' && session?.user) {
       currentUser = session.user;
     }
@@ -12013,85 +12009,95 @@ async function carregarDadosHomeColaborador() {
   if (!currentUser?.id) return;
 
   try {
-    const semAtual = String(getWeekNumber());
-
-    // Busca check-ins do mês atual
+    // ── 1. Busca check-ins do mês atual ──────────────────────────────────
     const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
-    const { data: checkins, error: ciErr } = await db
+
+    const ciQuery = await db
       .from('checkins')
-      .select('humor, energia, carga, foco, semana, created_at')
+      .select('humor, energia, carga, foco, semana, tipo, created_at')
       .eq('user_id', currentUser.id)
       .gte('created_at', inicioMes)
       .order('created_at', { ascending: false })
       .limit(10);
 
-    if (ciErr) console.warn('[dash checkins error]', ciErr.message);
+    const checkins = ciQuery.data || [];
+    if (ciQuery.error) console.warn('[dash ci]', ciQuery.error.message);
 
-    // Busca testes dos últimos 30 dias
+    // ── 2. Busca testes dos últimos 30 dias ──────────────────────────────
     const limite30 = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
-    const { data: testesFeitos } = await db
+
+    const trQuery = await db
       .from('testes_realizados')
       .select('teste_id, score, nivel, tipo, realizado_em')
       .eq('user_id', currentUser.id)
       .gte('realizado_em', limite30)
-      .order('realizado_em', { ascending: false })
-      .catch(() => ({ data: null }));
+      .order('realizado_em', { ascending: false });
 
-    // Score testes (tipo → 0-100 invertido)
+    const testesFeitos = trQuery.data || [];
+
+    // ── 3. Score dos testes (tipo → 0-100 invertido) ─────────────────────
     const TIPO_SCORE = { baixo:90, medio:60, alto:30, critico:10 };
     let scoresTestes = null;
-    if (testesFeitos?.length > 0) {
+    if (testesFeitos.length > 0) {
       const vistos = new Set();
-      const ultimos = testesFeitos.filter(t => { if (vistos.has(t.teste_id)) return false; vistos.add(t.teste_id); return true; });
+      const ultimos = testesFeitos.filter(t => {
+        if (vistos.has(t.teste_id)) return false;
+        vistos.add(t.teste_id); return true;
+      });
       const vals = ultimos.map(t => TIPO_SCORE[t.tipo] ?? 60);
       scoresTestes = Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
     }
 
-    if (checkins && checkins.length > 0) {
-      const ultimo = checkins[0];
-      const humor   = Math.round(ultimo.humor   ?? 0);
-      const energia = Math.round(ultimo.energia  ?? 0);
-      const carga   = Math.round(ultimo.carga    ?? 0);
-      const foco    = Math.round(ultimo.foco     ?? humor); // foco pode não existir
+    // ── 4. Calcula score a partir do check-in mais recente ────────────────
+    if (checkins.length > 0) {
+      const ultimo  = checkins[0];
+      const humor   = Math.round(ultimo.humor   ?? 50);
+      const energia = Math.round(ultimo.energia  ?? 50);
+      const carga   = Math.round(ultimo.carga    ?? 50);
+      const foco    = Math.round(ultimo.foco     ?? Math.round(humor * 0.7 + energia * 0.3));
+
+      // Score check-in (carga é inverso — menor carga = melhor)
       const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
-      // Score composto: 70% check-in + 30% testes (se houver testes)
+
+      // Composto: 70% check-in + 30% testes (só se tiver testes)
       const score = scoresTestes !== null
         ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
         : scoreCI;
 
-      // Atualiza score ring
+      // ── 5. Atualiza UI ────────────────────────────────────────────────
       const scoreEl = document.getElementById('ih-score-num');
       const ringEl  = document.getElementById('ih-ring-fill');
       const chipEl  = document.getElementById('ih-chip');
+      const subEl   = document.getElementById('ih-score-sub');
+
       if (scoreEl) scoreEl.textContent = score;
       if (ringEl) {
         const offset = Math.round(263 - (score / 100) * 263);
         ringEl.style.setProperty('--ih-offset', offset);
       }
       if (chipEl) {
-        if (score >= 70) { chipEl.textContent = 'Você está bem'; chipEl.className = 'ih-score-chip ih-chip-good'; }
-        else if (score >= 50) { chipEl.textContent = 'Atenção ao seu bem-estar'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
-        else { chipEl.textContent = 'Cuide de você'; chipEl.className = 'ih-score-chip ih-chip-bad'; }
+        if      (score >= 70) { chipEl.textContent = 'Você está bem 💚';         chipEl.className = 'ih-score-chip ih-chip-good'; }
+        else if (score >= 50) { chipEl.textContent = 'Atenção ao bem-estar';     chipEl.className = 'ih-score-chip ih-chip-warn'; }
+        else                  { chipEl.textContent = 'Cuide de você 💙';          chipEl.className = 'ih-score-chip ih-chip-bad';  }
       }
+      // Remove "Baseado nos seus check-ins" — substitui por composição real
+      if (subEl) subEl.textContent = scoresTestes !== null
+        ? 'Check-in + testes (' + checkins.length + ' registros)'
+        : checkins.length + ' check-in(s) este mês';
 
-      // Atualiza dimensões
-      const dims = { humor, energia, carga, foco };
-      for (const [k, v] of Object.entries(dims)) {
+      // Dimensões
+      ['humor','energia','carga','foco'].forEach(k => {
+        const val = k === 'humor' ? humor : k === 'energia' ? energia : k === 'carga' ? carga : foco;
         const valEl = document.getElementById('ih-val-' + k);
         const barEl = document.getElementById('ih-bar-' + k);
-        if (valEl) valEl.textContent = v;
-        if (barEl) barEl.style.width = v + '%';
-      }
+        if (valEl) valEl.textContent = val;
+        if (barEl) barEl.style.width = val + '%';
+      });
 
-      // Streak (semanas consecutivas com check-in)
-      const semanasUnicas = [...new Set(checkins.map(c => c.semana))];
-      const streakEl = document.getElementById('ih-streak-num');
-      if (streakEl) streakEl.textContent = semanasUnicas.length;
+      window._ultimoCheckin = { humor, energia, carga, foco, score, scoreCI, scoresTestes };
 
-      // Salva para uso offline
-      window._ultimoCheckin = { humor, energia, carga, foco, score };
     } else {
-      // Sem dados — mantém placeholders com dashes
+      // Sem check-in — placeholders
       ['humor','energia','carga','foco'].forEach(k => {
         const el = document.getElementById('ih-val-' + k);
         if (el) el.textContent = '—';
@@ -12100,7 +12106,10 @@ async function carregarDadosHomeColaborador() {
       if (scoreEl) scoreEl.textContent = '—';
       const chipEl = document.getElementById('ih-chip');
       if (chipEl) { chipEl.textContent = 'Faça seu primeiro check-in'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
+      const subEl = document.getElementById('ih-score-sub');
+      if (subEl) subEl.textContent = 'Nenhum check-in este mês';
     }
+
   } catch(e) {
     console.warn('[home collab]', e);
   }
@@ -14628,17 +14637,18 @@ async function salvarCheckinFeminino() {
     if (currentUser?.id) {
       const carga = 50; // check-in feminino não pergunta carga — usa neutro
       const focoVal = foco ?? (humor !== null && energia !== null ? Math.round(humor * 0.6 + energia * 0.4) : 50);
-      await db.from('checkins').insert({
+      const { error: femErr } = await db.from('checkins').insert({
         user_id:    currentUser.id,
         empresa_id: currentEmpresa?.id || null,
         humor:      humor ?? 50,
         energia:    energia ?? 50,
         carga,
         foco:       focoVal,
-        semana:     getWeekNumber(),
+        semana:     String(getWeekNumber()), // banco TEXT
         tipo:       'feminino',
         nota:       sinto || null
-      }).catch(e => console.warn('[femCheckin Supabase]', e));
+      });
+      if (femErr) console.warn('[femCheckin Supabase]', femErr.message);
     }
 
     // Salva localmente também
