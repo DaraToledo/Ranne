@@ -8344,17 +8344,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (cnIcon) cnIcon.textContent = '☀️';
   }
 
-  // Hard timeout — esconde loading screen em 1.5s SEMPRE, sem exceção
+  // Hard timeout — só esconde loading se não estiver autenticando (evita flash)
   setTimeout(() => {
     const ls = document.getElementById('loading-screen');
-    if (ls) ls.style.display = 'none';
-  }, 1500);
+    if (ls && !window._roteandoUsuario) ls.style.display = 'none';
+  }, 3000);
 
-  // Timeout de segurança — se Supabase demorar >2.5s, vai para onboarding
+  // Timeout de segurança — aumentado para 15s (Supabase cold start pode levar ~10s)
   const safetyTimer = setTimeout(() => {
     document.getElementById('loading-screen').style.display = 'none';
     showOnboarding();
-  }, 2500);
+  }, 15000);
 
   try {
     const { data: { session } } = await db.auth.getSession();
@@ -8371,6 +8371,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   document.getElementById('loading-screen').style.display = 'none';
   initPlano();
+
+  // Escuta mudanças de autenticação (ex: token refresh, login em outra aba)
+  db.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session?.user && !currentUser) {
+      currentUser = session.user;
+      rotearUsuario();
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      currentEmpresa = null;
+      showOnboarding();
+    } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+      currentUser = session.user;
+    }
+  });
 });
 
 /* ── ROTEAMENTO POR PERFIL ── */
@@ -11999,14 +12013,39 @@ async function carregarDadosHomeColaborador() {
   if (!currentUser?.id) return;
 
   try {
-    // Busca último check-in
-    const semAtual = String(getWeekNumber()); // banco usa TEXT
-    const { data: checkins } = await db
+    const semAtual = String(getWeekNumber());
+
+    // Busca check-ins do mês atual
+    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+    const { data: checkins, error: ciErr } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
       .eq('user_id', currentUser.id)
+      .gte('created_at', inicioMes)
       .order('created_at', { ascending: false })
-      .limit(4);
+      .limit(10);
+
+    if (ciErr) console.warn('[dash checkins error]', ciErr.message);
+
+    // Busca testes dos últimos 30 dias
+    const limite30 = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
+    const { data: testesFeitos } = await db
+      .from('testes_realizados')
+      .select('teste_id, score, nivel, tipo, realizado_em')
+      .eq('user_id', currentUser.id)
+      .gte('realizado_em', limite30)
+      .order('realizado_em', { ascending: false })
+      .catch(() => ({ data: null }));
+
+    // Score testes (tipo → 0-100 invertido)
+    const TIPO_SCORE = { baixo:90, medio:60, alto:30, critico:10 };
+    let scoresTestes = null;
+    if (testesFeitos?.length > 0) {
+      const vistos = new Set();
+      const ultimos = testesFeitos.filter(t => { if (vistos.has(t.teste_id)) return false; vistos.add(t.teste_id); return true; });
+      const vals = ultimos.map(t => TIPO_SCORE[t.tipo] ?? 60);
+      scoresTestes = Math.round(vals.reduce((a,b) => a+b, 0) / vals.length);
+    }
 
     if (checkins && checkins.length > 0) {
       const ultimo = checkins[0];
@@ -12014,7 +12053,11 @@ async function carregarDadosHomeColaborador() {
       const energia = Math.round(ultimo.energia  ?? 0);
       const carga   = Math.round(ultimo.carga    ?? 0);
       const foco    = Math.round(ultimo.foco     ?? humor); // foco pode não existir
-      const score   = Math.round((humor + energia + (100 - carga) + foco) / 4);
+      const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
+      // Score composto: 70% check-in + 30% testes (se houver testes)
+      const score = scoresTestes !== null
+        ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
+        : scoreCI;
 
       // Atualiza score ring
       const scoreEl = document.getElementById('ih-score-num');
