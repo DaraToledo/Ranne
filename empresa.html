@@ -7086,7 +7086,7 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div class="checkin-hero">
       <div class="ch-title">Como você está?</div>
       <div class="ch-sub">Check-in semanal · Rápido e privado</div>
-      <div class="ch-streak">4 semanas seguidas</div>
+
     </div>
 
     <div id="ci-form">
@@ -9521,7 +9521,15 @@ async function buscarProfissionais() {
 
   carregarLeaflet(async () => {
     try {
-      const { lat, lon } = await geocodificar(cep);
+      let geoResult;
+      try {
+        geoResult = await geocodificar(cep);
+      } catch(geoErr) {
+        if (btn) { btn.disabled = false; btn.textContent = '🔍 Buscar profissionais'; }
+        toast('⚠ CEP ou cidade não encontrado. Tente: "Ferraz de Vasconcelos, SP"');
+        return;
+      }
+      const { lat, lon } = geoResult;
       initProfMap(lat, lon);
 
       limparMarcadores();
@@ -9553,7 +9561,7 @@ async function buscarProfissionais() {
       console.warn('[buscarProfissionais]', e);
       toast('⚠ Não encontramos esse local. Tente: "Ferraz de Vasconcelos, SP"');
     } finally {
-      btn.disabled = false; btn.textContent = '🔍 Buscar profissionais';
+      if (btn) { btn.disabled = false; btn.textContent = '🔍 Buscar profissionais'; }
     }
   });
 }
@@ -12069,11 +12077,7 @@ async function carregarDadosHomeColaborador() {
     const checkins    = ciRes.data || [];
     const testesFeitos = trRes.data || [];
 
-    // DEBUG — remover após confirmar
-    console.log('[dash] user_id:', currentUser?.id);
-    console.log('[dash] checkins encontrados:', checkins.length, checkins);
-    console.log('[dash] ci error:', ciRes.error?.message || 'nenhum');
-    console.log('[dash] testes:', testesFeitos.length);
+
 
     // Score testes
     const TIPO_SCORE = { baixo:90, medio:60, alto:30, critico:10 };
