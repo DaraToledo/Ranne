@@ -2445,7 +2445,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   position:relative; overflow:hidden;
 }
 .trilha-detalhe-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 80% 10%,rgba(78,203,160,.1),transparent 55%); }
-.tdh-back { display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; color:rgba(78,203,160,.7); cursor:pointer; margin-bottom:12px; position:relative; z-index:1; background:none; border:none; font-family:'Inter',sans-serif; }
+.tdh-back { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:var(--text); cursor:pointer; margin-bottom:16px; position:relative; z-index:1; background:var(--card); border:1.5px solid var(--border); border-radius:12px; padding:10px 16px; font-family:'Inter',sans-serif; box-shadow:0 2px 8px rgba(0,0,0,.06); transition:all .2s; }
 .tdh-emoji { font-size:36px; margin-bottom:8px; position:relative; z-index:1; display:block; }
 .tdh-titulo { font-family:'Fraunces',serif; font-size:20px; color:#fff; font-style:italic; margin-bottom:4px; position:relative; z-index:1; }
 .tdh-sub   { font-size:12px; color:rgba(255,255,255,.4); position:relative; z-index:1; line-height:1.55; margin-bottom:12px; }
@@ -7794,6 +7794,15 @@ body.dark .ob-btn { background: #2D5E4A; }
 
   <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
   <div class="col-page" id="cp-clin-teste">
+    <!-- Fix: botão voltar visível apenas na pergunta 1 -->
+    <button id="clin-btn-sair" onclick="cpg('clinico')" style="
+      display:none; align-items:center; gap:8px;
+      margin-bottom:16px; padding:10px 16px;
+      background:var(--surface); border:1.5px solid var(--border);
+      border-radius:12px; color:var(--text);
+      font-size:13px; font-weight:600; cursor:pointer;
+      font-family:'Inter',sans-serif; transition:all .2s;
+    ">← Sair do teste</button>
 
 
     <!-- Aviso clínico obrigatório -->
@@ -8415,7 +8424,7 @@ async function rotearUsuario() {
 }
 
 function showDemo() {
-  if (typeof ranneChat !== "undefined" && ranneChat.show) ranneChat.show();
+  ranneChat.show();
   currentUser = { id:'demo', email:'demo@ranne.app' };
   currentEmpresa = { id:'demo', nome:'Empresa Demo', cnpj:'', size:10, setor:'Tecnologia', plan:'free' };
   showEmpresa();
@@ -8458,7 +8467,7 @@ function showBloqueio() {
 }
 
 function showEmpresa() {
-  if (typeof ranneChat !== "undefined" && ranneChat.show) ranneChat.show();
+  ranneChat.show();
   document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
@@ -8494,7 +8503,7 @@ function showEmpresa() {
 }
 
 function showColaborador(nome) {
-  if (typeof ranneChat !== "undefined" && ranneChat.show) ranneChat.show();
+  ranneChat.show();
   document.getElementById('loading-screen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
   document.getElementById('onboarding-steps').style.display = 'none';
@@ -9074,17 +9083,13 @@ async function salvarConfig() {
   const size = parseInt(document.getElementById('cfg-size').value) || 0;
 
   try {
-    const { error } = await db.from('empresas').update({ nome, setor, size }).eq('id', currentEmpresa.id);
-    if (error) throw error;
-    // Fix: só atualiza estado local após confirmar sucesso no banco
+    await db.from('empresas').update({ nome, setor, size }).eq('id', currentEmpresa.id);
     currentEmpresa = { ...currentEmpresa, nome, setor, size };
     document.getElementById('sb-empresa-nome').textContent = nome;
     document.getElementById('dash-greeting').textContent = `Olá, ${nome}`;
-    toast('✅ Configurações salvas!');
-  } catch(e) {
-    console.warn('[salvarConfig]', e);
-    toast('❌ Erro ao salvar. Verifique sua conexão.');
-  }
+  } catch {}
+
+  toast('✅ Configurações salvas!');
 }
 
 /* ─────────────────────────────────────
@@ -9342,16 +9347,55 @@ function distKm(lat1, lon1, lat2, lon2) {
 }
 
 async function geocodificar(local) {
-  // Tenta com Brasil primeiro, depois sem
-  const tentativas = [
-    `${local}, Brasil`,
-    local
-  ];
+  // Normaliza CEP: remove traço e espaço
+  const isCep = /^\d{5}-?\d{3}$/.test(local.trim());
+  
+  // Estratégias de busca em ordem de precisão
+  const tentativas = isCep
+    ? [
+        local.replace('-','') + ', Brasil',       // CEP puro BR
+        local + ', São Paulo, Brasil',             // fallback com estado
+        local + ', Brasil'
+      ]
+    : [
+        local + ', Brasil',
+        local + ', SP, Brasil',
+        local
+      ];
+
   for (const q of tentativas) {
-    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br`, { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneApp/1.0' } });
-    const data = await res.json();
-    if (data && data.length > 0) return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br&addressdetails=1`,
+        { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneCarePlatform/1.0 (atendimento@rannecare.com.br)' } }
+      );
+      const data = await res.json();
+      if (data && data.length > 0) {
+        return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+      }
+    } catch {}
   }
+
+  // Fallback: ViaCEP para converter CEP → cidade → coordenadas
+  if (isCep) {
+    try {
+      const cepLimpo = local.replace(/\D/g, '');
+      const vRes = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+      const vData = await vRes.json();
+      if (!vData.erro) {
+        const cidade = `${vData.localidade}, ${vData.uf}, Brasil`;
+        const res2 = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cidade)}&format=json&limit=1&countrycodes=br`,
+          { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneCarePlatform/1.0' } }
+        );
+        const data2 = await res2.json();
+        if (data2 && data2.length > 0) {
+          return { lat: parseFloat(data2[0].lat), lon: parseFloat(data2[0].lon) };
+        }
+      }
+    } catch {}
+  }
+
   throw new Error('Local não encontrado');
 }
 
@@ -9508,164 +9552,9 @@ async function buscarProfissionais() {
     }
   });
 }
-
-/* ══════════════════════════════════════════════════════════
-   CANAL DE ESCUTA — Funções do colaborador e do RH
-   ══════════════════════════════════════════════════════════ */
-
-// Cache dos relatos para filtro no RH
-let _escutaRelatos = [];
-
-/* Colaborador — envia relato anônimo */
-async function escutaEnviar() {
-  const categoria = document.getElementById('escuta-categoria')?.value;
-  const texto     = document.getElementById('escuta-texto')?.value?.trim();
-
-  if (!categoria) { toast('⚠ Selecione uma categoria.'); return; }
-  if (!texto || texto.length < 10) { toast('⚠ Descreva a situação (mínimo 10 caracteres).'); return; }
-
-  const btn = document.querySelector('#cp-escuta .btn-primary');
-  if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
-
-  try {
-    const { error } = await db.from('canal_escuta').insert({
-      empresa_id: currentEmpresa?.id || null,
-      tipo: categoria,          // campo da tabela é 'tipo'
-      mensagem: texto,          // campo da tabela é 'mensagem'
-      criado_em: new Date().toISOString()
-    });
-    if (error) throw error;
-
-    // Mostra confirmação, esconde form
-    const formWrap = document.getElementById('escuta-form-wrap');
-    const conf     = document.getElementById('escuta-confirmacao');
-    if (formWrap) formWrap.style.display = 'none';
-    if (conf)     conf.style.display     = 'block';
-  } catch(e) {
-    console.warn('[escutaEnviar]', e);
-    toast('❌ Erro ao enviar. Tente novamente.');
-    if (btn) { btn.disabled = false; btn.textContent = 'Enviar relato anonimamente'; }
-  }
-}
-
-/* Colaborador — limpa form para novo relato */
-function escutaNovo() {
-  const formWrap = document.getElementById('escuta-form-wrap');
-  const conf     = document.getElementById('escuta-confirmacao');
-  const catEl    = document.getElementById('escuta-categoria');
-  const txtEl    = document.getElementById('escuta-texto');
-  if (formWrap) formWrap.style.display = 'block';
-  if (conf)     conf.style.display     = 'none';
-  if (catEl)    catEl.value            = '';
-  if (txtEl)    txtEl.value            = '';
-}
-
-/* RH — filtra relatos por categoria */
-function escutaFiltrar(categoria, btn) {
-  // Atualiza chip ativo
-  document.querySelectorAll('.escuta-rh-chip').forEach(c => c.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  const filtrados = categoria === 'todos'
-    ? _escutaRelatos
-    : _escutaRelatos.filter(r => r.tipo === categoria); // campo correto é 'tipo'
-
-  renderEscutaLista(filtrados);
-}
-
-/* RH — exporta relatos como CSV */
-function escutaRhExportar() {
-  if (!_escutaRelatos.length) { toast('Nenhum relato para exportar.'); return; }
-
-  const linhas = [
-    ['Data', 'Categoria', 'Relato', 'Lido'].join(';'),
-    ..._escutaRelatos.map(r => [
-      new Date(r.criado_em).toLocaleDateString('pt-BR'),
-      r.tipo || '',
-      '"' + (r.mensagem || r.descricao || '').replace(/"/g, '""') + '"',
-      r.lido ? 'Sim' : 'Não'
-    ].join(';'))
-  ];
-
-  const blob = new Blob(['\ufeff' + linhas.join('\n')], { type: 'text/csv;charset=utf-8;' });
-  const url  = URL.createObjectURL(blob);
-  const a    = Object.assign(document.createElement('a'), { href: url, download: 'escuta-anonima.csv' });
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  toast('✅ CSV exportado!');
-}
-
-/* RH — carrega e renderiza lista de relatos */
-async function carregarEscutaRh() {
-  try {
-    const { data, error } = await db
-      .from('canal_escuta')
-      .select('*')
-      .eq('empresa_id', currentEmpresa?.id)
-      .order('criado_em', { ascending: false });
-
-    if (error) throw error;
-    _escutaRelatos = data || [];
-
-    // Atualiza métricas
-    const agora7d = new Date(Date.now() - 7 * 86400000).toISOString();
-    const total   = _escutaRelatos.length;
-    const novos   = _escutaRelatos.filter(r => r.criado_em >= agora7d).length;
-    const assedio = _escutaRelatos.filter(r => r.tipo === 'assedio').length;
-
-    const elTotal   = document.getElementById('escuta-total');
-    const elNovos   = document.getElementById('escuta-novos');
-    const elAssedio = document.getElementById('escuta-assedio');
-    if (elTotal)   elTotal.textContent   = total;
-    if (elNovos)   elNovos.textContent   = novos;
-    if (elAssedio) elAssedio.textContent = assedio;
-
-    renderEscutaLista(_escutaRelatos);
-  } catch(e) {
-    console.warn('[carregarEscutaRh]', e);
-  }
-}
-
-/* Renderiza lista de relatos no painel RH */
-function renderEscutaLista(relatos) {
-  const lista = document.getElementById('escuta-rh-lista');
-  if (!lista) return;
-
-  if (!relatos.length) {
-    lista.innerHTML = '<div class="escuta-vazio"><div class="vazio-icon">📭</div><p>Nenhum relato nesta categoria.</p></div>';
-    return;
-  }
-
-  const catLabel = { assedio:'Assédio', sobrecarga:'Sobrecarga', conflito:'Conflito', outro:'Outro' };
-  const catCor   = { assedio:'#EF4444', sobrecarga:'#F59E0B', conflito:'#3B82F6', outro:'#6B7280' };
-
-  lista.innerHTML = relatos.map(r => {
-    const data = new Date(r.criado_em).toLocaleDateString('pt-BR', { day:'numeric', month:'short', year:'numeric' });
-    const cor  = catCor[r.tipo]   || '#6B7280';
-    const cat  = catLabel[r.tipo] || r.tipo || 'Geral';
-    const msg  = r.mensagem || r.descricao || '—';
-    return `
-      <div style="padding:14px 0;border-bottom:1px solid var(--border);">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-          <span style="font-size:11px;font-weight:700;color:${cor};text-transform:uppercase;letter-spacing:.5px">${cat}</span>
-          <span style="font-size:11px;color:var(--muted);margin-left:auto">${data}</span>
-          ${!r.lido ? '<span style="background:#EF4444;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px">Novo</span>' : ''}
-        </div>
-        <p style="font-size:13px;color:var(--text);line-height:1.6;margin:0">${msg}</p>
-        ${r.nome_voluntario ? `<div style="font-size:11px;color:var(--mint);margin-top:6px;">👤 ${r.nome_voluntario}</div>` : ''}
-      </div>`;
-  }).join('');
-}
-
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
-
-  // Garante que são números — converte se ainda vier como texto (retrocompatibilidade)
-  const toNum = (v, fallback) => {
-    const n = parseInt(v);
-    return isNaN(n) ? fallback : n;
-  };
+  const toNum = (v, fb) => { const n = parseInt(v); return isNaN(n) ? fb : n; };
   const humor   = toNum(cs.humor,   50);
   const energia = toNum(cs.energia, 50);
   const carga   = toNum(cs.carga,   50);
@@ -9682,10 +9571,7 @@ async function salvarCheckin() {
   } catch(e) { console.warn('[salvarCheckin]', e); }
 
   await carregarDadosHomeColaborador();
-  // Fecha streak popup se aberto
-  const spDismissed = 'ranne-sp-dismissed-week';
   if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
-  try { localStorage.setItem(spDismissed, String(getWeekNumber())); } catch {}
   toast('✅ Check-in enviado! Obrigado.');
 }
 
@@ -9820,7 +9706,7 @@ function selEm(btn, group) {
   const row = btn.closest('.em-row');
   row.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  // Salva valor numérico (data-score), não o texto do emoji
+  // Salva número via data-score (não texto do emoji)
   const val = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : 50;
   checkinState[group] = val;
   window.ciState[group] = val;
@@ -11331,7 +11217,7 @@ function qusp_next() {
   if (qusp_selecionado === null) return;
   qusp_resps[qusp_atual] = qusp_selecionado;
   qusp_selecionado = null;
-  if (qusp_atual < QUSP_PERGUNTAS.length - 1) { // Fix: limite dinâmico
+  if (qusp_atual < 19) {
     qusp_atual++;
     qusp_render();
   } else {
@@ -12113,7 +11999,8 @@ async function carregarDadosHomeColaborador() {
   if (!currentUser?.id) return;
 
   try {
-    // ── 1. Busca último check-in ──────────────────────────────
+    // Busca último check-in
+    const semAtual = getWeekNumber();
     const { data: checkins } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
@@ -12121,63 +12008,30 @@ async function carregarDadosHomeColaborador() {
       .order('created_at', { ascending: false })
       .limit(4);
 
-    // ── 2. Busca testes dos últimos 30 dias ───────────────────
-    const limite30dias = new Date(Date.now() - 30 * 86400000).toISOString();
-    const { data: testesFeitos } = await db
-      .from('testes_realizados')
-      .select('teste_id, score, nivel, tipo, realizado_em')
-      .eq('user_id', currentUser.id)
-      .gte('realizado_em', limite30dias.split('T')[0])
-      .order('realizado_em', { ascending: false });
-
-    // ── 3. Normaliza score dos testes (tipo → 0-100, invertido) ──
-    // tipo: baixo=90, medio=60, alto=30, critico=10
-    // Se não tem testes → scoresTestes = null (não entra no cálculo)
-    const TIPO_SCORE = { baixo: 90, medio: 60, alto: 30, critico: 10 };
-    let scoresTestes = null;
-    if (testesFeitos && testesFeitos.length > 0) {
-      // Pega apenas o mais recente de cada teste (já ordenado por data desc)
-      const vistos = new Set();
-      const ultimos = testesFeitos.filter(t => {
-        if (vistos.has(t.teste_id)) return false;
-        vistos.add(t.teste_id);
-        return true;
-      });
-      const vals = ultimos.map(t => TIPO_SCORE[t.tipo] ?? 60);
-      scoresTestes = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-    }
-
-    // ── 4. Score final: 70% check-in + 30% testes ────────────
     if (checkins && checkins.length > 0) {
-      const ultimo  = checkins[0];
+      const ultimo = checkins[0];
       const humor   = Math.round(ultimo.humor   ?? 0);
       const energia = Math.round(ultimo.energia  ?? 0);
       const carga   = Math.round(ultimo.carga    ?? 0);
-      const foco    = Math.round(ultimo.foco     ?? humor);
-      const scoreCI = Math.round((humor + energia + (100 - carga) + foco) / 4);
+      const foco    = Math.round(ultimo.foco     ?? humor); // foco pode não existir
+      const score   = Math.round((humor + energia + (100 - carga) + foco) / 4);
 
-      // Se tem testes → composição 70/30; senão 100% check-in
-      const score = scoresTestes !== null
-        ? Math.round(scoreCI * 0.7 + scoresTestes * 0.3)
-        : scoreCI;
-
-      // ── 5. Atualiza UI ────────────────────────────────────────
+      // Atualiza score ring
       const scoreEl = document.getElementById('ih-score-num');
       const ringEl  = document.getElementById('ih-ring-fill');
       const chipEl  = document.getElementById('ih-chip');
-
       if (scoreEl) scoreEl.textContent = score;
       if (ringEl) {
         const offset = Math.round(263 - (score / 100) * 263);
         ringEl.style.setProperty('--ih-offset', offset);
       }
       if (chipEl) {
-        if      (score >= 70) { chipEl.textContent = 'Você está bem 💚';          chipEl.className = 'ih-score-chip ih-chip-good'; }
-        else if (score >= 50) { chipEl.textContent = 'Atenção ao seu bem-estar';  chipEl.className = 'ih-score-chip ih-chip-warn'; }
-        else                  { chipEl.textContent = 'Cuide de você 💙';           chipEl.className = 'ih-score-chip ih-chip-bad'; }
+        if (score >= 70) { chipEl.textContent = 'Você está bem'; chipEl.className = 'ih-score-chip ih-chip-good'; }
+        else if (score >= 50) { chipEl.textContent = 'Atenção ao seu bem-estar'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
+        else { chipEl.textContent = 'Cuide de você'; chipEl.className = 'ih-score-chip ih-chip-bad'; }
       }
 
-      // Dimensões do check-in
+      // Atualiza dimensões
       const dims = { humor, energia, carga, foco };
       for (const [k, v] of Object.entries(dims)) {
         const valEl = document.getElementById('ih-val-' + k);
@@ -12186,15 +12040,15 @@ async function carregarDadosHomeColaborador() {
         if (barEl) barEl.style.width = v + '%';
       }
 
-      // Tooltip indicando composição do score
-      if (scoreEl && scoresTestes !== null) {
-        scoreEl.title = `Check-in: ${scoreCI} · Testes: ${scoresTestes} → Score composto (70/30)`;
-      }
+      // Streak (semanas consecutivas com check-in)
+      const semanasUnicas = [...new Set(checkins.map(c => c.semana))];
+      const streakEl = document.getElementById('ih-streak-num');
+      if (streakEl) streakEl.textContent = semanasUnicas.length;
 
-      window._ultimoCheckin = { humor, energia, carga, foco, score, scoreCI, scoresTestes };
-
+      // Salva para uso offline
+      window._ultimoCheckin = { humor, energia, carga, foco, score };
     } else {
-      // Sem check-in — placeholders
+      // Sem dados — mantém placeholders com dashes
       ['humor','energia','carga','foco'].forEach(k => {
         const el = document.getElementById('ih-val-' + k);
         if (el) el.textContent = '—';
@@ -12204,7 +12058,6 @@ async function carregarDadosHomeColaborador() {
       const chipEl = document.getElementById('ih-chip');
       if (chipEl) { chipEl.textContent = 'Faça seu primeiro check-in'; chipEl.className = 'ih-score-chip ih-chip-warn'; }
     }
-
   } catch(e) {
     console.warn('[home collab]', e);
   }
@@ -12765,6 +12618,9 @@ function clin_render() {
   document.getElementById('clin-prog-fill').style.width  = pct + '%';
   document.getElementById('clin-q-num').textContent      = (clinAtual.nome + ' · Pergunta ' + (clinQAtual + 1)).toUpperCase();
   document.getElementById('clin-btn-back').style.display = clinQAtual > 0 ? 'block' : 'none';
+  // Fix: botão sair visível apenas na pergunta 1
+  const btnSair = document.getElementById('clin-btn-sair');
+  if (btnSair) btnSair.style.display = clinQAtual === 0 ? 'flex' : 'none';
   document.getElementById('clin-btn-next').textContent   = clinQAtual === total - 1 ? 'Ver resultado ✓' : 'Próxima →';
   document.getElementById('clin-btn-next').disabled      = clinSel === null;
 
@@ -12877,7 +12733,7 @@ function clin_calcular() {
       const btn = document.createElement('button');
       btn.className = 'test-ver-btn';
       btn.textContent = 'Ver resultado →';
-      btn.style.cssText = 'display:block;width:100%;margin-top:10px;padding:10px;background:linear-gradient(135deg,#4ECBA0,#2D5E4A);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif';
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:7px 14px;background:rgba(78,203,160,.12);color:#4ECBA0;border:1.5px solid rgba(78,203,160,.35);border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;transition:all .2s';
       btn.onclick = (e) => { e.stopPropagation(); clinAtual = t; cpg("clin-resultado"); };
       card.appendChild(btn);
     }
