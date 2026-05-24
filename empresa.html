@@ -359,6 +359,7 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
 #cp-feminina .fem-tag-btn.sel {
   color: #fff !important;
   border-color: transparent !important;
+  background: #2D5E4A !important; /* Bug 4 fix: garante fundo escuro para texto branco ficar visível */
 }
 #cp-feminina .fem-opt-btn.sel.fem-bad,
 #cp-feminina .fem-opt-btn.selected.fem-bad   { background: #EF4444 !important; }
@@ -2444,7 +2445,7 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   position:relative; overflow:hidden;
 }
 .trilha-detalhe-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 80% 10%,rgba(78,203,160,.1),transparent 55%); }
-.tdh-back { display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600; color:rgba(78,203,160,.7); cursor:pointer; margin-bottom:12px; position:relative; z-index:1; background:none; border:none; font-family:'Inter',sans-serif; }
+.tdh-back { display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color:#fff; cursor:pointer; margin-bottom:16px; position:relative; z-index:1; background:rgba(255,255,255,.15); border:1.5px solid rgba(255,255,255,.3); border-radius:12px; padding:10px 18px; font-family:'Inter',sans-serif; backdrop-filter:blur(4px); transition:all .2s; }
 .tdh-emoji { font-size:36px; margin-bottom:8px; position:relative; z-index:1; display:block; }
 .tdh-titulo { font-family:'Fraunces',serif; font-size:20px; color:#fff; font-style:italic; margin-bottom:4px; position:relative; z-index:1; }
 .tdh-sub   { font-size:12px; color:rgba(255,255,255,.4); position:relative; z-index:1; line-height:1.55; margin-bottom:12px; }
@@ -2692,6 +2693,137 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
 }
 
 /* ══ COLLAB SPECIFIC ══ */
+
+
+/* ══════════════════════════════════════════════════════════
+   VÍDEOS — Meditação & Psicóloga (grid 3 colunas)
+   ══════════════════════════════════════════════════════════ */
+.vid-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.vid-card {
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  cursor: pointer;
+  transition: transform .18s;
+}
+.vid-card:active { transform: scale(.96); }
+.vid-thumb {
+  position: relative;
+  width: 100%;
+  padding-bottom: 177.78%;
+  background: #1A2E20;
+  overflow: hidden;
+}
+.vid-thumb img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.vid-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(10,20,15,.28);
+  transition: background .2s;
+}
+.vid-card:hover .vid-play-btn { background: rgba(10,20,15,.45); }
+.vid-play-circle {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,.92);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,.22);
+}
+.vid-play-circle svg { margin-left: 2px; }
+.vid-info { padding: 10px 10px 12px; }
+.vid-title { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 5px; }
+.vid-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; display: inline-block; }
+.vid-tag.green  { background: #E8F2EC; color: #2D5E4A; }
+.vid-tag.purple { background: #EDE9FE; color: #6D28D9; }
+body.dark .vid-tag.green  { background: #1a3028; color: #4ECBA0; }
+body.dark .vid-tag.purple { background: #2e1065; color: #a78bfa; }
+
+/* Modal */
+#med-modal {
+  display: none; position: fixed; inset: 0;
+  z-index: 11000; background: rgba(0,0,0,.92);
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px; animation: medFadeIn .22s ease;
+}
+#med-modal.show { display: flex; }
+@keyframes medFadeIn { from{opacity:0} to{opacity:1} }
+.med-modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(255,255,255,.12); border: none; color: #fff;
+  font-size: 22px; width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.med-modal-close:hover { background: rgba(255,255,255,.22); }
+.med-modal-title {
+  color: #fff; font-size: 13px; font-weight: 700;
+  text-align: center; margin-bottom: 12px; max-width: 320px; line-height: 1.4;
+}
+.med-iframe-wrap {
+  width: 100%; max-width: 320px; aspect-ratio: 9/16;
+  border-radius: 14px; overflow: hidden; background: #000;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6);
+}
+.med-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+
+/* ══════════════════════════════════════════════════════════
+   CUIDADO — Mapa + Teleatendimento
+   ══════════════════════════════════════════════════════════ */
+.cuidado-hero { background:linear-gradient(135deg,#1A2E20,#2D5E4A); border-radius:18px; padding:22px 20px; margin-bottom:20px; color:#fff; }
+.ch2-eye  { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:#4ECBA0; margin-bottom:6px; }
+.ch2-title { font-size:22px; font-weight:800; line-height:1.2; margin-bottom:6px; }
+.ch2-sub  { font-size:13px; color:rgba(255,255,255,.7); line-height:1.5; }
+.tele-card { background:var(--card); border-radius:16px; padding:20px; margin-bottom:20px; border:1.5px dashed var(--border); position:relative; overflow:hidden; opacity:.8; }
+.tele-badge-soon { position:absolute; top:14px; right:14px; background:#FEF3C7; color:#92400E; font-size:10px; font-weight:800; padding:3px 10px; border-radius:99px; letter-spacing:.5px; text-transform:uppercase; }
+.tele-icon { font-size:32px; margin-bottom:10px; }
+.tele-title { font-size:16px; font-weight:800; color:var(--text); margin-bottom:6px; }
+.tele-desc  { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+.tele-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.tele-chip  { font-size:11px; font-weight:600; padding:4px 12px; border-radius:99px; background:var(--surface); color:var(--muted); }
+.tele-btn-disabled { width:100%; padding:13px; background:var(--surface); color:var(--muted); border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:not-allowed; font-family:'Inter',sans-serif; }
+.prof-search-card { background:var(--card); border-radius:16px; padding:18px; margin-bottom:14px; }
+.prof-search-title { font-size:15px; font-weight:800; color:var(--text); margin-bottom:14px; }
+.prof-field { margin-bottom:12px; }
+.prof-field label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:5px; }
+.prof-field input, .prof-field select { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:14px; background:var(--surface); color:var(--text); font-family:'Inter',sans-serif; box-sizing:border-box; transition:border-color .2s; }
+.prof-field input:focus, .prof-field select:focus { outline:none; border-color:#4ECBA0; }
+.prof-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.prof-btn-buscar { width:100%; padding:13px; background:linear-gradient(135deg,#4ECBA0,#2D5E4A); color:#fff; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:opacity .2s,transform .1s; margin-top:4px; }
+.prof-btn-buscar:active { transform:scale(.98); opacity:.9; }
+.prof-btn-buscar:disabled { opacity:.6; cursor:not-allowed; }
+.prof-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.prof-filter { padding:6px 14px; border-radius:99px; font-size:12px; font-weight:600; border:1.5px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all .2s; }
+.prof-filter.active { background:#4ECBA0; color:#fff; border-color:#4ECBA0; }
+#prof-map { width:100%; height:320px; border-radius:16px; overflow:hidden; background:#e5ece8; margin-bottom:14px; border:1.5px solid var(--border); }
+.prof-map-loading { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:10px; color:var(--muted); font-size:13px; }
+.prof-results { margin-bottom:80px; }
+.prof-result-item { background:var(--card); border-radius:14px; padding:15px; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start; box-shadow:0 2px 8px rgba(0,0,0,.05); cursor:pointer; transition:transform .15s; }
+.prof-result-item:active { transform:scale(.98); }
+.prof-result-icon { width:42px; height:42px; border-radius:12px; background:#E8F2EC; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.prof-result-body { flex:1; min-width:0; }
+.prof-result-name { font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.prof-result-type { font-size:12px; color:var(--muted); margin-bottom:6px; }
+.prof-result-tags { display:flex; gap:6px; flex-wrap:wrap; }
+.prof-result-tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:99px; }
+.prt-green  { background:#E8F2EC; color:#2D5E4A; }
+.prt-blue   { background:#EFF6FF; color:#1D4ED8; }
+.prt-orange { background:#FEF3C7; color:#92400E; }
+.prt-purple { background:#EDE9FE; color:#6D28D9; }
+.prof-result-dist { font-size:11px; color:var(--muted); margin-top:4px; }
+.prof-empty { text-align:center; padding:32px 20px; color:var(--muted); font-size:13px; line-height:1.6; }
+.prof-empty-icon { font-size:36px; margin-bottom:8px; }
 
 /* ══════ VARS COLABORADOR — escopadas para não vazar no painel empresa ══════ */
 #app-colaborador {
@@ -5570,29 +5702,29 @@ body.dark .ob-btn { background: #2D5E4A; }
             <h3>Como está seu humor hoje?</h3>
             <p>Resposta privada — só você vê o seu score individual</p>
             <div class="em-row" id="checkin-humor">
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😔</span><span class="el">Muito mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😕</span><span class="el">Mal</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😐</span><span class="el">Neutro</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">🙂</span><span class="el">Bem</span></div>
-              <div class="em-btn" onclick="selEm(this,'humor')"><span class="em">😄</span><span class="el">Ótimo</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="10"><span class="em">😔</span><span class="el">Muito mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="30"><span class="em">😕</span><span class="el">Mal</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="55"><span class="em">😐</span><span class="el">Neutro</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="75"><span class="em">🙂</span><span class="el">Bem</span></div>
+              <div class="em-btn" onclick="selEm(this,'humor')" data-score="100"><span class="em">😄</span><span class="el">Ótimo</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Nível de energia</span></div>
             <div class="em-row" id="checkin-energia">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">⚡</span><span class="el">Muito alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">🔋</span><span class="el">Alta</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😴</span><span class="el">Baixa</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')"><span class="em">😪</span><span class="el">Esgotado</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="100"><span class="em">⚡</span><span class="el">Muito alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="70"><span class="em">🔋</span><span class="el">Alta</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="35"><span class="em">😴</span><span class="el">Baixa</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'energia')" data-score="10"><span class="em">😪</span><span class="el">Esgotado</span></div>
             </div>
           </div>
           <div class="card" style="margin-bottom:14px">
             <div class="card-hdr" style="margin-bottom:14px"><span class="card-title">Carga de trabalho</span></div>
             <div class="em-row" id="checkin-carga">
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😌</span><span class="el">Tranquila</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">👍</span><span class="el">Razoável</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">😰</span><span class="el">Pesada</span></div>
-              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')"><span class="em">🔥</span><span class="el">Excessiva</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="10"><span class="em">😌</span><span class="el">Tranquila</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="35"><span class="em">👍</span><span class="el">Razoável</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="70"><span class="em">😰</span><span class="el">Pesada</span></div>
+              <div class="em-btn em-btn-lt" onclick="selEm(this,'carga')" data-score="100"><span class="em">🔥</span><span class="el">Excessiva</span></div>
             </div>
           </div>
           <button class="btn btn-primary btn-lg" style="width:100%" onclick="salvarCheckin()">Enviar Check-in ✓</button>
@@ -6804,6 +6936,18 @@ body.dark .ob-btn { background: #2D5E4A; }
   </div>
 </div>
 
+
+<!-- ══════════ MODAL VÍDEO ══════════ -->
+<div id="med-modal">
+  <button class="med-modal-close" onclick="fecharMedModal()">✕</button>
+  <div class="med-modal-title" id="med-modal-title"></div>
+  <div class="med-iframe-wrap">
+    <iframe id="med-iframe" src=""
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+</div>
+
 <!-- ══════════ APP COLABORADOR ══════════ -->
 <div id="app-colaborador" style="display:none">
 
@@ -7043,8 +7187,57 @@ body.dark .ob-btn { background: #2D5E4A; }
       <button class="btn-breath" id="btn-breath" onclick="toggleBreath()">Começar exercício</button>
     </div>
 
+
+    <!-- ── Meditações guiadas ── -->
+    <div class="sec-title" style="margin-top:24px">🧘 Meditações guiadas</div>
+    <div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">
+      Luana Medina · Professora de Yoga
+    </div>
+    <div class="vid-grid">
+
+      <div class="vid-card" onclick="abrirMedModal('sDeAru8nIcs','Meditação Guiada · 1')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/sDeAru8nIcs/maxresdefault.jpg" alt="Meditação 1" loading="lazy" onerror="this.src='https://img.youtube.com/vi/sDeAru8nIcs/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Iniciante</div><span class="vid-tag green">🌱 Yoga</span></div>
+      </div>
+
+      <div class="vid-card" onclick="abrirMedModal('vLVJCclOxQc','Meditação Guiada · 2')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/vLVJCclOxQc/maxresdefault.jpg" alt="Meditação 2" loading="lazy" onerror="this.src='https://img.youtube.com/vi/vLVJCclOxQc/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Relaxamento</div><span class="vid-tag green">💆 Yoga</span></div>
+      </div>
+
+      <div class="vid-card" onclick="abrirMedModal('zJ3siyxnJME','Meditação Guiada · 3')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/zJ3siyxnJME/maxresdefault.jpg" alt="Meditação 3" loading="lazy" onerror="this.src='https://img.youtube.com/vi/zJ3siyxnJME/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Foco & Equilíbrio</div><span class="vid-tag green">🎯 Yoga</span></div>
+      </div>
+
+    </div>
+
+    <!-- ── Momento com a Psicóloga ── -->
+    <div class="sec-title" style="margin-top:24px">👩‍⚕️ Momento com a Psicóloga</div>
+    <div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">
+      Viviani Alexandre Rufino · Psicóloga Clínica CRP 06/215926
+    </div>
+    <div class="vid-grid">
+
+      <div class="vid-card" onclick="abrirMedModal('5LbqfQSOX0E','Momento com a Psicóloga · 1')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/5LbqfQSOX0E/maxresdefault.jpg" alt="Psicóloga 1" loading="lazy" onerror="this.src='https://img.youtube.com/vi/5LbqfQSOX0E/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Dica #1</div><span class="vid-tag purple">Short</span></div>
+      </div>
+
+      <div class="vid-card" onclick="abrirMedModal('nogZ5evLo8M','Momento com a Psicóloga · 2')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/nogZ5evLo8M/maxresdefault.jpg" alt="Psicóloga 2" loading="lazy" onerror="this.src='https://img.youtube.com/vi/nogZ5evLo8M/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Dica #2</div><span class="vid-tag purple">Short</span></div>
+      </div>
+
+      <div class="vid-card" onclick="abrirMedModal('nYZaEr5Nue4','Momento com a Psicóloga · 3')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/nYZaEr5Nue4/maxresdefault.jpg" alt="Psicóloga 3" loading="lazy" onerror="this.src='https://img.youtube.com/vi/nYZaEr5Nue4/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+        <div class="vid-info"><div class="vid-title">Dica #3</div><span class="vid-tag purple">Short</span></div>
+      </div>
+
+    </div>
+
     <!-- Dicas de descompressão -->
-    <div class="sec-title" style="margin-top:8px">Dicas rápidas</div>
+    <div class="sec-title" style="margin-top:24px">Dicas rápidas</div>
 
     <div class="tip-card" onclick="openTip(0)">
       <div class="tip-icon" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.5"/><path d="M9 19l1-6 2 3 2-8"/><path d="M7 13l2-2 3 1"/></svg></div>
@@ -7601,6 +7794,7 @@ body.dark .ob-btn { background: #2D5E4A; }
 
   <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
   <div class="col-page" id="cp-clin-teste">
+    <button id="clin-btn-sair" onclick="cpg('clinico')" style="display:none;align-items:center;gap:8px;margin-bottom:16px;padding:10px 18px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;">← Sair do teste</button>
 
 
     <!-- Aviso clínico obrigatório -->
@@ -7686,6 +7880,87 @@ body.dark .ob-btn { background: #2D5E4A; }
 
 
   <!-- ══ SAÚDE FEMININA ══ -->
+
+  <!-- ══════════ CUIDADO — Mapa + Teleatendimento ══════════ -->
+  <div class="col-page" id="cp-cuidado">
+
+    <div class="cuidado-hero">
+      <div class="ch2-eye">Ranne Care · Saúde Mental</div>
+      <div class="ch2-title">Encontre cuidado<br>perto de você 💚</div>
+      <div class="ch2-sub">Psicólogos, psiquiatras e serviços de saúde mental — gratuitos, conveniados ou particulares — na sua região.</div>
+    </div>
+
+    <div class="sec-title">📱 Teleatendimento</div>
+    <div class="tele-card">
+      <div class="tele-badge-soon">Em breve</div>
+      <div class="tele-icon">🎥</div>
+      <div class="tele-title">Atendimento online com psicólogos</div>
+      <div class="tele-desc">Sessões por videochamada com profissionais parceiros da Ranne. Agende no horário que funciona pra você, sem sair de casa.</div>
+      <div class="tele-chips">
+        <span class="tele-chip">💚 Profissionais verificados</span>
+        <span class="tele-chip">🔒 Sigilo total</span>
+        <span class="tele-chip">📅 Agendamento flexível</span>
+        <span class="tele-chip">💳 Pague por sessão</span>
+      </div>
+      <button class="tele-btn-disabled" disabled>🔒 Disponível em breve</button>
+    </div>
+
+    <div class="sec-title">🗺 Profissionais próximos</div>
+    <div class="prof-search-card">
+      <div class="prof-search-title">Buscar na minha região</div>
+      <div class="prof-field">
+        <label>CEP ou cidade</label>
+        <input type="text" id="prof-cep" placeholder="Ex: 08571-410 ou Ferraz de Vasconcelos" maxlength="40"
+          onkeydown="if(event.key==='Enter') buscarProfissionais()">
+      </div>
+      <div class="prof-row">
+        <div class="prof-field">
+          <label>Tipo</label>
+          <select id="prof-tipo">
+            <option value="">Todos</option>
+            <option value="psicologo">Psicólogo</option>
+            <option value="psiquiatra">Psiquiatra</option>
+            <option value="medico">Médico Geral</option>
+            <option value="caps">CAPS</option>
+            <option value="ubs">UBS</option>
+          </select>
+        </div>
+        <div class="prof-field">
+          <label>Atendimento</label>
+          <select id="prof-cobertura" onchange="toggleConvenioField()">
+            <option value="">Todos</option>
+            <option value="sus">🆓 Gratuito / SUS</option>
+            <option value="convenio">🏥 Convênio</option>
+            <option value="particular">💳 Particular</option>
+          </select>
+        </div>
+      </div>
+      <div class="prof-field" id="prof-convenio-wrap" style="display:none">
+        <label>Nome do convênio</label>
+        <input type="text" id="prof-convenio" placeholder="Ex: Unimed, Amil, Bradesco Saúde…">
+      </div>
+      <button class="prof-btn-buscar" id="prof-btn-buscar" onclick="buscarProfissionais()">
+        🔍 Buscar profissionais
+      </button>
+    </div>
+
+    <div class="prof-filters" id="prof-filters" style="display:none">
+      <button class="prof-filter active" onclick="filtrarProfs(this,'todos')">Todos</button>
+      <button class="prof-filter" onclick="filtrarProfs(this,'sus')">🆓 Gratuito/SUS</button>
+      <button class="prof-filter" onclick="filtrarProfs(this,'convenio')">🏥 Convênio</button>
+      <button class="prof-filter" onclick="filtrarProfs(this,'particular')">💳 Particular</button>
+    </div>
+
+    <div id="prof-map">
+      <div class="prof-map-loading" id="prof-map-placeholder">
+        <span style="font-size:36px">🗺</span>
+        <span>Informe seu CEP ou cidade para ver o mapa</span>
+      </div>
+    </div>
+
+    <div class="prof-results" id="prof-results"></div>
+  </div>
+
 <div class="col-page" id="cp-feminina">
 
   <!-- Banner -->
@@ -8008,6 +8283,10 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
       <span class="cn-label">Trilhas</span>
     </div>
+    <div class="cn-item" id="cn-cuidado" onclick="cpg('cuidado')">
+      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+      <span class="cn-label">Cuidado</span>
+    </div>
     <div class="cn-item" id="cn-feminina" onclick="cpg('feminina')">
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
       <span class="cn-label">Saúde ♀</span>
@@ -8126,6 +8405,38 @@ async function rotearUsuario() {
         currentRole = 'pessoa';
       }
       showColaborador(col.nome);
+      return;
+    }
+  } catch {}
+
+  // 2b. Tenta membros_empresa — por user_id OU por email (fallback para convites antigos)
+  try {
+    let mem = null;
+
+    // Busca por email (confiável mesmo sem user_id na tabela)
+    const { data: memByEmail } = await db
+      .from('membros_empresa')
+      .select('*')
+      .eq('email', currentUser.email)
+      .maybeSingle();
+
+    if (memByEmail) {
+      mem = memByEmail;
+      // Tenta gravar user_id para agilizar próximas entradas (silencioso)
+      db.from('membros_empresa')
+        .update({ user_id: currentUser.id })
+        .eq('id', mem.id)
+        .catch(() => {});
+    }
+
+    if (mem) {
+      currentRole = 'colaborador';
+      // Carrega empresa para check-in não salvar empresa_id nulo
+      try {
+        const { data: empData } = await db.from('empresas').select('*').eq('id', mem.empresa_id).maybeSingle();
+        if (empData) currentEmpresa = empData;
+      } catch {}
+      showColaborador(mem.nome || currentUser.user_metadata?.nome || currentUser.email.split('@')[0]);
       return;
     }
   } catch {}
@@ -8985,24 +9296,283 @@ function baixarModeloCSV() {
 /* ─────────────────────────────────────
    SALVAR CHECK-IN
    ───────────────────────────────────── */
+
+/* ══════════ MODAL VÍDEO ══════════ */
+function abrirMedModal(videoId, titulo) {
+  const modal  = document.getElementById('med-modal');
+  const iframe = document.getElementById('med-iframe');
+  const title  = document.getElementById('med-modal-title');
+  if (!modal || !iframe) return;
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  if (title) title.textContent = titulo;
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function fecharMedModal() {
+  const modal  = document.getElementById('med-modal');
+  const iframe = document.getElementById('med-iframe');
+  if (!modal) return;
+  if (iframe) iframe.src = '';
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.addEventListener('click', e => {
+  if (e.target === document.getElementById('med-modal')) fecharMedModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharMedModal(); });
+
+
+/* ══════════════════════════════════════════════════════════
+   CUIDADO — Mapa (OpenStreetMap + Overpass + Nominatim)
+   ══════════════════════════════════════════════════════════ */
+let profMap = null, profMarkers = [], profResultsCache = [], profCircle = null;
+
+function toggleConvenioField() {
+  const v = document.getElementById('prof-cobertura')?.value;
+  const w = document.getElementById('prof-convenio-wrap');
+  if (w) w.style.display = v === 'convenio' ? 'block' : 'none';
+}
+
+function carregarLeaflet(cb) {
+  if (typeof L !== 'undefined') { cb(); return; }
+  if (!document.querySelector('link[href*="leaflet"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+  }
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  s.onload = cb;
+  document.head.appendChild(s);
+}
+
+function initProfMap(lat, lon) {
+  const mapEl = document.getElementById('prof-map');
+  if (!mapEl) return;
+  const ph = document.getElementById('prof-map-placeholder');
+  if (ph) ph.remove();
+  if (profMap) { profMap.setView([lat, lon], 14); return; }
+  profMap = L.map('prof-map', { zoomControl: true }).setView([lat, lon], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 19
+  }).addTo(profMap);
+}
+
+function limparMarcadores() {
+  profMarkers.forEach(m => profMap?.removeLayer(m));
+  profMarkers = [];
+  if (profCircle) { profMap?.removeLayer(profCircle); profCircle = null; }
+}
+
+function distKm(lat1, lon1, lat2, lon2) {
+  const R = 6371, dL = (lat2-lat1)*Math.PI/180, dO = (lon2-lon1)*Math.PI/180;
+  return R * 2 * Math.atan2(Math.sqrt(Math.sin(dL/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dO/2)**2), Math.sqrt(1-Math.sin(dL/2)**2 - Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dO/2)**2));
+}
+
+async function geocodificar(local) {
+  // Tenta com Brasil primeiro, depois sem
+  const tentativas = [
+    `${local}, Brasil`,
+    local
+  ];
+  for (const q of tentativas) {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&countrycodes=br`, { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'RanneApp/1.0' } });
+    const data = await res.json();
+    if (data && data.length > 0) return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  }
+  throw new Error('Local não encontrado');
+}
+
+async function buscarOverpass(lat, lon, tipo) {
+  const raio = 8000;
+  // Bug 3 fix: query mais abrangente para o Brasil onde OSM tem menos dados
+  const queries = {
+    psicologo:  `node["healthcare"~"psychotherapist|psychologist"](around:${raio},${lat},${lon}); way["healthcare"~"psychotherapist|psychologist"](around:${raio},${lat},${lon});`,
+    psiquiatra: `node["healthcare"="psychiatrist"](around:${raio},${lat},${lon}); way["healthcare"="psychiatrist"](around:${raio},${lat},${lon});`,
+    medico:     `node["amenity"="doctors"](around:${raio},${lat},${lon}); way["amenity"="doctors"](around:${raio},${lat},${lon});`,
+    caps:       `node["name"~"CAPS|Centro de Atenção Psicossocial",i](around:${raio},${lat},${lon}); way["name"~"CAPS|Centro de Atenção Psicossocial",i](around:${raio},${lat},${lon});`,
+    ubs:        `node["name"~"UBS|Unidade Básica|ESF|Posto de Saúde|PSF",i](around:${raio},${lat},${lon}); way["name"~"UBS|Unidade Básica|ESF|Posto de Saúde|PSF",i](around:${raio},${lat},${lon});`,
+    '':         `node["amenity"~"doctors|hospital|clinic|pharmacy"](around:${raio},${lat},${lon}); way["amenity"~"doctors|hospital|clinic"](around:${raio},${lat},${lon}); node["healthcare"](around:${raio},${lat},${lon}); node["name"~"CAPS|UBS|ESF|PSF|Posto de Saúde|Clínica|Consultório",i](around:${raio},${lat},${lon});`
+  };
+
+  const q = `[out:json][timeout:25]; ( ${queries[tipo] || queries['']} ); out center 40;`;
+  // Tenta múltiplos endpoints Overpass (o principal bloqueia CORS em alguns hosts)
+  const endpoints = [
+    'https://overpass.kumi.systems/api/interpreter',
+    'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
+    'https://overpass-api.de/api/interpreter'
+  ];
+  let res;
+  for (const ep of endpoints) {
+    try {
+      res = await fetch(ep, { method: 'POST', body: 'data=' + encodeURIComponent(q) });
+      if (res.ok) break;
+    } catch {}
+  }
+  if (!res || !res.ok) throw new Error('Overpass indisponível');
+  const data = await res.json();
+  return data.elements || [];
+}
+
+function normalizarElemento(el, latRef, lonRef) {
+  const tags = el.tags || {};
+  const lat  = el.lat || el.center?.lat;
+  const lon  = el.lon || el.center?.lon;
+  if (!lat || !lon) return null;
+
+  const nome = tags.name || tags['name:pt'] || 'Estabelecimento de saúde';
+  const hc   = (tags.healthcare || '').toLowerCase();
+  const am   = (tags.amenity    || '').toLowerCase();
+
+  let tipo = 'saude', emoji = '🏥', tipoLabel = 'Saúde';
+  if (/psychotherapist|psychologist/.test(hc)) { tipo='psicologo'; emoji='🧠'; tipoLabel='Psicólogo/Psicoterapeuta'; }
+  else if (hc === 'psychiatrist')               { tipo='psiquiatra'; emoji='🩺'; tipoLabel='Psiquiatra'; }
+  else if (/CAPS|atenção psicossocial/i.test(nome)) { tipo='caps'; emoji='💚'; tipoLabel='CAPS'; }
+  else if (/UBS|unidade básica|ESF|PSF|posto de saúde/i.test(nome)) { tipo='ubs'; emoji='🏥'; tipoLabel='UBS / Posto de Saúde'; }
+  else if (am === 'hospital')  { tipo='hospital'; emoji='🏥'; tipoLabel='Hospital'; }
+  else if (am === 'clinic' || am === 'doctors') { tipo='medico'; emoji='👨‍⚕️'; tipoLabel='Clínica / Consultório'; }
+  else if (am === 'pharmacy')  { tipo='farmacia'; emoji='💊'; tipoLabel='Farmácia'; }
+
+  let cobertura = 'particular';
+  if (/CAPS|CRAS|CREAS|UBS|SUS|PSF|ESF|unidade básica|posto de saúde|centro de saúde|municipal|prefeitura/i.test(nome)) cobertura = 'sus';
+  if (tags['payment:insurance'] || /convênio|convenio/i.test(tags.description || '')) cobertura = 'convenio';
+
+  const dist = distKm(latRef, lonRef, lat, lon);
+  return {
+    nome, tipo, tipoLabel, emoji, lat, lon, dist, cobertura,
+    endereco: [tags['addr:street'], tags['addr:housenumber']].filter(Boolean).join(', '),
+    telefone: tags.phone || tags['contact:phone'] || ''
+  };
+}
+
+function adicionarMarcador(p, i) {
+  if (!profMap) return;
+  const cores = { psicologo:'#4ECBA0', psiquiatra:'#7C3AED', medico:'#3B82F6', caps:'#F97316', ubs:'#10B981', hospital:'#EF4444', farmacia:'#F59E0B', saude:'#6B7280' };
+  const cor = cores[p.tipo] || cores.saude;
+  const icon = L.divIcon({
+    html: `<div style="width:28px;height:28px;border-radius:50%;background:${cor};border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:13px">${p.emoji}</div>`,
+    className: '', iconSize:[28,28], iconAnchor:[14,28], popupAnchor:[0,-28]
+  });
+  const m = L.marker([p.lat, p.lon], { icon })
+    .addTo(profMap)
+    .bindPopup(`<strong>${p.nome}</strong><br><small>${p.tipoLabel}${p.telefone ? '<br>📞 '+p.telefone : ''}</small>`);
+  profMarkers.push(m);
+}
+
+function renderizarResultados(itens) {
+  const el = document.getElementById('prof-results');
+  if (!el) return;
+  if (!itens.length) {
+    el.innerHTML = '<div class="prof-empty"><div class="prof-empty-icon">🔍</div>Nenhum resultado em 8km.<br>Tente buscar por cidade ou mudar o filtro de tipo.</div>';
+    return;
+  }
+  el.innerHTML = itens.map((p, i) => {
+    const d = p.dist < 1 ? Math.round(p.dist*1000)+'m' : p.dist.toFixed(1)+'km';
+    const cobTag = p.cobertura==='sus' ? '<span class="prof-result-tag prt-green">🆓 Gratuito/SUS</span>'
+                 : p.cobertura==='convenio' ? '<span class="prof-result-tag prt-blue">🏥 Convênio</span>'
+                 : '<span class="prof-result-tag prt-orange">💳 Particular</span>';
+    const tel = p.telefone ? `<span class="prof-result-tag prt-purple">📞 ${p.telefone}</span>` : '';
+    return `<div class="prof-result-item" onclick="centralizarMarcador(${i})">
+      <div class="prof-result-icon">${p.emoji}</div>
+      <div class="prof-result-body">
+        <div class="prof-result-name">${p.nome}</div>
+        <div class="prof-result-type">${p.tipoLabel}${p.endereco?' · '+p.endereco:''}</div>
+        <div class="prof-result-tags">${cobTag}${tel}</div>
+        <div class="prof-result-dist">📍 ${d} de distância</div>
+      </div></div>`;
+  }).join('');
+}
+
+function centralizarMarcador(idx) {
+  if (!profMap || !profMarkers[idx]) return;
+  profMap.setView(profMarkers[idx].getLatLng(), 16);
+  profMarkers[idx].openPopup();
+}
+
+function filtrarProfs(btn, tipo) {
+  document.querySelectorAll('.prof-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtrados = tipo==='todos' ? profResultsCache : profResultsCache.filter(p => p.cobertura===tipo);
+  limparMarcadores();
+  if (profMap && profResultsCache.length) {
+    profCircle = L.circle([profResultsCache[0]._latRef||0, profResultsCache[0]._lonRef||0], { radius:8000, color:'#4ECBA0', fillOpacity:.06, weight:1.5 }).addTo(profMap);
+  }
+  filtrados.forEach((p,i) => adicionarMarcador(p,i));
+  renderizarResultados(filtrados);
+}
+
+async function buscarProfissionais() {
+  const cep  = document.getElementById('prof-cep')?.value.trim();
+  const tipo = document.getElementById('prof-tipo')?.value || '';
+  const btn  = document.getElementById('prof-btn-buscar');
+  if (!cep) { toast('⚠ Informe o CEP ou cidade'); return; }
+
+  btn.disabled = true; btn.textContent = '⏳ Buscando…';
+
+  carregarLeaflet(async () => {
+    try {
+      const { lat, lon } = await geocodificar(cep);
+      initProfMap(lat, lon);
+
+      limparMarcadores();
+      // Marcador do usuário
+      L.marker([lat, lon], { icon: L.divIcon({ html:'<div style="width:16px;height:16px;border-radius:50%;background:#4ECBA0;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)"></div>', className:'', iconSize:[16,16], iconAnchor:[8,8] }) }).addTo(profMap).bindPopup('Você está aqui').openPopup();
+      profCircle = L.circle([lat, lon], { radius:8000, color:'#4ECBA0', fillOpacity:.06, weight:1.5 }).addTo(profMap);
+
+      const elementos = await buscarOverpass(lat, lon, tipo);
+      profResultsCache = elementos
+        .map(el => normalizarElemento(el, lat, lon))
+        .filter(Boolean)
+        .sort((a,b) => a.dist - b.dist)
+        .slice(0, 40);
+
+      // Guarda referência para filtros
+      profResultsCache.forEach(p => { p._latRef = lat; p._lonRef = lon; });
+      profResultsCache.forEach((p,i) => adicionarMarcador(p,i));
+
+      const filters = document.getElementById('prof-filters');
+      if (filters) filters.style.display = 'flex';
+      renderizarResultados(profResultsCache);
+
+      if (!profResultsCache.length) {
+        toast('Nenhum resultado em 8km. Tente buscar por município.');
+      } else {
+        toast('✅ ' + profResultsCache.length + ' local(is) encontrado(s)');
+      }
+    } catch(e) {
+      console.warn('[buscarProfissionais]', e);
+      toast('⚠ Não encontramos esse local. Tente: "Ferraz de Vasconcelos, SP"');
+    } finally {
+      btn.disabled = false; btn.textContent = '🔍 Buscar profissionais';
+    }
+  });
+}
 async function salvarCheckin() {
   const cs = Object.assign({}, checkinState, window.ciState || {});
-  const humor = cs.humor;
-  const energia = cs.energia;
-  const carga = cs.carga;
+  const toNum = (v, fb) => { const n = parseInt(v); return isNaN(n) ? fb : n; };
+  const humor   = toNum(cs.humor,   50);
+  const energia = toNum(cs.energia, 50);
+  const carga   = toNum(cs.carga,   50);
+  const focoVal = toNum(cs.foco,    Math.round(humor * 0.7 + energia * 0.3));
+
+  const btn = document.querySelector('#cp-checkin .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Salvando…'; }
 
   try {
-    const focoVal = cs.foco ?? Math.round((humor * 0.7 + energia * 0.3));
-    await db.from('checkins').insert({
-      empresa_id: currentEmpresa?.id,
-      user_id: currentUser?.id,
+    const { error } = await db.from('checkins').insert({
+      empresa_id: currentEmpresa?.id || null,
+      user_id:    currentUser?.id,
       humor, energia, carga,
-      foco: focoVal,
-      semana: getWeekNumber()
+      foco:   focoVal,
+      semana: String(getWeekNumber()) // banco usa tipo TEXT
     });
-  } catch {}
+    if (error) console.warn('[checkin error]', error.message, error.details);
+  } catch(e) { console.warn('[salvarCheckin]', e); }
 
   await carregarDadosHomeColaborador();
+  if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
+  if (btn) { btn.disabled = false; btn.textContent = 'Enviar Check-in ✓'; }
   toast('✅ Check-in enviado! Obrigado.');
 }
 
@@ -9137,8 +9707,9 @@ function selEm(btn, group) {
   const row = btn.closest('.em-row');
   row.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
-  checkinState[group] = btn.querySelector('.el')?.textContent || btn.querySelector('.em')?.textContent;
-  window.ciState[group] = checkinState[group]; // sincroniza ambos
+  const val = btn.dataset.score !== undefined ? parseInt(btn.dataset.score) : 50;
+  checkinState[group] = val;
+  window.ciState[group] = val;
 }
 
 /* ─────────────────────────────────────
@@ -10501,10 +11072,16 @@ function cpg(id) {
   const page = document.getElementById('cp-' + id);
   if (page) {
     page.classList.add('active');
-    // Rola pro topo — tenta o container correto
-    const scrollEl = document.getElementById('app-colaborador') || document.scrollingElement || document.body;
-    scrollEl.scrollTop = 0;
-    page.scrollTop = 0;
+    // Bug 1 fix: scroll pro topo em todos os containers possíveis
+    setTimeout(() => {
+      page.scrollTop = 0;
+      page.scrollIntoView({ block: 'start' });
+      const appEl = document.getElementById('app-colaborador');
+      if (appEl) appEl.scrollTop = 0;
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 10);
   }
 
   // Atualiza nav inferior
@@ -11423,7 +12000,7 @@ async function carregarDadosHomeColaborador() {
 
   try {
     // Busca último check-in
-    const semAtual = getWeekNumber();
+    const semAtual = String(getWeekNumber()); // banco usa TEXT
     const { data: checkins } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
@@ -12041,6 +12618,8 @@ function clin_render() {
   document.getElementById('clin-prog-fill').style.width  = pct + '%';
   document.getElementById('clin-q-num').textContent      = (clinAtual.nome + ' · Pergunta ' + (clinQAtual + 1)).toUpperCase();
   document.getElementById('clin-btn-back').style.display = clinQAtual > 0 ? 'block' : 'none';
+  const btnSair = document.getElementById('clin-btn-sair');
+  if (btnSair) btnSair.style.display = clinQAtual === 0 ? 'flex' : 'none';
   document.getElementById('clin-btn-next').textContent   = clinQAtual === total - 1 ? 'Ver resultado ✓' : 'Próxima →';
   document.getElementById('clin-btn-next').disabled      = clinSel === null;
 
@@ -12146,6 +12725,16 @@ function clin_calcular() {
       chip.className = 'test-done-chip';
       chip.textContent = '✓ ' + nivel.nivel;
       card.appendChild(chip);
+    }
+    // Bug 2 fix: mostra botão "Ver resultado" no card
+    const existingBtn = card.querySelector('.test-ver-btn');
+    if (!existingBtn) {
+      const btn = document.createElement('button');
+      btn.className = 'test-ver-btn';
+      btn.textContent = '↗ Ver resultado';
+      btn.style.cssText = 'display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:7px 14px;background:rgba(78,203,160,.12);color:#4ECBA0;border:1.5px solid rgba(78,203,160,.35);border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif';
+      btn.onclick = (e) => { e.stopPropagation(); clinAtual = t; cpg("clin-resultado"); };
+      card.appendChild(btn);
     }
   }
 
@@ -13974,19 +14563,59 @@ function femIniciarRespiracao() {
   toast('🌬️ Respiração guiada iniciando... (use a área de Check-in Semanal para exercícios completos)');
 }
 
-function salvarCheckinFeminino() {
+async function salvarCheckinFeminino() {
   const sinto = document.getElementById('fem-sinto')?.value.trim();
   if (!femState.sono && !femState.energia && !femState.humor && !femState.foco && !sinto) {
     toast('Preencha pelo menos um campo antes de salvar.');
     return;
   }
+
+  const btn = document.querySelector('#cp-feminina .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Salvando…'; }
+
+  // Converte escala 1-3 em score 0-100 para o dashboard
+  const toScore = v => v === 1 ? 25 : v === 2 ? 60 : v === 3 ? 90 : null;
+  const humor   = toScore(femState.humor);
+  const energia = toScore(femState.energia);
+  const sono    = toScore(femState.sono);
+  const foco    = toScore(femState.foco);
+
   try {
+    // Salva no Supabase tabela checkins (mesmo schema do check-in normal)
+    if (currentUser?.id) {
+      const carga = 50; // check-in feminino não pergunta carga — usa neutro
+      const focoVal = foco ?? (humor !== null && energia !== null ? Math.round(humor * 0.6 + energia * 0.4) : 50);
+      await db.from('checkins').insert({
+        user_id:    currentUser.id,
+        empresa_id: currentEmpresa?.id || null,
+        humor:      humor ?? 50,
+        energia:    energia ?? 50,
+        carga,
+        foco:       focoVal,
+        semana:     getWeekNumber(),
+        tipo:       'feminino',
+        nota:       sinto || null
+      }).catch(e => console.warn('[femCheckin Supabase]', e));
+    }
+
+    // Salva localmente também
     const registro = { ...femState, sinto, data: new Date().toISOString() };
     const historico = JSON.parse(localStorage.getItem('ranne_fem_checkin') || '[]');
     historico.unshift(registro);
     localStorage.setItem('ranne_fem_checkin', JSON.stringify(historico.slice(0, 30)));
-  } catch(e) {}
-  toast('✅ Check-in salvo! Cuide-se bem hoje.');
+
+    // Atualiza o dashboard
+    await carregarDadosHomeColaborador();
+
+    toast('✅ Check-in salvo! Cuide-se bem hoje.');
+    setTimeout(() => cpg('inicio'), 1500);
+
+  } catch(e) {
+    console.warn('[salvarCheckinFeminino]', e);
+    toast('✅ Check-in salvo localmente!');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Salvar meu check-in'; }
+  }
 }
   /* ══ MEU DIÁRIO ══ */
 const DIARIO_PERGUNTAS = [
