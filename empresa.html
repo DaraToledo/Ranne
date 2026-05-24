@@ -4632,7 +4632,7 @@ body.dark .ob-btn { background: #2D5E4A; }
 <!-- ══ AUTH STEPS (original flow — mostrado após seleção de perfil) ══ -->
 <div id="onboarding-steps" class="fullpage" style="display:none;position:fixed;inset:0;z-index:100;width:100vw;height:100vh;overflow-y:auto;background:#2D5E4A;">
 
-  <!-- Marca d'água "Ranne Care" igual ao site -->
+  <!-- Marca d\u2019água "Ranne Care" igual ao site -->
   <div style="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;display:flex;align-items:center;justify-content:center;">
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(80px,18vw,220px);font-weight:300;color:rgba(255,255,255,0.06);white-space:nowrap;letter-spacing:.04em;user-select:none;transform:translateY(-5%)">Ranne Care</div>
   </div>
@@ -7289,9 +7289,9 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="th-title">Trilhas de<br>Bem-estar</div>
       <div class="th-sub">Conteúdo desenvolvido com base clínica e revisado por psicóloga especializada em saúde mental ocupacional.</div>
       <div class="th-stats">
-        <div class="th-stat"><div class="th-stat-dot"></div>5 trilhas</div>
-        <div class="th-stat"><div class="th-stat-dot"></div>26 aulas</div>
-        <div class="th-stat"><div class="th-stat-dot"></div>~2h de conteúdo</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>7 trilhas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>36 aulas</div>
+        <div class="th-stat"><div class="th-stat-dot"></div>~3h de conteúdo</div>
       </div>
     </div>
 
@@ -7399,6 +7399,46 @@ body.dark .ob-btn { background: #2D5E4A; }
         <div class="tc-progress">
           <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t5-pct">0%</span></div>
           <div class="tc-prog-track"><div class="tc-prog-fill" id="t5-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 6 -->
+    <div class="trilha-card" style="border-left-color:#10B981" onclick="abrirTrilha(6)">
+      <div class="tc-emoji">🥦</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 6</div>
+        <div class="tc-titulo">Nutrição e Saúde Mental</div>
+        <div class="tc-desc">Descubra como o que você come influencia como você pensa, sente e se recupera.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~26 min</span>
+          <span class="tc-pill">SMILES · 2017</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t6-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t6-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="tc-arr">›</div>
+    </div>
+
+    <!-- Trilha 7 -->
+    <div class="trilha-card" style="border-left-color:#F59E0B" onclick="abrirTrilha(7)">
+      <div class="tc-emoji">🍽️</div>
+      <div class="tc-body">
+        <div class="tc-num">Trilha 7</div>
+        <div class="tc-titulo">Alimentação Emocional</div>
+        <div class="tc-desc">Quando a comida vira regulação — entenda a relação entre emoções e o que você come.</div>
+        <div class="tc-meta">
+          <span class="tc-pill">5 aulas</span>
+          <span class="tc-pill">~28 min</span>
+          <span class="tc-pill">Polivy · 2002</span>
+        </div>
+        <div class="tc-progress">
+          <div class="tc-prog-row"><span class="tc-prog-lbl">Progresso</span><span class="tc-prog-pct" id="t7-pct">0%</span></div>
+          <div class="tc-prog-track"><div class="tc-prog-fill" id="t7-fill" style="width:0%"></div></div>
         </div>
       </div>
       <div class="tc-arr">›</div>
@@ -13274,6 +13314,319 @@ const TRILHAS = [
 
 // Adicionar as novas trilhas ao array principal
 
+// Trilhas gerais novas (Nutrição e Alimentação Emocional)
+TRILHAS.push(
+  {
+    id:6, emoji:'🥦', cor:'#10B981',
+    titulo:'Nutrição e Saúde Mental',
+    desc:'Descubra como o que você come influencia como você pensa, sente e se recupera.',
+    ref:'Jacka, F. N. et al. (2017). SMILES trial. BMC Medicine.',
+    aulas:[
+      { num:1, titulo:'O que você come afeta como você sente — e a ciência prova', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'A Psiquiatria Nutricional estuda como a alimentação influencia o funcionamento do cérebro, o humor e o risco de transtornos mentais. Dietas de baixa qualidade estão consistentemente associadas a maior risco de depressão e ansiedade.'},
+          {t:'tabela', colunas:['Afirmação','Nível de evidência'], linhas:[['Dieta de má qualidade aumenta risco de depressão','Forte — múltiplos estudos populacionais'],['Dieta mediterrânea e menor risco de depressão','Forte — meta-análises'],['Melhora da dieta reduz sintomas depressivos','Moderado — ensaio SMILES (2017)'],['Ômega-3 com efeito antidepressivo','Moderado — mais forte em EPA']]},
+          {t:'aviso', c:'Evidências de associação não provam causalidade direta. Se você tem diagnóstico de transtorno mental, não substitua o tratamento profissional por mudanças alimentares.'},
+          {t:'q', c:'"Não estamos dizendo que comida substitui tratamento. Estamos dizendo que ignorar a alimentação enquanto trata saúde mental é deixar uma alavanca poderosa sem uso." — Felice Jacka'},
+          {t:'levar', c:'Sua alimentação é um dos fatores modificáveis mais acessíveis para a saúde mental. Não é milagre — mas também não é irrelevante.'}
+        ]
+      },
+      { num:2, titulo:'O eixo intestino-cérebro — seu segundo cérebro existe de verdade', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Cerca de 95% da serotonina do seu corpo é produzida no intestino. O eixo intestino-cérebro é uma rede de comunicação bidirecional que liga o sistema nervoso entérico ao central — via nervo vago, hormônios, sistema imune e substâncias das bactérias intestinais.'},
+          {t:'caixa', titulo:'O que isso significa na prática:', items:['~38 trilhões de bactérias habitam seu trato digestivo','Elas produzem neurotransmissores, vitaminas e ácidos graxos de cadeia curta','Uma dieta variada em fibras alimenta as bactérias protetoras','Ultraprocessados reduzem a diversidade da microbiota em poucas semanas']},
+          {t:'q', c:'"Quando você come alimentos variados e ricos em fibras, não está alimentando só você — está alimentando os trilhões de aliados que regulam seu humor, imunidade e energia."'},
+          {t:'levar', c:'Cuidar do intestino é cuidar do cérebro. Essa conexão é real, mensurável e sensível ao que você coloca no prato.'}
+        ]
+      },
+      { num:3, titulo:'Os nutrientes que o cérebro mais precisa — e onde encontrá-los', tipo:'Leitura + Tabela', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Não existe um "superalimento" que resolve tudo. O que existe é um padrão alimentar que oferece consistentemente os nutrientes que o cérebro precisa para funcionar bem.'},
+          {t:'tabela', colunas:['Nutriente','Para que serve','Onde encontrar'], linhas:[['Ômega-3 (EPA/DHA)','Reduz inflamação, estrutura neuronal','Sardinha, salmão, linhaça, chia'],['Magnésio','Regula cortisol e sono','Sementes de abóbora, espinafre, feijão'],['Vitamina D','Síntese de serotonina e dopamina','Sol, ovos, cogumelos'],['B12 e Folato','Síntese de neurotransmissores','Ovos, folhas verde-escuras, leguminosas'],['Zinco','Neuroplasticidade, resposta ao estresse','Carne magra, feijão, castanhas'],['Triptofano','Precursor da serotonina','Banana, aveia, frango, cottage'],['Probióticos','Saúde da microbiota','Iogurte natural, kefir, kimchi']]},
+          {t:'aviso', c:'Suplementar sem indicação profissional não traz benefício adicional e pode ser prejudicial. Prefira sempre a fonte alimentar.'},
+          {t:'levar', c:'Variedade é mais importante que quantidade. Um prato colorido e diversificado cobre mais bases do que qualquer suplemento isolado.'}
+        ]
+      },
+      { num:4, titulo:'O que realmente atrapalha — ultraprocessados, açúcar e humor', tipo:'Leitura + Reflexão', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Alimentos ultraprocessados são ricos em açúcar refinado, gorduras trans, sódio e aditivos — e pobres nos nutrientes que o cérebro precisa. Estudos de coorte com dezenas de milhares de pessoas mostram associação consistente com maior risco de depressão e comprometimento cognitivo.'},
+          {t:'caixa', titulo:'O ciclo do açúcar e o humor:', items:['Açúcar refinado → Pico de glicose → Energia rápida e sensação de bem-estar','Queda brusca de glicose (2–3h depois)','Irritabilidade, névoa mental, fadiga, fissura por mais açúcar','Ciclo se repete']},
+          {t:'caixa', titulo:'Perguntas para reflexão:', items:['Você sente mudanças de humor previsíveis ligadas ao que comeu?','Você tem dificuldade de concentração depois do almoço?','Você usa comida para regular emoções (ansiedade, frustração, tédio)?']},
+          {t:'q', c:'"Não existe culpa em comer ultraprocessado — existe contexto. O objetivo não é a dieta perfeita: é aumentar a consciência sobre o impacto."'},
+          {t:'levar', c:'O que você come regularmente molda o ambiente químico do seu cérebro. Não precisa ser perfeito — precisa ser consistente o suficiente para fazer diferença.'}
+        ]
+      },
+      { num:5, titulo:'Construindo um padrão alimentar que protege sua saúde mental', tipo:'Leitura + Plano', tempo:'6 min',
+        corpo:[
+          {t:'p', c:'O padrão mediterrâneo — rico em vegetais, leguminosas, grãos integrais, azeite, peixes e frutas — é o mais estudado. O estudo SMILES (2017) mostrou que intervenção dietética baseada nesse padrão reduziu significativamente sintomas depressivos em adultos com depressão moderada a grave.'},
+          {t:'tabela', colunas:['Dia','Mudança pequena e factível'], linhas:[['Segunda','Troque 1 ultraprocessado por uma fruta ou castanha'],['Terça','Adicione uma folha verde no almoço (qualquer uma)'],['Quarta','Beba 2 copos extras de água — desidratação afeta humor e foco'],['Quinta','Inclua leguminosas em uma refeição (feijão, lentilha, grão-de-bico)'],['Sexta','Coma 1 refeição sem tela — atenção plena melhora a saciedade'],['Sábado','Experimente um alimento fermentado: iogurte natural, kefir, coalhada'],['Domingo','Reflita: houve relação entre o que comeu e seu humor esta semana?']]},
+          {t:'levar', c:'Parabéns por concluir a Trilha de Nutrição e Saúde Mental! Ciência nutricional e saúde mental ainda têm muito a descobrir juntas — mas o suficiente já foi comprovado para que você comece hoje. Com consciência, não com perfeição.'}
+        ]
+      }
+    ]
+  },
+  {
+    id:7, emoji:'🍽️', cor:'#F59E0B',
+    titulo:'Alimentação Emocional',
+    desc:'Quando a comida vira regulação — entenda a relação entre emoções e o que você come.',
+    ref:'Polivy, J. & Herman, C. P. (2002). Causes of eating disorders. Annual Review of Psychology.',
+    aulas:[
+      { num:1, titulo:'Comer para sentir menos — o que é alimentação emocional', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Alimentação emocional é o uso da comida para gerenciar estados emocionais — ansiedade, tédio, solidão, frustração — em vez de responder à fome física. Pesquisas mostram que ela está associada a ciclos de culpa, compulsão e piora do bem-estar emocional a longo prazo.'},
+          {t:'tabela', colunas:['','Fome física','Fome emocional'], linhas:[['Aparece','Gradualmente','De repente, com urgência'],['Aceita qualquer coisa?','Sim','Não — quer algo específico'],['Para quando sacia?','Sim','Não — continua mesmo cheio'],['Sensação depois','Satisfação','Culpa, vazio ou vergonha']]},
+          {t:'caixa', titulo:'Checklist — reconheço em mim:', items:['Como mais quando estou estressado(a) ou ansioso(a)','Uso comida como recompensa frequente ("mereci isso")','Como rápido, sem prestar atenção ao que estou sentindo','Me sinto culpado(a) depois de comer certos alimentos','Há alimentos que não consigo parar de comer quando começo']},
+          {t:'q', c:'"Antes de se julgar por comer mal, pergunte: o que eu estava sentindo antes de comer? A resposta revela muito mais do que a comida em si."'},
+          {t:'levar', c:'Alimentação emocional não é fraqueza — é emoção não processada buscando um atalho. E esse atalho tem sabor.'}
+        ]
+      },
+      { num:2, titulo:'O cérebro, a dopamina e o ciclo da compulsão alimentar', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Alimentos ultraprocessados ricos em açúcar, gordura e sal ativam o sistema de recompensa dopaminérgico — o mesmo sistema ativado por outras substâncias de dependência. O prazer é imediato, mas diminui com a repetição — então você precisa de mais para sentir o mesmo.'},
+          {t:'caixa', titulo:'O ciclo da compulsão:', items:['Emoção desconfortável (estresse, tédio, solidão)','Impulso por comida palatável (açúcar, gordura)','Dopamina → alívio imediato e curto','Culpa / julgamento → nova emoção desconfortável → ciclo recomeça']},
+          {t:'caixa', titulo:'O que a ciência mostra:', items:['Pessoas com maior estresse crônico têm maior preferência por alimentos de alta palatabilidade','Privação de sono aumenta o apetite por doces e gordurosos em até 45%','Restrição alimentar rígida aumenta — não diminui — o risco de compulsão','Mindful eating mostrou eficácia em reduzir episódios de compulsão em estudos clínicos']},
+          {t:'q', c:'"A solução para a compulsão alimentar não é mais disciplina. É mais consciência — e cuidar das emoções que alimentam o ciclo."'},
+          {t:'levar', c:'Compulsão não é fraqueza moral. É o sistema de recompensa fazendo o que foi programado para fazer. A saída está em entender o gatilho emocional.'}
+        ]
+      },
+      { num:3, titulo:'Atenção plena ao comer — mindful eating na prática', tipo:'Prática guiada', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Mindful eating não é uma dieta. É a prática de prestar atenção à experiência de comer — sem julgamento. Estudos mostram que ela reduz episódios de comer em excesso, melhora a satisfação com a refeição e diminui a alimentação emocional.'},
+          {t:'tabela', colunas:['Passo','O que fazer'], linhas:[['1. Pause','Antes de começar, pare por 30 segundos. Respire.'],['2. Avalie a fome','Em uma escala de 0 a 10, qual é seu nível de fome física agora?'],['3. Avalie a emoção','Está comendo por fome ou por outra razão?'],['4. Coma devagar','Coloque o garfo na mesa entre uma garfada e outra'],['5. Avalie a saciedade','A cada 5 minutos: ainda estou com fome?']]},
+          {t:'caixa', titulo:'Práticas simples:', items:['Tire as telas da mesa pelo menos em 1 refeição por dia','Mastigue mais — o sinal de saciedade leva 20 minutos para chegar ao cérebro','Se sentir compulsão: beba água, espere 5 minutos, reavalie a fome']},
+          {t:'q', c:'"Comer devagar não é um sacrifício — é uma forma de sentir mais prazer na comida que você já ia comer de qualquer forma."'},
+          {t:'levar', c:'Atenção plena ao comer é uma habilidade — e como toda habilidade, melhora com prática. Comece por uma refeição por dia.'}
+        ]
+      },
+      { num:4, titulo:'Culpa, dieta e o ciclo que nunca funciona', tipo:'Reflexão + Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Dietas restritivas baseadas em proibição têm taxa de sucesso a longo prazo inferior a 20% em estudos clínicos. O motivo é neurobiológico: proibir aumenta o valor atencional do alimento proibido. O cérebro pensa mais nele, não menos.'},
+          {t:'caixa', titulo:'Ciclo restrição-compulsão:', items:['Decisão de "comer melhor" → restrição rígida (não posso comer X)','Privação → aumento do desejo por X','Um momento de estresse → cede ao desejo','Pensamento "já estraguei tudo, tanto faz" → exagero + culpa','Retorno à restrição → ciclo reinicia']},
+          {t:'aviso', c:'Se a relação com a comida gera sofrimento intenso, interfere nas relações sociais ou está associada a comportamentos como vômito provocado ou jejum extremo — isso merece atenção profissional especializada. Transtornos alimentares têm tratamento.'},
+          {t:'levar', c:'Abandone a mentalidade de dieta. Adote a mentalidade de cuidado. A diferença está na motivação — punição vs. autocuidado.'}
+        ]
+      },
+      { num:5, titulo:'Construindo uma relação mais saudável com a comida — seu plano', tipo:'Atividade de encerramento', tempo:'8 min',
+        corpo:[
+          {t:'p', c:'Você aprendeu que alimentação emocional é humana, que compulsão tem base neurológica, que restrição piora o ciclo, e que atenção plena é a saída mais eficaz que a ciência conhece. Agora é hora de transformar isso em algo concreto.'},
+          {t:'caixa', titulo:'Construa seu plano em 4 partes:', items:['Meu padrão atual — como é sua relação com a comida hoje? Há julgamento? Culpa? Descontrole?','Meu gatilho emocional principal — qual emoção mais frequentemente te leva a comer sem fome?','Uma alternativa para esse gatilho — o que você poderia fazer além de comer quando essa emoção aparecer?','Uma mudança pequena e real para esta semana — não uma dieta. Uma mudança específica e factível.']},
+          {t:'q', c:'"Sua relação com a comida é uma relação — e como toda relação, pode ser cultivada. Com paciência, consciência e sem perfeição."'},
+          {t:'levar', c:'Parabéns por concluir a Trilha de Alimentação Emocional! Entender seus padrões é o primeiro passo para mudá-los. E você acaba de dar esse passo.'}
+        ]
+      }
+    ]
+  }
+);
+
+// Trilhas da Saúde da Mulher (usadas por femAbrirTrilha via TRILHAS_FEM)
+const TRILHAS_FEM = [
+  {
+    id:'ciclo-emocoes', emoji:'🌙', cor:'#7C3AED',
+    titulo:'Ciclo e Emoções',
+    desc:'Autoconhecimento e acolhimento ao longo do mês.',
+    ref:'Vigil, P. et al. (2022). Frontiers in Endocrinology.',
+    aulas:[
+      { num:1, titulo:'Seu ciclo não é seu inimigo — é um mapa', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'O ciclo menstrual não é apenas um evento físico mensal. É um processo hormonal que influencia ativamente o cérebro, o humor, a energia, a cognição e a forma como você processa emoções. Estrogênio e progesterona agem em regiões do cérebro ligadas ao humor, à memória e à resposta ao estresse.'},
+          {t:'caixa', titulo:'O que a ciência mostra:', items:['Estudos de neuroimagem identificaram que o volume de certas regiões cerebrais se altera ao longo do ciclo','Flutuações de estrogênio afetam diretamente os níveis de serotonina e dopamina','Variações de humor ao longo do ciclo têm base fisiológica — não são "coisa da cabeça"','Há enorme variação individual — esses são padrões gerais, não regras']},
+          {t:'aviso', c:'Sintomas graves que interferem significativamente na vida podem indicar TDPM (Transtorno Disfórico Pré-Menstrual) ou outras condições que merecem avaliação médica.'},
+          {t:'q', c:'"O ciclo não cria emoções do nada. Ele altera o volume com que você as sente. Isso é fisiologia, não fraqueza."'},
+          {t:'levar', c:'Conhecer seu ciclo é um ato de autoconhecimento. Antes de se julgar, pergunte: em que fase estou?'}
+        ]
+      },
+      { num:2, titulo:'As 4 fases — o que muda em você em cada uma', tipo:'Leitura + Tabela', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'O ciclo menstrual tem em média 28 dias — podendo variar entre 21 e 35 dias. Cada fase tem um perfil hormonal que influencia energia, disposição, sociabilidade e sensibilidade emocional.'},
+          {t:'tabela', colunas:['Fase','Dias (aprox.)','Perfil emocional geral','O que pode favorecer'], linhas:[['Menstrual','1–5','Introspecção, cansaço, maior sensibilidade','Descanso, tarefas tranquilas, autocuidado'],['Folicular','6–14','Energia crescente, otimismo, disposição social','Novos projetos, reuniões, aprendizado'],['Ovulatória','14–16','Comunicação fluida, confiança, extroversão','Apresentações, negociações, colaboração'],['Lútea','17–28','Introversão, sensibilidade elevada, possível TPM','Revisão, organização, trabalho solo']]},
+          {t:'q', c:'"Você não é uma pessoa diferente em cada fase. Você é a mesma pessoa com diferentes recursos disponíveis."'},
+          {t:'levar', c:'Não existe fase ruim — existe fase mal compreendida. Quando você sabe o que esperar, pode se tratar com mais gentileza.'}
+        ]
+      },
+      { num:3, titulo:'TPM real × TPM exagerada — separando mito de fisiologia', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'A TPM existe, tem base fisiológica comprovada e não é exagero. É um conjunto de sintomas físicos e emocionais da fase lútea, causados pelas flutuações hormonais — especialmente a queda de progesterona ao final do ciclo.'},
+          {t:'caixa', titulo:'O que NÃO é TPM:', items:['Uma explicação para ignorar o que a pessoa está sentindo','Prova de que suas emoções são irracionais ou inválidas','Motivo para não ser levada a sério no trabalho']},
+          {t:'caixa', titulo:'Checklist — reconheço esses sintomas na fase lútea:', items:['Irritabilidade sem causa aparente','Choro fácil ou sensação de estar "à flor da pele"','Dificuldade de concentração maior que o habitual','Vontade de isolamento','Fadiga mesmo descansada','Sensação de que "tudo vai mal" que some com a menstruação']},
+          {t:'aviso', c:'Se você marcou 4 ou mais e esses sintomas comprometem significativamente sua vida todos os meses — pode ser TDPM. Isso tem tratamento. Converse com um ginecologista ou psiquiatra.'},
+          {t:'levar', c:'TPM não é drama. E saber diferenciá-la do TDPM pode mudar sua qualidade de vida.'}
+        ]
+      },
+      { num:4, titulo:'Rastreando seu ciclo — autoconhecimento na prática', tipo:'Prática guiada', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Rastrear o ciclo permite reconhecer padrões, antecipar como você vai se sentir e se preparar em vez de ser pega de surpresa. Você não precisa de um app caro — precisa de consistência por 2 a 3 meses.'},
+          {t:'tabela', colunas:['Campo','O que anotar'], linhas:[['Data','Dia do mês e dia do ciclo (D1 = primeiro dia da menstruação)'],['Humor geral','1 (muito difícil) a 5 (muito bem)'],['Energia','Baixa / média / alta'],['Emoção principal do dia','1 palavra só'],['Algo relevante','Uma frase: o que foi mais fácil ou difícil hoje?']]},
+          {t:'caixa', titulo:'Ritual de acolhimento na fase menstrual:', items:['Reduza compromissos sociais se puder','Durma 30 minutos a mais que o habitual','Priorize alimentos ricos em ferro e magnésio','Troque exercício intenso por caminhada ou yoga','Escreva: o que preciso nesse momento?']},
+          {t:'q', c:'"Rastrear seu ciclo é fazer uma pergunta honesta ao seu corpo todos os dias: como você está? — e ter a humildade de ouvir a resposta."'},
+          {t:'levar', c:'O autoconhecimento começa com observação, não com julgamento. Dois meses de registro podem mudar sua relação com seu corpo para sempre.'}
+        ]
+      },
+      { num:5, titulo:'Trabalho, ciclo e como negociar com a sua própria agenda', tipo:'Reflexão + Plano', tempo:'6 min',
+        corpo:[
+          {t:'p', c:'Vivemos em um mundo profissional construído sobre um modelo de produtividade linear: mesma energia, mesma performance todos os dias do mês. Para quem tem ciclo, isso é biologicamente ignorar a realidade. Alinhar tarefas ao ciclo quando possível pode aumentar a qualidade do trabalho e reduzir o desgaste.'},
+          {t:'tabela', colunas:['Fase','Tipos de tarefa que fluem melhor'], linhas:[['Menstrual','Revisão, análise, planejamento quieto, tarefas solo'],['Folicular','Aprendizado, brainstorm, iniciar projetos novos'],['Ovulatória','Apresentações, conversas difíceis, negociação, colaboração'],['Lútea (início)','Finalização de projetos, detalhamento, organização'],['Lútea (fim/TPM)','Tarefas de rotina; evitar decisões grandes se possível']]},
+          {t:'aviso', c:'Isso não é uma regra rígida — é uma sugestão de consciência. Deadlines existem, reuniões não são negociáveis. Use como guia, não como pressão adicional.'},
+          {t:'levar', c:'Parabéns por concluir a Trilha Ciclo e Emoções! Você não precisa mudar quem você é — precisa entender o ritmo em que já existe. Com esse mapa, você tem mais poder de escolha.'}
+        ]
+      }
+    ]
+  },
+  {
+    id:'menopausa', emoji:'🌸', cor:'#EC4899',
+    titulo:'Menopausa e Perimenopausa',
+    desc:'Transição e qualidade de vida no trabalho.',
+    ref:'Bromberger, J. T. & Epperson, C. N. (2018). Obstetrics and Gynecology Clinics.',
+    aulas:[
+      { num:1, titulo:'O que ninguém te contou sobre a perimenopausa', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'A perimenopausa começa quando os ovários reduzem gradualmente a produção de estrogênio. A menstruação pode continuar, mas os sintomas já estão presentes: irregularidade do ciclo, ondas de calor, insônia, variações de humor intensas, ansiedade que "aparece do nada" e dificuldade de concentração. Essa fase pode durar de 4 a 10 anos.'},
+          {t:'p', c:'Um estudo de 2024 publicado na Nature Mental Health — com dados do UK Biobank — mostrou que a taxa de incidência de depressão maior é significativamente mais alta durante a perimenopausa do que antes ou depois dela.'},
+          {t:'q', c:'"Muitas mulheres chegam ao médico na perimenopausa com queixas de ansiedade, insônia e humor instável — e saem com diagnóstico de "estresse". O que está acontecendo tem nome, tem causa hormonal identificável e tem tratamento."'},
+          {t:'levar', c:'Perimenopausa não é "coisa da cabeça". É uma transição hormonal real, com impacto documentado na saúde mental — e merece atenção profissional.'}
+        ]
+      },
+      { num:2, titulo:'Os sintomas que ninguém lista — além das ondas de calor', tipo:'Leitura + Checklist', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Um estudo global de 2026 identificou uma grande lacuna entre o que as mulheres esperam sentir e o que realmente vivenciam — especialmente nos sintomas psicológicos e cognitivos da menopausa.'},
+          {t:'caixa', titulo:'Sintomas físicos:', items:['Ondas de calor e suores noturnos','Irregularidade menstrual','Ressecamento vaginal','Dores articulares','Palpitações cardíacas','Ganho de peso abdominal']},
+          {t:'caixa', titulo:'Sintomas psicológicos e cognitivos (menos falados):', items:['"Brain fog" — névoa mental, dificuldade de encontrar palavras','Ansiedade que surge sem gatilho claro','Humor instável — irritabilidade intensa','Episódios de choro sem razão aparente','Perda de memória de curto prazo','Sensação de perda de identidade ou propósito','Queda de libido','Insônia ou sono muito fragmentado']},
+          {t:'caixa', titulo:'Checklist — o que estou experimentando:', items:['Meu ciclo mudou nos últimos 12 meses (mais irregular, mais intenso, espaçado)','Tenho ansiedade que não consigo explicar por circunstâncias externas','Meu sono piorou sem causa óbvia','Tenho dificuldade de concentração que não tinha antes','Meu humor varia de forma que eu mesma não entendo','Tenho 40 anos ou mais']},
+          {t:'aviso', c:'Se você marcou 3 ou mais e tem 40+ anos: leve essa lista para uma consulta ginecológica. Não normalize como "envelhecimento" sem investigar.'},
+          {t:'levar', c:'Brain fog, ansiedade e insônia na perimenopausa não são fraqueza — são sintomas com causa identificável. Nomeá-los é o primeiro passo para tratá-los.'}
+        ]
+      },
+      { num:3, titulo:'Menopausa no trabalho — o que não se fala abertamente', tipo:'Reflexão + Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Pesquisas mostram que sintomas da perimenopausa impactam significativamente a vida profissional de muitas mulheres — mas o tema ainda é amplamente tabu no ambiente de trabalho. Muitas relatam sentir vergonha, medo de parecer "menos capazes" ou simplesmente não saber como nomear o que está acontecendo.'},
+          {t:'caixa', titulo:'O que os estudos identificam:', items:['Dificuldade de concentração e brain fog podem comprometer tarefas cognitivas complexas','Insônia crônica reduz capacidade de tomada de decisão e regulação emocional','Ondas de calor em reuniões geram constrangimento e autossabotagem','Muitas mulheres reduzem horas ou saem de posições de liderança durante esse período — não por escolha, mas por falta de suporte']},
+          {t:'caixa', titulo:'Perguntas para reflexão:', items:['Você já deixou de pedir uma oportunidade no trabalho porque não estava "se sentindo bem" há semanas?','Você atribui dificuldades de performance a "envelhecimento" sem investigar causas hormonais?','Há alguém no trabalho — gestor, RH, colega próximo — com quem você poderia ter essa conversa?']},
+          {t:'q', c:'"O ambiente de trabalho não foi construído pensando na transição hormonal feminina. Mas isso não significa que você precisa enfrentar isso sozinha, em silêncio, fingindo que está tudo bem."'},
+          {t:'levar', c:'Nomear o que está acontecendo — para si mesma e para quem pode ajudar — não é fraqueza. É estratégia.'}
+        ]
+      },
+      { num:4, titulo:'O que funciona: tratamentos e estratégias com evidência', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Existe uma variedade de abordagens com evidência científica para sintomas da menopausa/perimenopausa. O que funciona melhor depende do perfil individual, histórico de saúde e preferências — e essa decisão deve sempre ser tomada com um profissional de saúde.'},
+          {t:'tabela', colunas:['Abordagem','Para o quê','Observação'], linhas:[['TH (Terapia Hormonal)','Ondas de calor, insônia, humor, brain fog','Requer avaliação médica; não indicada para todas'],['Exercício físico regular','Humor, cognição, sono, peso, densidade óssea','Especialmente resistência e aeróbico'],['TCC','Insônia, ansiedade, humor','Eficaz mesmo sem terapia hormonal'],['Mindfulness e meditação','Ansiedade, ondas de calor percebidas, sono','Reduz impacto, não elimina sintomas'],['Fitoestrógenos (soja, linhaça)','Sintomas vasomotores leves','Soja, linhaça, grão-de-bico'],['Higiene do sono','Insônia','Componente essencial de qualquer tratamento']]},
+          {t:'aviso', c:'Não se automedique com hormônios. A terapia hormonal tem indicações, contraindicações e dosagens individualizadas. Um ginecologista especializado em climatério é o profissional mais indicado.'},
+          {t:'levar', c:'Você não precisa "aguentar". Existem opções com evidência. Busque profissional de saúde para encontrar o que funciona para você.'}
+        ]
+      },
+      { num:5, titulo:'Uma nova fase — ressignificando a transição', tipo:'Reflexão + Plano', tempo:'6 min',
+        corpo:[
+          {t:'p', c:'Em muitas culturas, a menopausa é vivida como perda — do ciclo, da fertilidade, da juventude. Essa narrativa gera sofrimento desnecessário. Essa transição — como qualquer grande transição de vida — traz o convite para revisitar quem você é, o que quer e como quer viver.'},
+          {t:'caixa', titulo:'Construa seu plano de cuidado — explore cada dimensão:', items:['Saúde médica: O que já faço? O que quero explorar?','Movimento / exercício: O que já faço? O que quero explorar?','Sono: O que já faço? O que quero explorar?','Apoio emocional / psicológico: O que já faço? O que quero explorar?','Rede de apoio: O que já faço? O que quero explorar?']},
+          {t:'q', c:'"O que essa fase da minha vida está me pedindo que eu priorize — e o que está me pedindo que eu solte?"'},
+          {t:'levar', c:'Parabéns por concluir a Trilha de Menopausa e Perimenopausa! Você merece cuidado informado, suporte real e uma narrativa sobre essa fase que seja sua — não da vergonha, não do silêncio.'}
+        ]
+      }
+    ]
+  },
+  {
+    id:'equilibrio', emoji:'⚖️', cor:'#6366F1',
+    titulo:'Equilíbrio Emocional',
+    desc:'Ferramentas práticas do dia a dia.',
+    ref:'Neff, K. D. (2011). Self-compassion. New York: Morrow.',
+    aulas:[
+      { num:1, titulo:'O que é equilíbrio emocional — e o que não é', tipo:'Leitura', tempo:'4 min',
+        corpo:[
+          {t:'p', c:'Equilíbrio emocional não é estar bem o tempo todo. Não é ter controle absoluto sobre o que sente. É a capacidade de transitar entre estados emocionais sem ficar preso em nenhum deles por muito tempo — sentir raiva sem agir destrutivamente a partir dela, sentir tristeza sem transformá-la em narrativa permanente.'},
+          {t:'p', c:'A ciência chama isso de regulação emocional — e ela é uma habilidade, não um traço de personalidade. Pode ser aprendida, praticada e desenvolvida em qualquer idade.'},
+          {t:'tabela', colunas:['Mito','Realidade'], linhas:[['Equilíbrio emocional = sempre calmo(a)','Equilíbrio = se recuperar rápido, não ausência de emoção'],['Quem precisa de ferramentas é fraco(a)','Ferramentas de regulação são o que pessoas resilientes usam'],['Com o tempo fica mais fácil naturalmente','Fica mais fácil com prática — não só com o tempo'],['Sentir muito é um problema','O problema é não ter saída para processar']]},
+          {t:'levar', c:'Equilíbrio não é destino — é prática. E essa trilha é o seu treino.'}
+        ]
+      },
+      { num:2, titulo:'Regulação em tempo real — o que fazer quando a emoção chega forte', tipo:'Prática guiada', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'A neurobiologista Jill Bolte Taylor descobriu que uma emoção, fisiologicamente, dura cerca de 90 segundos no corpo — se você não a alimentar com pensamento. O que prolonga uma emoção intensa não é o evento em si, mas os pensamentos que entram logo depois.'},
+          {t:'tabela', colunas:['Tempo','O que fazer'], linhas:[['0–10s','PARE. Não aja ainda. Qualquer ação nesse momento será reativa.'],['10–30s','Respire. Uma respiração longa (inspire 4s, expire 6s) ativa o sistema parassimpático.'],['30–60s','Nomeie: "Estou sentindo ___." Nomear a emoção reduz sua intensidade imediatamente.'],['60–90s','Observe: o que essa emoção está me dizendo? O que ela quer que eu faça?'],['Após 90s','Agora você pode responder — com escolha, não em reação automática.']]},
+          {t:'caixa', titulo:'Ancoragem física rápida (quando o corpo está muito ativado):', items:['Pressione os pés no chão e sinta o contato por 10 segundos','Segure algo frio (copo d\u2019agua gelada) e observe a sensação','Olhe ao redor e nomeie 3 objetos em voz baixa — isso ativa o córtex pré-frontal']},
+          {t:'q', c:'"Você não consegue controlar qual emoção vai sentir. Consegue controlar o que faz nos próximos 90 segundos depois que ela chega."'},
+          {t:'levar', c:'Salve este protocolo no celular. Na próxima vez que sentir uma emoção forte no trabalho, você já sabe o que fazer.'}
+        ]
+      },
+      { num:3, titulo:'Ruminação — como sair do loop de pensamentos', tipo:'Leitura + Técnica', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Ruminação não é reflexão. Reflexão é produtiva e leva a um aprendizado ou decisão. Ruminação é circular — você pensa no mesmo problema sem avançar, e cada volta aumenta a angústia. Estudos mostram que ruminação está fortemente associada a depressão, ansiedade e esgotamento.'},
+          {t:'caixa', titulo:'4 técnicas para interromper a ruminação:', items:['Agendar a preocupação — reserve 15 minutos por dia para se preocupar deliberadamente. Fora desse horário, diga mentalmente: "Isso vai para o horário das preocupações."','Escrever para esvaziar — coloque o pensamento no papel. A ruminação é em parte o cérebro tentando não "esquecer" algo. Quando você escreve, libera essa função.','Perguntar: isso é real ou imaginado? — "Isso está acontecendo agora ou estou prevendo?" Se é previsão, volte para o presente.','Movimento físico — caminhada de 10 minutos interrompe o ciclo de ruminação de forma mais eficaz do que ficar parado tentando "pensar direito".']},
+          {t:'q', c:'"Ruminação não é sinal de que você é ansioso(a) demais. É um hábito mental — e hábitos mudam com prática."'},
+          {t:'levar', c:'A diferença entre ruminação e reflexão é simples: reflexão leva a algum lugar. Se você está no mesmo ponto depois de 10 minutos, mude de estratégia.'}
+        ]
+      },
+      { num:4, titulo:'Autocompaixão — o antídoto da autocrítica paralisante', tipo:'Leitura + Prática', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Autocompaixão não é autoindulgência nem baixar o padrão para si. É tratar a si mesmo(a) com a mesma gentileza que você ofereceria a um amigo próximo que está passando pelo mesmo que você. Pesquisas da Dra. Kristin Neff mostram que autocompaixão está associada a maior motivação, mais resiliência, menos procrastinação e melhor saúde mental.'},
+          {t:'caixa', titulo:'O exercício do amigo:', items:['Escreva o que está dizendo para si mesmo(a) agora','Imagine que um amigo próximo veio até você com exatamente esse mesmo problema','O que você diria a ele/ela?','Agora diga isso para si mesmo(a)']},
+          {t:'caixa', titulo:'Prática de autocompaixão em 3 frases (Dra. Kristin Neff):', items:['"Esse é um momento de sofrimento." — Reconhecimento','"Sofrimento faz parte da experiência humana." — Humanidade compartilhada','"Posso ser gentil comigo nesse momento." — Gentileza']},
+          {t:'q', c:'"Você não precisa resolver tudo para merecer gentileza. Você merece gentileza exatamente porque é humano(a) e está tentando."'},
+          {t:'levar', c:'Autocompaixão não é fraqueza. É o solo em que a resiliência real cresce.'}
+        ]
+      },
+      { num:5, titulo:'Construindo sua caixa de ferramentas emocional', tipo:'Atividade de encerramento', tempo:'8 min',
+        corpo:[
+          {t:'p', c:'Ao longo dessa trilha você explorou ferramentas diferentes. Agora é hora de montar a sua caixa — personalizada para o que funciona para você.'},
+          {t:'tabela', colunas:['Situação','Ferramenta que vou usar'], linhas:[['Quando sentir uma emoção forte de forma súbita',''],['Quando entrar em loop de pensamentos',''],['Quando me criticar demais por um erro',''],['Quando precisar me acalmar antes de responder alguém',''],['Quando estiver muito ativado(a) fisicamente (coração acelerado)','']]},
+          {t:'caixa', titulo:'Meu comprometimento desta semana:', items:['Escolha UMA ferramenta desta trilha e use pelo menos 3 vezes nos próximos 7 dias. Não todas — uma. Consistência importa mais do que quantidade.']},
+          {t:'levar', c:'Parabéns por concluir a Trilha de Equilíbrio Emocional! Equilíbrio não é o que acontece quando tudo está bem. É o que você consegue fazer quando tudo está difícil.'}
+        ]
+      }
+    ]
+  },
+  {
+    id:'limites', emoji:'🛡️', cor:'#EF4444',
+    titulo:'Limites e Descanso',
+    desc:'Cuidar de si sem culpa.',
+    ref:'Dalton-Smith, S. (2021). Sacred Rest.',
+    aulas:[
+      { num:1, titulo:'Limites não são muros — são pontes', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Limite é a fronteira entre o que você pode oferecer com qualidade e o que você oferece às custas de si mesmo. Quando você não tem limites claros, não desaparece — você continua dando. Mas entrega menos, ressente mais, esgota mais rápido e, ironicamente, prejudica as próprias relações que tentava proteger.'},
+          {t:'caixa', titulo:'A pesquisa em psicologia mostra que pessoas com limites mais claros têm:', items:['Menor nível de estresse crônico','Relacionamentos mais satisfatórios e duradouros','Maior autoestima e senso de agência','Menor risco de burnout']},
+          {t:'caixa', titulo:'Perguntas para refletir:', items:['Você diz "sim" com frequência quando quer dizer "não"?','Você se sente responsável pelo estado emocional dos outros?','Quando alguém fica desapontado com um seu "não", você muda de resposta?','Você descansa com culpa, sentindo que deveria estar fazendo algo "útil"?']},
+          {t:'q', c:'"Limites não são sobre controlar os outros. São sobre se responsabilizar por si mesmo. Quem você quer ser, como quer ser tratado(a), e o que você pode oferecer — de verdade."'},
+          {t:'levar', c:'Estabelecer limites não é egoísmo. É o único jeito de se manter inteiro(a) o suficiente para realmente estar presente com os outros.'}
+        ]
+      },
+      { num:2, titulo:'Por que é tão difícil dizer não — a raiz emocional', tipo:'Leitura', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Se limites são tão importantes, por que são tão difíceis? A resposta raramente é preguiça ou falta de disciplina. Quase sempre tem uma raiz emocional — padrões aprendidos, muitas vezes em ambientes onde dizer "não" tinha consequências reais.'},
+          {t:'tabela', colunas:['Raiz','Como aparece'], linhas:[['Medo de rejeição','"Se eu disser não, vão me deixar de lado ou me odiar"'],['Necessidade de aprovação','"Meu valor depende de ser útil e agradável"'],['Culpa crônica','"Eu devia conseguir dar conta de tudo"'],['Medo do conflito','"É melhor me sacrificar do que enfrentar tensão"'],['Identidade ligada ao cuidado','"Quem sou eu se não estou servindo aos outros?"']]},
+          {t:'caixa', titulo:'Checklist — qual raiz ressoa mais com você:', items:['Medo de parecer egoísta','Medo de decepcionar alguém específico','Sensação de que "só eu faço isso" (se eu parar, tudo desmorona)','Culpa quando faço algo só para mim','Dificuldade de pedir ajuda']},
+          {t:'levar', c:'Antes de trabalhar o "como dizer não", é preciso entender o "por que é difícil". A raiz emocional é onde o trabalho real acontece.'}
+        ]
+      },
+      { num:3, titulo:'O descanso que não descansa — e o que realmente recupera', tipo:'Leitura + Prática', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Você já tirou um dia "de descanso" e voltou mais cansado(a) do que antes? Isso acontece porque nem todo descanso é recuperação real. A pesquisadora Saundra Dalton-Smith identificou 7 tipos de descanso que o corpo e a mente precisam — e a maioria das pessoas só pratica 1 ou 2, mesmo quando "tira folga".'},
+          {t:'tabela', colunas:['Tipo','O que é','Como praticar'], linhas:[['Físico','Recuperação do corpo','Sono, soneca, movimento suave'],['Mental','Pausa do pensamento constante','Desconectar de tarefas, meditação, natureza'],['Sensorial','Redução de estímulos','Tela off, silêncio, escuridão'],['Criativo','Pausa da produção e solução de problemas','Fazer algo sem objetivo, passear, arte'],['Emocional','Espaço para sentir sem precisar performar','Estar com quem você não precisa agir'],['Social','Recarga a partir de conexão genuína','Conversa real vs. interação de obrigação'],['Espiritual','Conexão com propósito e significado','O que te faz sentir que sua vida tem sentido']]},
+          {t:'caixa', titulo:'Reflexão:', items:['Qual tipo de descanso você mais negligencia?','O que chamamos de "lazer" no dia a dia (redes sociais, séries em excesso) é descanso sensorial ou mais estímulo?','Quando foi a última vez que você descansou sem culpa e sem checar o celular?']},
+          {t:'q', c:'"Descanso não é a ausência de trabalho. É a presença de recuperação. São coisas diferentes."'},
+          {t:'levar', c:'Identifique qual tipo de descanso você mais precisa agora. Não é sobre fazer mais — é sobre fazer o tipo certo.'}
+        ]
+      },
+      { num:4, titulo:'Como comunicar limites sem culpa e sem drama', tipo:'Leitura + Scripts', tempo:'5 min',
+        corpo:[
+          {t:'p', c:'Saber que você precisa de um limite é a parte fácil. Comunicá-lo com clareza e respeito é a habilidade. A boa notícia: limite comunicado com clareza raramente gera o conflito que tememos. O que gera conflito é o limite implícito — quando você diz "sim" pensando "não", e a frustração acumulada explode depois.'},
+          {t:'caixa', titulo:'Estrutura para comunicar um limite:', items:['1. Reconheça o pedido ou a situação','2. Nomeie o que você pode ou não pode fazer','3. Ofereça uma alternativa quando possível','4. Não explique demais — você não precisa justificar suas necessidades']},
+          {t:'tabela', colunas:['Situação','O que dizer'], linhas:[['Pedido fora do seu horário','"Vi sua mensagem. Vou responder amanhã de manhã — se for urgente, me ligue."'],['Tarefa além da sua capacidade atual','"Quero fazer isso bem. Minha agenda não permite essa semana. Posso pegar na próxima?"'],['Convite social sem energia','"Não vou conseguir ir dessa vez — preciso de um tempo para recarregar. Adoro você, vamos marcar outro dia."'],['Quando insistem após o "não"','"Entendo que isso é importante para você. Minha resposta continua sendo não — sem mágoa."']]},
+          {t:'q', c:'Não é uma frase completa. Você pode elaborar por gentileza — mas não por obrigação.'},
+          {t:'levar', c:'Um limite comunicado com cuidado é um presente para a relação — mesmo que a outra pessoa não perceba imediatamente.'}
+        ]
+      },
+      { num:5, titulo:'Cuidar de si sem culpa — construindo uma prática sustentável', tipo:'Atividade de encerramento', tempo:'8 min',
+        corpo:[
+          {t:'p', c:'Autocuidado real não é spa no fim de semana. É o conjunto de práticas diárias que mantém você funcionando com saúde, presença e escolha — não no limite do colapso.'},
+          {t:'tabela', colunas:['Pilar','O que é','Prática mínima'], linhas:[['Sono','Base de tudo','7–9h; mesma hora para dormir e acordar'],['Movimento','Regulação emocional e energia','20–30 min de qualquer movimento, 5x por semana'],['Alimentação','Combustível do cérebro','Pelo menos 1 refeição por dia com atenção plena'],['Conexão','Maior fator protetor de saúde mental','1 conversa real por semana com alguém que te faz bem'],['Descanso sem culpa','Recuperação real','1 bloco de descanso por semana sem agenda ou tela'],['Limite','Proteger sua energia','1 "não" por semana que você precisava dar']]},
+          {t:'caixa', titulo:'Seu compromisso:', items:['Escolha UM pilar que está mais negligenciado e escreva: O que vou fazer de diferente essa semana? Quem pode me apoiar nisso? Como vou reconhecer que funcionou?']},
+          {t:'q', c:'"Cuidar de si não precisa de justificativa. Não é um prêmio que você ganha quando merece — é um direito que você exerce porque existe."'},
+          {t:'levar', c:'Parabéns por concluir a Trilha de Limites e Descanso! Você tem permissão para descansar, para dizer não, para se colocar na lista. Não no fundo — na lista.'}
+        ]
+      }
+    ]
+  }
+];
+
+
 /* ── Estado das trilhas (salvo em localStorage) ── */
 function _trilhaKey() {
   // Chave única por usuário — evita compartilhar progresso entre contas
@@ -13371,10 +13724,14 @@ function abrirAula(trilhaId, aulaNum) {
     <div class="ar-body">`;
 
   aula.corpo.forEach(bloco => {
-    if (bloco.t === 'p')     html += `<p>${bloco.c}</p>`;
-    if (bloco.t === 'q')     html += `<div class="ar-quote">${bloco.c}</div>`;
-    if (bloco.t === 'levar') html += `<div class="ar-para-levar"><div class="ar-para-levar-lbl">Para levar desta aula</div><div class="ar-para-levar-txt">${bloco.c}</div></div>`;
-    if (bloco.t === 'caixa') html += `<div class="ar-caixa"><div class="ar-caixa-titulo">${bloco.titulo}</div>${bloco.items.map(i=>`<div class="ar-item">${i}</div>`).join('')}</div>`;
+    if (bloco.t === 'p')      html += `<p>${bloco.c}</p>`;
+    if (bloco.t === 'q')      html += `<div class="ar-quote">${bloco.c}</div>`;
+    if (bloco.t === 'levar')  html += `<div class="ar-para-levar"><div class="ar-para-levar-lbl">Para levar desta aula</div><div class="ar-para-levar-txt">${bloco.c}</div></div>`;
+    if (bloco.t === 'aviso')  html += `<div class="ar-aviso">⚠️ ${bloco.c}</div>`;
+    if (bloco.t === 'caixa')  html += `<div class="ar-caixa"><div class="ar-caixa-titulo">${bloco.titulo}</div>${bloco.items.map(i=>`<div class="ar-item">${i}</div>`).join('')}</div>`;
+    if (bloco.t === 'tabela') {
+      html += `<div class="ar-tabela-wrap"><table class="ar-tabela"><thead><tr>${bloco.colunas.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${bloco.linhas.map(l=>`<tr>${l.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }
   });
 
   html += `</div>
@@ -14625,13 +14982,111 @@ function femNovaDica() {
 }
 
 function femAbrirTrilha(id) {
-  const nomes = {
-    'ciclo-emocoes': 'Ciclo e emoções',
-    'menopausa': 'Menopausa e perimenopausa',
-    'equilibrio': 'Equilíbrio emocional',
-    'limites': 'Limites e descanso'
-  };
-  toast('🌿 Trilha "' + (nomes[id] || id) + '" — em breve disponível!');
+  // Usa o mesmo sistema de leitura das trilhas gerais, mas com TRILHAS_FEM
+  const trilha = (typeof TRILHAS_FEM !== 'undefined') ? TRILHAS_FEM.find(t => t.id === id) : null;
+  if (!trilha) { toast('🌿 Trilha em breve disponível!'); return; }
+
+  // Reutiliza a mesma tela de detalhe e leitora da trilha
+  trilhaAtual = trilha;
+  document.getElementById('tdh-emoji').textContent  = trilha.emoji;
+  document.getElementById('tdh-titulo').textContent = trilha.titulo;
+  document.getElementById('tdh-sub').textContent    = trilha.desc;
+
+  // Progresso (chave prefixada para não colidir com trilhas gerais)
+  const femKey = 'ranne-fem-trilha-' + (currentUser?.id || 'guest') + '-' + id;
+  let feitas = [];
+  try { feitas = JSON.parse(localStorage.getItem(femKey) || '[]'); } catch {}
+  const done = trilha.aulas.filter(a => feitas.includes(a.num)).length;
+  const pct  = Math.round((done / trilha.aulas.length) * 100);
+
+  document.getElementById('tdh-prog-lbl').textContent = done + ' de ' + trilha.aulas.length + ' aulas';
+  document.getElementById('tdh-prog-pct').textContent = pct + '%';
+  document.getElementById('tdh-prog-fill').style.width = pct + '%';
+
+  const list = document.getElementById('aulas-list');
+  list.innerHTML = trilha.aulas.map(a => {
+    const ok = feitas.includes(a.num);
+    return `<div class="aula-card${ok ? ' concluida' : ''}" onclick="abrirAulaFem('${id}',${a.num})">
+      <div class="aula-num">${ok ? '✓' : a.num}</div>
+      <div class="aula-body">
+        <div class="aula-titulo">${a.titulo}</div>
+        <div class="aula-meta">
+          <span class="aula-tipo">${a.tipo}</span>
+          <span class="aula-tipo">·</span>
+          <span class="aula-tempo">⏱ ${a.tempo}</span>
+        </div>
+      </div>
+      <div class="aula-arr">›</div>
+    </div>`;
+  }).join('');
+
+  // Armazena referência para leitora saber que é trilha feminina
+  window._femTrilhaAtualId = id;
+  cpg('trilha-detalhe');
+}
+
+function abrirAulaFem(trilhaId, aulaNum) {
+  const trilha = TRILHAS_FEM.find(t => t.id === trilhaId);
+  if (!trilha) return;
+  const aula = trilha.aulas.find(a => a.num === aulaNum);
+  if (!aula) return;
+
+  aulaAtualId  = trilhaId;
+  aulaAtualNum = aulaNum;
+  window._femTrilhaAtualId = trilhaId;
+
+  const femKey = 'ranne-fem-trilha-' + (currentUser?.id || 'guest') + '-' + trilhaId;
+  let feitas = [];
+  try { feitas = JSON.parse(localStorage.getItem(femKey) || '[]'); } catch {}
+  const ja = feitas.includes(aulaNum);
+
+  let html = `
+    <button class="ar-back" onclick="femAbrirTrilha('${trilhaId}')">← ${trilha.titulo}</button>
+    <div class="ar-trilha-nome">${trilha.emoji} ${trilha.titulo} · Aula ${aulaNum}</div>
+    <div class="ar-titulo">${aula.titulo}</div>
+    <div class="ar-tipo">${aula.tipo} · ⏱ ${aula.tempo}</div>
+    <div class="ar-divider"></div>
+    <div class="ar-body">`;
+
+  aula.corpo.forEach(bloco => {
+    if (bloco.t === 'p')      html += `<p>${bloco.c}</p>`;
+    if (bloco.t === 'q')      html += `<div class="ar-quote">${bloco.c}</div>`;
+    if (bloco.t === 'levar')  html += `<div class="ar-para-levar"><div class="ar-para-levar-lbl">Para levar desta aula</div><div class="ar-para-levar-txt">${bloco.c}</div></div>`;
+    if (bloco.t === 'aviso')  html += `<div class="ar-aviso">⚠️ ${bloco.c}</div>`;
+    if (bloco.t === 'caixa')  html += `<div class="ar-caixa"><div class="ar-caixa-titulo">${bloco.titulo}</div>${bloco.items.map(i=>`<div class="ar-item">${i}</div>`).join('')}</div>`;
+    if (bloco.t === 'tabela') {
+      html += `<div class="ar-tabela-wrap"><table class="ar-tabela"><thead><tr>${bloco.colunas.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${bloco.linhas.map(l=>`<tr>${l.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }
+  });
+
+  html += `</div>
+    <div class="ar-crp">
+      <div class="ar-crp-avatar"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><path d="M16 11h2m-1-1v2"/></svg></div>
+      <div>
+        <div class="ar-crp-nome">Viviani Alexandre Rufino</div>
+        <div class="ar-crp-crp">Psicóloga Clínica — CRP 06/215926</div>
+      </div>
+    </div>
+    <div style="font-size:12.5px;color:var(--muted);margin-top:6px;font-style:italic">${trilha.ref}</div>
+    <button class="btn-concluir-aula${ja ? ' ja-feita' : ''}" id="btn-concluir" onclick="toggleConcluirFem()">
+      ${ja ? '✓ Aula concluída' : 'Marcar como concluída'}
+    </button>`;
+
+  document.getElementById('aula-reader-content').innerHTML = html;
+  cpg('aula-reader');
+}
+
+function toggleConcluirFem() {
+  const trilhaId = window._femTrilhaAtualId;
+  const femKey = 'ranne-fem-trilha-' + (currentUser?.id || 'guest') + '-' + trilhaId;
+  let feitas = [];
+  try { feitas = JSON.parse(localStorage.getItem(femKey) || '[]'); } catch {}
+  const ja = feitas.includes(aulaAtualNum);
+  if (ja) { feitas = feitas.filter(n => n !== aulaAtualNum); }
+  else { feitas.push(aulaAtualNum); }
+  localStorage.setItem(femKey, JSON.stringify(feitas));
+  const btn = document.getElementById('btn-concluir');
+  if (btn) { btn.classList.toggle('ja-feita', !ja); btn.textContent = !ja ? '✓ Aula concluída' : 'Marcar como concluída'; }
 }
 
 function femIniciarRespiracao() {
