@@ -8409,6 +8409,38 @@ async function rotearUsuario() {
     }
   } catch {}
 
+  // 2b. Tenta membros_empresa — por user_id OU por email (fallback para convites antigos)
+  try {
+    let mem = null;
+
+    // Busca por email (confiável mesmo sem user_id na tabela)
+    const { data: memByEmail } = await db
+      .from('membros_empresa')
+      .select('*')
+      .eq('email', currentUser.email)
+      .maybeSingle();
+
+    if (memByEmail) {
+      mem = memByEmail;
+      // Tenta gravar user_id para agilizar próximas entradas (silencioso)
+      db.from('membros_empresa')
+        .update({ user_id: currentUser.id })
+        .eq('id', mem.id)
+        .catch(() => {});
+    }
+
+    if (mem) {
+      currentRole = 'colaborador';
+      // Carrega empresa para check-in não salvar empresa_id nulo
+      try {
+        const { data: empData } = await db.from('empresas').select('*').eq('id', mem.empresa_id).maybeSingle();
+        if (empData) currentEmpresa = empData;
+      } catch {}
+      showColaborador(mem.nome || currentUser.user_metadata?.nome || currentUser.email.split('@')[0]);
+      return;
+    }
+  } catch {}
+
   // 3. Nenhum perfil encontrado → onboarding
   showOnboarding();
   goS(1);
@@ -9533,9 +9565,9 @@ async function salvarCheckin() {
       user_id:    currentUser?.id,
       humor, energia, carga,
       foco:   focoVal,
-      semana: getWeekNumber()
+      semana: String(getWeekNumber()) // banco usa tipo TEXT
     });
-    if (error) throw error;
+    if (error) console.warn('[checkin error]', error.message, error.details);
   } catch(e) { console.warn('[salvarCheckin]', e); }
 
   await carregarDadosHomeColaborador();
@@ -11968,7 +12000,7 @@ async function carregarDadosHomeColaborador() {
 
   try {
     // Busca último check-in
-    const semAtual = getWeekNumber();
+    const semAtual = String(getWeekNumber()); // banco usa TEXT
     const { data: checkins } = await db
       .from('checkins')
       .select('humor, energia, carga, foco, semana, created_at')
