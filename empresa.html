@@ -8855,7 +8855,8 @@ async function loadDashboardData() {
     const [membrosRes, checkinsRes, diagsRes] = await Promise.all([
       db.from('membros_empresa').select('id, nome, email, user_id').eq('empresa_id', currentEmpresa.id),
       db.from('checkins').select('user_id, humor, energia, carga, foco, created_at')
-        .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes),
+        .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes)
+        .neq('tipo', 'feminino'),
       db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id)
         .order('created_at', { ascending: false }).limit(5)
     ]);
@@ -8915,8 +8916,7 @@ function _setMetricNum(attr, val) {
   const el = document.querySelector(`[${attr}]`);
   if (el) {
     el.textContent = val;
-    el.removeAttribute('data-target');
-    el.removeAttribute('data-suffix');
+    // NÃO remove data-target para que a função possa ser chamada novamente
   }
 }
 
@@ -9692,7 +9692,9 @@ async function salvarCheckin() {
   const carga   = toNum(cs.carga,   50);
   const focoVal = toNum(cs.foco,    Math.round(humor * 0.7 + energia * 0.3));
 
-  const btn = document.querySelector('#cp-checkin .btn-primary');
+  // Suporta tanto o botão do painel empresa (#p-checkin) quanto o do colaborador (#cp-checkin)
+  const btn = document.querySelector('#p-checkin .btn-primary') ||
+              document.querySelector('#cp-checkin .btn-primary');
   if (btn) { btn.disabled = true; btn.textContent = 'Salvando…'; }
 
   // ── Atualiza dashboard IMEDIATAMENTE com valores locais (sem esperar banco) ──
@@ -9704,15 +9706,26 @@ async function salvarCheckin() {
     user_id:    currentUser?.id,
     humor, energia, carga,
     foco:   focoVal,
+    tipo:   'normal',
     semana: String(getWeekNumber())
   }).then(({ error }) => {
-    if (error) console.warn('[checkin insert]', error.message);
-    // Confirma com dados reais do banco (assíncrono, não bloqueia UI)
-    carregarDadosHomeColaborador();
+    if (error) {
+      console.warn('[checkin insert]', error.message);
+    } else {
+      // Recarrega dashboard para refletir o novo check-in
+      if (typeof loadDashboardData === 'function') loadDashboardData();
+      if (typeof carregarDadosHomeColaborador === 'function') carregarDadosHomeColaborador();
+    }
   }).catch(e => console.warn('[checkin]', e));
 
   if (btn) { btn.disabled = false; btn.textContent = 'Enviar Check-in ✓'; }
   if (typeof fecharStreakPopup === 'function') fecharStreakPopup();
+  // Limpa estado para evitar reaproveitamento de respostas anteriores
+  checkinState = {};
+  window.ciState = {};
+  // Desmarca botões visuais do check-in
+  document.querySelectorAll('#p-checkin .em-btn.sel, #cp-checkin .em-btn.sel')
+    .forEach(b => b.classList.remove('sel'));
   toast('✅ Check-in enviado! Obrigado.');
 }
 
