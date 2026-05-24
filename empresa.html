@@ -2692,6 +2692,75 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   .auth-box { max-width:380px; }
 }
 
+/* ══════════════════════════════════════
+   AJUSTES MOBILE & TABLET — v2
+   ══════════════════════════════════════ */
+
+/* ── Grids de formulário que faltavam override ── */
+@media(max-width:768px){
+  .fk-row           { grid-template-columns:1fr!important; }
+  .fk-grid-checks   { grid-template-columns:1fr 1fr!important; }
+  .prof-row         { grid-template-columns:1fr!important; }
+  .mini-dims        { grid-template-columns:1fr 1fr!important; }
+  .bib-grid         { grid-template-columns:1fr!important; }
+
+  /* Tabs horizontais com scroll suave */
+  .tabs {
+    width:100%!important;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    padding-bottom:2px;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+
+  /* Topbar com botões de ação: empurra os botões para baixo */
+  .topbar > div:last-child:not(:first-child) {
+    display:flex; gap:8px; flex-wrap:wrap; width:100%;
+  }
+  .topbar .btn-sm { flex:1; min-width:0; text-align:center; }
+
+  /* Touch targets mínimos (44px) para botões de emoji */
+  .em-btn { min-height:56px; padding:10px 4px; }
+  .em-btn .em { font-size:20px; }
+  .em-btn .el { font-size:10px; }
+
+  /* Cards de metric no dashboard: dois por linha mas maiores */
+  .metric { padding:14px 12px; }
+  .metric-value { font-size:28px!important; }
+
+  /* Botões gerais: altura mínima para toque confortável */
+  .btn, button[class*="btn"] { min-height:44px; }
+
+  /* Ficha de colaborador: grid de duas colunas vira uma */
+  #p-ficha > div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns:1fr!important;
+  }
+
+  /* Chat flutuante: posição segura em iOS */
+  #ranne-chat-btn  { bottom:calc(20px + env(safe-area-inset-bottom,0px))!important; right:16px!important; }
+  #ranne-chat-window { bottom:calc(70px + env(safe-area-inset-bottom,0px))!important; right:12px!important; width:calc(100vw - 24px)!important; max-width:400px; }
+}
+
+/* ── Tablet (769–1024): sidebar visível, grids parciais ── */
+@media(min-width:769px) and (max-width:1024px){
+  .fk-row         { grid-template-columns:1fr 1fr; }
+  .mini-dims      { grid-template-columns:1fr 1fr; }
+  .bib-grid       { grid-template-columns:1fr 1fr!important; }
+  .tabs { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  /* Ficha colaborador em tablet */
+  #p-ficha > div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns:1fr!important;
+  }
+}
+
+/* ── Touch feedback global — remove delay e flash no iOS ── */
+.em-btn, .sb-item, .tab, .btn, .card, .acao-card,
+button, [onclick], .lib-card, .diag-item, .ins-card {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 /* ══ COLLAB SPECIFIC ══ */
 
 
