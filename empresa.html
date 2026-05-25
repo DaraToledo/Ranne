@@ -9618,25 +9618,57 @@ async function buscarOverpass(lat, lon, tipo) {
     '':         `node["amenity"~"doctors|hospital|clinic|pharmacy"](around:${raio},${lat},${lon}); way["amenity"~"doctors|hospital|clinic"](around:${raio},${lat},${lon}); node["healthcare"](around:${raio},${lat},${lon}); node["name"~"CAPS|UBS|ESF|PSF|Posto de Saúde|Clínica|Consultório",i](around:${raio},${lat},${lon});`
   };
 
-  const q = `[out:json][timeout:25]; ( ${queries[tipo] || queries['']} ); out center 40;`;
+  // Usa Nominatim (OSM Search API) — sem CORS, funciona de qualquer host
+  const tipoTermos = {
+    psicologo:  ['psicólogo', 'psicoterapeuta', 'clínica de psicologia'],
+    psiquiatra: ['psiquiatra', 'clínica de psiquiatria'],
+    medico:     ['clínica médica', 'consultório médico'],
+    caps:       ['CAPS Centro de Atenção Psicossocial'],
+    ubs:        ['UBS Unidade Básica de Saúde', 'posto de saúde'],
+    '':         ['psicólogo', 'clínica de saúde mental', 'hospital', 'UBS']
+  };
 
-  // Usa proxy próprio no Vercel (sem CORS)
-  try {
-    const res = await fetch('/api/overpass', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: q }),
-      signal: AbortSignal.timeout(18000)
-    });
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.elements) return data.elements;
+  const termos = tipoTermos[tipo] || tipoTermos[''];
+  const elementos = [];
+  const vistos = new Set();
+
+  for (const termo of termos) {
+    try {
+      const bbox = `${lon-0.12},${lat-0.08},${lon+0.12},${lat+0.08}`;
+      const url = `https://nominatim.openstreetmap.org/search` +
+        `?q=${encodeURIComponent(termo + ' ' + bbox.split(',').slice(0,2).join(' '))}` +
+        `&format=json&limit=15&countrycodes=br&addressdetails=1` +
+        `&viewbox=${bbox}&bounded=1&accept-language=pt-BR`;
+
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'RanneCare/1.0 (atendimento@rannecare.com.br)', 'Accept-Language': 'pt-BR' }
+      });
+      if (!res.ok) continue;
+      const items = await res.json();
+
+      for (const item of items) {
+        if (vistos.has(item.place_id)) continue;
+        vistos.add(item.place_id);
+        elementos.push({
+          lat: parseFloat(item.lat),
+          lon: parseFloat(item.lon),
+          tags: {
+            name: item.display_name?.split(',')[0] || termo,
+            amenity: item.class === 'amenity' ? item.type : 'clinic',
+            healthcare: tipo === 'psicologo' ? 'psychologist' :
+                        tipo === 'psiquiatra' ? 'psychiatrist' :
+                        item.class === 'healthcare' ? item.type : ''
+          }
+        });
+      }
+    } catch(e) {
+      console.warn('[nominatim]', termo, e.message);
     }
-  } catch(e) {
-    console.warn('[overpass] proxy falhou:', e.message);
+    await new Promise(r => setTimeout(r, 400));
   }
 
-  throw new Error('Overpass indisponível');
+  if (elementos.length > 0) return elementos;
+  throw new Error('Nenhum resultado encontrado');
 }
 
 function normalizarElemento(el, latRef, lonRef) {
