@@ -9607,38 +9607,53 @@ async function geocodificar(local) {
 }
 
 async function buscarOverpass(lat, lon, tipo) {
-  const raio = 8000;
-  // Bug 3 fix: query mais abrangente para o Brasil onde OSM tem menos dados
-  const queries = {
-    psicologo:  `node["healthcare"~"psychotherapist|psychologist"](around:${raio},${lat},${lon}); way["healthcare"~"psychotherapist|psychologist"](around:${raio},${lat},${lon});`,
-    psiquiatra: `node["healthcare"="psychiatrist"](around:${raio},${lat},${lon}); way["healthcare"="psychiatrist"](around:${raio},${lat},${lon});`,
-    medico:     `node["amenity"="doctors"](around:${raio},${lat},${lon}); way["amenity"="doctors"](around:${raio},${lat},${lon});`,
-    caps:       `node["name"~"CAPS|Centro de Atenção Psicossocial",i](around:${raio},${lat},${lon}); way["name"~"CAPS|Centro de Atenção Psicossocial",i](around:${raio},${lat},${lon});`,
-    ubs:        `node["name"~"UBS|Unidade Básica|ESF|Posto de Saúde|PSF",i](around:${raio},${lat},${lon}); way["name"~"UBS|Unidade Básica|ESF|Posto de Saúde|PSF",i](around:${raio},${lat},${lon});`,
-    '':         `node["amenity"~"doctors|hospital|clinic|pharmacy"](around:${raio},${lat},${lon}); way["amenity"~"doctors|hospital|clinic"](around:${raio},${lat},${lon}); node["healthcare"](around:${raio},${lat},${lon}); node["name"~"CAPS|UBS|ESF|PSF|Posto de Saúde|Clínica|Consultório",i](around:${raio},${lat},${lon});`
-  };
-
-  // Usa Nominatim (OSM Search API) — sem CORS, funciona de qualquer host
-  const tipoTermos = {
-    psicologo:  ['psicólogo', 'psicoterapeuta', 'clínica de psicologia'],
-    psiquiatra: ['psiquiatra', 'clínica de psiquiatria'],
-    medico:     ['clínica médica', 'consultório médico'],
-    caps:       ['CAPS Centro de Atenção Psicossocial'],
-    ubs:        ['UBS Unidade Básica de Saúde', 'posto de saúde'],
-    '':         ['psicólogo', 'clínica de saúde mental', 'hospital', 'UBS']
-  };
-
-  const termos = tipoTermos[tipo] || tipoTermos[''];
+  // Nominatim structured search — funciona sem CORS
   const elementos = [];
   const vistos = new Set();
 
-  for (const termo of termos) {
+  // Busca por amenity/healthcare tags no Nominatim
+  const searches = {
+    psicologo:  [{ amenity: 'clinic' }, { healthcare: 'psychologist' }, { healthcare: 'psychotherapist' }],
+    psiquiatra: [{ healthcare: 'psychiatrist' }, { amenity: 'clinic' }],
+    medico:     [{ amenity: 'doctors' }, { amenity: 'clinic' }],
+    caps:       [{ amenity: 'social_facility' }, { amenity: 'clinic' }],
+    ubs:        [{ amenity: 'clinic' }, { amenity: 'doctors' }],
+    '':         [{ amenity: 'clinic' }, { amenity: 'doctors' }, { amenity: 'hospital' }, { healthcare: 'centre' }]
+  };
+
+  const tags = searches[tipo] || searches[''];
+
+  // Nominatim não suporta bbox search por tag — usamos nome livre por região
+  // Abordagem: busca por nome da cidade + tipo de estabelecimento
+  let geoData = null;
+  try {
+    geoData = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=10&accept-language=pt-BR`,
+      { headers: { 'User-Agent': 'RanneCare/1.0 (atendimento@rannecare.com.br)' } }
+    ).then(r => r.json());
+  } catch(e) { console.warn('[reverse geo]', e.message); }
+
+  const addr = geoData?.address || {};
+  const cidade = addr.city || addr.town || addr.village || addr.municipality || addr.suburb || 'São Paulo';
+  const estado = addr.state_code || addr.state || 'SP';
+  console.log('[mapa] cidade detectada:', cidade, '|', estado);
+
+  const termosPorTipo = {
+    psicologo:  ['psicólogo ' + cidade, 'clínica psicologia ' + cidade, 'psicoterapeuta ' + cidade],
+    psiquiatra: ['psiquiatra ' + cidade, 'clínica psiquiatria ' + cidade],
+    medico:     ['clínica médica ' + cidade, 'consultório médico ' + cidade],
+    caps:       ['CAPS ' + cidade, 'Centro Atenção Psicossocial ' + estado],
+    ubs:        ['UBS ' + cidade, 'posto saúde ' + cidade, 'unidade básica saúde ' + cidade],
+    '':         ['psicólogo ' + cidade, 'clínica saúde mental ' + cidade, 'UBS ' + cidade, 'hospital ' + cidade]
+  };
+
+  const termos = termosPorTipo[tipo] || termosPorTipo[''];
+
+  for (const termo of termos.slice(0, 4)) {
     try {
-      const bbox = `${lon-0.12},${lat-0.08},${lon+0.12},${lat+0.08}`;
       const url = `https://nominatim.openstreetmap.org/search` +
-        `?q=${encodeURIComponent(termo + ' ' + bbox.split(',').slice(0,2).join(' '))}` +
-        `&format=json&limit=15&countrycodes=br&addressdetails=1` +
-        `&viewbox=${bbox}&bounded=1&accept-language=pt-BR`;
+        `?q=${encodeURIComponent(termo)}` +
+        `&format=json&limit=10&countrycodes=br&addressdetails=1&accept-language=pt-BR`;
 
       const res = await fetch(url, {
         headers: { 'User-Agent': 'RanneCare/1.0 (atendimento@rannecare.com.br)', 'Accept-Language': 'pt-BR' }
@@ -9648,24 +9663,52 @@ async function buscarOverpass(lat, lon, tipo) {
 
       for (const item of items) {
         if (vistos.has(item.place_id)) continue;
+        // Filtra por distância (8km)
+        const d = distKm(lat, lon, parseFloat(item.lat), parseFloat(item.lon));
+        if (d > 8) continue;
         vistos.add(item.place_id);
+
+        const nome = item.display_name?.split(',')[0] || termo;
         elementos.push({
           lat: parseFloat(item.lat),
           lon: parseFloat(item.lon),
           tags: {
-            name: item.display_name?.split(',')[0] || termo,
-            amenity: item.class === 'amenity' ? item.type : 'clinic',
+            name: nome,
+            amenity: item.type || 'clinic',
             healthcare: tipo === 'psicologo' ? 'psychologist' :
-                        tipo === 'psiquiatra' ? 'psychiatrist' :
-                        item.class === 'healthcare' ? item.type : ''
+                        tipo === 'psiquiatra' ? 'psychiatrist' : ''
           }
         });
       }
     } catch(e) {
       console.warn('[nominatim]', termo, e.message);
     }
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise(r => setTimeout(r, 300));
   }
+
+  if (elementos.length > 0) return elementos;
+
+  // Fallback: busca ampla sem bounded
+  try {
+    const fallbackUrl = `https://nominatim.openstreetmap.org/search` +
+      `?q=${encodeURIComponent('clínica ' + cidade)}&format=json&limit=20&countrycodes=br&accept-language=pt-BR`;
+    const res = await fetch(fallbackUrl, {
+      headers: { 'User-Agent': 'RanneCare/1.0 (atendimento@rannecare.com.br)' }
+    });
+    if (res.ok) {
+      const items = await res.json();
+      for (const item of items) {
+        if (vistos.has(item.place_id)) continue;
+        const d = distKm(lat, lon, parseFloat(item.lat), parseFloat(item.lon));
+        if (d > 15) continue;
+        vistos.add(item.place_id);
+        elementos.push({
+          lat: parseFloat(item.lat), lon: parseFloat(item.lon),
+          tags: { name: item.display_name?.split(',')[0] || 'Clínica', amenity: 'clinic', healthcare: '' }
+        });
+      }
+    }
+  } catch {}
 
   if (elementos.length > 0) return elementos;
   throw new Error('Nenhum resultado encontrado');
