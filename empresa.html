@@ -9619,46 +9619,41 @@ async function buscarOverpass(lat, lon, tipo) {
   };
 
   const q = `[out:json][timeout:25]; ( ${queries[tipo] || queries['']} ); out center 40;`;
-  // Tenta múltiplos endpoints Overpass (o principal bloqueia CORS em alguns hosts)
+
+  // GET evita preflight CORS (mais compatível que POST em CDNs)
   const endpoints = [
+    'https://overpass-api.de/api/interpreter',
     'https://overpass.kumi.systems/api/interpreter',
-    'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
-    'https://overpass-api.de/api/interpreter'
+    'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
   ];
-  // Tenta com fetch primeiro, depois XMLHttpRequest (às vezes passa CORS)
-  let data = null;
 
   for (const ep of endpoints) {
+    // 1. GET request (sem preflight CORS)
+    try {
+      const url = ep + '?data=' + encodeURIComponent(q);
+      const res = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(10000) });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.elements) return data.elements;
+      }
+    } catch {}
+
+    // 2. POST com no-cors → só funciona se servidor retorna *
     try {
       const res = await fetch(ep, {
         method: 'POST',
-        mode: 'cors',
         body: 'data=' + encodeURIComponent(q),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        signal: AbortSignal.timeout(10000)
       });
-      if (res.ok) { data = await res.json(); break; }
-    } catch {}
-
-    // Fallback XHR (sem preflight em alguns casos)
-    try {
-      data = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', ep, true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.timeout = 8000;
-        xhr.onload = () => {
-          try { resolve(JSON.parse(xhr.responseText)); }
-          catch { reject(new Error('parse error')); }
-        };
-        xhr.onerror = xhr.ontimeout = () => reject(new Error('xhr failed'));
-        xhr.send('data=' + encodeURIComponent(q));
-      });
-      if (data) break;
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.elements) return data.elements;
+      }
     } catch {}
   }
 
-  if (!data) throw new Error('Overpass indisponível');
-  return data.elements || [];
+  throw new Error('Overpass indisponível');
 }
 
 function normalizarElemento(el, latRef, lonRef) {
