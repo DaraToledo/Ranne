@@ -9620,37 +9620,20 @@ async function buscarOverpass(lat, lon, tipo) {
 
   const q = `[out:json][timeout:25]; ( ${queries[tipo] || queries['']} ); out center 40;`;
 
-  // GET evita preflight CORS (mais compatível que POST em CDNs)
-  const endpoints = [
-    'https://overpass-api.de/api/interpreter',
-    'https://overpass.kumi.systems/api/interpreter',
-    'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
-  ];
-
-  for (const ep of endpoints) {
-    // 1. GET request (sem preflight CORS)
-    try {
-      const url = ep + '?data=' + encodeURIComponent(q);
-      const res = await fetch(url, { method: 'GET', signal: AbortSignal.timeout(10000) });
-      if (res.ok) {
-        const data = await res.json();
-        if (data?.elements) return data.elements;
-      }
-    } catch {}
-
-    // 2. POST com no-cors → só funciona se servidor retorna *
-    try {
-      const res = await fetch(ep, {
-        method: 'POST',
-        body: 'data=' + encodeURIComponent(q),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        signal: AbortSignal.timeout(10000)
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data?.elements) return data.elements;
-      }
-    } catch {}
+  // Usa proxy próprio no Vercel (sem CORS)
+  try {
+    const res = await fetch('/api/overpass', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q }),
+      signal: AbortSignal.timeout(18000)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.elements) return data.elements;
+    }
+  } catch(e) {
+    console.warn('[overpass] proxy falhou:', e.message);
   }
 
   throw new Error('Overpass indisponível');
