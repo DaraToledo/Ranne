@@ -7234,7 +7234,7 @@ body.dark .ob-btn { background: #2D5E4A; }
     </div>
 
     <!-- Respiração guiada -->
-    <div class="sec-title">Respiração guiada</div>
+    <div class="sec-title">🫁 Respiração guiada</div>
     <div class="breath-card">
       <div class="breath-title">Técnica 4-7-8</div>
       <div class="breath-sub">Reduz ansiedade em 2 minutos</div>
@@ -7304,31 +7304,6 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div class="vid-card" onclick="abrirMedModal('nYZaEr5Nue4','Momento com a Psicóloga · 3')">
         <div class="vid-thumb"><img src="https://img.youtube.com/vi/nYZaEr5Nue4/maxresdefault.jpg" alt="Psicóloga 3" loading="lazy" onerror="this.src='https://img.youtube.com/vi/nYZaEr5Nue4/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
         <div class="vid-info"><div class="vid-title">Dica #3</div><span class="vid-tag purple">Short</span></div>
-      </div>
-
-    </div>
-
-
-    <!-- ── Nutrição e Saúde ── -->
-    <div class="sec-title" style="margin-top:24px">🥦 Nutrição e Saúde</div>
-    <div style="font-size:12px;color:var(--muted);margin:-6px 0 14px;line-height:1.5;">
-      Edna Taís · Nutricionista CRN3 95058
-    </div>
-    <div class="vid-grid">
-
-      <div class="vid-card" onclick="abrirMedModal('o7wjfDEfHmY','Nutrição e Saúde · 1')">
-        <div class="vid-thumb"><img src="https://img.youtube.com/vi/o7wjfDEfHmY/maxresdefault.jpg" alt="Nutri 1" loading="lazy" onerror="this.src='https://img.youtube.com/vi/o7wjfDEfHmY/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
-        <div class="vid-info"><div class="vid-title">Dica #1</div><span class="vid-tag" style="background:#E8F5E9;color:#2E7D32">Short</span></div>
-      </div>
-
-      <div class="vid-card" onclick="abrirMedModal('g_ee4tmp9gA','Nutrição e Saúde · 2')">
-        <div class="vid-thumb"><img src="https://img.youtube.com/vi/g_ee4tmp9gA/maxresdefault.jpg" alt="Nutri 2" loading="lazy" onerror="this.src='https://img.youtube.com/vi/g_ee4tmp9gA/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
-        <div class="vid-info"><div class="vid-title">Dica #2</div><span class="vid-tag" style="background:#E8F5E9;color:#2E7D32">Short</span></div>
-      </div>
-
-      <div class="vid-card" onclick="abrirMedModal('hbtlTLtenSA','Nutrição e Saúde · 3')">
-        <div class="vid-thumb"><img src="https://img.youtube.com/vi/hbtlTLtenSA/maxresdefault.jpg" alt="Nutri 3" loading="lazy" onerror="this.src='https://img.youtube.com/vi/hbtlTLtenSA/hqdefault.jpg'"><div class="vid-play-btn"><div class="vid-play-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="#2D5E4A"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
-        <div class="vid-info"><div class="vid-title">Vídeo</div><span class="vid-tag" style="background:#E8F5E9;color:#2E7D32">🥦 Nutri</span></div>
       </div>
 
     </div>
@@ -8112,7 +8087,7 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div class="sec-title">📱 Teleatendimento</div>
     <div class="tele-card">
       <div class="tele-badge-soon">Em breve</div>
-      <div class="tele-icon">🧑‍💻</div>
+      <div class="tele-icon">🎥</div>
       <div class="tele-title">Atendimento online com psicólogos</div>
       <div class="tele-desc">Sessões por videochamada com profissionais parceiros da Ranne. Agende no horário que funciona pra você, sem sair de casa.</div>
       <div class="tele-chips">
@@ -12404,14 +12379,16 @@ async function carregarDadosHomeColaborador() {
   if (!currentUser?.id) return;
   try {
     // Queries em paralelo para reduzir latência
-    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
-    const limite30  = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
+    // Check-in: só mostra dados do DIA atual — some à meia-noite
+    const hoje = new Date();
+    const inicioHoje = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()).toISOString();
+    const limite30   = new Date(Date.now() - 30*86400000).toISOString().split('T')[0];
 
     const [ciRes, trRes] = await Promise.all([
       db.from('checkins')
         .select('humor, energia, carga, foco, semana, tipo, created_at')
         .eq('user_id', currentUser.id)
-        .gte('created_at', inicioMes)
+        .gte('created_at', inicioHoje)
         .order('created_at', { ascending: false })
         .limit(10),
       db.from('testes_realizados')
@@ -12462,8 +12439,8 @@ async function carregarDadosHomeColaborador() {
         else                { chipEl.textContent='Cuide de você 💙';      chipEl.className='ih-score-chip ih-chip-bad';  }
       }
       if (subEl) subEl.textContent = scoresTestes !== null
-        ? 'Check-in + ' + testesFeitos.length + ' teste(s)'
-        : checkins.length + ' check-in(s) este mês';
+        ? 'Check-in de hoje + ' + testesFeitos.length + ' teste(s)'
+        : 'Baseado no check-in de hoje';
 
       ['humor','energia','carga','foco'].forEach(k => {
         const val = k==='humor'?humor:k==='energia'?energia:k==='carga'?carga:foco;
