@@ -1,12 +1,17 @@
-// api/overpass.js — Proxy para Overpass API (evita CORS do browser)
-export default async function handler(req, res) {
-  // Só aceita POST
+// api/overpass.js — Proxy para Overpass API
+export const config = { runtime: 'edge' };
+
+export default async function handler(req) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response('Method not allowed', { status: 405 });
   }
 
-  const { query } = req.body;
-  if (!query) return res.status(400).json({ error: 'Missing query' });
+  let body;
+  try { body = await req.json(); } 
+  catch { return new Response('Invalid JSON', { status: 400 }); }
+
+  const { query } = body;
+  if (!query) return new Response('Missing query', { status: 400 });
 
   const endpoints = [
     'https://overpass-api.de/api/interpreter',
@@ -19,19 +24,27 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'data=' + encodeURIComponent(query),
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(14000)
       });
 
       if (response.ok) {
         const data = await response.json();
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Cache-Control', 'public, max-age=300'); // 5min cache
-        return res.status(200).json(data);
+        return new Response(JSON.stringify(data), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': 'public, max-age=300'
+          }
+        });
       }
     } catch (e) {
-      console.warn('[overpass proxy] endpoint failed:', ep, e.message);
+      console.warn('[overpass proxy] failed:', ep, e.message);
     }
   }
 
-  return res.status(503).json({ error: 'Overpass unavailable' });
+  return new Response(JSON.stringify({ error: 'Overpass unavailable', elements: [] }), {
+    status: 503,
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+  });
 }
