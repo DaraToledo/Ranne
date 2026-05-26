@@ -16236,15 +16236,14 @@ const ranneChat = (() => {
     const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
     msgs.push({ role: "user", content: userMsg });
 
-    // Usa o proxy /api/chat para não expor a API key no browser
+    // Usa o proxy /api/chat — formato esperado pelo chat.js do Vercel
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
+        messages: msgs,
         system: getSystemPrompt(),
-        messages: msgs
+        context: "colaborador"
       })
     });
     if (!res.ok) {
@@ -16252,7 +16251,8 @@ const ranneChat = (() => {
       throw new Error("API error: " + res.status + ' ' + err.slice(0,100));
     }
     const data = await res.json();
-    return data.content?.[0]?.text || "Desculpe, não consegui processar sua mensagem.";
+    // chat.js retorna { reply } — não { content }
+    return data.reply || data.content?.[0]?.text || "Desculpe, não consegui processar sua mensagem.";
   }
 
   return {
