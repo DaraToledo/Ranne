@@ -16235,7 +16235,9 @@ const ranneChat = (() => {
   async function callAI(userMsg) {
     const msgs = history.map(function(m) { return { role: m.role, content: m.content }; });
     msgs.push({ role: "user", content: userMsg });
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
+
+    // Usa o proxy /api/chat para não expor a API key no browser
+    const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -16245,7 +16247,10 @@ const ranneChat = (() => {
         messages: msgs
       })
     });
-    if (!res.ok) throw new Error("API error");
+    if (!res.ok) {
+      const err = await res.text().catch(() => '');
+      throw new Error("API error: " + res.status + ' ' + err.slice(0,100));
+    }
     const data = await res.json();
     return data.content?.[0]?.text || "Desculpe, não consegui processar sua mensagem.";
   }
