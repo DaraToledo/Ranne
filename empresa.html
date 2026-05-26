@@ -8485,6 +8485,10 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V16"/><path d="M12 16a6 6 0 100-12 6 6 0 000 12z"/><path d="M9 19h6"/></svg></span>
       <span class="cn-label">Saúde ♀</span>
     </div>
+    <div class="cn-item" id="cn-escuta" onclick="cpg('escuta')">
+      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+      <span class="cn-label">Escuta</span>
+    </div>
     <div class="cn-item" onclick="toggleDark()" title="Alternar tema" id="cn-dark">
       <span class="cn-icon" id="cn-dark-icon">🌙</span>
       <span class="cn-label" id="cn-dark-label">Tema</span>
@@ -9392,14 +9396,20 @@ async function sendInvite() {
       }
     } else {
       userId = signUpData?.user?.id;
+      // Faz login imediato para confirmar sessão (evita email de confirmação pendente)
+      if (signUpData?.user && !signUpData?.session) {
+        await db.auth.signInWithPassword({ email, password: senha }).catch(() => {});
+      }
     }
 
-    // 2. Salvar na tabela membros_empresa
+    // 2. Salvar na tabela membros_empresa com user_id
     const { error: colabErr } = await db.from('membros_empresa').insert({
       empresa_id: currentEmpresa?.id,
+      user_id: userId || null,
       email,
       nome: nome || email.split('@')[0],
       role,
+      status: 'ativo',
       created_at: new Date().toISOString()
     });
 
@@ -9663,6 +9673,10 @@ async function buscarOverpass(lat, lon, tipo) {
 
       for (const item of items) {
         if (vistos.has(item.place_id)) continue;
+        // Dedup por nome normalizado (evita mesmo lugar com IDs diferentes)
+        const nomeKey = (item.display_name?.split(',')[0] || '').toLowerCase().replace(/\s+/g,' ').trim();
+        if (nomeKey && vistos.has('n:' + nomeKey)) continue;
+        vistos.add('n:' + nomeKey);
         // Filtra por distância (8km)
         const d = distKm(lat, lon, parseFloat(item.lat), parseFloat(item.lon));
         if (d > 8) continue;
