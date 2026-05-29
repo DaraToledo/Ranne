@@ -7097,10 +7097,11 @@ body.dark .ob-btn { background: #2D5E4A; }
 
       <div class="acoes-title">Ações rápidas</div>
       <div class="acao-grid">
-        <div class="acao-card acao-qusp" onclick="cpg('clinico')">
-          <span class="acao-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v8l3 7H6l3-7V3z"/><line x1="9" y1="9" x2="15" y2="9"/></svg></span>
-          <div class="acao-card-title">Avaliações de Bem-estar</div>
-          <div class="acao-card-sub">PHQ-9 · GAD-7 · PSS-10</div>
+        <div class="acao-card acao-qusp" onclick="cpg('testes-rh')" id="acao-testes-rh" style="position:relative">
+          <span id="acao-badge-testes" style="display:none;position:absolute;top:10px;right:12px;background:#EF4444;color:#fff;font-size:9px;font-weight:700;border-radius:99px;min-width:16px;height:16px;line-height:16px;text-align:center;padding:0 4px;font-family:'Inter',sans-serif;">0</span>
+          <span class="acao-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><path d="M9 12h6M9 16h4"/></svg></span>
+          <div class="acao-card-title">Testes do RH</div>
+          <div class="acao-card-sub" id="acao-testes-sub">Nenhum pendente</div>
           <span class="acao-card-arr">→</span>
         </div>
         <div class="acao-card acao-checkin" onclick="cpg('checkin')">
@@ -7652,342 +7653,46 @@ body.dark .ob-btn { background: #2D5E4A; }
 
 
   <!-- ══════════════════════════════════════
-       AUTOCONHECIMENTO & BEM-ESTAR — SELEÇÃO DE TESTES
+       TESTES ENVIADOS PELO RH
        ══════════════════════════════════════ -->
-  <div class="col-page" id="cp-clinico">
+  <div class="col-page" id="cp-testes-rh">
 
     <div class="clinic-hero">
-      <div class="ch-eye">Autoconhecimento & Bem-estar · Ranne Care</div>
-      <div class="ch-title">Seu espaço de<br>autoconhecimento real.</div>
-      <div class="ch-sub">6 instrumentos de autoavaliação revisados por profissionais de saúde. Seus resultados são privados — o RH só vê dados agregados e anônimos.</div>
+      <div class="ch-eye">Testes · Enviados pelo RH</div>
+      <div class="ch-title">Testes<br>pendentes.</div>
+      <div class="ch-sub">Quando o RH enviar um teste para você, ele aparece aqui. Suas respostas são anônimas — o RH vê apenas dados agregados do time.</div>
       <div class="ch-tags">
         <span class="ch-tag">100% privado</span>
+        <span class="ch-tag">Anonimizado</span>
         <span class="ch-tag">Revisado por profissionais</span>
-        <span class="ch-tag">CID-11 · DSM-5</span>
       </div>
     </div>
 
-    <div class="clinic-aviso">
-      <div class="clinic-aviso-icon">ℹ️</div>
-      <div class="clinic-aviso-text">
-        <strong>Estes testes não substituem avaliação profissional.</strong> Eles são ferramentas de rastreamento que ajudam você a entender como está e, se necessário, buscar apoio no momento certo.
+    <!-- Estado: sem testes pendentes -->
+    <div id="testes-rh-vazio" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:14px;">
+      <div style="width:56px;height:56px;border-radius:16px;background:var(--surface);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><path d="M9 12h6M9 16h4"/></svg>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Nenhum teste pendente</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Quando o RH enviar uma avaliação para o time, ela vai aparecer aqui para você responder.</div>
       </div>
     </div>
 
-    <div style="border-left:3px solid #C9A87C;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;line-height:1.6;opacity:0.85;">
-  ⚠️ A Ranne Care é uma plataforma de apoio ao bem-estar — não emite diagnósticos clínicos nem laudos médicos. Os instrumentos são para autoconhecimento e monitoramento. Se identificar sinais de sofrimento intenso, converse com um psicólogo ou médico.
-</div>
-    
-    <!-- PHQ-9 -->
-    <div class="test-card" onclick="iniciarTeste('phq9')" id="tc-phq9">
-      <div class="test-card-badge" style="background:#FEF2F2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">PHQ-9 · Kroenke & Spitzer, 2001</div>
-        <div class="test-card-title">Rastreamento de Depressão</div>
-        <div class="test-card-desc">Padrão-ouro do DSM-5, usado por médicos e psiquiatras no mundo todo. Mede sintomas depressivos nas últimas 2 semanas.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">9 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">DSM-5</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
+    <!-- Lista de testes pendentes (preenchida dinamicamente) -->
+    <div id="testes-rh-lista" style="display:none;flex-direction:column;gap:12px;"></div>
+
+    <!-- Testes já respondidos -->
+    <div id="testes-rh-respondidos-wrap" style="display:none;margin-top:24px;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;">Respondidos</div>
+      <div id="testes-rh-respondidos" style="display:flex;flex-direction:column;gap:10px;"></div>
     </div>
 
-    <!-- GAD-7 -->
-    <div class="test-card" onclick="iniciarTeste('gad7')" id="tc-gad7">
-      <div class="test-card-badge" style="background:#FFFBEB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4891A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">GAD-7 · Spitzer et al., 2006</div>
-        <div class="test-card-title">Ansiedade Generalizada</div>
-        <div class="test-card-desc">Validado pela American Psychiatric Association. Identifica transtorno de ansiedade generalizada com alta precisão clínica.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">7 perguntas</span>
-          <span class="test-card-pill">~2 min</span>
-          <span class="test-card-pill">APA · DSM-5</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- PSS-10 -->
-    <div class="test-card" onclick="iniciarTeste('pss10')" id="tc-pss10">
-      <div class="test-card-badge" style="background:#EFF6FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">PSS-10 · Cohen, Kamarck & Mermelstein, 1983</div>
-        <div class="test-card-title">Estresse Percebido</div>
-        <div class="test-card-desc">Desenvolvida na Carnegie Mellon University. Mede o quanto as situações da vida são percebidas como estressantes e incontroláveis.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">10 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">Carnegie Mellon</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- AUDIT-C -->
-    <div class="test-card" onclick="iniciarTeste('auditc')" id="tc-auditc">
-      <div class="test-card-badge" style="background:#F5F3FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8M12 11v11M6 3h12l-2 7a4 4 0 01-8 0L6 3z"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">AUDIT-C · OMS / Babor et al., 2001</div>
-        <div class="test-card-title">Uso de Álcool & Estresse</div>
-        <div class="test-card-desc">Instrumento da OMS para rastreamento de uso nocivo de álcool como resposta ao estresse ocupacional. Amplamente usado em saúde do trabalho.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">3 perguntas</span>
-          <span class="test-card-pill">~1 min</span>
-          <span class="test-card-pill">OMS</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- PRESENTEÍSMO (SPS-6) -->
-    <div class="test-card" onclick="iniciarTeste('sps6')" id="tc-sps6">
-      <div class="test-card-badge" style="background:#ECFDF5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">SPS-6 · Koopman et al., 2002</div>
-        <div class="test-card-title">Presenteísmo & Produtividade</div>
-        <div class="test-card-desc">Mede a perda de produtividade causada por problemas de saúde enquanto o colaborador está presente no trabalho. Dado estratégico para o RH.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">6 perguntas</span>
-          <span class="test-card-pill">~2 min</span>
-          <span class="test-card-pill">Stanford</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- SEGURANÇA PSICOLÓGICA (adaptado Edmondson) -->
-    <div class="test-card" onclick="iniciarTeste('psych_safety')" id="tc-psych_safety">
-      <div class="test-card-badge" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D5A3D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Edmondson (1999) · Harvard Business School</div>
-        <div class="test-card-title">Segurança Psicológica no Time</div>
-        <div class="test-card-desc">Baseado na pesquisa que fundamentou o Projeto Aristóteles do Google. Mede se você se sente seguro para se expressar e errar no ambiente de trabalho.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">7 perguntas</span>
-          <span class="test-card-pill">~2 min</span>
-          <span class="test-card-pill">Harvard · Google</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-  <!-- RISCO DE BURNOUT (Ranne) -->
-    <div class="test-card" onclick="iniciarTeste('burnout_ranne')" id="tc-burnout_ranne">
-      <div class="test-card-badge" style="background:#FEF2F2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 017 7c0 4-3 6-4 9H9c-1-3-4-5-4-9a7 7 0 017-7z"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Demerouti et al. (2001) · OLBI</div>
-        <div class="test-card-title">Risco de Burnout</div>
-        <div class="test-card-desc">Avalia sinais de exaustão emocional e distanciamento do trabalho — dois pilares centrais do Burnout segundo a OMS.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">OMS · OLBI</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- NÍVEL DE ANSIEDADE NO TRABALHO -->
-    <div class="test-card" onclick="iniciarTeste('ansiedade_ranne')" id="tc-ansiedade_ranne">
-      <div class="test-card-badge" style="background:#FFFBEB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Lovibond & Lovibond (1995) · Karasek (1979)</div>
-        <div class="test-card-title">Nível de Ansiedade no Trabalho</div>
-        <div class="test-card-desc">Mede preocupação, tensão e dificuldade de desligar relacionadas especificamente ao contexto profissional.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">DASS · Karasek</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- QUE TIPO DE LÍDER VOCÊ É -->
-    <div class="test-card" onclick="iniciarTeste('lider_ranne')" id="tc-lider_ranne">
-      <div class="test-card-badge" style="background:#EFF6FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Bass & Avolio (1995) · MLQ</div>
-        <div class="test-card-title">Que Tipo de Líder Você É?</div>
-        <div class="test-card-desc">Avalia seu estilo de liderança com base em reconhecimento, comunicação, gestão de conflitos e construção de ambiente colaborativo.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">MLQ · Bass & Avolio</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- ESTILO DE TRABALHO EM EQUIPE -->
-    <div class="test-card" onclick="iniciarTeste('equipe_ranne')" id="tc-equipe_ranne">
-      <div class="test-card-badge" style="background:#ECFDF5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6"/><circle cx="18" cy="7" r="2.5"/><path d="M22 20c0-2.5-2-4.5-4.5-4.5"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Belbin (1981) · COPSOQ II · Robbins & Judge (2014)</div>
-        <div class="test-card-title">Seu Estilo de Trabalho em Equipe</div>
-        <div class="test-card-desc">Avalia colaboração, comunicação sob pressão, abertura a críticas e contribuição para um ambiente positivo.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">Belbin · COPSOQ II</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- QUALIDADE DO SONO -->
-    <div class="test-card" onclick="iniciarTeste('sono_ranne')" id="tc-sono_ranne">
-      <div class="test-card-badge" style="background:#F5F3FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Buysse et al. (1989) · PSQI · AASM (2014)</div>
-        <div class="test-card-title">Qualidade do Seu Sono</div>
-        <div class="test-card-desc">Avalia dificuldades para adormecer, qualidade do descanso e impacto do trabalho na sua rotina noturna.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">PSQI · AASM</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- NÍVEL DE ESTRESSE ATUAL -->
-    <div class="test-card" onclick="iniciarTeste('estresse_ranne')" id="tc-estresse_ranne">
-      <div class="test-card-badge" style="background:#FEF2F2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Cohen et al. (1983) · Selye (1956) · Lazarus & Folkman (1984)</div>
-        <div class="test-card-title">Nível de Estresse Atual</div>
-        <div class="test-card-desc">Mede sobrecarga, irritação, dificuldade de concentração e impacto do estresse no bem-estar emocional e físico.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">Cohen · Selye · Lazarus</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- INTELIGÊNCIA EMOCIONAL -->
-    <div class="test-card" onclick="iniciarTeste('ie_ranne')" id="tc-ie_ranne">
-      <div class="test-card-badge" style="background:#E8F2EC"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D5E4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Goleman (1995) · Mayer & Salovey (1997) · Bar-On (2006)</div>
-        <div class="test-card-title">Inteligência Emocional no Trabalho</div>
-        <div class="test-card-desc">Avalia reconhecimento emocional, controle sob pressão, empatia, comunicação e manejo de conflitos no ambiente profissional.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">Goleman · Mayer & Salovey</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- ESTABELECER LIMITES -->
-    <div class="test-card" onclick="iniciarTeste('limites_ranne')" id="tc-limites_ranne">
-      <div class="test-card-badge" style="background:#FEF9EF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A87C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Alberti & Emmons (2017) · Smith (1975) · Goleman (1995)</div>
-        <div class="test-card-title">Você Sabe Estabelecer Limites?</div>
-        <div class="test-card-desc">Avalia assertividade, capacidade de dizer não, gestão de culpa e equilíbrio entre trabalho, descanso e vida pessoal.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">8 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">Alberti · Goleman</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-
-    <!-- DASS-21 -->
-    <div class="test-card" onclick="iniciarTeste('dass21')" id="tc-dass21">
-      <div class="test-card-badge" style="background:#F3E8FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Lovibond & Lovibond (1995) · Validado no Brasil por Vignola & Tucci (2014)</div>
-        <div class="test-card-title">Depressão, Ansiedade e Estresse</div>
-        <div class="test-card-desc">Escala clínica completa com 3 subescalas independentes — avalia depressão, ansiedade e estresse na última semana.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">21 perguntas</span>
-          <span class="test-card-pill">~6 min</span>
-          <span class="test-card-pill">DSM-5 · DASS-21</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- PSQI -->
-    <div class="test-card" onclick="iniciarTeste('psqi')" id="tc-psqi">
-      <div class="test-card-badge" style="background:#EFF6FF"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Buysse et al. (1989) · Validado no Brasil por Bertolazi et al. (2011)</div>
-        <div class="test-card-title">Qualidade do Sono de Pittsburgh</div>
-        <div class="test-card-desc">Padrão-ouro mundial para avaliação da qualidade do sono — mede 7 componentes incluindo latência, duração e eficiência.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">9 perguntas</span>
-          <span class="test-card-pill">~4 min</span>
-          <span class="test-card-pill">PSQI · Pittsburgh</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- EBET -->
-    <div class="test-card" onclick="iniciarTeste('ebet')" id="tc-ebet">
-      <div class="test-card-badge" style="background:#ECFDF5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Paschoal & Tamayo (2008) · PUC-Campinas · Único instrumento brasileiro validado</div>
-        <div class="test-card-title">Bem-Estar no Trabalho</div>
-        <div class="test-card-desc">Mede afeto positivo, afeto negativo e realização profissional — a única escala brasileira validada de bem-estar positivo no trabalho.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">9 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">EBET · Paschoal</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- CD-RISC-10 -->
-    <div class="test-card" onclick="iniciarTeste('cdrisc10')" id="tc-cdrisc10">
-      <div class="test-card-badge" style="background:#FEF3C7"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Connor & Davidson (2003) · Versão reduzida por Campbell-Sills & Stein (2007)</div>
-        <div class="test-card-title">Resiliência Psicológica</div>
-        <div class="test-card-desc">Avalia capacidade de adaptação, recuperação e enfrentamento diante de adversidades e mudanças — escala de resiliência mais usada mundialmente.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">10 perguntas</span>
-          <span class="test-card-pill">~3 min</span>
-          <span class="test-card-pill">CD-RISC · Connor</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-    <!-- COPSOQ II -->
-    <div class="test-card" onclick="iniciarTeste('copsoq2')" id="tc-copsoq2">
-      <div class="test-card-badge" style="background:#E0F2FE"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-      <div class="test-card-body">
-        <div class="test-card-fonte">Kristensen et al. (2005) · Copenhagen Psychosocial Questionnaire II · Versão NR-1 (2025)</div>
-        <div class="test-card-title">Riscos Psicossociais no Trabalho</div>
-        <div class="test-card-desc">Avalia demanda, controle, suporte, reconhecimento e segurança no trabalho — alinhado aos fatores exigidos pela NR-1 atualizada.</div>
-        <div class="test-card-meta">
-          <span class="test-card-pill">14 perguntas</span>
-          <span class="test-card-pill">~5 min</span>
-          <span class="test-card-pill">COPSOQ · NR-1</span>
-        </div>
-      </div>
-      <div class="test-card-arr">›</div>
-    </div>
-
-  </div><!-- /cp-clinico -->
+  </div><!-- /cp-testes-rh -->
 
   <!-- ══ TELA GENÉRICA DE APLICAÇÃO DO TESTE ══ -->
   <div class="col-page" id="cp-clin-teste">
-    <button id="clin-btn-sair" onclick="cpg('clinico')" style="display:none;align-items:center;gap:8px;margin-bottom:16px;padding:10px 18px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;">← Sair do teste</button>
+    <button id="clin-btn-sair" onclick="cpg('testes-rh')" style="display:none;align-items:center;gap:8px;margin-bottom:16px;padding:10px 18px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;">← Sair do teste</button>
 
 
     <!-- Aviso clínico obrigatório -->
@@ -8067,7 +7772,7 @@ body.dark .ob-btn { background: #2D5E4A; }
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:20px;">
-      <button onclick="cpg('clinico')" style="flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">← Outros testes</button>
+      <button onclick="cpg('testes-rh')" style="flex:1;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">← Voltar</button>
       <button onclick="cpg('inicio')" style="flex:1;padding:13px;border-radius:12px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">Voltar ao início</button>
     </div>
   </div><!-- /cp-clin-resultado -->
@@ -8461,8 +8166,11 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
       <span class="cn-label">Início</span>
     </div>
-    <div class="cn-item" id="cn-clinico" onclick="cpg('clinico')">
-      <span class="cn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v8l3 7H6l3-7V3z"/><line x1="9" y1="9" x2="15" y2="9"/></svg></span>
+    <div class="cn-item" id="cn-testes-rh" onclick="cpg('testes-rh')" style="position:relative">
+      <span class="cn-icon" style="position:relative">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><path d="M9 12h6M9 16h4"/></svg>
+        <span id="badge-testes-rh" style="display:none;position:absolute;top:-5px;right:-6px;background:#EF4444;color:#fff;font-size:9px;font-weight:700;border-radius:99px;min-width:14px;height:14px;line-height:14px;text-align:center;padding:0 3px;font-family:'Inter',sans-serif;">0</span>
+      </span>
       <span class="cn-label">Testes</span>
     </div>
     <div class="cn-item" id="cn-checkin" onclick="cpg('checkin')">
@@ -11483,12 +11191,18 @@ function cpg(id) {
   const navItem = document.getElementById('cn-' + id);
   if (navItem) navItem.classList.add('active');
 
+
   // Inicializa QUSP do zero quando abre
   if (id === 'qusp') {
     qusp_atual = 0;
     qusp_resps = new Array(20).fill(null);
     qusp_selecionado = null;
     qusp_render();
+  }
+
+  // Atualiza testes do RH quando abre a aba
+  if (id === 'testes-rh') {
+    carregarTestesRH();
   }
 }
 
@@ -12387,6 +12101,7 @@ function atualizarInicioColaborador(nome) {
 
   // Carrega dados reais do Supabase
   carregarDadosHomeColaborador();
+  carregarTestesRH();
 }
 
 async function carregarDadosHomeColaborador() {
@@ -13220,6 +12935,130 @@ let clinResps  = [];
 let clinSel    = null;
 const clinDone = {};
 
+/* ══════════════════════════════════════════════
+   TESTES ENVIADOS PELO RH
+   ══════════════════════════════════════════════ */
+
+const TESTES_RH_LABELS = {
+  phq9: 'Rastreamento de Depressão',
+  gad7: 'Ansiedade Generalizada',
+  pss10: 'Estresse Percebido',
+  auditc: 'Uso de Álcool & Estresse',
+  sps6: 'Presenteísmo & Produtividade',
+  psych_safety: 'Segurança Psicológica no Time',
+  burnout_ranne: 'Risco de Burnout',
+  ansiedade_ranne: 'Nível de Ansiedade no Trabalho',
+  lider_ranne: 'Que Tipo de Líder Você É?',
+  equipe_ranne: 'Seu Estilo de Trabalho em Equipe',
+  sono_ranne: 'Qualidade do Seu Sono',
+  estresse_ranne: 'Nível de Estresse Atual',
+  ie_ranne: 'Inteligência Emocional no Trabalho',
+  limites_ranne: 'Você Sabe Estabelecer Limites?',
+  dass21: 'Depressão, Ansiedade e Estresse',
+  psqi: 'Qualidade do Sono de Pittsburgh',
+  ebet: 'Bem-Estar no Trabalho',
+  cdrisc10: 'Resiliência Psicológica',
+  copsoq2: 'Riscos Psicossociais no Trabalho',
+};
+
+async function carregarTestesRH() {
+  if (!currentUser?.id) return;
+  try {
+    // Busca testes enviados pelo RH para todos os colaboradores
+    const { data: enviados } = await db
+      .from('testes_enviados_rh')
+      .select('id, teste_id, enviado_em, enviado_por')
+      .order('enviado_em', { ascending: false });
+
+    if (!enviados || enviados.length === 0) {
+      _renderTestesRH([], []);
+      return;
+    }
+
+    // Busca quais o colaborador já respondeu
+    const { data: respondidos } = await db
+      .from('testes_realizados')
+      .select('teste_id, realizado_em')
+      .eq('user_id', currentUser.id)
+      .in('teste_id', enviados.map(e => e.teste_id));
+
+    const respondidosSet = new Set((respondidos || []).map(r => r.teste_id));
+
+    const pendentes   = enviados.filter(e => !respondidosSet.has(e.teste_id));
+    const concluidos  = enviados.filter(e => respondidosSet.has(e.teste_id));
+
+    _renderTestesRH(pendentes, concluidos);
+  } catch(e) {
+    console.warn('[carregarTestesRH]', e);
+    _renderTestesRH([], []);
+  }
+}
+
+function _renderTestesRH(pendentes, concluidos) {
+  const elVazio   = document.getElementById('testes-rh-vazio');
+  const elLista   = document.getElementById('testes-rh-lista');
+  const elRespWrap = document.getElementById('testes-rh-respondidos-wrap');
+  const elResp    = document.getElementById('testes-rh-respondidos');
+  const badge     = document.getElementById('badge-testes-rh');
+  const acaoBadge = document.getElementById('acao-badge-testes');
+  const acaoSub   = document.getElementById('acao-testes-sub');
+
+  // Badge nav + card início
+  if (badge) { badge.style.display = pendentes.length > 0 ? 'block' : 'none'; badge.textContent = pendentes.length; }
+  if (acaoBadge) { acaoBadge.style.display = pendentes.length > 0 ? 'block' : 'none'; acaoBadge.textContent = pendentes.length; }
+  if (acaoSub) acaoSub.textContent = pendentes.length > 0 ? `${pendentes.length} pendente${pendentes.length > 1 ? 's' : ''}` : 'Nenhum pendente';
+
+  if (pendentes.length === 0 && concluidos.length === 0) {
+    if (elVazio)  elVazio.style.display  = 'flex';
+    if (elLista)  elLista.style.display  = 'none';
+    if (elRespWrap) elRespWrap.style.display = 'none';
+    return;
+  }
+
+  if (elVazio) elVazio.style.display = 'none';
+
+  // Pendentes
+  if (elLista) {
+    elLista.style.display = pendentes.length > 0 ? 'flex' : 'none';
+    elLista.innerHTML = pendentes.map(t => {
+      const label = TESTES_RH_LABELS[t.teste_id] || t.teste_id;
+      const data  = t.enviado_em ? new Date(t.enviado_em).toLocaleDateString('pt-BR') : '';
+      return `
+        <div class="test-card" onclick="iniciarTesteRH('${t.teste_id}')" style="border-left:3px solid var(--green);">
+          <div class="test-card-badge" style="background:var(--surface);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><path d="M9 12h6M9 16h4"/></svg>
+          </div>
+          <div class="test-card-body">
+            <div class="test-card-fonte" style="color:var(--green)">Enviado pelo RH · ${data}</div>
+            <div class="test-card-title">${label}</div>
+            <div class="test-card-desc">Avaliação solicitada pelo RH. Suas respostas são anonimizadas.</div>
+          </div>
+          <div class="test-card-arr">›</div>
+        </div>`;
+    }).join('');
+  }
+
+  // Respondidos
+  if (elRespWrap && elResp) {
+    elRespWrap.style.display = concluidos.length > 0 ? 'block' : 'none';
+    elResp.innerHTML = concluidos.map(t => {
+      const label = TESTES_RH_LABELS[t.teste_id] || t.teste_id;
+      return `
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1.5px solid rgba(16,185,129,.25);">
+          <span style="color:#10B981;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span style="font-size:13px;font-weight:600;color:var(--text);flex:1">${label}</span>
+          <span style="font-size:11px;color:var(--muted)">Respondido</span>
+        </div>`;
+    }).join('');
+  }
+}
+
+function iniciarTesteRH(id) {
+  // Registra que veio do fluxo RH para o botão voltar funcionar corretamente
+  window._testeOrigemRH = true;
+  iniciarTeste(id);
+}
+
 /* ── Iniciar teste ── */
 function iniciarTeste(id) {
   clinAtual  = TESTES[id];
@@ -13443,7 +13282,7 @@ function _enc_html(tipo, cor) {
   const B = {
     baixo:   { cls:'enc-baixo',  icon:'✅', titulo:'Você está bem',
       desc:'Seus resultados estão dentro do esperado. Continue com seus hábitos de autocuidado e monitore regularmente.',
-      btn1_cls:'enc-btn enc-btn-sec enc-btn-sec-g', btn1_fn:"cpg('clinico')", btn1_lbl:'Ver outros testes',
+      btn1_cls:'enc-btn enc-btn-sec enc-btn-sec-g', btn1_fn:"cpg('testes-rh')", btn1_lbl:'Voltar aos testes',
       btn2_cls:'', btn2_fn:'', btn2_lbl:'' },
     medio:   { cls:'enc-medio',  icon:'⚠️', titulo:'Atenção recomendada',
       desc:'Seus resultados indicam que vale a pena conversar com um profissional ou revisar alguns hábitos.',
