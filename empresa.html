@@ -10224,9 +10224,7 @@ async function gerarPlanoIA() {
     }
 
     if (diag?.scores) {
-      contextoScores += '
-
-Último ciclo encerrado: ' + Object.entries(diag.scores).map(([k,v]) => `${k}: ${v}`).join(', ');
+      contextoScores += '\n\nÚltimo ciclo encerrado: ' + Object.entries(diag.scores).map(([k,v]) => `${k}: ${v}`).join(', ');
     }
   } catch { return; /* sem dados, não gera */ }
 
