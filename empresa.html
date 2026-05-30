@@ -9503,6 +9503,11 @@ async function loadMembros() {
   const lista = document.getElementById('membros-lista');
   if (!lista) return;
 
+  if (!currentEmpresa?.id) {
+    setTimeout(loadMembros, 800);
+    return;
+  }
+
   try {
     const { data: membros } = await db
       .from('membros_empresa')
@@ -12288,6 +12293,14 @@ let _todosColabs = [];
 async function loadColaboradores() {
   const lista = document.getElementById('colab-membros-lista');
   if (!lista) return;
+
+  // Aguarda currentEmpresa estar disponível
+  if (!currentEmpresa?.id) {
+    lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px;">Carregando...</div>';
+    setTimeout(loadColaboradores, 800);
+    return;
+  }
+
   lista.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:12px;">Carregando...</div>';
 
   try {
