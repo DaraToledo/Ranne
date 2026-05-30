@@ -5819,11 +5819,6 @@ body.dark .ob-btn { background: #2D5E4A; }
           </div>
 
           <!-- Estado de carregamento IA -->
-          <div id="plano-ia-loading" style="display:none;text-align:center;padding:40px 20px">
-            <div style="font-size:28px;margin-bottom:12px;animation:spin 2s linear infinite;display:inline-block">✨</div>
-            <div style="font-size:14px;font-weight:600;color:var(--card-text);margin-bottom:6px">Gerando plano com IA...</div>
-            <div style="font-size:13px;color:var(--muted)">Analisando os resultados do último ciclo</div>
-          </div>
 
           <div id="acoes-lista">
             <div id="plano-empty" style="text-align:center;padding:48px 20px;">
@@ -7078,6 +7073,41 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div style="display:flex;gap:8px;margin-top:14px;">
             <button class="btn btn-primary btn-sm" style="flex:1;" onclick="baixarRelatorioMensal()">⬇ Baixar PDF</button>
             <button class="btn btn-outline btn-sm" style="flex:1;" onclick="compartilharRelatorioMensal()">↗ Compartilhar</button>
+          </div>
+        </div>
+
+        <!-- Relatório Completo -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-hdr">
+            <span class="card-title">Relatório Completo</span>
+            <div style="display:flex;gap:6px;align-items:center">
+              <select class="fi-select fi-input" id="rel-completo-periodo" style="font-size:12px;padding:4px 8px;height:auto" onchange="carregarRelatorioCompleto()">
+                <option value="mes">Este mês</option>
+                <option value="3m">Últimos 3 meses</option>
+                <option value="6m">Últimos 6 meses</option>
+                <option value="tudo">Todo o histórico</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabs check-ins / testes -->
+          <div class="tabs" style="margin-bottom:16px">
+            <div class="tab active" onclick="abrirAbaRelatorio('checkins', this)">Check-ins</div>
+            <div class="tab" onclick="abrirAbaRelatorio('testes', this)">Testes</div>
+          </div>
+
+          <!-- Check-ins -->
+          <div id="rel-aba-checkins">
+            <div id="rel-checkins-content" style="display:flex;flex-direction:column;gap:0">
+              <div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Carregando...</div>
+            </div>
+          </div>
+
+          <!-- Testes -->
+          <div id="rel-aba-testes" style="display:none">
+            <div id="rel-testes-content" style="display:flex;flex-direction:column;gap:0">
+              <div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Carregando...</div>
+            </div>
           </div>
         </div>
 
@@ -10112,217 +10142,114 @@ async function carregarAcoesSupabase() {
       .order('criado_em', { ascending: false });
     acoesData = data || [];
   } catch {
-    // fallback localStorage
     const saved = localStorage.getItem('ranne-acoes-v2');
     acoesData = saved ? JSON.parse(saved) : [];
   }
   renderAcoes();
 
-  // Gera automaticamente em background se vazio (silencioso)
+  // Gera automaticamente apenas se não há ações E há dados reais (check-ins e testes)
   if (acoesData.length === 0) {
-    setTimeout(() => gerarPlanoIA(), 800);
+    _verificarEGerarPlano();
   }
 }
 
-function renderAcoes(filtro = 'todas') {
-  const lista = document.getElementById('acoes-lista');
-  const empty = document.getElementById('plano-empty');
-  const tabs  = document.getElementById('plano-tabs');
-  const progRow = document.getElementById('plano-progress-row');
-
-  const visiveis = filtro === 'todas' ? acoesData
-    : acoesData.filter(a => a.status === filtro);
-
-  if (acoesData.length === 0) {
-    empty.style.display  = 'block';
-    tabs.style.display   = 'none';
-    progRow.style.display = 'none';
-    lista.innerHTML = '';
-    lista.appendChild(empty);
-    return;
-  }
-
-  empty.style.display  = 'none';
-  tabs.style.display   = 'flex';
-  progRow.style.display = 'flex';
-
-  const prioLabel = { alta: '🔴 Alta', media: '🟡 Média', baixa: '🟢 Baixa' };
-  const prioClass = { alta: 't-alta', media: 't-media', baixa: 't-baixa' };
-
-  lista.innerHTML = visiveis.map(a => {
-    const done = a.status === 'concluida';
-    const prazoStr = a.prazo ? new Date(a.prazo).toLocaleDateString('pt-BR') : '';
-    const iaTag = '';
-    return `
-      <div class="action-row" data-id="${a.id}" data-status="${a.status}">
-        <div class="a-check ${done ? 'a-done' : ''}" onclick="toggleAcaoV2('${a.id}')">${done ? '✓' : ''}</div>
-        <div style="flex:1;min-width:0">
-          <div class="a-title ${done ? 'a-title-done' : ''}">${a.titulo}</div>
-          ${a.descricao ? `<div style="font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5">${a.descricao}</div>` : ''}
-          <div class="a-meta">
-            ${iaTag}
-            <span class="tag ${prioClass[a.prioridade] || 't-gray'}">${prioLabel[a.prioridade] || a.prioridade}</span>
-            ${a.responsavel ? `<span class="tag t-gray">👤 ${a.responsavel}</span>` : ''}
-            ${prazoStr ? `<span class="tag t-gray">📅 ${prazoStr}</span>` : ''}
-            ${a.dimensao ? `<span class="tag t-clima">${a.dimensao}</span>` : ''}
-          </div>
-        </div>
-        <button class="a-delete" onclick="deletarAcao('${a.id}')" title="Remover">✕</button>
-      </div>`;
-  }).join('');
-
-  updatePlanoProgress();
-}
-
-async function toggleAcaoV2(id) {
-  const acao = acoesData.find(a => a.id === id);
-  if (!acao) return;
-  acao.status = acao.status === 'concluida' ? 'pendente' : 'concluida';
+async function _verificarEGerarPlano() {
+  if (!currentEmpresa?.id) return;
   try {
-    await db.from('acoes_plano').update({ status: acao.status }).eq('id', id);
-  } catch {
-    localStorage.setItem('ranne-acoes-v2', JSON.stringify(acoesData));
-  }
-  renderAcoes();
+    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+
+    const [checkinsRes, testesRes] = await Promise.all([
+      db.from('checkins').select('id').eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes).limit(1),
+      db.from('testes_realizados').select('id').eq('empresa_id', currentEmpresa.id).limit(1),
+    ]);
+
+    const temCheckins = (checkinsRes.data || []).length > 0;
+    const temTestes   = (testesRes.data  || []).length > 0;
+
+    // Só gera se houver check-ins E testes respondidos
+    if (temCheckins && temTestes) {
+      gerarPlanoIA();
+    }
+    // Sem dados: estado vazio permanece sem mensagem de loading
+  } catch { /* sem dados, sem geração */ }
 }
 
-async function deletarAcao(id) {
-  acoesData = acoesData.filter(a => a.id !== id);
-  try {
-    await db.from('acoes_plano').delete().eq('id', id);
-  } catch {
-    localStorage.setItem('ranne-acoes-v2', JSON.stringify(acoesData));
-  }
-  renderAcoes();
-}
-
-function filterAcoes(filtro, tabEl) {
-  document.querySelectorAll('#plano-tabs .tab').forEach(t => t.classList.remove('active'));
-  if (tabEl) tabEl.classList.add('active');
-  renderAcoes(filtro);
-}
-
-function updatePlanoProgress() {
-  const total = acoesData.length;
-  const done  = acoesData.filter(a => a.status === 'concluida').length;
-  const pct   = total ? Math.round((done / total) * 100) : 0;
-  const fill  = document.getElementById('plano-fill');
-  const txt   = document.getElementById('plano-progresso-txt');
-  const badge = document.getElementById('badge-acoes');
-  if (fill) fill.style.width = pct + '%';
-  if (txt)  txt.textContent  = `${done} de ${total} — ${pct}%`;
-  if (badge) {
-    const pendentes = total - done;
-    badge.textContent = pendentes;
-    badge.style.display = pendentes > 0 ? 'inline-flex' : 'none';
-  }
-}
-
-/* ── Modal nova ação manual ── */
-function abrirModalNovaAcao() {
-  const m = document.getElementById('modal-nova-acao');
-  m.style.display = 'flex';
-  document.getElementById('nova-acao-titulo').value = '';
-  document.getElementById('nova-acao-desc').value   = '';
-  document.getElementById('nova-acao-resp').value   = '';
-  document.getElementById('nova-acao-prazo').value  = '';
-  document.getElementById('nova-acao-prio').value   = 'media';
-  setTimeout(() => document.getElementById('nova-acao-titulo').focus(), 100);
-}
-
-function fecharModalNovaAcao() {
-  document.getElementById('modal-nova-acao').style.display = 'none';
-}
-
-async function salvarNovaAcao() {
-  const titulo = document.getElementById('nova-acao-titulo').value.trim();
-  if (!titulo) { toast('Informe o título da ação.'); return; }
-
-  const acao = {
-    id: crypto.randomUUID(),
-    empresa_id: currentEmpresa?.id,
-    titulo,
-    descricao:    document.getElementById('nova-acao-desc').value.trim(),
-    responsavel:  document.getElementById('nova-acao-resp').value.trim(),
-    prazo:        document.getElementById('nova-acao-prazo').value || null,
-    prioridade:   document.getElementById('nova-acao-prio').value,
-    status:       'pendente',
-    gerada_ia:    false,
-    criado_em:    new Date().toISOString(),
-  };
-
-  try {
-    await db.from('acoes_plano').insert(acao);
-  } catch {
-    localStorage.setItem('ranne-acoes-v2', JSON.stringify([acao, ...acoesData]));
-  }
-
-  acoesData.unshift(acao);
-  fecharModalNovaAcao();
-  renderAcoes();
-  toast('✅ Ação adicionada ao plano!');
-}
-
-/* ── Gerar plano com IA ── */
 async function gerarPlanoIA() {
-  const loading = document.getElementById('plano-ia-loading');
-  const lista   = document.getElementById('acoes-lista');
-
-  // Coleta scores do último ciclo
-  const scores = window._ultimosScoresCiclo || null;
+  // Totalmente silencioso — sem loading, sem toast, sem indicação visual
   const empresa = currentEmpresa?.nome || 'a empresa';
 
-  // Monta contexto para a IA
+  // Busca scores reais do banco
   let contextoScores = '';
-  if (scores && Object.keys(scores).length > 0) {
-    contextoScores = '\n\nScores do último ciclo de avaliação:\n' +
-      Object.entries(scores).map(([dim, val]) => `- ${dim}: ${val}/100`).join('\n');
-  } else {
-    try {
-      const { data: diags } = await db.from('diagnosticos')
-        .select('*').eq('empresa_id', currentEmpresa?.id)
-        .eq('status', 'encerrado').order('created_at', { ascending: false }).limit(1);
-      if (diags?.[0]?.scores) {
-        contextoScores = '\n\nScores do último ciclo:\n' +
-          Object.entries(diags[0].scores).map(([d, v]) => `- ${d}: ${v}/100`).join('\n');
-      }
-    } catch {}
-  }
+  try {
+    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
 
-  // Loading sutil — apenas o spinner interno, sem bloquear a UI
-  if (loading) loading.style.display = 'block';
+    const [checkinsRes, testesRes, diagsRes] = await Promise.all([
+      db.from('checkins').select('user_id, humor, energia, carga, foco')
+        .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes),
+      db.from('testes_realizados').select('teste_id, score')
+        .eq('empresa_id', currentEmpresa.id).gte('realizado_em', inicioMes),
+      db.from('diagnosticos').select('nome, scores')
+        .eq('empresa_id', currentEmpresa.id).eq('status', 'encerrado')
+        .order('created_at', { ascending: false }).limit(1),
+    ]);
 
-  const prompt = `Você é especialista em saúde organizacional. Gere um plano de ação concreto para ${empresa} com base nos dados abaixo.${contextoScores || '\n\nNenhum ciclo encerrado ainda — gere ações gerais de bem-estar organizacional.'}
+    const checkins = checkinsRes.data || [];
+    const testes   = testesRes.data   || [];
+    const diag     = diagsRes.data?.[0];
 
-Retorne APENAS um JSON válido, sem markdown, sem explicações. Formato exato:
-[
-  {
-    "titulo": "Título curto e direto da ação",
-    "descricao": "O que fazer concretamente em 1-2 frases",
-    "prioridade": "alta" | "media" | "baixa",
-    "responsavel": "RH" | "Gestores" | "Liderança" | "Todos",
-    "prazo_dias": 30,
-    "dimensao": "Burnout" | "Estresse" | "Sono" | "Clima" | "Liderança" | "Cultura" | "Geral"
-  }
-]
-Gere entre 4 e 7 ações, priorizadas por urgência. Seja específico e prático.`;
+    if (checkins.length > 0) {
+      const userMap = {};
+      checkins.forEach(c => { if (!userMap[c.user_id]) userMap[c.user_id] = c; });
+      const unicos = Object.values(userMap);
+      const scoreCI = Math.round(unicos.map(c =>
+        Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4)
+      ).reduce((a,b)=>a+b,0)/unicos.length);
+      contextoScores += `
+- Score médio de check-in: ${scoreCI}/100 (${unicos.length} colaboradores este mês)`;
+    }
+
+    if (testes.length > 0) {
+      const porTeste = {};
+      testes.forEach(t => {
+        if (!porTeste[t.teste_id]) porTeste[t.teste_id] = [];
+        if (t.score != null) porTeste[t.teste_id].push(t.score);
+      });
+      Object.entries(porTeste).forEach(([id, scores]) => {
+        if (scores.length > 0) {
+          const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+          contextoScores += `
+- ${id}: média ${avg}/100 (${scores.length} respostas)`;
+        }
+      });
+    }
+
+    if (diag?.scores) {
+      contextoScores += '
+
+Último ciclo encerrado: ' + Object.entries(diag.scores).map(([k,v]) => `${k}: ${v}`).join(', ');
+    }
+  } catch { return; /* sem dados, não gera */ }
+
+  if (!contextoScores) return; // sem dados reais, não gera
+
+  const prompt = `Você é especialista em saúde organizacional. Gere um plano de ação para ${empresa} baseado nos dados reais abaixo:
+${contextoScores}
+
+Retorne APENAS JSON válido, sem markdown. Formato:
+[{"titulo":"string","descricao":"string","prioridade":"alta"|"media"|"baixa","responsavel":"RH"|"Gestores"|"Liderança"|"Todos","prazo_dias":30,"dimensao":"Burnout"|"Estresse"|"Sono"|"Clima"|"Liderança"|"Cultura"}]
+Entre 4 e 7 ações, priorizadas por urgência, específicas para os dados acima.`;
 
   try {
     const res = await fetch('https://www.rannecare.com.br/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        context: 'empresa',
-        messages: [{ role: 'user', content: prompt }]
-      })
+      body: JSON.stringify({ context: 'empresa', messages: [{ role: 'user', content: prompt }] })
     });
-
     const data = await res.json();
-    const text = data.reply || '';
-
-    const jsonMatch = text.match(/\[[\s\S]*\]/);
-    if (!jsonMatch) throw new Error('JSON não encontrado');
-    const acoes = JSON.parse(jsonMatch[0]);
+    const match = (data.reply || '').match(/\[[\s\S]*\]/);
+    if (!match) return;
+    const acoes = JSON.parse(match[0]);
+    if (!Array.isArray(acoes) || acoes.length === 0) return;
 
     const hoje = new Date();
     const novas = acoes.map(a => ({
@@ -10332,27 +10259,19 @@ Gere entre 4 e 7 ações, priorizadas por urgência. Seja específico e prático
       descricao:   a.descricao,
       prioridade:  a.prioridade || 'media',
       responsavel: a.responsavel || 'RH',
-      prazo:       a.prazo_dias ? new Date(hoje.getTime() + a.prazo_dias * 86400000).toISOString().split('T')[0] : null,
+      prazo:       a.prazo_dias ? new Date(hoje.getTime() + a.prazo_dias*86400000).toISOString().split('T')[0] : null,
       dimensao:    a.dimensao || null,
       status:      'pendente',
       gerada_ia:   true,
       criado_em:   new Date().toISOString(),
     }));
 
-    try {
-      await db.from('acoes_plano').insert(novas);
-    } catch {
+    try { await db.from('acoes_plano').insert(novas); } catch {
       localStorage.setItem('ranne-acoes-v2', JSON.stringify([...novas, ...acoesData]));
     }
-
     acoesData = [...novas, ...acoesData];
-
-  } catch (e) {
-    console.warn('[plano]', e);
-  } finally {
-    if (loading) loading.style.display = 'none';
     renderAcoes();
-  }
+  } catch { /* silencioso */ }
 }
 
 function toggleAcao(checkEl) {
@@ -11116,6 +11035,164 @@ function initNovoDiagnostico() {
   const el = document.getElementById('nd-data');
   if (el) el.valueAsDate = d;
   ndAtualizarPreview();
+}
+
+/* ══════════════════════════════════════════════
+   RELATÓRIO COMPLETO — CHECK-INS + TESTES
+   ══════════════════════════════════════════════ */
+
+let _relAbaAtual = 'checkins';
+
+function abrirAbaRelatorio(aba, tabEl) {
+  _relAbaAtual = aba;
+  document.querySelectorAll('#p-relatorios .tabs .tab').forEach(t => t.classList.remove('active'));
+  if (tabEl) tabEl.classList.add('active');
+  document.getElementById('rel-aba-checkins').style.display = aba === 'checkins' ? 'block' : 'none';
+  document.getElementById('rel-aba-testes').style.display   = aba === 'testes'   ? 'block' : 'none';
+  carregarRelatorioCompleto();
+}
+
+async function carregarRelatorioCompleto() {
+  if (!currentEmpresa?.id) return;
+
+  const periodo = document.getElementById('rel-completo-periodo')?.value || 'mes';
+  const desde = _periodoParaData(periodo);
+
+  if (_relAbaAtual === 'checkins') {
+    await _carregarRelCheckins(desde);
+  } else {
+    await _carregarRelTestes(desde);
+  }
+}
+
+function _periodoParaData(periodo) {
+  const agora = new Date();
+  if (periodo === 'mes') return new Date(agora.getFullYear(), agora.getMonth(), 1).toISOString();
+  if (periodo === '3m')  return new Date(agora - 90*86400000).toISOString();
+  if (periodo === '6m')  return new Date(agora - 180*86400000).toISOString();
+  return null; // tudo
+}
+
+async function _carregarRelCheckins(desde) {
+  const el = document.getElementById('rel-checkins-content');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Carregando...</div>';
+
+  try {
+    // Busca membros e checkins separadamente (sem join)
+    const [membrosRes, checkinsRes] = await Promise.all([
+      db.from('membros_empresa').select('user_id, nome').eq('empresa_id', currentEmpresa.id),
+      (() => {
+        let q = db.from('checkins')
+          .select('user_id, humor, energia, carga, foco, created_at, tipo')
+          .eq('empresa_id', currentEmpresa.id)
+          .order('created_at', { ascending: false })
+          .limit(200);
+        if (desde) q = q.gte('created_at', desde);
+        return q;
+      })()
+    ]);
+
+    const nomeMap = {};
+    (membrosRes.data || []).forEach(m => { nomeMap[m.user_id] = m.nome; });
+    const rows = checkinsRes.data || [];
+
+    if (rows.length === 0) {
+      el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
+      return;
+    }
+
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 60px 60px 60px 60px 80px;gap:4px;padding:8px 10px;background:var(--surface);border-radius:8px;margin-bottom:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">
+        <span>Colaborador</span>
+        <span style="text-align:center">Humor</span>
+        <span style="text-align:center">Energia</span>
+        <span style="text-align:center">Carga</span>
+        <span style="text-align:center">Foco</span>
+        <span style="text-align:right">Data</span>
+      </div>
+      ${rows.map(r => {
+        const nome = nomeMap[r.user_id] || 'Anônimo';
+        const dataStr = new Date(r.created_at).toLocaleDateString('pt-BR');
+        const score = Math.round(((r.humor??50)+(r.energia??50)+(100-(r.carga??50))+(r.foco??50))/4);
+        const cor = score >= 70 ? '#10B981' : score >= 55 ? '#F59E0B' : '#EF4444';
+        return `<div style="display:grid;grid-template-columns:1fr 60px 60px 60px 60px 80px;gap:4px;padding:8px 10px;border-bottom:1px solid var(--border);font-size:12px;align-items:center">
+          <span style="font-weight:600;color:var(--card-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nome}</span>
+          <span style="text-align:center"><span style="background:rgba(0,0,0,.05);padding:2px 6px;border-radius:6px">${r.humor ?? '—'}</span></span>
+          <span style="text-align:center"><span style="background:rgba(0,0,0,.05);padding:2px 6px;border-radius:6px">${r.energia ?? '—'}</span></span>
+          <span style="text-align:center"><span style="background:rgba(0,0,0,.05);padding:2px 6px;border-radius:6px">${r.carga ?? '—'}</span></span>
+          <span style="text-align:center"><span style="background:rgba(0,0,0,.05);padding:2px 6px;border-radius:6px">${r.foco ?? '—'}</span></span>
+          <span style="text-align:right;font-size:11px;color:var(--muted)">${dataStr}</span>
+        </div>`;
+      }).join('')}`;
+  } catch(e) {
+    console.warn('[relCheckins]', e);
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
+  }
+}
+
+async function _carregarRelTestes(desde) {
+  const el = document.getElementById('rel-testes-content');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Carregando...</div>';
+
+  try {
+    const [membrosRes, testesRes] = await Promise.all([
+      db.from('membros_empresa').select('user_id, nome').eq('empresa_id', currentEmpresa.id),
+      (() => {
+        let q = db.from('testes_realizados')
+          .select('user_id, teste_id, score, nivel, realizado_em')
+          .eq('empresa_id', currentEmpresa.id)
+          .order('realizado_em', { ascending: false })
+          .limit(200);
+        if (desde) q = q.gte('realizado_em', desde);
+        return q;
+      })()
+    ]);
+
+    const nomeMap = {};
+    (membrosRes.data || []).forEach(m => { nomeMap[m.user_id] = m.nome; });
+    const rows = testesRes.data || [];
+
+    if (rows.length === 0) {
+      el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
+      return;
+    }
+
+    const TESTES_LABELS = {
+      phq9:'PHQ-9', gad7:'GAD-7', pss10:'PSS-10', dass21:'DASS-21',
+      burnout_ranne:'Burnout', ansiedade_ranne:'Ansiedade', estresse_ranne:'Estresse',
+      sono_ranne:'Sono', emocional_ranne:'Int. Emocional', limites_ranne:'Limites',
+      lider_ranne:'Liderança', equipe_ranne:'Equipe', psych_safety:'Seg. Psicológica',
+      sps6:'SPS-6', auditc:'AUDIT-C', ebet:'EBET', cdrisc10:'CD-RISC',
+      psqi:'PSQI', copsoq2:'COPSOQ-II',
+    };
+
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 120px 55px 80px 85px;gap:4px;padding:8px 10px;background:var(--surface);border-radius:8px;margin-bottom:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">
+        <span>Colaborador</span>
+        <span>Teste</span>
+        <span style="text-align:center">Score</span>
+        <span>Nível</span>
+        <span style="text-align:right">Data</span>
+      </div>
+      ${rows.map(r => {
+        const nome  = nomeMap[r.user_id] || 'Anônimo';
+        const teste = TESTES_LABELS[r.teste_id] || r.teste_id;
+        const dataStr = r.realizado_em ? new Date(r.realizado_em + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+        const nivelCor = r.nivel === 'critico' ? '#EF4444' : r.nivel === 'alto' ? '#F59E0B' : '#10B981';
+        return `<div style="display:grid;grid-template-columns:1fr 120px 55px 80px 85px;gap:4px;padding:8px 10px;border-bottom:1px solid var(--border);font-size:12px;align-items:center">
+          <span style="font-weight:600;color:var(--card-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nome}</span>
+          <span style="color:var(--muted);font-size:11px">${teste}</span>
+          <span style="text-align:center"><span style="background:rgba(0,0,0,.05);padding:2px 6px;border-radius:6px">${r.score ?? '—'}</span></span>
+          <span style="color:${nivelCor};font-weight:600;font-size:11px;text-transform:capitalize">${r.nivel || '—'}</span>
+          <span style="text-align:right;font-size:11px;color:var(--muted)">${dataStr}</span>
+        </div>`;
+      }).join('')}`;
+  } catch(e) {
+    console.warn('[relTestes]', e);
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
+  }
 }
 
 function toggleDark() {
@@ -15815,7 +15892,7 @@ function pg(id, el) {
   if (id === 'novo-diagnostico') { setTimeout(initNovoDiagnostico, 100); }
   if (id === 'escuta-rh') { setTimeout(escutaCarregarRH, 100); }
   if (id === 'colaboradores') loadColaboradores();
-  if (id === 'relatorios') carregarDadosRelatorio();
+  if (id === 'relatorios') { carregarDadosRelatorio(); carregarRelatorioCompleto(); }
   if (id === 'config') {
     carregarPerfil();
 carregarPreferencias();
