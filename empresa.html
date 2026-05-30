@@ -8831,7 +8831,7 @@ async function loadDashboardData() {
     const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
 
     const [membrosRes, checkinsRes, diagsRes] = await Promise.all([
-      db.from('membros_empresa').select('id, nome, email, user_id, setor').eq('empresa_id', currentEmpresa.id),
+      db.from('membros_empresa').select('id, nome, email, user_id').eq('empresa_id', currentEmpresa.id),
       db.from('checkins').select('user_id, humor, energia, carga, foco, created_at')
         .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes).neq('tipo', 'feminino'),
       db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id)
@@ -8947,18 +8947,20 @@ function _renderHeatmapSetores(membros, userMap) {
   const el = document.getElementById('heatmap-setores');
   if (!el) return;
 
+  if (membros.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center;grid-column:1/-1">Nenhum colaborador cadastrado ainda.</div>';
+    return;
+  }
+
+  // Agrupa por setor se disponível, senão mostra score geral do time
   const setores = {};
   membros.forEach(m => {
-    const s = m.setor || 'Geral';
+    const s = m.setor || 'Time';
     if (!setores[s]) setores[s] = [];
     setores[s].push(m);
   });
 
   const entradas = Object.entries(setores);
-  if (entradas.length === 0) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center;grid-column:1/-1">Nenhum colaborador cadastrado ainda.</div>';
-    return;
-  }
 
   el.innerHTML = entradas.map(([setor, cols]) => {
     const scores = cols.map(c => {
@@ -8967,7 +8969,15 @@ function _renderHeatmapSetores(membros, userMap) {
       return Math.round(((ci.humor??50)+(ci.energia??50)+(100-(ci.carga??50))+(ci.foco??50))/4);
     }).filter(s => s !== null);
 
-    if (scores.length < 3) {
+    if (scores.length === 0) {
+      return `<div class="sector-card" style="opacity:.55">
+        <div class="sector-name">${setor}</div>
+        <div class="sector-score" style="font-size:13px;color:var(--muted)">—</div>
+        <div class="sector-meta">${cols.length} pessoa${cols.length>1?'s':''} · sem check-in</div>
+      </div>`;
+    }
+
+    if (scores.length < 3 && entradas.length > 1) {
       return `<div class="sector-card" style="opacity:.55">
         <div class="sector-name">${setor}</div>
         <div class="sector-score" style="font-size:13px;color:var(--muted)">—</div>
@@ -8976,9 +8986,9 @@ function _renderHeatmapSetores(membros, userMap) {
     }
 
     const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
-    const cardClass = avg >= 70 ? 'sector-ok' : avg >= 55 ? 'sector-warn' : 'sector-crit';
-    const scoreClass = avg >= 70 ? 's-ok' : avg >= 55 ? 's-warn' : 's-crit';
-    const status = avg >= 70 ? 'Saudável' : avg >= 55 ? 'Atenção' : 'Crítico';
+    const cardClass  = avg >= 70 ? 'sector-ok'   : avg >= 55 ? 'sector-warn'  : 'sector-crit';
+    const scoreClass = avg >= 70 ? 's-ok'        : avg >= 55 ? 's-warn'       : 's-crit';
+    const status     = avg >= 70 ? 'Saudável'    : avg >= 55 ? 'Atenção'      : 'Crítico';
 
     return `<div class="sector-card ${cardClass}">
       <div class="sector-name">${setor}</div>
@@ -10294,6 +10304,118 @@ function toggleAcao(checkEl) {
 
   localStorage.setItem('ranne-acoes', JSON.stringify(acoesState));
   updatePlanoProgress();
+}
+
+function renderAcoes(filtro = 'todas') {
+  const lista   = document.getElementById('acoes-lista');
+  const empty   = document.getElementById('plano-empty');
+  const tabs    = document.getElementById('plano-tabs');
+  const progRow = document.getElementById('plano-progress-row');
+
+  if (!lista) return;
+
+  const visiveis = filtro === 'todas' ? acoesData
+    : acoesData.filter(a => a.status === filtro);
+
+  if (acoesData.length === 0) {
+    if (empty)   { empty.style.display = 'block'; lista.innerHTML = ''; lista.appendChild(empty); }
+    if (tabs)    tabs.style.display    = 'none';
+    if (progRow) progRow.style.display = 'none';
+    return;
+  }
+
+  if (empty)   empty.style.display   = 'none';
+  if (tabs)    tabs.style.display    = 'flex';
+  if (progRow) progRow.style.display = 'flex';
+
+  const prioLabel = { alta: '🔴 Alta', media: '🟡 Média', baixa: '🟢 Baixa' };
+  const prioClass = { alta: 't-alta', media: 't-media', baixa: 't-baixa' };
+
+  lista.innerHTML = visiveis.map(a => {
+    const done = a.status === 'concluida';
+    const prazoStr = a.prazo ? new Date(a.prazo + 'T12:00:00').toLocaleDateString('pt-BR') : '';
+    return `
+      <div class="action-row" data-id="${a.id}" data-status="${a.status}">
+        <div class="a-check ${done ? 'a-done' : ''}" onclick="toggleAcaoV2('${a.id}')" style="cursor:pointer;flex-shrink:0">${done ? '✓' : ''}</div>
+        <div style="flex:1;min-width:0">
+          <div class="a-title ${done ? 'a-title-done' : ''}">${a.titulo}</div>
+          ${a.descricao ? `<div style="font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5">${a.descricao}</div>` : ''}
+          <div class="a-meta">
+            <span class="tag ${prioClass[a.prioridade] || 't-gray'}">${prioLabel[a.prioridade] || a.prioridade}</span>
+            ${a.responsavel ? `<span class="tag t-gray">👤 ${a.responsavel}</span>` : ''}
+            ${prazoStr ? `<span class="tag t-gray">📅 ${prazoStr}</span>` : ''}
+            ${a.dimensao ? `<span class="tag t-clima">${a.dimensao}</span>` : ''}
+          </div>
+        </div>
+        <button class="a-delete" onclick="deletarAcao('${a.id}')" title="Remover">✕</button>
+      </div>`;
+  }).join('');
+
+  if (visiveis.length === 0) {
+    lista.innerHTML += `<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px">Nenhuma ação ${filtro === 'pendente' ? 'pendente' : 'concluída'}.</div>`;
+  }
+
+  updatePlanoProgress();
+}
+
+async function toggleAcaoV2(id) {
+  const acao = acoesData.find(a => a.id === id);
+  if (!acao) return;
+  acao.status = acao.status === 'concluida' ? 'pendente' : 'concluida';
+  try { await db.from('acoes_plano').update({ status: acao.status }).eq('id', id); }
+  catch { localStorage.setItem('ranne-acoes-v2', JSON.stringify(acoesData)); }
+  renderAcoes();
+}
+
+async function deletarAcao(id) {
+  acoesData = acoesData.filter(a => a.id !== id);
+  try { await db.from('acoes_plano').delete().eq('id', id); }
+  catch { localStorage.setItem('ranne-acoes-v2', JSON.stringify(acoesData)); }
+  renderAcoes();
+}
+
+function abrirModalNovaAcao() {
+  const m = document.getElementById('modal-nova-acao');
+  if (!m) return;
+  m.style.display = 'flex';
+  ['nova-acao-titulo','nova-acao-desc','nova-acao-resp','nova-acao-prazo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const prio = document.getElementById('nova-acao-prio');
+  if (prio) prio.value = 'media';
+  setTimeout(() => document.getElementById('nova-acao-titulo')?.focus(), 100);
+}
+
+function fecharModalNovaAcao() {
+  const m = document.getElementById('modal-nova-acao');
+  if (m) m.style.display = 'none';
+}
+
+async function salvarNovaAcao() {
+  const titulo = document.getElementById('nova-acao-titulo')?.value.trim();
+  if (!titulo) { toast('Informe o título da ação.'); return; }
+
+  const acao = {
+    id:          crypto.randomUUID(),
+    empresa_id:  currentEmpresa?.id,
+    titulo,
+    descricao:   document.getElementById('nova-acao-desc')?.value.trim() || '',
+    responsavel: document.getElementById('nova-acao-resp')?.value.trim() || '',
+    prazo:       document.getElementById('nova-acao-prazo')?.value || null,
+    prioridade:  document.getElementById('nova-acao-prio')?.value || 'media',
+    status:      'pendente',
+    gerada_ia:   false,
+    criado_em:   new Date().toISOString(),
+  };
+
+  try { await db.from('acoes_plano').insert(acao); }
+  catch { localStorage.setItem('ranne-acoes-v2', JSON.stringify([acao, ...acoesData])); }
+
+  acoesData.unshift(acao);
+  fecharModalNovaAcao();
+  renderAcoes();
+  toast('✅ Ação adicionada ao plano!');
 }
 
 function updatePlanoProgress() {
