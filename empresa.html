@@ -9883,25 +9883,61 @@ async function sendInvite() {
 
   if (!email) { toast('⚠️ Informe um e-mail'); return; }
   if (!senha || senha.length < 6) { toast('⚠️ A senha precisa ter ao menos 6 caracteres'); return; }
+  if (!currentEmpresa?.id) { toast('⚠️ Empresa não carregada. Recarregue a página.'); return; }
 
   btn.disabled = true; btn.textContent = 'Cadastrando...';
 
-  // Salva sessão do RH antes de qualquer coisa
-  const { data: sessaoRH } = await db.auth.getSession();
-
   try {
-    // Verifica duplicata
-    const { data: existente } = await db.from('membros_empresa')
-      .select('id, user_id')
-      .eq('empresa_id', currentEmpresa?.id)
-      .ilike('email', email)
-      .maybeSingle();
+    // Pega token da sessão atual do RH para autenticar a Edge Function
+    const { data: sessao } = await db.auth.getSession();
+    const token = sessao?.session?.access_token;
 
-    if (existente) {
-      toast('⚠️ Este e-mail já está cadastrado na empresa.');
+    // Chama a Edge Function — não troca sessão do RH
+    const res = await fetch('https://htpmmkkuwmotdgocqpqf.supabase.co/functions/v1/cadastrar-colaborador', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        nome,
+        email,
+        senha,
+        role,
+        empresa_id: currentEmpresa.id
+      })
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      const msg = result.error || 'Erro ao cadastrar';
+      if (res.status === 409) {
+        toast('⚠️ Este e-mail já está cadastrado na empresa.');
+      } else {
+        toast('⚠️ ' + msg);
+      }
       btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
       return;
     }
+
+    // Envia e-mail com credenciais
+    await enviarEmailColab(nome || email.split('@')[0], email, senha);
+
+    document.getElementById('modal-invite').classList.remove('open');
+    resetModalInvite();
+    await loadColaboradores();
+    await loadMembros();
+    toast('✅ Colaborador cadastrado! E-mail enviado com as credenciais.');
+
+  } catch(e) {
+    console.error('sendInvite exception:', e);
+    toast('⚠️ Erro: ' + (e.message || 'tente novamente'));
+  } finally {
+    btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+  }
+}
+
 
     // 1. Criar conta no Auth — SEM fazer signIn depois (preserva sessão do RH)
     let userId = null;
