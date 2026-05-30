@@ -9871,7 +9871,7 @@ async function enviarEmailColab(nome, email, senha) {
    ───────────────────────────────────── */
 async function sendInvite() {
   const nome  = document.getElementById('invite-nome').value.trim();
-  const email = document.getElementById('invite-email').value.trim();
+  const email = document.getElementById('invite-email').value.trim().toLowerCase();
   const senha = document.getElementById('invite-senha').value.trim();
   const role  = document.getElementById('invite-role').value;
   const btn   = document.getElementById('btn-invite');
@@ -9881,8 +9881,24 @@ async function sendInvite() {
 
   btn.disabled = true; btn.textContent = 'Cadastrando...';
 
+  // Salva sessão do RH antes de qualquer coisa
+  const { data: sessaoRH } = await db.auth.getSession();
+
   try {
-    // 1. Criar conta no Supabase Auth
+    // Verifica duplicata
+    const { data: existente } = await db.from('membros_empresa')
+      .select('id, user_id')
+      .eq('empresa_id', currentEmpresa?.id)
+      .ilike('email', email)
+      .maybeSingle();
+
+    if (existente) {
+      toast('⚠️ Este e-mail já está cadastrado na empresa.');
+      btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+      return;
+    }
+
+    // 1. Criar conta no Auth — SEM fazer signIn depois (preserva sessão do RH)
     let userId = null;
     const { data: signUpData, error: signUpErr } = await db.auth.signUp({
       email,
@@ -9892,41 +9908,42 @@ async function sendInvite() {
 
     if (signUpErr) {
       const msg = signUpErr.message?.toLowerCase() || '';
-      // 422 = email já cadastrado — continua sem criar auth, só salva na tabela
       if (!msg.includes('already') && signUpErr.status !== 422) {
         toast('⚠️ Erro ao criar conta: ' + signUpErr.message);
         btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
         return;
       }
     } else {
-      userId = signUpData?.user?.id;
-      // Faz login imediato para confirmar sessão (evita email de confirmação pendente)
-      if (signUpData?.user && !signUpData?.session) {
-        await db.auth.signInWithPassword({ email, password: senha }).catch(() => {});
-      }
+      userId = signUpData?.user?.id || null;
+      // NUNCA faz signInWithPassword aqui — preserva sessão do RH
     }
 
-    // 2. Salvar na tabela membros_empresa com user_id
+    // 2. Salvar na tabela membros_empresa
     const { error: colabErr } = await db.from('membros_empresa').insert({
       empresa_id: currentEmpresa?.id,
-      user_id: userId || null,
+      user_id:    userId,
       email,
-      nome: nome || email.split('@')[0],
+      nome:       nome || email.split('@')[0],
       role,
-      status: 'ativo',
+      status:     'ativo',
       created_at: new Date().toISOString()
     });
 
-    if (colabErr) {
-      console.error('Erro membros_empresa:', colabErr);
-      if (!colabErr.message?.includes('duplicate')) {
-        toast('⚠️ Erro ao salvar: ' + colabErr.message);
-        btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
-        return;
-      }
+    if (colabErr && !colabErr.message?.includes('duplicate')) {
+      toast('⚠️ Erro ao salvar: ' + colabErr.message);
+      btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
+      return;
     }
 
-    // 3. Enviar e-mail com credenciais
+    // 3. Restaura sessão do RH por garantia
+    if (sessaoRH?.session) {
+      await db.auth.setSession({
+        access_token:  sessaoRH.session.access_token,
+        refresh_token: sessaoRH.session.refresh_token,
+      }).catch(() => {});
+    }
+
+    // 4. Enviar e-mail com credenciais
     await enviarEmailColab(nome || email.split('@')[0], email, senha);
 
     document.getElementById('modal-invite').classList.remove('open');
@@ -9938,6 +9955,12 @@ async function sendInvite() {
   } catch(e) {
     console.error('sendInvite exception:', e);
     toast('⚠️ Erro: ' + (e.message || 'tente novamente'));
+    if (sessaoRH?.session) {
+      await db.auth.setSession({
+        access_token:  sessaoRH.session.access_token,
+        refresh_token: sessaoRH.session.refresh_token,
+      }).catch(() => {});
+    }
   } finally {
     btn.disabled = false; btn.textContent = 'Cadastrar e enviar e-mail →';
   }
