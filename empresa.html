@@ -5714,7 +5714,7 @@ body.dark .ob-btn { background: #2D5E4A; }
               </div>
             </div>
             <div id="nd-preview-body" style="display:none;margin-top:12px">
-              <div id="nd-preview-lista" style="display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;">
+              <div id="nd-preview-lista" style="display:flex;flex-direction:column;gap:6px;max-height:520px;overflow-y:auto;padding-right:4px;scrollbar-width:thin;">
                 <!-- preenchido via JS -->
               </div>
             </div>
@@ -10984,8 +10984,7 @@ function ndAtualizarPreview() {
   let html = '';
 
   // Dimensões organizacionais
-  const checks = document.querySelectorAll('#nd-dimensoes input[name="nd-dim"]:checked');
-  const dims = Array.from(checks).map(c => c.value);
+  const dims = Array.from(document.querySelectorAll('input[name="nd-dim"]:checked')).map(c => c.value);
   if (dims.length > 0) {
     html += `<div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;margin-top:4px;">Clima Organizacional</div>`;
     dims.forEach(d => {
@@ -11000,25 +10999,28 @@ function ndAtualizarPreview() {
   }
 
   // Testes clínicos
-  const checksClin = document.querySelectorAll('#nd-dimensoes-clinicas input[name="nd-dim-clin"]:checked');
-  const clinSel = Array.from(checksClin).map(c => c.value);
+  const clinSel = Array.from(document.querySelectorAll('input[name="nd-dim-clin"]:checked')).map(c => c.value);
   if (clinSel.length > 0) {
-    html += `<div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;margin-top:14px;">Avaliações Clínicas</div>`;
+    html += `<div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;margin-top:14px;">Avaliações Clínicas (${clinSel.length})</div>`;
     clinSel.forEach(id => {
       const t = ND_TESTES_CLINICOS_LABELS[id];
       if (!t) return;
       total += t.total;
-      html += `<div class="nd-preview-bloco">${t.label} <span style="font-size:11px;opacity:.7">(${t.total} perguntas)</span></div>`;
+      html += `<div class="nd-preview-bloco" style="display:flex;justify-content:space-between;align-items:center">${t.label}<span style="font-size:10px;opacity:.6;font-weight:400">${t.total} perguntas</span></div>`;
     });
   }
 
-  document.getElementById('nd-preview-lista').innerHTML = html || '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Selecione ao menos uma dimensão ou avaliação</div>';
-  document.getElementById('nd-total-perguntas').textContent = total;
-  document.getElementById('nd-tempo-est').textContent = Math.ceil(total * 0.5) + ' min';
+  const lista = document.getElementById('nd-preview-lista');
+  if (lista) lista.innerHTML = html || '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Selecione ao menos uma dimensão ou avaliação</div>';
+
+  const totalEl = document.getElementById('nd-total-perguntas');
+  const tempoEl = document.getElementById('nd-tempo-est');
   const countEl = document.getElementById('nd-preview-count');
+  if (totalEl) totalEl.textContent = total;
+  if (tempoEl) tempoEl.textContent = Math.ceil(total * 0.5) + ' min';
   if (countEl) countEl.style.display = total > 0 ? 'inline' : 'none';
 
-  // Abre o preview automaticamente quando algo é selecionado
+  // Abre o preview automaticamente na primeira seleção
   const body = document.getElementById('nd-preview-body');
   const toggle = document.getElementById('nd-preview-toggle');
   if (body && total > 0 && body.style.display === 'none') {
