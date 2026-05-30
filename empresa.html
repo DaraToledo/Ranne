@@ -5860,54 +5860,45 @@ body.dark .ob-btn { background: #2D5E4A; }
       <!-- PROGRESSO -->
       <div id="p-progresso" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Progresso Histórico</div><div class="page-sub">Evolução dos scores por diagnóstico</div></div></div>
+
         <div class="chart-real" style="margin-bottom:20px">
           <div class="chart-real-title">Score geral por diagnóstico</div>
-          <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible">
-            <defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ECBA0" stop-opacity="0.15"/><stop offset="100%" stop-color="#4ECBA0" stop-opacity="0"/></linearGradient></defs>
-            <text x="0" y="10" font-size="10" fill="#94a3b8">100</text>
-            <text x="0" y="50" font-size="10" fill="#94a3b8">75</text>
-            <text x="0" y="90" font-size="10" fill="#94a3b8">50</text>
-            <text x="0" y="130" font-size="10" fill="#94a3b8">25</text>
-            <line x1="24" y1="5" x2="560" y2="5" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="24" y1="45" x2="560" y2="45" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="24" y1="85" x2="560" y2="85" stroke="#f1f5f9" stroke-width="1"/>
-            <line x1="24" y1="125" x2="560" y2="125" stroke="#f1f5f9" stroke-width="1"/>
-            <!-- Área gradiente -->
-            <path d="M 80,52 L 190,38 L 300,44 L 410,52 L 520,57 L 520,130 L 80,130 Z" fill="url(#lg1)"/>
-            <!-- Linha principal -->
-            <polyline class="chart-line" points="80,52 190,38 300,44 410,52 520,57" fill="none" stroke="#4ECBA0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- Pontos -->
-            <circle cx="80" cy="52" r="5" fill="#4ECBA0"/>
-            <circle cx="190" cy="38" r="5" fill="#4ECBA0"/>
-            <circle cx="300" cy="44" r="5" fill="#4ECBA0"/>
-            <circle cx="410" cy="52" r="5" fill="#4ECBA0"/>
-            <circle cx="520" cy="57" r="5" fill="#4ECBA0"/>
-            <!-- Labels -->
-            <text x="80" y="170" font-size="10" fill="#94a3b8" text-anchor="middle">Q4 24</text>
-            <text x="190" y="170" font-size="10" fill="#94a3b8" text-anchor="middle">Q1 25</text>
-            <text x="300" y="170" font-size="10" fill="#94a3b8" text-anchor="middle">Q2 25</text>
-            <text x="410" y="170" font-size="10" fill="#94a3b8" text-anchor="middle">Q3 25</text>
-            <text x="520" y="170" font-size="10" fill="#94a3b8" text-anchor="middle">Q1 26</text>
-            <!-- Valores -->
-            <text x="80" y="44" font-size="10" fill="#4ECBA0" text-anchor="middle" font-weight="700">73</text>
-            <text x="190" y="30" font-size="10" fill="#4ECBA0" text-anchor="middle" font-weight="700">78</text>
-            <text x="300" y="36" font-size="10" fill="#4ECBA0" text-anchor="middle" font-weight="700">75</text>
-            <text x="410" y="44" font-size="10" fill="#4ECBA0" text-anchor="middle" font-weight="700">72</text>
-            <text x="520" y="49" font-size="10" fill="#4ECBA0" text-anchor="middle" font-weight="700">68</text>
-          </svg>
-          <div class="chart-legend">
+          <div id="progresso-chart-wrap" style="width:100%;min-height:180px;display:flex;align-items:center;justify-content:center">
+            <svg id="progresso-svg" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;display:none">
+              <defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ECBA0" stop-opacity="0.15"/><stop offset="100%" stop-color="#4ECBA0" stop-opacity="0"/></linearGradient></defs>
+              <text x="0" y="10" font-size="10" fill="#94a3b8">100</text>
+              <text x="0" y="50" font-size="10" fill="#94a3b8">75</text>
+              <text x="0" y="90" font-size="10" fill="#94a3b8">50</text>
+              <text x="0" y="130" font-size="10" fill="#94a3b8">25</text>
+              <line x1="24" y1="5" x2="560" y2="5" stroke="#f1f5f9" stroke-width="1"/>
+              <line x1="24" y1="45" x2="560" y2="45" stroke="#f1f5f9" stroke-width="1"/>
+              <line x1="24" y1="85" x2="560" y2="85" stroke="#f1f5f9" stroke-width="1"/>
+              <line x1="24" y1="125" x2="560" y2="125" stroke="#f1f5f9" stroke-width="1"/>
+              <path id="prog-area" fill="url(#lg1)"/>
+              <polyline id="prog-line" fill="none" stroke="#4ECBA0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <g id="prog-points"></g>
+              <g id="prog-labels"></g>
+              <g id="prog-values"></g>
+            </svg>
+            <div id="progresso-empty" style="text-align:center;padding:40px 20px;color:var(--muted)">
+              <div style="font-size:28px;margin-bottom:8px">📈</div>
+              <div style="font-size:13px">Nenhum ciclo encerrado ainda.<br>Os dados aparecerão após o primeiro ciclo.</div>
+            </div>
+          </div>
+          <div class="chart-legend" id="prog-legend" style="display:none">
             <div class="leg-item"><div class="leg-dot" style="background:#4ECBA0"></div> Score Geral</div>
           </div>
         </div>
-        <div class="metrics" >
-          <div class="metric m-amber"><div class="metric-label">Score Atual</div><div class="metric-value v-amber">68</div><div class="metric-sub">Q1 2026</div></div>
-          <div class="metric m-red"><div class="metric-label">Variação</div><div class="metric-value v-red">−4</div><div class="metric-sub">vs. anterior</div></div>
-          <div class="metric m-green"><div class="metric-label">Melhor Score</div><div class="metric-value v-green">78</div><div class="metric-sub">Q1 2025</div></div>
-          <div class="metric m-blue"><div class="metric-label">Ciclos de Avaliação</div><div class="metric-value">5</div><div class="metric-sub">no histórico</div></div>
+
+        <div class="metrics">
+          <div class="metric m-amber"><div class="metric-label">Score Atual</div><div class="metric-value v-amber" id="prog-score-atual">—</div><div class="metric-sub" id="prog-score-sub">aguardando dados</div></div>
+          <div class="metric m-red"><div class="metric-label">Variação</div><div class="metric-value" id="prog-variacao">—</div><div class="metric-sub">vs. ciclo anterior</div></div>
+          <div class="metric m-green"><div class="metric-label">Melhor Score</div><div class="metric-value v-green" id="prog-melhor">—</div><div class="metric-sub" id="prog-melhor-sub">—</div></div>
+          <div class="metric m-blue"><div class="metric-label">Ciclos de Avaliação</div><div class="metric-value" id="prog-total-ciclos">—</div><div class="metric-sub">no histórico</div></div>
         </div>
       </div>
 
-      <!-- BIBLIOTECA -->
+
       <div id="p-biblioteca" style="display:none">
         <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Biblioteca</div><div class="page-sub">Curadoria de conteúdo para o seu time</div></div></div>
         <div class="search-wrap"><input placeholder="Buscar conteúdo..." oninput="searchBiblioteca(this.value)"></div>
@@ -11317,6 +11308,171 @@ async function _carregarRelTestes(desde) {
   }
 }
 
+/* ══════════════════════════════════════════════
+   PROGRESSO HISTÓRICO — GRÁFICO DINÂMICO
+   ══════════════════════════════════════════════ */
+
+async function carregarProgresso() {
+  if (!currentEmpresa?.id) return;
+
+  const svg      = document.getElementById('progresso-svg');
+  const empty    = document.getElementById('progresso-empty');
+  const legend   = document.getElementById('prog-legend');
+
+  try {
+    // Busca ciclos encerrados com score_geral
+    const { data: ciclos } = await db.from('diagnosticos')
+      .select('nome, score_geral, created_at')
+      .eq('empresa_id', currentEmpresa.id)
+      .eq('status', 'encerrado')
+      .not('score_geral', 'is', null)
+      .order('created_at', { ascending: true })
+      .limit(10);
+
+    // Se não há ciclos, tenta usar check-ins mensais agregados
+    let pontos = (ciclos || []).map(c => ({
+      label: _formatarLabelCiclo(c.created_at),
+      score: c.score_geral,
+      nome:  c.nome,
+    }));
+
+    if (pontos.length === 0) {
+      // Fallback: agrupa check-ins por mês
+      const { data: checkins } = await db.from('checkins')
+        .select('humor, energia, carga, foco, created_at')
+        .eq('empresa_id', currentEmpresa.id)
+        .order('created_at', { ascending: true });
+
+      if (checkins && checkins.length > 0) {
+        const meses = {};
+        checkins.forEach(c => {
+          const key = c.created_at.slice(0, 7); // YYYY-MM
+          if (!meses[key]) meses[key] = [];
+          meses[key].push(Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4));
+        });
+        pontos = Object.entries(meses).map(([mes, scores]) => ({
+          label: _formatarLabelMes(mes),
+          score: Math.round(scores.reduce((a,b)=>a+b,0)/scores.length),
+          nome: mes,
+        }));
+      }
+    }
+
+    if (pontos.length === 0) {
+      if (svg) svg.style.display = 'none';
+      if (empty) empty.style.display = 'block';
+      if (legend) legend.style.display = 'none';
+      _zerarMetricasProgresso();
+      return;
+    }
+
+    if (empty) empty.style.display = 'none';
+    if (svg) svg.style.display = 'block';
+    if (legend) legend.style.display = 'flex';
+
+    _renderGraficoProgresso(pontos);
+    _atualizarMetricasProgresso(pontos);
+
+  } catch(e) {
+    console.warn('[carregarProgresso]', e);
+    if (empty) empty.style.display = 'block';
+    if (svg) svg.style.display = 'none';
+    _zerarMetricasProgresso();
+  }
+}
+
+function _formatarLabelCiclo(dateStr) {
+  const d = new Date(dateStr);
+  const mes = d.toLocaleString('pt-BR', { month: 'short' });
+  return `${mes.charAt(0).toUpperCase()+mes.slice(1)} ${String(d.getFullYear()).slice(2)}`;
+}
+
+function _formatarLabelMes(mesStr) {
+  const [ano, mes] = mesStr.split('-');
+  const nomes = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return `${nomes[parseInt(mes)-1]} ${String(ano).slice(2)}`;
+}
+
+function _renderGraficoProgresso(pontos) {
+  const n = pontos.length;
+  const W = 560, H = 130, padL = 28, padR = 20, padT = 10;
+  const xStep = n > 1 ? (W - padL - padR) / (n - 1) : W - padL - padR;
+  const xStart = padL + (n === 1 ? (W - padL - padR) / 2 : 0);
+
+  // Converte score (0-100) → y (padT → padT+H)
+  const scoreToY = s => padT + H - (s / 100) * H;
+  const coords = pontos.map((p, i) => ({
+    x: xStart + i * xStep,
+    y: scoreToY(p.score),
+    ...p,
+  }));
+
+  const pts = coords.map(c => `${c.x},${c.y}`).join(' ');
+  const areaPath = n > 1
+    ? `M ${coords.map(c=>`${c.x},${c.y}`).join(' L ')} L ${coords[n-1].x},${padT+H} L ${coords[0].x},${padT+H} Z`
+    : `M ${coords[0].x-1},${coords[0].y} L ${coords[0].x+1},${coords[0].y} L ${coords[0].x+1},${padT+H} L ${coords[0].x-1},${padT+H} Z`;
+
+  document.getElementById('prog-area').setAttribute('d', areaPath);
+  document.getElementById('prog-line').setAttribute('points', pts);
+
+  // Pontos
+  document.getElementById('prog-points').innerHTML = coords.map(c =>
+    `<circle cx="${c.x}" cy="${c.y}" r="5" fill="#4ECBA0"/>`
+  ).join('');
+
+  // Labels (eixo X)
+  document.getElementById('prog-labels').innerHTML = coords.map(c =>
+    `<text x="${c.x}" y="170" font-size="10" fill="#94a3b8" text-anchor="middle">${c.label}</text>`
+  ).join('');
+
+  // Valores em cima dos pontos
+  document.getElementById('prog-values').innerHTML = coords.map(c =>
+    `<text x="${c.x}" y="${c.y - 9}" font-size="10" fill="#4ECBA0" text-anchor="middle" font-weight="700">${c.score}</text>`
+  ).join('');
+}
+
+function _atualizarMetricasProgresso(pontos) {
+  const ultimo   = pontos[pontos.length - 1];
+  const penultimo = pontos.length > 1 ? pontos[pontos.length - 2] : null;
+  const melhor   = pontos.reduce((a, b) => b.score > a.score ? b : a);
+  const variacao = penultimo ? ultimo.score - penultimo.score : null;
+
+  const elAtual = document.getElementById('prog-score-atual');
+  const elSub   = document.getElementById('prog-score-sub');
+  const elVar   = document.getElementById('prog-variacao');
+  const elMelhor = document.getElementById('prog-melhor');
+  const elMelhorSub = document.getElementById('prog-melhor-sub');
+  const elTotal = document.getElementById('prog-total-ciclos');
+
+  if (elAtual) elAtual.textContent = ultimo.score;
+  if (elSub)   elSub.textContent   = ultimo.label;
+  if (elMelhor) elMelhor.textContent = melhor.score;
+  if (elMelhorSub) elMelhorSub.textContent = melhor.label;
+  if (elTotal) elTotal.textContent = pontos.length;
+
+  if (elVar) {
+    if (variacao === null) {
+      elVar.textContent = '—';
+      elVar.className = 'metric-value';
+    } else {
+      const sinal = variacao > 0 ? '+' : '';
+      elVar.textContent = sinal + variacao;
+      elVar.className = `metric-value ${variacao > 0 ? 'v-green' : variacao < 0 ? 'v-red' : ''}`;
+    }
+  }
+}
+
+function _zerarMetricasProgresso() {
+  ['prog-score-atual','prog-variacao','prog-melhor','prog-total-ciclos'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = '—'; el.className = 'metric-value'; }
+  });
+  const sub = document.getElementById('prog-score-sub');
+  if (sub) sub.textContent = 'aguardando dados';
+  const melhorSub = document.getElementById('prog-melhor-sub');
+  if (melhorSub) melhorSub.textContent = '—';
+}
+
 function toggleDark() {
   const on = document.body.classList.toggle('dark');
   const label = document.getElementById('darkBtnLabel');
@@ -16015,6 +16171,7 @@ function pg(id, el) {
   if (id === 'escuta-rh') { setTimeout(escutaCarregarRH, 100); }
   if (id === 'colaboradores') loadColaboradores();
   if (id === 'relatorios') { carregarDadosRelatorio(); carregarRelatorioCompleto(); }
+  if (id === 'progresso') carregarProgresso();
   if (id === 'config') {
     carregarPerfil();
 carregarPreferencias();
