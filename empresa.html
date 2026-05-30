@@ -10838,77 +10838,165 @@ function selEm(btn, group) {
    ───────────────────────────────────── */
 // Biblioteca empresa — abrir artigo em modal
 const ARTIGOS_CONTEUDO = {
-  'Guia Completo: Como Prevenir Burnout na sua Equipe': {
-    emoji:'⭐', cat:'Burnout', tempo:'15 min',
-    intro:'Burnout não aparece do nada — ele se acumula em silêncio por meses. Este guia reúne os 7 sinais de alerta mais importantes, 5 práticas preventivas comprovadas e um checklist prático para líderes e RH.',
+
+  'O que ninguém te conta sobre burnout no trabalho': {
+    emoji:'🔥', cat:'Burnout', tempo:'9 min',
+    intro:'Burnout não é fraqueza nem falta de comprometimento — é uma resposta fisiológica ao esgotamento crônico. O problema é que ele se instala exatamente nas pessoas mais dedicadas, e a empresa só percebe quando o dano já está feito.',
     topicos:[
-      { titulo:'7 sinais de alerta precoce', desc:'1) Queda na qualidade do trabalho sem mudança de esforço. 2) Distanciamento emocional dos colegas. 3) Cinismo crescente sobre o trabalho. 4) Dificuldade de concentração persistente. 5) Adoecimento frequente. 6) Presenteísmo (presente físico, ausente mentalmente). 7) Resistência a novos projetos.' },
-      { titulo:'5 práticas preventivas', desc:'1) Check-ins regulares de bem-estar (não só de tarefas). 2) Política clara de desconexão fora do horário. 3) Redistribuição ativa de demandas a cada trimestre. 4) Reconhecimento frequente e específico. 5) Acesso facilitado a suporte de saúde mental.' },
-      { titulo:'Checklist para o RH', desc:'✓ Mapeamento de sobrecarga por setor? ✓ Política de férias sendo cumprida? ✓ Feedbacks 360° estruturados? ✓ Canais anônimos de escuta? ✓ Dados de afastamento por causa sendo monitorados?' },
+      { titulo:'O paradoxo do colaborador de alto desempenho', desc:'Pessoas engajadas e comprometidas têm mais risco de burnout, não menos. Elas raramente pedem ajuda, raramente reclamam e continuam produzindo mesmo quando já estão no limite. O resultado é um colapso súbito que parece surpresa para todos — mas que vinha sendo construído há meses.' },
+      { titulo:'Os 3 estágios que ninguém nomeia', desc:'1) Sobrecarga silenciosa: a pessoa absorve mais do que deveria, mas entrega. Parece ótimo. 2) Distanciamento defensivo: ela começa a se desligar emocionalmente para se proteger. Colegas percebem como "frieza" ou "falta de engajamento". 3) Colapso: impossibilidade real de continuar — física, mental ou emocional. Neste ponto, a recuperação leva meses.' },
+      { titulo:'O que a empresa faz que acelera o processo', desc:'Cultura de disponibilidade 24/7. Falta de clareza sobre expectativas. Reconhecimento ausente. Sobrecarga normalizada ("todo mundo está assim"). Gestores que não sabem — ou não querem — ver os sinais. Cada um desses fatores, isolado, aumenta o risco. Juntos, são garantia de esgotamento.' },
+      { titulo:'O que realmente previne', desc:'Não é oferecer meditação guiada nem day off no aniversário. Prevenção real envolve carga de trabalho gerenciável, autonomia com suporte, reconhecimento consistente, e gestores que fazem check-ins de verdade — não só de tarefas, mas de estado emocional. A Ranne foi construída para tornar isso sistemático e mensurável.' },
     ],
-    dica:'Burnout custa em média 34 semanas de produtividade por colaborador afetado. Prevenir é 6x mais barato do que tratar.'
+    dica:'Dado que importa: o custo médio de substituição de um colaborador em burnout é de 150% do salário anual, entre perda de produtividade, recrutamento e treinamento. Prevenir é sempre mais barato.'
   },
-  'O guia do feedback que funciona': {
-    emoji:'💬', cat:'Liderança', tempo:'8 min',
-    intro:'O feedback eficaz não é sobre criticar — é sobre construir. A estrutura SBI (Situação, Comportamento, Impacto) é o padrão de ouro usado pelas melhores lideranças do mundo.',
+
+  'A síndrome do alto desempenho silencioso': {
+    emoji:'🧠', cat:'Burnout', tempo:'9 min',
+    intro:'Os colaboradores mais produtivos são os primeiros a entrar em colapso — e os últimos a pedir ajuda. Existe um perfil de adoecimento silencioso que as métricas convencionais de RH nunca capturam.',
     topicos:[
-      { titulo:'S — Situação', desc:'Descreva o contexto específico. "Na reunião de segunda-feira..." em vez de "você sempre..."' },
-      { titulo:'B — Comportamento', desc:'Fale do comportamento observável, não da personalidade. "Você interrompeu o colega 3 vezes" vs "você é desrespeitoso".' },
-      { titulo:'I — Impacto', desc:'Explique o efeito real. "Isso fez com que a reunião se estendesse 20 min e o time saiu sem consenso."' },
+      { titulo:'Quem são essas pessoas', desc:'Alta entrega consistente. Raramente faltam. Nunca reclamam de carga. São os que "sempre resolvem". Esses colaboradores têm uma característica que os torna vulneráveis: eles identificam seu valor com a produtividade. Parar ou pedir ajuda é ameaça à identidade, não só ao trabalho.' },
+      { titulo:'Os sinais que passam despercebidos', desc:'Qualidade levemente menor (não é ruim — é menos excelente). Respostas mais curtas e secas. Recusa sutil de novos projetos com justificativas técnicas. Saídas um pouco mais cedo. Menos participação espontânea em reuniões. São micro-sinais que só aparecem para quem conhece o padrão normal da pessoa.' },
+      { titulo:'Por que o sistema atual não detecta', desc:'Avaliações de desempenho medem entregas, não custo pessoal das entregas. Check-ins de rotina perguntam "como está o projeto", não "como você está". O colaborador de alto desempenho aprende a apresentar bem mesmo quando está mal.' },
+      { titulo:'O que o RH pode fazer', desc:'Implementar check-ins de bem-estar desconectados de avaliação de performance. Criar canais anônimos de relato de sobrecarga. Treinar gestores para reconhecer os micro-sinais específicos desse perfil. Normalizar a conversa sobre limites — não como fraqueza, mas como gestão sustentável de recursos.' },
     ],
-    dica:'Pratique o SBI em situações positivas também — reconhecimento específico vale muito mais do que elogios genéricos.'
+    dica:'Pergunta para o próximo 1:1: "Se você pudesse tirar uma coisa da sua lista sem consequências, o que seria?" A resposta revela muito mais do que qualquer formulário de clima.'
   },
-  'Rituais de equipe que criam pertencimento': {
-    emoji:'🤝', cat:'Cultura', tempo:'6 min',
-    intro:'Pertencimento não é acidente — é construído com intencionalidade. Empresas de alto desempenho usam rituais simples e consistentes para criar conexão real.',
+
+  'Liderança que adoece vs liderança que cura': {
+    emoji:'🎯', cat:'Liderança', tempo:'11 min',
+    intro:'Pesquisas mostram que 70% do impacto na saúde mental de um colaborador vem do seu gestor direto — não da empresa, não do salário, não das condições físicas. O líder é o maior fator de risco ou de proteção que existe.',
     topicos:[
-      { titulo:'Check-in de 5 min', desc:'Comece toda reunião perguntando: "como cada um está chegando hoje?" Uma palavra ou emoji já basta.' },
-      { titulo:'Vitória da semana', desc:'Toda sexta, cada membro compartilha uma pequena conquista. Reconhecimento frequente = engajamento real.' },
-      { titulo:'1:1 quinzenal', desc:'30 minutos a cada duas semanas com cada liderado. Pauta do liderado, não do líder.' },
+      { titulo:'Os comportamentos que adoecem', desc:'Microgerenciamento (retira autonomia e gera ansiedade crônica). Inconsistência emocional (o time aprende a antecipar o humor do líder, não o trabalho). Reconhecimento ausente (invisibilidade é tão prejudicial quanto crítica constante). Sobrecarga normalizada ("eu trabalhei assim, você também consegue"). Feedback só negativo e sem contexto.' },
+      { titulo:'Os comportamentos que curam', desc:'Disponibilidade real — não 24h, mas previsível. Clareza de expectativas — o que é sucesso, de forma objetiva. Reconhecimento específico e frequente. Proteção do time de demandas externas excessivas. Abertura para receber feedback, não só dar. Interesse genuíno na pessoa, não só no profissional.' },
+      { titulo:'O líder que não sabe que adoece', desc:'A maioria dos gestores que geram ambientes tóxicos não tem essa intenção. Eles reproduzem o que viveram, gerenciam sob pressão e não recebem treinamento para lidar com saúde emocional. O problema não é maldade — é falta de consciência e de ferramentas.' },
+      { titulo:'Como o RH pode intervir', desc:'Treinamentos práticos, não apenas teóricos. Feedback 360° real, com ação. Dados de clima por time — não só por empresa. Metas de liderança que incluam indicadores de saúde do time. A Ranne identifica scores de bem-estar por equipe, tornando o impacto do gestor mensurável.' },
     ],
-    dica:'Consistência é mais importante do que perfeição. Um ritual simples feito toda semana supera grandes eventos anuais.'
+    dica:'Uma pergunta que muda a conversa com gestores: "Você sabe como cada membro do seu time está se sentindo esta semana?" Se a resposta for hesitante, é hora de agir.'
   },
-  'Política de desconexão digital': {
-    emoji:'📵', cat:'Bem-estar', tempo:'4 min',
-    intro:'A hiperconectividade é um dos maiores fatores de burnout moderno. Uma política clara de desconexão protege a saúde do time e aumenta a produtividade real.',
+
+  'Cultura de disponibilidade: o veneno invisível': {
+    emoji:'📵', cat:'Cultura', tempo:'7 min',
+    intro:'Responder mensagens às 22h virou sinal de comprometimento. Participar de reuniões no sábado virou "quem quer crescer". Essa cultura não aumenta produtividade — ela destrói o sistema nervoso das suas equipes em slow motion.',
     topicos:[
-      { titulo:'Janela de comunicação', desc:'Defina horários em que mensagens de trabalho são esperadas. Ex: 9h–18h nos dias úteis.' },
-      { titulo:'Urgência real vs urgência percebida', desc:'Crie um protocolo para emergências reais. Se não usa o protocolo, não é urgência.' },
-      { titulo:'Lidere pelo exemplo', desc:'Se o gestor manda mensagens às 23h, o time sente obrigação de responder. O tom vem do topo.' },
+      { titulo:'O custo cognitivo que ninguém calcula', desc:'Pesquisa da Universidade de British Columbia mostra que só a expectativa de receber mensagens fora do horário — mesmo sem recebê-las — já eleva o cortisol (hormônio do estresse). O cérebro não descansa quando está em estado de alerta constante. O resultado é fadiga acumulada, criatividade reduzida e erros aumentados.' },
+      { titulo:'A armadilha da urgência falsa', desc:'80% das mensagens enviadas fora do horário não são urgentes — elas só parecem urgentes para quem as envia. A cultura de resposta imediata cria uma inflação de urgência: tudo vira prioridade, então nada é prioridade de verdade. Times que distinguem urgência real de urgência percebida entregam mais com menos estresse.' },
+      { titulo:'Como a empresa inadvertidamente reforça', desc:'Gestores que respondem e-mails à meia-noite. Reuniões agendadas no last minute. Elogios públicos para quem "sempre está disponível". Ausência de política formal de comunicação. Cada um desses comportamentos manda uma mensagem clara: descanso não é bem-vindo aqui.' },
+      { titulo:'Como criar uma cultura saudável', desc:'Defina janelas de comunicação explícitas. Crie um protocolo real para emergências. Remova elogios à hiperconectividade. Líderes lideram pelo exemplo — se o gestor desliga, o time se sente seguro para desligar. E meça: check-ins regulares sobre carga e bem-estar tornam o problema visível antes que exploda.' },
     ],
-    dica:'Coloque no contrato psicológico: descanso não é preguiça — é parte do trabalho de alta performance.'
+    dica:'Times de alto desempenho sustentável têm uma coisa em comum: eles descansam bem. Não é coincidência — é ciência do desempenho humano.'
   },
-  'Como conduzir 1:1s que importam': {
-    emoji:'🎯', cat:'Liderança', tempo:'7 min',
-    intro:'1:1 não é reunião de status. É o principal investimento que um líder pode fazer em sua equipe. Feito bem, previne problemas, retém talentos e acelera desenvolvimento.',
+
+  'O sono como vantagem competitiva': {
+    emoji:'😴', cat:'Bem-estar', tempo:'8 min',
+    intro:'Empresas que implementaram políticas de sono reduziram erros em 27%, acidentes em 23% e aumentaram produtividade em 19%. O sono não é assunto de RH comportamental — é estratégia de performance organizacional.',
     topicos:[
-      { titulo:'A pauta é do liderado', desc:'Antes da reunião, pergunte: "O que você precisa conversar?" Isso muda o poder da dinâmica.' },
-      { titulo:'Pergunta obrigatória', desc:'"Tem algo que eu, como líder, poderia fazer diferente para te ajudar?" Humildade que gera confiança.' },
-      { titulo:'Anote e siga', desc:'Documente o que foi discutido e retome na próxima reunião. Compromisso que não volta = desconfiança.' },
+      { titulo:'O que acontece no cérebro privado de sono', desc:'Com 6 horas de sono por 10 dias consecutivos, o desempenho cognitivo equivale a 24 horas sem dormir. Memória de trabalho, tomada de decisão, criatividade, regulação emocional — tudo colapsa. E a pessoa privada de sono não percebe a degradação — ela acha que está bem.' },
+      { titulo:'O presenteísmo do sono', desc:'Colaboradores com insônia crônica custam em média US$2.500/ano a mais em perdas de produtividade do que colegas bem descansados (Harvard Medical School). Eles estão presentes — mas operando em capacidade reduzida. É o tipo de custo que não aparece em nenhum relatório de RH convencional.' },
+      { titulo:'O papel da empresa', desc:'A empresa não pode controlar o sono dos colaboradores, mas pode remover os fatores que o prejudicam: reuniões noturnas, mensagens fora do horário, cultura de "quanto menos você dorme, mais dedicado você é". Algumas empresas avançadas já oferecem salas de descanso, flexibilidade de horário e educação sobre higiene do sono.' },
+      { titulo:'Sinais de alerta nos dados de check-in', desc:'Na Ranne, o campo "energia" do check-in semanal é um proxy direto da qualidade do sono do time. Scores baixos consistentes de energia — especialmente às segundas-feiras — indicam um padrão de não recuperação no fim de semana. Esse dado, cruzado com carga de trabalho, entrega diagnóstico preciso.' },
     ],
-    dica:'Frequência importa mais do que duração. 30 minutos quinzenais valem mais que 2 horas semestrais.'
+    dica:'Política prática: proibir reuniões antes das 9h e depois das 18h. Simples, sem custo, e com impacto mensurável na qualidade do sono e no humor do time.'
   },
-  'Redistribuição de demandas: passo a passo': {
-    emoji:'⚖️', cat:'Burnout', tempo:'10 min',
-    intro:'Sobrecarga crônica é um sinal de falha sistêmica, não de fraqueza individual. Mapear e redistribuir demandas é responsabilidade da liderança, não do colaborador sobrecarregado.',
+
+  '1:1s que transformam: o roteiro completo': {
+    emoji:'🤝', cat:'Liderança', tempo:'6 min',
+    intro:'A maioria das reuniões 1:1 são atualizações de status disfarçadas de conexão. O resultado é que o gestor sai sabendo o que foi feito mas não sabe como a pessoa está — e perde a oportunidade mais valiosa de liderança que existe.',
     topicos:[
-      { titulo:'Mapeamento visual', desc:'Liste todas as tarefas da equipe por pessoa. Torne a sobrecarga visível — o que não se mede não se gerencia.' },
-      { titulo:'Prioridade vs urgência', desc:'Use a Matriz de Eisenhower. Elimine tarefas que não são nem urgentes nem importantes antes de redistribuir.' },
-      { titulo:'Conversa individual', desc:'Pergunte diretamente: "O que está consumindo mais energia e poderia ser delegado ou eliminado?"' },
+      { titulo:'A virada de chave: a pauta é do liderado', desc:'Antes de cada 1:1, pergunte ao liderado: "O que você precisa trazer para essa reunião?" Essa inversão muda tudo. O gestor sai da posição de avaliador e entra na de suporte. O liderado sai da posição de reportar e entra na de protagonizar. Em 3 meses, o nível de confiança e abertura aumenta visivelmente.' },
+      { titulo:'As 4 perguntas que importam', desc:'1) O que está indo bem que você quer que eu saiba? 2) O que está travando seu trabalho que está no meu controle resolver? 3) Como está sua energia e motivação numa escala de 1 a 10? 4) Tem algo que eu, como líder, poderia fazer diferente para te apoiar melhor? Essas perguntas simples revelam mais do que qualquer avaliação anual.' },
+      { titulo:'O que fazer com o que ouviu', desc:'Anotar. Retomar na próxima reunião. Agir no que for do seu controle e ser honesto sobre o que não é. 1:1 que não gera nenhuma ação do gestor é 1:1 que o liderado vai parar de levar a sério. Comprometimento não percebido destrói confiança.' },
+      { titulo:'Frequência e duração ideais', desc:'30 a 45 minutos a cada duas semanas é o padrão mais eficaz. Quinzenal é melhor do que semanal (evita formalidade excessiva) e muito melhor do que mensal (evita distância). Se o time for grande, priorize os liderados com mais desafios ou em momentos de transição.' },
     ],
-    dica:'Redistribuição sem remoção é só transferência de problema. Sempre questione: essa tarefa precisa existir?'
+    dica:'Depois de implementar 1:1s estruturados por 90 dias, aplique um pulso de satisfação anônimo com o time. Os resultados costumam surpreender — inclusive os próprios gestores.'
   },
-  'ROI em saúde mental: dados para o CEO': {
+
+  'NR-1 2025: o que sua empresa precisa fazer agora': {
+    emoji:'⚖️', cat:'Legislação', tempo:'10 min',
+    intro:'A atualização da NR-1 pelo Ministério do Trabalho e Emprego tornou obrigatório o gerenciamento de riscos psicossociais como parte do GRO — Gerenciamento de Riscos Ocupacionais. Empresas que não se adequarem estão sujeitas a autuações, processos trabalhistas e responsabilização civil.',
+    topicos:[
+      { titulo:'O que mudou na NR-1 em 2025', desc:'A NR-1 atualizada incluiu os riscos psicossociais como categoria obrigatória no PGR (Programa de Gerenciamento de Riscos). Isso significa que toda empresa, independentemente do porte, deve identificar, avaliar e controlar riscos como: sobrecarga de trabalho, assédio, violência organizacional, estresse crônico e fatores de adoecimento mental relacionados ao trabalho.' },
+      { titulo:'O que a empresa precisa ter documentado', desc:'1) Identificação dos fatores de risco psicossocial presentes na organização. 2) Avaliação da exposição dos trabalhadores a esses riscos. 3) Medidas de prevenção e controle implementadas. 4) Monitoramento contínuo dos indicadores. 5) Registro de ações e intervenções realizadas. Esses documentos precisam estar disponíveis em caso de fiscalização ou processo trabalhista.' },
+      { titulo:'O risco de não fazer', desc:'Além das multas administrativas (que podem chegar a R$6.600 por infração), empresas sem gestão de riscos psicossociais têm responsabilidade objetiva em processos de doenças ocupacionais relacionadas à saúde mental. Com a NR-1 atualizada, "não sabia" não é mais defesa. A obrigação de saber e agir está na lei.' },
+      { titulo:'Como a Ranne apoia a conformidade', desc:'A plataforma gera dados contínuos de bem-estar organizacional e mantém histórico de ciclos de avaliação, intervenções e scores por dimensão. O Relatório de Evidências gerado pela Ranne documenta as ações de monitoramento e prevenção realizadas pela empresa — servindo como comprovante de conformidade com a NR-1.' },
+    ],
+    dica:'Importante: a Ranne é uma ferramenta de apoio à gestão de riscos psicossociais, não substitui laudo ou consultoria jurídica trabalhista. Para adequação completa à NR-1, recomendamos consultar um especialista em segurança do trabalho.'
+  },
+
+  'Psicologia da segurança: o que o Google descobriu': {
+    emoji:'🛡️', cat:'Cultura', tempo:'9 min',
+    intro:'Após analisar 180 equipes durante 2 anos, o Google concluiu que o fator número 1 de alta performance não é talento, não é processo, não é tecnologia. É segurança psicológica — e poucas empresas sabem realmente o que isso significa.',
+    topicos:[
+      { titulo:'O que segurança psicológica realmente é', desc:'Não é conforto. Não é ausência de conflito. Não é todo mundo sendo gentil o tempo todo. Segurança psicológica é a crença compartilhada de que o time é um lugar seguro para assumir riscos interpessoais — discordar, fazer perguntas "óbvias", admitir erros, propor ideias diferentes. É a diferença entre o que as pessoas pensam e o que dizem em voz alta.' },
+      { titulo:'Como identificar se seu time tem — ou não tem', desc:'Times com baixa segurança psicológica: reuniões onde só algumas vozes falam, silêncio após propostas ousadas, erros escondidos até virar crise, ideias novas recebidas com ceticismo automático, "sim" dito quando o real é "não tenho certeza". Times com alta segurança: discordâncias explícitas e respeitosas, "não sei" dito com naturalidade, erros reportados cedo, criatividade e curiosidade visíveis.' },
+      { titulo:'O papel do líder', desc:'A pesquisa do Google (Projeto Aristóteles) mostrou que o líder define o tom da segurança psicológica. Quando o líder admite incerteza, o time se sente seguro para admitir. Quando o líder recebe feedback com curiosidade, o time aprende que feedbacks são bem-vindos. Quando o líder pune erros, o time aprende a escondê-los. É transmissão de comportamento, não de valores declarados.' },
+      { titulo:'Como construir — e medir', desc:'Implemente check-ins de feedback sobre o próprio ambiente de trabalho. Crie rituais de "postmortem" de erros sem busca por culpados. Reconheça publicamente quem levanta riscos antes que virem problemas. A Ranne mede segurança psicológica como dimensão do ciclo de avaliação — tornando algo subjetivo em dado concreto e acompanhável.' },
+    ],
+    dica:'Uma pergunta para medir segurança psicológica no seu time agora: "Na última reunião, quantas pessoas concordaram com algo que não concordavam de verdade?" Se a resposta for "provavelmente muitas", você tem trabalho a fazer.'
+  },
+
+  'Conversas difíceis: como falar sobre saúde mental no trabalho': {
+    emoji:'💬', cat:'Burnout', tempo:'7 min',
+    intro:'Gestores sabem que algo não está bem com um membro do time. Mas não sabem como abordar. O resultado é o silêncio — e o silêncio, nesse contexto, é cumplicidade com o adoecimento.',
+    topicos:[
+      { titulo:'Por que é difícil — e por que precisa acontecer', desc:'O tabu ainda existe. Gestores têm medo de invadir privacidade, de dizer algo errado, de piorar a situação. Mas pesquisa mostra que pessoas em sofrimento raramente pedem ajuda espontaneamente — elas esperam ser notadas. Uma conversa imperfeita é infinitamente melhor do que o silêncio.' },
+      { titulo:'Como abrir a conversa', desc:'Não com "vi que você está triste". Mas com observações concretas: "Notei que você está menos participativo nas reuniões nas últimas semanas. Quero entender se está tudo bem ou se tem algo que posso apoiar." Fatos observáveis + abertura genuína + oferta de suporte. Sem diagnóstico, sem presunção.' },
+      { titulo:'O que fazer depois de abrir', desc:'Ouvir mais do que falar. Não resolver — acolher. Não minimizar: "todo mundo está assim" fecha a conversa. Não pressionar por resposta imediata. Informar sobre recursos disponíveis (saúde mental, canal de escuta, suporte da empresa). E retomar: "posso checar como você está daqui a uma semana?" Continuidade é cuidado.' },
+      { titulo:'O que não fazer', desc:'Não compartilhar com outros sem consentimento. Não usar a informação em avaliações de desempenho. Não tratar como problema de RH a ser encaminhado e esquecido. Não esperar que a pessoa "se resolva sozinha" depois da conversa. Saúde mental no trabalho é responsabilidade contínua, não pontual.' },
+    ],
+    dica:'Treine seus gestores com role-play. Saber que deve ter a conversa é diferente de saber como tê-la. Prática reduz o medo e aumenta a qualidade do suporte real oferecido.'
+  },
+
+  'Ansiedade coletiva: quando o time inteiro está no limite': {
+    emoji:'⚡', cat:'Bem-estar', tempo:'8 min',
+    intro:'Há momentos em que o estresse não é individual — é sistêmico. Reestruturações, entregas impossíveis, crises externas, mudanças de liderança. Quando o ambiente está doente, tratar indivíduos não resolve. É preciso tratar o sistema.',
+    topicos:[
+      { titulo:'Como reconhecer ansiedade coletiva', desc:'Todos os scores de bem-estar caem ao mesmo tempo. Conflitos interpessoais aumentam sem motivo aparente. Produtividade cai e erros aumentam. Comunicação fica defensiva. Reuniões geram mais tensão do que alinhamento. Absenteísmo sobe. Esses sinais simultâneos indicam problema de contexto, não de pessoas.' },
+      { titulo:'O erro mais comum que o RH comete', desc:'Encaminhar as pessoas para acompanhamento individual. Quando o problema é ambiental, cuidar dos indivíduos sem mudar o ambiente é como drenar o barco sem tapar o buraco. Pode ser necessário e compassivo — mas não resolve. A fonte precisa ser identificada e endereçada.' },
+      { titulo:'Intervenções que funcionam no nível do sistema', desc:'Reuniões de nome-o-elefante: espaço estruturado para o time nomear coletivamente o que está pesado, sem busca por culpados. Revisão real de prioridades e eliminação de demandas não essenciais. Comunicação transparente da liderança sobre a situação e o plano. Presença ativa da liderança sênior — não apenas mensagens de e-mail.' },
+      { titulo:'O papel dos dados no diagnóstico', desc:'Ansiedade coletiva detectada cedo custa muito menos do que tratada depois. A Ranne identifica quedas simultâneas de bem-estar por setor, sinalizando situações de risco coletivo antes que se tornem crises. Dados agregados protegem a privacidade individual e ainda assim revelam padrões sistêmicos com precisão.' },
+    ],
+    dica:'Depois de uma crise coletiva (demissão em massa, mudança brusca de estratégia), não volte ao "normal" imediatamente. Reserve tempo para processar com o time. Resiliência organizacional se constrói — não acontece automaticamente.'
+  },
+
+  'ROI em saúde mental: os números que convencem qualquer CEO': {
     emoji:'📊', cat:'Gestão', tempo:'12 min',
-    intro:'Saúde mental não é custo — é investimento com ROI mensurável. Estes dados transformam a conversa de "cuidado com as pessoas" em "estratégia de negócio".',
+    intro:'Para cada R$1 investido em saúde mental no trabalho, o retorno é de R$4 em produtividade (OMS, 2019). Mas existem métricas ainda mais persuasivas para levar para a sala do CEO — e que poucas empresas calculam.',
     topicos:[
-      { titulo:'Custo do presenteísmo', desc:'A OMS estima que depressão e ansiedade custam US$ 1 trilhão/ano em produtividade perdida globalmente. No Brasil, são 30% do custo de absenteísmo.' },
-      { titulo:'ROI da prevenção', desc:'Para cada R$ 1 investido em saúde mental, há retorno de R$ 4–6 em produtividade (London School of Economics, 2019).' },
-      { titulo:'Retenção de talentos', desc:'Colaboradores com alta satisfação de bem-estar têm 87% menos probabilidade de sair (Gallup, 2023).' },
+      { titulo:'O custo invisível do presenteísmo', desc:'Absenteísmo é visível — a pessoa não está. Presenteísmo é invisível — a pessoa está, mas opera com capacidade reduzida. Estudos do Stanford mostram que o presenteísmo por problemas de saúde mental custa 3x mais do que o absenteísmo. Um time de 50 pessoas com saúde mental comprometida perde em média o equivalente a 8 pessoas trabalhando em tempo integral.' },
+      { titulo:'Custo de substituição: o número que muda tudo', desc:'Substituir um colaborador custa entre 50% e 200% do salário anual, dependendo do nível. Isso inclui recrutamento, treinamento, curva de aprendizado e perda de produtividade durante a transição. Um programa de saúde mental que retém 2 colaboradores por ano em uma empresa de 100 pessoas frequentemente se paga em dobro no mesmo ano.' },
+      { titulo:'O argumento da inovação', desc:'Times psicologicamente seguros e emocionalmente saudáveis são 21% mais inovadores (Gallup, 2023). Criatividade, colaboração e tomada de risco calculado — tudo que alimenta inovação — requerem um sistema nervoso em estado de relativa segurança. Estresse crônico ativa o modo de sobrevivência do cérebro: eficiente para urgências, péssimo para inovar.' },
+      { titulo:'Como construir o business case interno', desc:'Colete dados de absenteísmo por causa. Calcule a taxa de turnover e o custo de substituição. Estime o presenteísmo com ferramentas como a SPS-6 (que a Ranne inclui nos ciclos de avaliação). Some. Compare com o investimento em prevenção. Em quase todos os casos, o ROI da prevenção é positivo no primeiro ano.' },
     ],
-    dica:'Leve dados internos também: calcule o custo de substituição de um colaborador (média: 150% do salário anual) e compare com o custo de programas preventivos.'
-  }
+    dica:'Um dado poderoso para o CEO: colaboradores com alta satisfação de bem-estar têm 87% menos probabilidade de pedir demissão (Gallup). Em um mercado de alta competição por talentos, isso é vantagem competitiva real.'
+  },
+
+  'O erro de confundir engajamento com saúde mental': {
+    emoji:'💚', cat:'Liderança', tempo:'8 min',
+    intro:'Colaboradores engajados também adoecem. Na verdade, podem adoecer mais — porque se importam demais para parar. Confundir as duas métricas é um dos erros mais caros que o RH pode cometer.',
+    topicos:[
+      { titulo:'A diferença que importa', desc:'Engajamento mede comprometimento com a empresa e o trabalho. Saúde mental mede o custo pessoal desse comprometimento. Uma pessoa pode estar altamente engajada e profundamente esgotada ao mesmo tempo. Pesquisa da Gallup mostra que os colaboradores mais engajados têm risco aumentado de burnout quando operam sem limites saudáveis.' },
+      { titulo:'Por que as métricas tradicionais de engajamento falham', desc:'NPS de colaboradores, pesquisas de clima e índices de eNPS medem satisfação e comprometimento percebidos — não custos. Uma pessoa pode responder "9/10 de satisfação" e estar no limite do esgotamento. A satisfação com o trabalho e a sustentabilidade da dedicação são dimensões diferentes que precisam ser medidas separadamente.' },
+      { titulo:'O perfil de risco que as empresas não veem', desc:'Alto engajamento + alta carga + baixo suporte + ausência de limites = perfil de risco máximo de burnout. Ironicamente, esse colaborador provavelmente tem ótimas avaliações de performance, é considerado "talento" pela empresa, e receberá mais responsabilidades — acelerando o colapso.' },
+      { titulo:'Como o RH pode medir o que importa', desc:'Complementar pesquisas de engajamento com medidas de bem-estar que incluam energia, carga percebida, humor e foco. Cruzar satisfação com sustentabilidade. Identificar os perfis de "alto engajamento + baixo bem-estar" como grupo prioritário de atenção — não de mais demandas. A Ranne foi desenhada exatamente para capturar essa distinção que pesquisas convencionais perdem.' },
+    ],
+    dica:'Próxima pesquisa de clima: adicione duas perguntas simples: "Você consegue se desligar do trabalho no seu tempo livre?" e "Você sente que tem energia suficiente para sua vida fora do trabalho?" As respostas podem surpreender.'
+  },
+
+  'Onboarding emocional: a parte que as empresas ignoram': {
+    emoji:'🏛️', cat:'Cultura', tempo:'6 min',
+    intro:'O onboarding operacional está nos processos — sistemas, ferramentas, políticas. Mas existe um onboarding emocional que determina se a pessoa vai realmente se sentir parte da empresa — e ele raramente é intencional.',
+    topicos:[
+      { titulo:'O que é onboarding emocional', desc:'É o processo — consciente ou não — pelo qual uma nova pessoa aprende as regras não escritas da cultura. O que é realmente valorizado aqui (não o que diz o handbook). Como as relações de poder funcionam. O que é seguro dizer e o que não é. Como as pessoas tratam umas às outras quando estão sob pressão. Essa aprendizagem determina o engajamento de longo prazo muito mais do que os primeiros treinamentos.' },
+      { titulo:'A janela crítica dos primeiros 90 dias', desc:'Pesquisa da BambooHR mostra que 17% das novas contratações deixam a empresa nos primeiros 90 dias. E 70% dos que ficam decidem nas primeiras 2 semanas se vão ficar por muito tempo. O que acontece nesses primeiros dias não é só operacional — é emocional. Pertencimento, clareza, segurança, conexão.' },
+      { titulo:'O que a maioria das empresas faz mal', desc:'Foco exclusivo em conteúdo (sistemas, processos, políticas). Ausência de apresentações significativas com o time. Gestores que somem depois do primeiro dia. Ausência de acompanhamento estruturado na primeira semana e no primeiro mês. Ninguém perguntando "como você está se sentindo até agora?" — apenas "como está indo?".' },
+      { titulo:'O que funciona', desc:'Designar um buddy — não para ensinar sistemas, mas para responder as perguntas que ninguém faz em voz alta. Check-ins regulares do gestor focados em bem-estar, não só em produtividade. Espaço para a pessoa compartilhar suas forças e aspirações — não apenas receber informação. Inclusão real nas dinâmicas do time desde a primeira semana. Onboarding emocional intencional reduz turnover nos primeiros 6 meses em até 50%.' },
+    ],
+    dica:'Pergunta simples para o final da primeira semana: "Tem algo sobre como trabalhamos aqui que você ainda não entendeu bem?" Quem responde com sinceridade provavelmente vai ficar. Quem não tem espaço para responder — provavelmente não vai.'
+  },
+
 };
+
 
 function abrirArtigo(titulo) {
   const conteudo = ARTIGOS_CONTEUDO[titulo];
