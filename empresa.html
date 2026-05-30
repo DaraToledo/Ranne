@@ -1853,6 +1853,9 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .a-title { font-size:13px; font-weight:600; line-height:1.4; color:var(--card-text); }
 .a-title-done { text-decoration:line-through; color:var(--muted); }
 .a-meta { display:flex; gap:5px; flex-wrap:wrap; margin-top:6px; }
+.a-delete { opacity:0; transition:opacity .15s; cursor:pointer; color:var(--muted); padding:2px 4px; border-radius:4px; font-size:14px; line-height:1; border:none; background:none; }
+.action-row:hover .a-delete { opacity:1; }
+.a-delete:hover { color:#EF4444; }
 .tag { font-size: 12px; font-weight:600; padding:2px 8px; border-radius:99px; }
 .t-cultura { background:#F5F3FF; color:#7C3AED; }
 .t-lid { background:#FFFBEB; color:#92400E; }
@@ -1860,8 +1863,11 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 .t-clima { background:#ECFDF5; color:#065F46; }
 .t-alta { background:#FEF2F2; color:#991B1B; }
 .t-media { background:#FFFBEB; color:#92400E; }
+.t-baixa { background:#ECFDF5; color:#065F46; }
 .t-ok { background:#ECFDF5; color:#065F46; }
 .t-gray { background:#F1F5F9; color:#64748B; }
+.t-ia { background:linear-gradient(135deg,#f0e6ff,#e6f0ff); color:#6B21A8; }
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
 /* TABS */
 .tabs { display:flex; gap:4px; margin-bottom:20px; background:#F1F5F9; border-radius:10px; padding:3px; width:fit-content; overflow-x:auto; }
@@ -5551,14 +5557,13 @@ body.dark .ob-btn { background: #2D5E4A; }
 
             <div style="border-top:1px solid var(--border);margin:16px 0 14px"></div>
 
-            <!-- Seleção de avaliações em 2 colunas -->
-            <div class="fi-label" style="margin-bottom:12px">Avaliações a incluir no ciclo</div>
-            <div class="nd-testes-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
 
-              <!-- Grupo 1: Organizacionais -->
-              <div>
-                <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">Clima Organizacional</div>
-            <div id="nd-dimensoes" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+            <!-- Seleção de avaliações — grid 3 colunas -->
+            <div class="fi-label" style="margin-bottom:6px">Avaliações a incluir no ciclo</div>
+
+            <!-- Subtítulo: Clima Organizacional -->
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin:12px 0 8px;">Clima Organizacional</div>
+            <div id="nd-dimensoes" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px;">
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim" value="burnout" checked onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🔥</span>
@@ -5590,31 +5595,29 @@ body.dark .ob-btn { background: #2D5E4A; }
                 <span class="nd-dim-info"><strong>Cultura & Pertencimento</strong><span>3 perguntas</span></span>
               </label>
             </div>
-              </div><!-- /col organizacional -->
 
-              <!-- Grupo 2: Avaliações Clínicas -->
-              <div>
-                <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">Avaliações Clínicas</div>
-            <div id="nd-dimensoes-clinicas" style="display:flex;flex-direction:column;gap:8px;">
+            <!-- Subtítulo: Avaliações Clínicas -->
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin:16px 0 8px;">Avaliações Clínicas</div>
+            <div id="nd-dimensoes-clinicas" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="phq9" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🧠</span>
-                <span class="nd-dim-info"><strong>PHQ-9 · Rastreamento de Depressão</strong><span>9 perguntas</span></span>
+                <span class="nd-dim-info"><strong>PHQ-9 · Depressão</strong><span>9 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="gad7" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">😰</span>
-                <span class="nd-dim-info"><strong>GAD-7 · Ansiedade Generalizada</strong><span>7 perguntas</span></span>
+                <span class="nd-dim-info"><strong>GAD-7 · Ansiedade</strong><span>7 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="pss10" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🌡️</span>
-                <span class="nd-dim-info"><strong>PSS-10 · Estresse Percebido</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>PSS-10 · Estresse</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="dass21" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">📋</span>
-                <span class="nd-dim-info"><strong>DASS-21 · Depressão, Ansiedade e Estresse</strong><span>21 perguntas</span></span>
+                <span class="nd-dim-info"><strong>DASS-21</strong><span>21 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="burnout_ranne" onchange="ndAtualizarPreview()">
@@ -5624,12 +5627,12 @@ body.dark .ob-btn { background: #2D5E4A; }
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="ansiedade_ranne" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">💭</span>
-                <span class="nd-dim-info"><strong>Nível de Ansiedade no Trabalho</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Ansiedade no Trabalho</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="estresse_ranne" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">⚡</span>
-                <span class="nd-dim-info"><strong>Nível de Estresse Atual</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Estresse Atual</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="sono_ranne" onchange="ndAtualizarPreview()">
@@ -5639,61 +5642,60 @@ body.dark .ob-btn { background: #2D5E4A; }
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="emocional_ranne" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">💚</span>
-                <span class="nd-dim-info"><strong>Inteligência Emocional no Trabalho</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Inteligência Emocional</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="limites_ranne" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🛑</span>
-                <span class="nd-dim-info"><strong>Você Sabe Estabelecer Limites?</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Estabelecer Limites</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="lider_ranne" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🎯</span>
-                <span class="nd-dim-info"><strong>Que Tipo de Líder Você É?</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Tipo de Líder</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="equipe_ranne" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🤝</span>
-                <span class="nd-dim-info"><strong>Estilo de Trabalho em Equipe</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Trabalho em Equipe</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="psych_safety" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🛡️</span>
-                <span class="nd-dim-info"><strong>Segurança Psicológica no Time</strong><span>7 perguntas</span></span>
+                <span class="nd-dim-info"><strong>Segurança Psicológica</strong><span>7 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="sps6" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">💼</span>
-                <span class="nd-dim-info"><strong>SPS-6 · Presenteísmo & Produtividade</strong><span>6 perguntas</span></span>
+                <span class="nd-dim-info"><strong>SPS-6 · Presenteísmo</strong><span>6 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="auditc" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🍷</span>
-                <span class="nd-dim-info"><strong>AUDIT-C · Uso de Álcool & Estresse</strong><span>3 perguntas</span></span>
+                <span class="nd-dim-info"><strong>AUDIT-C · Álcool</strong><span>3 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="ebet" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🌟</span>
-                <span class="nd-dim-info"><strong>EBET · Bem-Estar no Trabalho</strong><span>9 perguntas</span></span>
+                <span class="nd-dim-info"><strong>EBET · Bem-Estar</strong><span>9 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="cdrisc10" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">💪</span>
-                <span class="nd-dim-info"><strong>CD-RISC-10 · Resiliência Psicológica</strong><span>10 perguntas</span></span>
+                <span class="nd-dim-info"><strong>CD-RISC · Resiliência</strong><span>10 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="psqi" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🌙</span>
-                <span class="nd-dim-info"><strong>PSQI · Qualidade do Sono de Pittsburgh</strong><span>7 perguntas</span></span>
+                <span class="nd-dim-info"><strong>PSQI · Sono Pittsburgh</strong><span>7 perguntas</span></span>
               </label>
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim-clin" value="copsoq2" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🏢</span>
-                <span class="nd-dim-info"><strong>COPSOQ-II · Riscos Psicossociais</strong><span>12 perguntas</span></span>
+                <span class="nd-dim-info"><strong>COPSOQ-II · Riscos</strong><span>12 perguntas</span></span>
               </label>
             </div>
-              </div><!-- /col clinicas -->
-            </div><!-- /nd-testes-grid -->
+
 
             <div id="nd-error" style="color:var(--red);font-size:12px;margin:12px 0;display:none"></div>
             <div style="display:flex;gap:10px;margin-top:16px">
@@ -5721,18 +5723,19 @@ body.dark .ob-btn { background: #2D5E4A; }
         </div>
 
         <style>
-          .nd-dim-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; transition:all .15s; }
+          .nd-dim-item { display:flex; align-items:center; gap:8px; padding:8px 10px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; transition:all .15s; }
           .nd-dim-item:hover { border-color:var(--mint); background:rgba(45,94,74,.04); }
-          .nd-dim-item input[type=checkbox] { width:16px; height:16px; accent-color:var(--mint); cursor:pointer; flex-shrink:0; }
+          .nd-dim-item input[type=checkbox] { width:15px; height:15px; accent-color:var(--mint); cursor:pointer; flex-shrink:0; }
           .nd-dim-item input:checked ~ .nd-dim-info { color:var(--text); }
-          .nd-dim-icon { font-size:18px; flex-shrink:0; }
-          .nd-dim-info { display:flex; flex-direction:column; gap:2px; font-size:13px; }
-          .nd-dim-info strong { color:var(--card-text); font-weight:600; }
-          .nd-dim-info span { font-size:11px; color:var(--muted); }
+          .nd-dim-icon { font-size:16px; flex-shrink:0; }
+          .nd-dim-info { display:flex; flex-direction:column; gap:1px; font-size:12px; }
+          .nd-dim-info strong { color:var(--card-text); font-weight:600; font-size:12px; line-height:1.3; }
+          .nd-dim-info span { font-size:10px; color:var(--muted); }
           .nd-dim-item:has(input:checked) { border-color:var(--mint); background:rgba(45,94,74,.05); }
           .nd-preview-q { font-size:12px; color:var(--card-text-muted); padding:7px 10px; background:rgba(45,94,74,.04); border-radius:6px; line-height:1.5; border-left:3px solid var(--mint); }
           .nd-preview-bloco { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--mint); margin-top:10px; margin-bottom:4px; }
-          @media(max-width:768px){ #p-novo-diagnostico .nd-testes-grid { grid-template-columns:1fr!important; } }
+          @media(max-width:900px){ #nd-dimensoes, #nd-dimensoes-clinicas { grid-template-columns:repeat(2,1fr)!important; } }
+          @media(max-width:600px){ #nd-dimensoes, #nd-dimensoes-clinicas { grid-template-columns:1fr!important; } }
         </style>
       </div>
 
@@ -5790,18 +5793,79 @@ body.dark .ob-btn { background: #2D5E4A; }
 
       <!-- PLANO DE AÇÃO -->
       <div id="p-plano" style="display:none">
-        <div class="topbar"><div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title">Plano de Ação</div><div class="page-sub">Gerado a partir do último diagnóstico</div></div></div>
+        <div class="topbar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+            <div class="page-title">Plano de Ação</div>
+            <div class="page-sub" id="plano-sub">Gerado a partir do último diagnóstico</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-outline btn-sm" id="btn-gerar-ia" onclick="gerarPlanoIA()">
+              <span id="btn-ia-icon">✨</span> <span id="btn-ia-label">Gerar com IA</span>
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="abrirModalNovaAcao()">+ Nova ação</button>
+          </div>
+        </div>
+
         <div class="card" id="plano-card">
-          <div class="progress-bar-row" id="plano-progress-row" style="display:none"><span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso geral</span><div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:0%"></div></div><span class="prog-pct" id="plano-progresso-txt">0 de 0 — 0%</span></div>
-          <div class="tabs" id="plano-tabs" style="display:none"><div class="tab active" onclick="filterAcoes('todas',this)">Todas</div><div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div><div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px" id="plano-header-row">
+            <div class="progress-bar-row" id="plano-progress-row" style="display:none;flex:1">
+              <span style="font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap">Progresso</span>
+              <div class="prog-track"><div class="prog-fill" id="plano-fill" style="width:0%"></div></div>
+              <span class="prog-pct" id="plano-progresso-txt">0 de 0 — 0%</span>
+            </div>
+            <div class="tabs" id="plano-tabs" style="display:none">
+              <div class="tab active" onclick="filterAcoes('todas',this)">Todas</div>
+              <div class="tab" onclick="filterAcoes('pendente',this)">Pendentes</div>
+              <div class="tab" onclick="filterAcoes('concluida',this)">Concluídas</div>
+            </div>
+          </div>
+
+          <!-- Estado de carregamento IA -->
+          <div id="plano-ia-loading" style="display:none;text-align:center;padding:40px 20px">
+            <div style="font-size:28px;margin-bottom:12px;animation:spin 2s linear infinite;display:inline-block">✨</div>
+            <div style="font-size:14px;font-weight:600;color:var(--card-text);margin-bottom:6px">Gerando plano com IA...</div>
+            <div style="font-size:13px;color:var(--muted)">Analisando os resultados do último ciclo</div>
+          </div>
+
           <div id="acoes-lista">
             <div id="plano-empty" style="text-align:center;padding:48px 20px;">
               <div style="font-size:32px;margin-bottom:12px">📋</div>
               <div style="font-size:14px;font-weight:600;color:var(--card-text);margin-bottom:6px">Nenhum plano de ação ainda</div>
-              <div style="font-size:13px;color:var(--muted);line-height:1.6;max-width:280px;margin:0 auto">O plano será gerado automaticamente após o primeiro diagnóstico da empresa.</div>
+              <div style="font-size:13px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto 20px">Crie uma ação manualmente ou gere um plano completo com IA baseado nos resultados do último ciclo.</div>
+              <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <button class="btn btn-outline btn-sm" onclick="gerarPlanoIA()">✨ Gerar com IA</button>
+                <button class="btn btn-primary btn-sm" onclick="abrirModalNovaAcao()">+ Nova ação manual</button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Modal: Nova ação manual -->
+        <div id="modal-nova-acao" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center;padding:16px">
+          <div style="background:var(--white);border-radius:16px;padding:24px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+            <div style="font-size:16px;font-weight:700;color:var(--card-text);margin-bottom:18px">Nova ação</div>
+            <div class="fi-group"><label class="fi-label">Título da ação *</label><input class="fi-input" id="nova-acao-titulo" placeholder='Ex: "Oferecer sessão com psicólogo"'></div>
+            <div class="fi-group"><label class="fi-label">Descrição</label><textarea class="fi-input" id="nova-acao-desc" rows="2" placeholder="Detalhes da ação..." style="resize:vertical"></textarea></div>
+            <div class="fi-row">
+              <div class="fi-group"><label class="fi-label">Responsável</label><input class="fi-input" id="nova-acao-resp" placeholder="Nome ou área"></div>
+              <div class="fi-group"><label class="fi-label">Prazo</label><input class="fi-input" type="date" id="nova-acao-prazo"></div>
+            </div>
+            <div class="fi-group">
+              <label class="fi-label">Prioridade</label>
+              <select class="fi-select fi-input" id="nova-acao-prio">
+                <option value="alta">🔴 Alta</option>
+                <option value="media" selected>🟡 Média</option>
+                <option value="baixa">🟢 Baixa</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:18px">
+              <button class="btn btn-ghost" onclick="fecharModalNovaAcao()">Cancelar</button>
+              <button class="btn btn-primary" style="flex:1" onclick="salvarNovaAcao()">Salvar ação</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- PROGRESSO -->
@@ -9813,36 +9877,277 @@ function atualizarDashboardLocal({ humor, energia, carga, foco }) {
 /* ─────────────────────────────────────
    PLANO DE AÇÃO
    ───────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   PLANO DE AÇÃO — COMPLETO
+   ══════════════════════════════════════════════ */
+
+let acoesData = []; // array de objetos de ação
+
 function initPlano() {
-  // Limpa badge antigo do localStorage se não há ações reais
-  if (document.querySelectorAll('.action-row[data-id]').length === 0) {
-    localStorage.removeItem('ranne-acoes');
-    const badge = document.getElementById('badge-acoes');
-    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+  carregarAcoesSupabase();
+}
+
+async function carregarAcoesSupabase() {
+  if (!currentEmpresa?.id) return;
+  try {
+    const { data } = await db.from('acoes_plano')
+      .select('*')
+      .eq('empresa_id', currentEmpresa.id)
+      .order('criado_em', { ascending: false });
+    acoesData = data || [];
+  } catch {
+    // fallback localStorage
+    const saved = localStorage.getItem('ranne-acoes-v2');
+    acoesData = saved ? JSON.parse(saved) : [];
+  }
+  renderAcoes();
+}
+
+function renderAcoes(filtro = 'todas') {
+  const lista = document.getElementById('acoes-lista');
+  const empty = document.getElementById('plano-empty');
+  const tabs  = document.getElementById('plano-tabs');
+  const progRow = document.getElementById('plano-progress-row');
+
+  const visiveis = filtro === 'todas' ? acoesData
+    : acoesData.filter(a => a.status === filtro);
+
+  if (acoesData.length === 0) {
+    empty.style.display  = 'block';
+    tabs.style.display   = 'none';
+    progRow.style.display = 'none';
+    lista.innerHTML = '';
+    lista.appendChild(empty);
     return;
   }
-  // Restaura estado salvo
-  const saved = localStorage.getItem('ranne-acoes');
-  if (saved && document.querySelectorAll('.action-row[data-id]').length > 0) {
-    acoesState = JSON.parse(saved);
-    document.querySelectorAll('.action-row[data-id]').forEach(row => {
-      const id = row.dataset.id;
-      if (acoesState[id] === 'concluida') {
-        const check = row.querySelector('.a-check');
-        const title = row.querySelector('.a-title');
-        check.classList.add('a-done');
-        check.textContent = '✓';
-        title.classList.add('a-title-done');
-        row.dataset.status = 'concluida';
-      }
-    });
-  } else {
-    // Estado inicial baseado no HTML
-    document.querySelectorAll('.action-row[data-id]').forEach(row => {
-      acoesState[row.dataset.id] = row.dataset.status;
-    });
-  }
+
+  empty.style.display  = 'none';
+  tabs.style.display   = 'flex';
+  progRow.style.display = 'flex';
+
+  const prioLabel = { alta: '🔴 Alta', media: '🟡 Média', baixa: '🟢 Baixa' };
+  const prioClass = { alta: 't-alta', media: 't-media', baixa: 't-baixa' };
+
+  lista.innerHTML = visiveis.map(a => {
+    const done = a.status === 'concluida';
+    const prazoStr = a.prazo ? new Date(a.prazo).toLocaleDateString('pt-BR') : '';
+    const iaTag = a.gerada_ia ? `<span class="tag t-ia">✨ IA</span>` : '';
+    return `
+      <div class="action-row" data-id="${a.id}" data-status="${a.status}">
+        <div class="a-check ${done ? 'a-done' : ''}" onclick="toggleAcaoV2('${a.id}')">${done ? '✓' : ''}</div>
+        <div style="flex:1;min-width:0">
+          <div class="a-title ${done ? 'a-title-done' : ''}">${a.titulo}</div>
+          ${a.descricao ? `<div style="font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5">${a.descricao}</div>` : ''}
+          <div class="a-meta">
+            ${iaTag}
+            <span class="tag ${prioClass[a.prioridade] || 't-gray'}">${prioLabel[a.prioridade] || a.prioridade}</span>
+            ${a.responsavel ? `<span class="tag t-gray">👤 ${a.responsavel}</span>` : ''}
+            ${prazoStr ? `<span class="tag t-gray">📅 ${prazoStr}</span>` : ''}
+            ${a.dimensao ? `<span class="tag t-clima">${a.dimensao}</span>` : ''}
+          </div>
+        </div>
+        <button class="a-delete" onclick="deletarAcao('${a.id}')" title="Remover">✕</button>
+      </div>`;
+  }).join('');
+
   updatePlanoProgress();
+}
+
+async function toggleAcaoV2(id) {
+  const acao = acoesData.find(a => a.id === id);
+  if (!acao) return;
+  acao.status = acao.status === 'concluida' ? 'pendente' : 'concluida';
+  try {
+    await db.from('acoes_plano').update({ status: acao.status }).eq('id', id);
+  } catch {
+    localStorage.setItem('ranne-acoes-v2', JSON.stringify(acoesData));
+  }
+  renderAcoes();
+}
+
+async function deletarAcao(id) {
+  acoesData = acoesData.filter(a => a.id !== id);
+  try {
+    await db.from('acoes_plano').delete().eq('id', id);
+  } catch {
+    localStorage.setItem('ranne-acoes-v2', JSON.stringify(acoesData));
+  }
+  renderAcoes();
+}
+
+function filterAcoes(filtro, tabEl) {
+  document.querySelectorAll('#plano-tabs .tab').forEach(t => t.classList.remove('active'));
+  if (tabEl) tabEl.classList.add('active');
+  renderAcoes(filtro);
+}
+
+function updatePlanoProgress() {
+  const total = acoesData.length;
+  const done  = acoesData.filter(a => a.status === 'concluida').length;
+  const pct   = total ? Math.round((done / total) * 100) : 0;
+  const fill  = document.getElementById('plano-fill');
+  const txt   = document.getElementById('plano-progresso-txt');
+  const badge = document.getElementById('badge-acoes');
+  if (fill) fill.style.width = pct + '%';
+  if (txt)  txt.textContent  = `${done} de ${total} — ${pct}%`;
+  if (badge) {
+    const pendentes = total - done;
+    badge.textContent = pendentes;
+    badge.style.display = pendentes > 0 ? 'inline-flex' : 'none';
+  }
+}
+
+/* ── Modal nova ação manual ── */
+function abrirModalNovaAcao() {
+  const m = document.getElementById('modal-nova-acao');
+  m.style.display = 'flex';
+  document.getElementById('nova-acao-titulo').value = '';
+  document.getElementById('nova-acao-desc').value   = '';
+  document.getElementById('nova-acao-resp').value   = '';
+  document.getElementById('nova-acao-prazo').value  = '';
+  document.getElementById('nova-acao-prio').value   = 'media';
+  setTimeout(() => document.getElementById('nova-acao-titulo').focus(), 100);
+}
+
+function fecharModalNovaAcao() {
+  document.getElementById('modal-nova-acao').style.display = 'none';
+}
+
+async function salvarNovaAcao() {
+  const titulo = document.getElementById('nova-acao-titulo').value.trim();
+  if (!titulo) { toast('Informe o título da ação.'); return; }
+
+  const acao = {
+    id: crypto.randomUUID(),
+    empresa_id: currentEmpresa?.id,
+    titulo,
+    descricao:    document.getElementById('nova-acao-desc').value.trim(),
+    responsavel:  document.getElementById('nova-acao-resp').value.trim(),
+    prazo:        document.getElementById('nova-acao-prazo').value || null,
+    prioridade:   document.getElementById('nova-acao-prio').value,
+    status:       'pendente',
+    gerada_ia:    false,
+    criado_em:    new Date().toISOString(),
+  };
+
+  try {
+    await db.from('acoes_plano').insert(acao);
+  } catch {
+    localStorage.setItem('ranne-acoes-v2', JSON.stringify([acao, ...acoesData]));
+  }
+
+  acoesData.unshift(acao);
+  fecharModalNovaAcao();
+  renderAcoes();
+  toast('✅ Ação adicionada ao plano!');
+}
+
+/* ── Gerar plano com IA ── */
+async function gerarPlanoIA() {
+  const btn      = document.getElementById('btn-gerar-ia');
+  const icon     = document.getElementById('btn-ia-icon');
+  const label    = document.getElementById('btn-ia-label');
+  const loading  = document.getElementById('plano-ia-loading');
+  const lista    = document.getElementById('acoes-lista');
+
+  // Coleta scores do último ciclo
+  const scores = window._ultimosScoresCiclo || null;
+  const empresa = currentEmpresa?.nome || 'a empresa';
+
+  // Monta contexto para a IA
+  let contextoScores = '';
+  if (scores && Object.keys(scores).length > 0) {
+    contextoScores = '\n\nScores do último ciclo de avaliação:\n' +
+      Object.entries(scores).map(([dim, val]) => `- ${dim}: ${val}/100`).join('\n');
+  } else {
+    // Tenta buscar do Supabase
+    try {
+      const { data: diags } = await db.from('diagnosticos')
+        .select('*').eq('empresa_id', currentEmpresa?.id)
+        .eq('status', 'encerrado').order('created_at', { ascending: false }).limit(1);
+      if (diags?.[0]?.scores) {
+        contextoScores = '\n\nScores do último ciclo:\n' +
+          Object.entries(diags[0].scores).map(([d, v]) => `- ${d}: ${v}/100`).join('\n');
+      }
+    } catch {}
+  }
+
+  // UI loading
+  btn.disabled = true;
+  icon.style.animation = 'spin 1s linear infinite';
+  label.textContent = 'Gerando...';
+  loading.style.display = 'block';
+  lista.style.opacity = '0.3';
+
+  const prompt = `Você é especialista em saúde organizacional. Gere um plano de ação concreto para ${empresa} com base nos dados abaixo.${contextoScores || '\n\nNenhum ciclo encerrado ainda — gere ações gerais de bem-estar organizacional.'}
+
+Retorne APENAS um JSON válido, sem markdown, sem explicações. Formato exato:
+[
+  {
+    "titulo": "Título curto e direto da ação",
+    "descricao": "O que fazer concretamente em 1-2 frases",
+    "prioridade": "alta" | "media" | "baixa",
+    "responsavel": "RH" | "Gestores" | "Liderança" | "Todos",
+    "prazo_dias": 30,
+    "dimensao": "Burnout" | "Estresse" | "Sono" | "Clima" | "Liderança" | "Cultura" | "Geral"
+  }
+]
+Gere entre 4 e 7 ações, priorizadas por urgência. Seja específico e prático.`;
+
+  try {
+    const res = await fetch('https://www.rannecare.com.br/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        context: 'empresa',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.reply || '';
+
+    // Parse JSON da resposta
+    const jsonMatch = text.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) throw new Error('JSON não encontrado na resposta');
+    const acoes = JSON.parse(jsonMatch[0]);
+
+    // Salva as ações
+    const hoje = new Date();
+    const novas = acoes.map(a => ({
+      id:          crypto.randomUUID(),
+      empresa_id:  currentEmpresa?.id,
+      titulo:      a.titulo,
+      descricao:   a.descricao,
+      prioridade:  a.prioridade || 'media',
+      responsavel: a.responsavel || 'RH',
+      prazo:       a.prazo_dias ? new Date(hoje.getTime() + a.prazo_dias * 86400000).toISOString().split('T')[0] : null,
+      dimensao:    a.dimensao || null,
+      status:      'pendente',
+      gerada_ia:   true,
+      criado_em:   new Date().toISOString(),
+    }));
+
+    try {
+      await db.from('acoes_plano').insert(novas);
+    } catch {
+      localStorage.setItem('ranne-acoes-v2', JSON.stringify([...novas, ...acoesData]));
+    }
+
+    acoesData = [...novas, ...acoesData];
+    toast(`✨ ${novas.length} ações geradas pela IA!`);
+
+  } catch (e) {
+    console.error('[gerarPlanoIA]', e);
+    toast('❌ Erro ao gerar plano. Tente novamente.');
+  } finally {
+    btn.disabled = false;
+    icon.style.animation = '';
+    label.textContent = 'Gerar com IA';
+    loading.style.display = 'none';
+    lista.style.opacity = '1';
+    renderAcoes();
+  }
 }
 
 function toggleAcao(checkEl) {
