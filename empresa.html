@@ -5553,7 +5553,10 @@ body.dark .ob-btn { background: #2D5E4A; }
 
             <!-- Seleção de dimensões -->
             <div class="fi-label" style="margin-bottom:10px">Dimensões a avaliar</div>
-            <div id="nd-dimensoes" style="display:flex;flex-direction:column;gap:8px;">
+
+            <!-- Grupo 1: Organizacionais -->
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">Clima Organizacional</div>
+            <div id="nd-dimensoes" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
               <label class="nd-dim-item">
                 <input type="checkbox" name="nd-dim" value="burnout" checked onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🔥</span>
@@ -5583,6 +5586,106 @@ body.dark .ob-btn { background: #2D5E4A; }
                 <input type="checkbox" name="nd-dim" value="cultura" onchange="ndAtualizarPreview()">
                 <span class="nd-dim-icon">🏛️</span>
                 <span class="nd-dim-info"><strong>Cultura & Pertencimento</strong><span>3 perguntas</span></span>
+              </label>
+            </div>
+
+            <!-- Grupo 2: Avaliações Clínicas -->
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;margin-top:4px;">Avaliações Clínicas</div>
+            <div id="nd-dimensoes-clinicas" style="display:flex;flex-direction:column;gap:8px;">
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="phq9" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🧠</span>
+                <span class="nd-dim-info"><strong>PHQ-9 · Rastreamento de Depressão</strong><span>9 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="gad7" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">😰</span>
+                <span class="nd-dim-info"><strong>GAD-7 · Ansiedade Generalizada</strong><span>7 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="pss10" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🌡️</span>
+                <span class="nd-dim-info"><strong>PSS-10 · Estresse Percebido</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="dass21" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">📋</span>
+                <span class="nd-dim-info"><strong>DASS-21 · Depressão, Ansiedade e Estresse</strong><span>21 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="burnout_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🔥</span>
+                <span class="nd-dim-info"><strong>Risco de Burnout</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="ansiedade_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">💭</span>
+                <span class="nd-dim-info"><strong>Nível de Ansiedade no Trabalho</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="estresse_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">⚡</span>
+                <span class="nd-dim-info"><strong>Nível de Estresse Atual</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="sono_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">😴</span>
+                <span class="nd-dim-info"><strong>Qualidade do Sono</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="emocional_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">💚</span>
+                <span class="nd-dim-info"><strong>Inteligência Emocional no Trabalho</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="limites_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🛑</span>
+                <span class="nd-dim-info"><strong>Você Sabe Estabelecer Limites?</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="lider_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🎯</span>
+                <span class="nd-dim-info"><strong>Que Tipo de Líder Você É?</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="equipe_ranne" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🤝</span>
+                <span class="nd-dim-info"><strong>Estilo de Trabalho em Equipe</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="psych_safety" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🛡️</span>
+                <span class="nd-dim-info"><strong>Segurança Psicológica no Time</strong><span>7 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="sps6" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">💼</span>
+                <span class="nd-dim-info"><strong>SPS-6 · Presenteísmo & Produtividade</strong><span>6 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="auditc" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🍷</span>
+                <span class="nd-dim-info"><strong>AUDIT-C · Uso de Álcool & Estresse</strong><span>3 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="ebet" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🌟</span>
+                <span class="nd-dim-info"><strong>EBET · Bem-Estar no Trabalho</strong><span>9 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="cdrisc10" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">💪</span>
+                <span class="nd-dim-info"><strong>CD-RISC-10 · Resiliência Psicológica</strong><span>10 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="psqi" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🌙</span>
+                <span class="nd-dim-info"><strong>PSQI · Qualidade do Sono de Pittsburgh</strong><span>7 perguntas</span></span>
+              </label>
+              <label class="nd-dim-item">
+                <input type="checkbox" name="nd-dim-clin" value="copsoq2" onchange="ndAtualizarPreview()">
+                <span class="nd-dim-icon">🏢</span>
+                <span class="nd-dim-info"><strong>COPSOQ-II · Riscos Psicossociais</strong><span>12 perguntas</span></span>
               </label>
             </div>
 
@@ -8841,15 +8944,21 @@ async function loadMembros() {
    CRIAR DIAGNÓSTICO
    ───────────────────────────────────── */
 async function criarDiagnostico() {
-  // Coleta dimensões selecionadas
+  // Coleta dimensões organizacionais selecionadas
   const dimChecks = document.querySelectorAll('#nd-dimensoes input[name="nd-dim"]:checked');
   const dimensoes = Array.from(dimChecks).map(c => c.value);
-  if (dimensoes.length === 0) {
-    document.getElementById('nd-error').textContent = 'Selecione ao menos uma dimensão.';
+
+  // Coleta testes clínicos selecionados
+  const clinChecks = document.querySelectorAll('#nd-dimensoes-clinicas input[name="nd-dim-clin"]:checked');
+  const testesClinicos = Array.from(clinChecks).map(c => c.value);
+
+  if (dimensoes.length === 0 && testesClinicos.length === 0) {
+    document.getElementById('nd-error').textContent = 'Selecione ao menos uma dimensão ou avaliação clínica.';
     document.getElementById('nd-error').style.display = 'block';
     return;
   }
-  window._ndDimensoes = dimensoes; // passa para criarDiagnostico usar
+  window._ndDimensoes = dimensoes;
+  window._ndTestesClinicos = testesClinicos;
 
   const nome = document.getElementById('nd-nome').value.trim();
   const publico = document.getElementById('nd-publico').value;
@@ -8870,7 +8979,6 @@ async function criarDiagnostico() {
   errEl.style.display = 'none';
 
   const diagId = crypto.randomUUID();
-  // Usa sempre o domínio de produção para o link do colaborador
   const baseUrl = window.location.hostname.includes('vercel.app') || window.location.hostname === 'localhost'
     ? 'https://rannecare.com.br'
     : window.location.origin;
@@ -8887,7 +8995,8 @@ async function criarDiagnostico() {
       data_encerramento: data || null,
       tipo_resposta: tipo,
       status: 'ativo',
-      link
+      link,
+      testes_clinicos: testesClinicos.length > 0 ? testesClinicos : null
     });
     if (error) {
       // Tentativa 2: inserção mínima (menos colunas)
@@ -8897,10 +9006,22 @@ async function criarDiagnostico() {
         nome,
         status: 'ativo',
         link
-      }).catch(() => {}); // se falhar tb, continua em demo
+      }).catch(() => {});
+    }
+
+    // Registra os testes clínicos na tabela testes_enviados_rh
+    if (testesClinicos.length > 0 && currentUser?.id) {
+      const registros = testesClinicos.map(teste_id => ({
+        empresa_id: currentEmpresa.id,
+        teste_id,
+        enviado_por: currentUser.id,
+        enviado_em: new Date().toISOString()
+      }));
+      await db.from('testes_enviados_rh').insert(registros).catch(e => {
+        console.warn('[Ranne] testes_enviados_rh não inserido:', e);
+      });
     }
   } catch {
-    // Continua em modo demo — diagnóstico aparece na lista localmente
     console.warn('[Ranne] Diagnóstico salvo apenas localmente.');
   }
 
@@ -10382,21 +10503,63 @@ const ND_DIMENSOES = {
   cultura:   { label: '🏛️ Cultura & Pertencimento',    perguntas: ['Sinto que os valores da empresa são praticados no dia a dia.','Me sinto parte importante desta organização.','Há espaço para crescimento e desenvolvimento profissional.'] },
 };
 
+// Mapa de nomes dos testes clínicos para o preview
+const ND_TESTES_CLINICOS_LABELS = {
+  phq9:           { label: '🧠 PHQ-9 · Rastreamento de Depressão', total: 9 },
+  gad7:           { label: '😰 GAD-7 · Ansiedade Generalizada', total: 7 },
+  pss10:          { label: '🌡️ PSS-10 · Estresse Percebido', total: 10 },
+  dass21:         { label: '📋 DASS-21 · Depressão, Ansiedade e Estresse', total: 21 },
+  burnout_ranne:  { label: '🔥 Risco de Burnout', total: 10 },
+  ansiedade_ranne:{ label: '💭 Nível de Ansiedade no Trabalho', total: 10 },
+  estresse_ranne: { label: '⚡ Nível de Estresse Atual', total: 10 },
+  sono_ranne:     { label: '😴 Qualidade do Sono', total: 10 },
+  emocional_ranne:{ label: '💚 Inteligência Emocional no Trabalho', total: 10 },
+  limites_ranne:  { label: '🛑 Você Sabe Estabelecer Limites?', total: 10 },
+  lider_ranne:    { label: '🎯 Que Tipo de Líder Você É?', total: 10 },
+  equipe_ranne:   { label: '🤝 Estilo de Trabalho em Equipe', total: 10 },
+  psych_safety:   { label: '🛡️ Segurança Psicológica no Time', total: 7 },
+  sps6:           { label: '💼 SPS-6 · Presenteísmo & Produtividade', total: 6 },
+  auditc:         { label: '🍷 AUDIT-C · Uso de Álcool & Estresse', total: 3 },
+  ebet:           { label: '🌟 EBET · Bem-Estar no Trabalho', total: 9 },
+  cdrisc10:       { label: '💪 CD-RISC-10 · Resiliência Psicológica', total: 10 },
+  psqi:           { label: '🌙 PSQI · Qualidade do Sono de Pittsburgh', total: 7 },
+  copsoq2:        { label: '🏢 COPSOQ-II · Riscos Psicossociais', total: 12 },
+};
+
 function ndAtualizarPreview() {
-  const checks = document.querySelectorAll('#nd-dimensoes input[name="nd-dim"]:checked');
-  const dims = Array.from(checks).map(c => c.value);
   let total = 0;
   let html = '';
-  dims.forEach(d => {
-    const dim = ND_DIMENSOES[d];
-    if (!dim) return;
-    total += dim.perguntas.length;
-    html += `<div class="nd-preview-bloco">${dim.label}</div>`;
-    dim.perguntas.forEach((q, i) => {
-      html += `<div class="nd-preview-q">${i+1}. ${q}</div>`;
+
+  // Dimensões organizacionais
+  const checks = document.querySelectorAll('#nd-dimensoes input[name="nd-dim"]:checked');
+  const dims = Array.from(checks).map(c => c.value);
+  if (dims.length > 0) {
+    html += `<div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;margin-top:4px;">Clima Organizacional</div>`;
+    dims.forEach(d => {
+      const dim = ND_DIMENSOES[d];
+      if (!dim) return;
+      total += dim.perguntas.length;
+      html += `<div class="nd-preview-bloco">${dim.label}</div>`;
+      dim.perguntas.forEach((q, i) => {
+        html += `<div class="nd-preview-q">${i+1}. ${q}</div>`;
+      });
     });
-  });
-  document.getElementById('nd-preview-lista').innerHTML = html || '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Selecione ao menos uma dimensão</div>';
+  }
+
+  // Testes clínicos
+  const checksClin = document.querySelectorAll('#nd-dimensoes-clinicas input[name="nd-dim-clin"]:checked');
+  const clinSel = Array.from(checksClin).map(c => c.value);
+  if (clinSel.length > 0) {
+    html += `<div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;margin-top:14px;">Avaliações Clínicas</div>`;
+    clinSel.forEach(id => {
+      const t = ND_TESTES_CLINICOS_LABELS[id];
+      if (!t) return;
+      total += t.total;
+      html += `<div class="nd-preview-bloco">${t.label} <span style="font-size:11px;opacity:.7">(${t.total} perguntas)</span></div>`;
+    });
+  }
+
+  document.getElementById('nd-preview-lista').innerHTML = html || '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Selecione ao menos uma dimensão ou avaliação</div>';
   document.getElementById('nd-total-perguntas').textContent = total;
   document.getElementById('nd-tempo-est').textContent = Math.ceil(total * 0.5) + ' min';
   document.getElementById('nd-preview-count').style.display = total ? 'block' : 'none';
