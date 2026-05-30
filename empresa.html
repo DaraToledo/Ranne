@@ -5729,14 +5729,19 @@ body.dark .ob-btn { background: #2D5E4A; }
       <div id="p-confirmacao" style="display:none">
         <div class="success-pg">
           <span class="si">✅</span>
-          <h2>Ciclo de monitoramento iniciado!</h2>
-          <p>Compartilhe o link abaixo com sua equipe. O colaborador não precisa fazer login para responder.</p>
-          <div class="link-box" id="diag-link" onclick="copyLink()">Aguarde, gerando link...</div>
-          <div style="display:flex;gap:10px;justify-content:center">
-            <button class="btn btn-primary" onclick="copyLink()">Copiar Link</button>
-            <button class="btn btn-ghost" onclick="pg('diagnosticos',null)">Ver Ciclos de Avaliação</button>
+          <h2>Ciclo criado com sucesso!</h2>
+          <p>Os colaboradores cadastrados já foram notificados no app. Quando abrirem a aba <strong>Testes</strong>, verão as avaliações pendentes automaticamente.</p>
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(45,106,79,.08);border:1.5px solid rgba(45,106,79,.2);border-radius:12px;margin:8px 0 20px;text-align:left;">
+            <span style="font-size:22px;flex-shrink:0">📲</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--card-text);margin-bottom:2px;">Visível no app agora</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.5;">As avaliações aparecem na seção <em>Testes do RH</em> para todos os colaboradores cadastrados. Respostas chegam anonimizadas no seu dashboard.</div>
+            </div>
           </div>
-          <p style="font-size:12px;color:var(--muted);margin-top:16px">O link pode ser compartilhado por e-mail, WhatsApp ou intranet.</p>
+          <div style="display:flex;gap:10px;justify-content:center">
+            <button class="btn btn-primary" onclick="pg('diagnosticos',null)">Ver Ciclos de Avaliação</button>
+            <button class="btn btn-ghost" onclick="pg('novo-diagnostico',null)">+ Criar outro ciclo</button>
+          </div>
         </div>
       </div>
 
@@ -9026,7 +9031,6 @@ async function criarDiagnostico() {
   }
 
   currentDiagId = diagId;
-  document.getElementById('diag-link').textContent = link;
   pg('confirmacao', null);
 
   btn.disabled = false;
