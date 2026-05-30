@@ -8618,12 +8618,22 @@ async function rotearUsuario() {
     }
 
     if (mem) {
-      currentRole = 'colaborador';
-      try {
-        const { data: empData } = await db.from('empresas').select('*').eq('id', mem.empresa_id).maybeSingle();
-        if (empData) currentEmpresa = empData;
-      } catch {}
-      showColaborador(mem.nome || currentUser.user_metadata?.nome || currentUser.email.split('@')[0]);
+      const role = mem.role || mem.cargo_role || 'colaborador';
+      if (role === 'lider') {
+        currentRole = 'lider';
+        try {
+          const { data: empData } = await db.from('empresas').select('*').eq('id', mem.empresa_id).maybeSingle();
+          if (empData) currentEmpresa = empData;
+        } catch {}
+        showLider(mem);
+      } else {
+        currentRole = 'colaborador';
+        try {
+          const { data: empData } = await db.from('empresas').select('*').eq('id', mem.empresa_id).maybeSingle();
+          if (empData) currentEmpresa = empData;
+        } catch {}
+        showColaborador(mem.nome || currentUser.user_metadata?.nome || currentUser.email.split('@')[0]);
+      }
       return;
     }
   } catch(e) {
@@ -8686,6 +8696,8 @@ function showEmpresa() {
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'block';
   document.getElementById('app-colaborador').style.display = 'none';
+  const liderEl = document.getElementById('app-lider');
+  if (liderEl) liderEl.style.display = 'none';
   document.body.classList.remove('collab-ativo');
   // Zera badge do plano se não há ações reais
   localStorage.removeItem('ranne-acoes');
@@ -8722,6 +8734,8 @@ function showColaborador(nome) {
   document.getElementById('onboarding-steps').style.display = 'none';
   document.getElementById('app-empresa').style.display = 'none';
   document.getElementById('app-colaborador').style.display = 'block';
+  const liderEl = document.getElementById('app-lider');
+  if (liderEl) liderEl.style.display = 'none';
   document.body.classList.add('collab-ativo');
   cpg('inicio'); // garante que apenas o início está ativo
   const nameEl = document.getElementById('collab-user-name');
@@ -8736,6 +8750,212 @@ function showColaborador(nome) {
     const jaBv = localStorage.getItem('ranne-bv-' + nome) === hoje;
     if (jaBv) dispararTourSeNecessario();
   }, 2200);
+}
+
+function showLider(mem) {
+  ranneChat.show();
+  document.getElementById('loading-screen').style.display    = 'none';
+  document.getElementById('onboarding').style.display        = 'none';
+  document.getElementById('onboarding-steps').style.display  = 'none';
+  document.getElementById('app-empresa').style.display       = 'none';
+  document.getElementById('app-colaborador').style.display   = 'none';
+  document.getElementById('app-lider').style.display         = 'block';
+  document.body.classList.remove('collab-ativo');
+
+  const nome = mem.nome || currentUser?.email?.split('@')[0] || 'Líder';
+  const ini  = nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+
+  const elNome    = document.getElementById('lider-nome');
+  const elAvatar  = document.getElementById('lider-avatar');
+  const elEmpresa = document.getElementById('lider-empresa-nome');
+  if (elNome)    elNome.textContent    = `Olá, ${nome.split(' ')[0]}`;
+  if (elAvatar)  elAvatar.textContent  = ini;
+  if (elEmpresa) elEmpresa.textContent = currentEmpresa?.nome || '';
+
+  // Carrega dados do time
+  window._liderMem = mem;
+  carregarDadosLider(mem);
+}
+
+async function carregarDadosLider(mem) {
+  if (!currentEmpresa?.id) return;
+
+  try {
+    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+
+    // Busca todos os membros do time (mesmo setor/lider_id ou todos se não tiver setor)
+    const { data: membros } = await db.from('membros_empresa')
+      .select('id, nome, email, user_id, role')
+      .eq('empresa_id', currentEmpresa.id)
+      .neq('role', 'rh');
+
+    const totalTime = (membros || []).filter(m => m.id !== mem.id).length;
+    document.getElementById('lider-total-time').textContent = totalTime || '—';
+
+    if (!membros || membros.length === 0) {
+      _renderMembrosLider([]);
+      return;
+    }
+
+    // Busca check-ins do mês
+    const userIds = membros.map(m => m.user_id).filter(Boolean);
+    let checkins = [];
+    if (userIds.length > 0) {
+      const { data: ci } = await db.from('checkins')
+        .select('user_id, humor, energia, carga, foco')
+        .eq('empresa_id', currentEmpresa.id)
+        .gte('created_at', inicioMes)
+        .in('user_id', userIds);
+      checkins = ci || [];
+    }
+
+    // Agrupa último check-in por user
+    const userMap = {};
+    checkins.forEach(c => { if (!userMap[c.user_id]) userMap[c.user_id] = c; });
+
+    const responderam = Object.keys(userMap).length;
+    const scores = Object.values(userMap).map(c =>
+      Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4)
+    );
+    const scoreTime = scores.length > 0
+      ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)
+      : null;
+    const emRisco = scores.filter(s => s < 55).length;
+
+    document.getElementById('lider-score-time').textContent = scoreTime ?? '—';
+    document.getElementById('lider-resp-time').textContent  = `${responderam}/${totalTime}`;
+    document.getElementById('lider-risco-time').textContent = emRisco;
+
+    // Membros — mostra status sem identificar quem é quem (LGPD)
+    _renderMembrosLider(membros.filter(m => m.id !== mem.id), userMap);
+
+    // Testes enviados pelo RH
+    _carregarTestesLider();
+
+    // Insight IA — silencioso
+    if (scoreTime !== null && responderam > 0) {
+      _gerarInsightLider(scoreTime, emRisco, responderam, totalTime);
+    }
+
+  } catch(e) {
+    console.warn('[carregarDadosLider]', e);
+  }
+}
+
+function _renderMembrosLider(membros, userMap = {}) {
+  const el = document.getElementById('lider-membros-lista');
+  if (!el) return;
+
+  if (membros.length === 0) {
+    el.innerHTML = '<div style="font-size:13px;color:#94a3b8;text-align:center;padding:12px">Nenhum membro no time ainda.</div>';
+    return;
+  }
+
+  // Embaralha a ordem para anonimizar ainda mais
+  const shuffled = [...membros].sort(() => Math.random() - 0.5);
+
+  el.innerHTML = shuffled.map((m, i) => {
+    const ci = userMap[m.user_id];
+    const score = ci ? Math.round(((ci.humor??50)+(ci.energia??50)+(100-(ci.carga??50))+(ci.foco??50))/4) : null;
+    const status = score === null ? 'sem-resp' : score >= 70 ? 'ok' : score >= 55 ? 'atencao' : 'critico';
+    const cor    = status === 'ok' ? '#10B981' : status === 'atencao' ? '#F59E0B' : status === 'critico' ? '#EF4444' : '#CBD5E1';
+    const emoji  = status === 'ok' ? '🟢' : status === 'atencao' ? '🟡' : status === 'critico' ? '🔴' : '⚪';
+    const label  = status === 'ok' ? 'OK' : status === 'atencao' ? 'Atenção' : status === 'critico' ? 'Em risco' : 'Sem resposta';
+
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#F7F9F7;border-radius:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:${cor}22;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">${emoji}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:#1e293b">Membro ${i+1}</div>
+        <div style="font-size:11px;color:#94a3b8">${label}</div>
+      </div>
+      ${score !== null ? `<div style="font-size:16px;font-weight:700;color:${cor}">${score}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+async function _carregarTestesLider() {
+  const el = document.getElementById('lider-testes-content');
+  if (!el || !currentEmpresa?.id) return;
+  try {
+    const { data: testes } = await db.from('testes_enviados_rh')
+      .select('id, teste_id, enviado_em')
+      .eq('empresa_id', currentEmpresa.id)
+      .order('enviado_em', { ascending: false })
+      .limit(5);
+
+    if (!testes || testes.length === 0) {
+      el.innerHTML = '<div style="font-size:13px;color:#94a3b8;text-align:center;padding:12px">Nenhum teste enviado pelo RH.</div>';
+      return;
+    }
+
+    const LABELS = {
+      phq9:'PHQ-9 · Depressão', gad7:'GAD-7 · Ansiedade', pss10:'PSS-10 · Estresse',
+      burnout_ranne:'Risco de Burnout', ansiedade_ranne:'Ansiedade no Trabalho',
+      estresse_ranne:'Estresse Atual', sono_ranne:'Qualidade do Sono',
+      emocional_ranne:'Inteligência Emocional', dass21:'DASS-21',
+    };
+
+    el.innerHTML = testes.map(t => {
+      const label = LABELS[t.teste_id] || t.teste_id;
+      const data  = t.enviado_em ? new Date(t.enviado_em).toLocaleDateString('pt-BR') : '';
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9">
+        <span style="font-size:16px">📋</span>
+        <div style="flex:1">
+          <div style="font-size:12.5px;font-weight:600;color:#1e293b">${label}</div>
+          <div style="font-size:11px;color:#94a3b8">Enviado em ${data}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch { /* silencioso */ }
+}
+
+async function _gerarInsightLider(scoreTime, emRisco, responderam, totalTime) {
+  const el = document.getElementById('lider-insight-content');
+  if (!el) return;
+
+  // Fallback imediato
+  const corFallback = scoreTime >= 70 ? '#10B981' : scoreTime >= 55 ? '#F59E0B' : '#EF4444';
+  const statusFallback = scoreTime >= 70 ? 'Time em boa saúde.' : scoreTime >= 55 ? 'Alguns pontos de atenção no time.' : 'Time precisa de atenção.';
+  el.innerHTML = `<span style="color:${corFallback};font-weight:600">${statusFallback}</span> ${responderam} de ${totalTime} membros responderam este mês.`;
+
+  try {
+    const prompt = `Escreva 2 frases diretas (máx 30 palavras) para um líder sobre seu time.
+Dados: Score ${scoreTime}/100, ${emRisco} em risco de ${totalTime} membros, ${responderam} responderam.
+Tom: prático, empático. Comece com o que mais importa agora.
+Retorne APENAS o texto, sem aspas nem markdown.`;
+
+    const res = await fetch('https://www.rannecare.com.br/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context: 'empresa', messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const texto = (data.reply || '').trim();
+    if (texto && texto.length > 10) {
+      el.innerHTML = `<span style="font-size:13px;color:#475569;line-height:1.6">${texto}</span>`;
+    }
+  } catch { /* mantém fallback */ }
+}
+
+function liderFazerCheckin() {
+  // Leva o líder para o check-in do colaborador
+  document.getElementById('app-lider').style.display = 'none';
+  document.getElementById('app-colaborador').style.display = 'block';
+  document.body.classList.add('collab-ativo');
+  cpg('checkin');
+  // Botão voltar para o app do líder
+  setTimeout(() => {
+    const backBtn = document.createElement('button');
+    backBtn.textContent = '← Voltar ao painel';
+    backBtn.style.cssText = 'position:fixed;top:12px;left:12px;z-index:999;background:rgba(0,0,0,.6);color:#fff;border:none;padding:8px 14px;border-radius:10px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif';
+    backBtn.id = 'lider-back-btn';
+    backBtn.onclick = () => {
+      document.getElementById('app-colaborador').style.display = 'none';
+      document.body.classList.remove('collab-ativo');
+      document.getElementById('app-lider').style.display = 'block';
+      backBtn.remove();
+    };
+    document.body.appendChild(backBtn);
+  }, 300);
 }
 
 /* ── EMPRESA FUNCTIONS ── */
@@ -17230,6 +17450,90 @@ body.dark .chat-welcome-sugg:hover { background: #2D5E4A; color: #fff; }
     </button>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════
+     APP LÍDER
+     ══════════════════════════════════════ -->
+<div id="app-lider" style="display:none">
+  <div class="app-colab-wrap" style="max-width:480px;margin:0 auto;padding:0 0 80px">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#1A2B14,#2D5E4A);padding:24px 20px 20px;position:sticky;top:0;z-index:10">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase">Líder</div>
+          <div style="font-size:18px;font-weight:700;color:#fff" id="lider-nome">Olá</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff" id="lider-avatar">L</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,.6)" id="lider-empresa-nome">Carregando...</div>
+    </div>
+
+    <!-- Score do time -->
+    <div style="padding:20px 16px 0">
+      <div style="background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Saúde do Seu Time</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:#F7F9F7;border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:28px;font-weight:800;color:#2D5E4A" id="lider-score-time">—</div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px">Score do time</div>
+          </div>
+          <div style="background:#F7F9F7;border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:28px;font-weight:800;color:#2D5E4A" id="lider-resp-time">—</div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px">Responderam</div>
+          </div>
+          <div style="background:#FEF2F2;border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:28px;font-weight:800;color:#EF4444" id="lider-risco-time">0</div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px">Em risco</div>
+          </div>
+          <div style="background:#F7F9F7;border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:28px;font-weight:800;color:#2D5E4A" id="lider-total-time">—</div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px">No time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insight IA do time -->
+      <div style="background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:14px" id="lider-insight-card">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Análise do Time</div>
+        <div id="lider-insight-content" style="font-size:13px;color:#475569;line-height:1.6">
+          Disponível após os primeiros check-ins do time.
+        </div>
+      </div>
+
+      <!-- Testes pendentes do time -->
+      <div style="background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:14px" id="lider-testes-card">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Testes Enviados pelo RH</div>
+        <div id="lider-testes-content">
+          <div style="font-size:13px;color:#94a3b8;text-align:center;padding:12px">Nenhum teste pendente para o time.</div>
+        </div>
+      </div>
+
+      <!-- Membros do time -->
+      <div style="background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Membros do Time</div>
+        <div id="lider-membros-lista" style="display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:13px;color:#94a3b8;text-align:center;padding:12px">Carregando...</div>
+        </div>
+        <div style="margin-top:10px;padding:10px 12px;background:#F7F9F7;border-radius:10px;font-size:11px;color:#94a3b8;display:flex;gap:6px;align-items:flex-start">
+          <span>🔒</span>
+          <span>Scores individuais são anônimos — você vê apenas o status geral de cada membro, sem identificação de quem está em risco.</span>
+        </div>
+      </div>
+
+      <!-- Check-in próprio -->
+      <div style="background:linear-gradient(135deg,#1A2B14,#2D5E4A);border-radius:16px;padding:20px;margin-bottom:14px">
+        <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:6px">Seu check-in semanal</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7);margin-bottom:14px">Como líder, você também faz check-in. Seus dados são privados.</div>
+        <button onclick="liderFazerCheckin()" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;width:100%">Fazer check-in agora →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <script>
 const ranneChat = (() => {
