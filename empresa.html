@@ -5060,25 +5060,25 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div class="metrics" style="margin-bottom:20px;">
             <div class="metric m-amber">
               <div class="metric-label">Score Geral</div>
-              <div class="metric-value v-amber" style="font-size:38px;letter-spacing:-2px"><span class="count-up" data-target="68">0</span></div>
+              <div class="metric-value v-amber" style="font-size:38px;letter-spacing:-2px"><span id="score-geral-val">—</span></div>
               <div class="metric-sub">de 100 pontos</div>
-              <span class="chip chip-amber">⚠ Atenção</span>
+              <span class="chip chip-amber" id="chip-score-status">⚠ Atenção</span>
             </div>
             <div class="metric m-blue">
               <div class="metric-label">Colaboradores Ativos</div>
-              <div class="metric-value"><span class="count-up" data-target="48">0</span></div>
-              <div class="metric-sub" id="taxa-sub">responderam ao QUSP</div>
+              <div class="metric-value"><span id="cols-ativos-val">—</span></div>
+              <div class="metric-sub" id="taxa-sub">cadastrados</div>
             </div>
             <div class="metric m-red">
               <div class="metric-label">Em Risco Elevado</div>
-              <div class="metric-value v-red"><span class="count-up" data-target="3">0</span></div>
+              <div class="metric-value v-red"><span id="em-risco-val">0</span></div>
               <div class="metric-sub">intervenção imediata</div>
-              <span class="chip chip-red">Crítico</span>
+              <span class="chip chip-red" id="chip-risco" style="display:none">Crítico</span>
             </div>
             <div class="metric m-green">
               <div class="metric-label">Taxa de Resposta</div>
-              <div class="metric-value v-green"><span class="count-up" data-target="84" data-suffix="%">0%</span></div>
-              <div class="metric-sub">equipe engajada</div>
+              <div class="metric-value v-green"><span id="taxa-resp-val">—</span></div>
+              <div class="metric-sub">este mês</div>
             </div>
           </div>
 
@@ -7050,31 +7050,29 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
             <div style="background:#F7F4EF;border-radius:10px;padding:10px 12px;border:1px solid var(--border);">
               <div style="font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Score Geral</div>
-              <div style="font-size:22px;font-weight:700;color:var(--mint);margin:2px 0;" id="rel-score-geral">74</div>
-              <div style="font-size:12.0px;color:var(--green);font-weight:600;">↑ +6 vs. mês anterior</div>
+              <div style="font-size:22px;font-weight:700;color:var(--mint);margin:2px 0;" id="rel-score-geral">—</div>
+              <div style="font-size:12.0px;color:var(--muted);" id="rel-score-evolucao">aguardando dados</div>
             </div>
             <div style="background:#F7F4EF;border-radius:10px;padding:10px 12px;border:1px solid var(--border);">
               <div style="font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Taxa Resposta</div>
-              <div style="font-size:22px;font-weight:700;color:var(--mint);margin:2px 0;" id="rel-taxa">82%</div>
-              <div style="font-size:12.0px;color:var(--muted);">equipe engajada</div>
+              <div style="font-size:22px;font-weight:700;color:var(--mint);margin:2px 0;" id="rel-taxa">—</div>
+              <div style="font-size:12.0px;color:var(--muted);">este mês</div>
             </div>
             <div style="background:#FEF5E7;border-radius:10px;padding:10px 12px;border:1px solid rgba(212,137,26,.15);">
               <div style="font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Dimensão crítica</div>
-              <div style="font-size:13px;font-weight:700;color:#D4891A;margin:4px 0;">Burnout (68)</div>
+              <div style="font-size:13px;font-weight:700;color:#D4891A;margin:4px 0;" id="rel-dim-critica">—</div>
               <div style="font-size:12.0px;color:var(--muted);">requer atenção</div>
             </div>
             <div style="background:#FDECEA;border-radius:10px;padding:10px 12px;border:1px solid rgba(192,57,43,.12);">
               <div style="font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;">Setor em risco</div>
-              <div style="font-size:13px;font-weight:700;color:#C0392B;margin:4px 0;">Comercial (54)</div>
+              <div style="font-size:13px;font-weight:700;color:#C0392B;margin:4px 0;" id="rel-setor-risco">—</div>
               <div style="font-size:12.0px;color:var(--muted);">intervenção indicada</div>
             </div>
           </div>
           <div style="border-top:1px solid var(--border);padding-top:12px;">
             <div style="font-size:13.0px;color:var(--muted);margin-bottom:10px;">Recomendações para o próximo ciclo:</div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> Priorizar intervenções no setor Comercial — score crítico (54)</div>
-              <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> Ações de prevenção ao Burnout para toda a empresa</div>
-              <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> Reenviar QUSP para 8 colaboradores pendentes antes de 31/mai</div>
+            <div style="display:flex;flex-direction:column;gap:6px;" id="rel-recomendacoes">
+              <div style="font-size:12px;color:var(--muted);font-style:italic">Disponível após o primeiro ciclo de avaliação.</div>
             </div>
           </div>
           <div style="display:flex;gap:8px;margin-top:14px;">
@@ -7089,23 +7087,8 @@ body.dark .ob-btn { background: #2D5E4A; }
             <span class="card-title">Histórico de Ciclos de Avaliação</span>
             <button class="btn btn-outline btn-sm" onclick="exportarHistoricoCiclos()">Exportar</button>
           </div>
-          <div style="display:flex;flex-direction:column;">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-              <div><div style="font-size:12.5px;font-weight:600;">Q2/2026 — Maio</div><div style="font-size:12.5px;color:var(--muted);margin-top:2px;">82% responderam · Score: 74 · Em andamento</div></div>
-              <span class="chip chip-amber">Ativo</span>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-              <div><div style="font-size:12.5px;font-weight:600;">Q1/2026 — Abril</div><div style="font-size:12.5px;color:var(--muted);margin-top:2px;">84% responderam · Score: 68</div></div>
-              <button class="btn btn-outline btn-sm" onclick="pg('resultados',null)">Ver →</button>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
-              <div><div style="font-size:12.5px;font-weight:600;">Q4/2025 — Janeiro</div><div style="font-size:12.5px;color:var(--muted);margin-top:2px;">76% responderam · Score: 71</div></div>
-              <button class="btn btn-outline btn-sm" onclick="toast('Abrindo ciclo Q4/2025...')">Ver →</button>
-            </div>
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;">
-              <div><div style="font-size:12.5px;font-weight:600;">Q3/2025 — Outubro</div><div style="font-size:12.5px;color:var(--muted);margin-top:2px;">91% responderam · Score: 74</div></div>
-              <button class="btn btn-outline btn-sm" onclick="toast('Abrindo ciclo Q3/2025...')">Ver →</button>
-            </div>
+          <div style="display:flex;flex-direction:column;" id="historico-ciclos-lista">
+            <div style="font-size:13px;color:var(--muted);padding:16px;text-align:center;font-style:italic">Carregando histórico...</div>
           </div>
         </div>
 
@@ -8804,22 +8787,25 @@ async function loadDashboardData() {
   document.getElementById('dash-greeting').textContent = `Olá, ${nome}`;
 
   // Zera tudo antes de buscar — sem dados mockados
-  _setMetricNum('data-target="68"',  '—');
-  _setMetricNum('data-target="48"',  '—');
-  _setMetricNum('data-target="3"',   '—');
-  _setMetricNum('data-target="84"',  '—');
+  _setMetricVal('score-geral-val', '—');
+  _setMetricVal('cols-ativos-val', '—');
+  _setMetricVal('em-risco-val',    '0');
+  _setMetricVal('taxa-resp-val',   '—');
   document.getElementById('dash-sub').textContent = 'Carregando...';
+  ['isa-burnout','isa-estresse','isa-sono','isa-social','isa-geral'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = '—'; el.style.color = ''; }
+  });
 
   try {
     const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
 
     const [membrosRes, checkinsRes, diagsRes] = await Promise.all([
-      db.from('membros_empresa').select('id, nome, email, user_id').eq('empresa_id', currentEmpresa.id),
+      db.from('membros_empresa').select('id, nome, email, user_id, setor').eq('empresa_id', currentEmpresa.id),
       db.from('checkins').select('user_id, humor, energia, carga, foco, created_at')
-        .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes)
-        .neq('tipo', 'feminino'),
+        .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes).neq('tipo', 'feminino'),
       db.from('diagnosticos').select('*').eq('empresa_id', currentEmpresa.id)
-        .order('created_at', { ascending: false }).limit(5)
+        .order('created_at', { ascending: false }).limit(5),
     ]);
 
     const membros  = membrosRes.data  || [];
@@ -8827,25 +8813,55 @@ async function loadDashboardData() {
     const diags    = diagsRes.data    || [];
     const totalCols = membros.length;
 
-    // Score médio — pega o check-in mais recente de cada colaborador
+    // Último check-in por colaborador
     const userMap = {};
     checkins.forEach(c => { if (!userMap[c.user_id]) userMap[c.user_id] = c; });
     const unicos = Object.values(userMap);
     const responderam = unicos.length;
 
-    let scoreGeral = '—'; let emRisco = 0;
+    // Scores e dimensões
+    let scoreGeral = null; let emRisco = 0;
+    const dimScores = { burnout: [], estresse: [], sono: [], social: [] };
+
     if (unicos.length > 0) {
-      const scores = unicos.map(c => Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4));
+      const scores = unicos.map(c => {
+        const s = Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4);
+        dimScores.burnout.push(100 - (c.carga??50));
+        dimScores.estresse.push(c.energia??50);
+        dimScores.sono.push(c.humor??50);
+        dimScores.social.push(c.foco??50);
+        return s;
+      });
       scoreGeral = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
       emRisco = scores.filter(s=>s<55).length;
     }
+
+    const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : null;
+    const isaB   = avg(dimScores.burnout);
+    const isaE   = avg(dimScores.estresse);
+    const isaS   = avg(dimScores.sono);
+    const isaSoc = avg(dimScores.social);
+    const isaGeral = (isaB && isaE && isaS && isaSoc) ? Math.round((isaB+isaE+isaS+isaSoc)/4) : null;
+
     const taxaResp = totalCols > 0 ? Math.round((responderam/totalCols)*100) : 0;
 
-    _setMetricNum('data-target="68"', scoreGeral);
-    _setMetricNum('data-target="48"', totalCols || '—');
-    _setMetricNum('data-target="3"',  emRisco);
-    _setMetricNum('data-target="84"', taxaResp > 0 ? taxaResp + '%' : '—');
+    // Atualiza métricas
+    _setMetricVal('score-geral-val', scoreGeral ?? '—');
+    _setMetricVal('cols-ativos-val', totalCols  || '—');
+    _setMetricVal('em-risco-val',    emRisco);
+    _setMetricVal('taxa-resp-val',   taxaResp > 0 ? taxaResp + '%' : '—');
 
+    // ISA rings
+    _setIsaVal('isa-burnout',  isaB);
+    _setIsaVal('isa-estresse', isaE);
+    _setIsaVal('isa-sono',     isaS);
+    _setIsaVal('isa-social',   isaSoc);
+    _setIsaVal('isa-geral',    isaGeral);
+
+    // Chip status
+    _atualizarChipScore(scoreGeral);
+
+    // Sub-texto
     const sub = document.getElementById('dash-sub');
     if (sub) {
       if (responderam > 0) sub.textContent = `${responderam} de ${totalCols} colaboradores fizeram check-in este mês`;
@@ -8853,10 +8869,14 @@ async function loadDashboardData() {
       else sub.textContent = 'Nenhum check-in este mês — convide os colaboradores';
     }
 
-    ['isa-burnout','isa-estresse','isa-sono','isa-social'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el && !el.textContent) el.textContent = '—';
-    });
+    // Heatmap dinâmico
+    _renderHeatmapSetores(membros, userMap);
+
+    // Relatório mensal
+    _atualizarRelatorioMensal(scoreGeral, taxaResp, diags, isaB, isaE, isaS, isaSoc);
+
+    // "Como está o time" — IA silenciosa
+    _gerarInsightTime(scoreGeral, emRisco, responderam, totalCols, isaB, isaE, isaS, isaSoc);
 
   } catch(e) {
     const sub = document.getElementById('dash-sub');
@@ -8864,7 +8884,6 @@ async function loadDashboardData() {
     console.warn('[loadDashboardData]', e);
   }
 
-  // Mostra métricas
   document.getElementById('skelWrap').style.display = 'none';
   document.getElementById('realMetrics').style.display = 'block';
 
@@ -8872,13 +8891,197 @@ async function loadDashboardData() {
   loadMembros();
 }
 
-// Atualiza um card de métrica pelo data-target
-function _setMetricNum(attr, val) {
-  const el = document.querySelector(`[${attr}]`);
-  if (el) {
-    el.textContent = val;
-    // NÃO remove data-target para que a função possa ser chamada novamente
+function _setMetricVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function _setIsaVal(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = val ?? '—';
+  if (val !== null) {
+    el.style.color = val >= 70 ? '#10B981' : val >= 55 ? '#F59E0B' : '#EF4444';
   }
+}
+
+function _atualizarChipScore(score) {
+  const chip = document.getElementById('chip-score-status');
+  if (!chip || score === null) return;
+  if (score >= 70)      { chip.className = 'chip chip-green'; chip.textContent = '✓ Saudável'; }
+  else if (score >= 55) { chip.className = 'chip chip-amber'; chip.textContent = '⚠ Atenção'; }
+  else                  { chip.className = 'chip chip-red';   chip.textContent = '⚠ Crítico'; }
+}
+
+function _renderHeatmapSetores(membros, userMap) {
+  const el = document.getElementById('heatmap-setores');
+  if (!el) return;
+
+  const setores = {};
+  membros.forEach(m => {
+    const s = m.setor || 'Geral';
+    if (!setores[s]) setores[s] = [];
+    setores[s].push(m);
+  });
+
+  const entradas = Object.entries(setores);
+  if (entradas.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px;text-align:center;grid-column:1/-1">Nenhum colaborador cadastrado ainda.</div>';
+    return;
+  }
+
+  el.innerHTML = entradas.map(([setor, cols]) => {
+    const scores = cols.map(c => {
+      const ci = userMap[c.user_id];
+      if (!ci) return null;
+      return Math.round(((ci.humor??50)+(ci.energia??50)+(100-(ci.carga??50))+(ci.foco??50))/4);
+    }).filter(s => s !== null);
+
+    if (scores.length < 3) {
+      return `<div class="sector-card" style="opacity:.55">
+        <div class="sector-name">${setor}</div>
+        <div class="sector-score" style="font-size:13px;color:var(--muted)">—</div>
+        <div class="sector-meta">${cols.length} pessoa${cols.length>1?'s':''} · privado (LGPD)</div>
+      </div>`;
+    }
+
+    const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+    const cardClass = avg >= 70 ? 'sector-ok' : avg >= 55 ? 'sector-warn' : 'sector-crit';
+    const scoreClass = avg >= 70 ? 's-ok' : avg >= 55 ? 's-warn' : 's-crit';
+    const status = avg >= 70 ? 'Saudável' : avg >= 55 ? 'Atenção' : 'Crítico';
+
+    return `<div class="sector-card ${cardClass}">
+      <div class="sector-name">${setor}</div>
+      <div class="sector-score ${scoreClass}">${avg}</div>
+      <div class="sector-meta">${cols.length} pessoa${cols.length>1?'s':''} · ${status}</div>
+    </div>`;
+  }).join('');
+}
+
+function _atualizarRelatorioMensal(scoreGeral, taxaResp, diags, isaB, isaE, isaS, isaSoc) {
+  const elScore = document.getElementById('rel-score-geral');
+  if (elScore) elScore.textContent = scoreGeral ?? '—';
+
+  const elTaxa = document.getElementById('rel-taxa');
+  if (elTaxa) elTaxa.textContent = taxaResp > 0 ? taxaResp + '%' : '—';
+
+  const dims = [
+    { nome: 'Burnout', val: isaB }, { nome: 'Estresse', val: isaE },
+    { nome: 'Sono', val: isaS },    { nome: 'Social', val: isaSoc },
+  ].filter(d => d.val !== null).sort((a,b) => a.val - b.val);
+
+  const elDimCrit = document.getElementById('rel-dim-critica');
+  if (elDimCrit) elDimCrit.textContent = dims.length > 0 ? `${dims[0].nome} (${dims[0].val})` : '—';
+
+  const elSetor = document.getElementById('rel-setor-risco');
+  if (elSetor) {
+    const cards = document.querySelectorAll('.sector-crit .sector-name');
+    elSetor.textContent = cards.length > 0 ? cards[0].textContent + ' (crítico)' : '—';
+  }
+
+  _gerarRecomendacoesRelatorio(scoreGeral, taxaResp, dims);
+}
+
+async function _gerarRecomendacoesRelatorio(scoreGeral, taxaResp, dims) {
+  const el = document.getElementById('rel-recomendacoes');
+  if (!el) return;
+
+  el.innerHTML = _recomendacoesFallback(scoreGeral, taxaResp, dims);
+  if (!scoreGeral) return;
+
+  try {
+    const empresa = currentEmpresa?.nome || 'a empresa';
+    const dimStr = dims.map(d => `${d.nome}: ${d.val}/100`).join(', ');
+    const prompt = `Gere exatamente 3 recomendações práticas e curtas para o RH de ${empresa}.
+Dados: Score geral ${scoreGeral}/100, Taxa de resposta ${taxaResp}%, Dimensões: ${dimStr || 'sem dados'}.
+Retorne APENAS JSON válido: ["recomendação 1", "recomendação 2", "recomendação 3"]
+Cada recomendação: máximo 12 palavras, direta, específica.`;
+
+    const res = await fetch('https://www.rannecare.com.br/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context: 'empresa', messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const match = (data.reply || '').match(/\[[\s\S]*\]/);
+    if (!match) return;
+    const recs = JSON.parse(match[0]);
+    if (!Array.isArray(recs) || recs.length === 0) return;
+    el.innerHTML = recs.map(r =>
+      `<div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> ${r}</div>`
+    ).join('');
+  } catch { /* mantém fallback */ }
+}
+
+function _recomendacoesFallback(scoreGeral, taxaResp, dims) {
+  const recs = [];
+  if (!scoreGeral) {
+    recs.push('Realize o primeiro ciclo de avaliação para gerar recomendações personalizadas.');
+    recs.push('Convide os colaboradores a fazerem o check-in semanal.');
+    recs.push('Configure os setores dos colaboradores para ativar o heatmap.');
+  } else {
+    if (taxaResp < 60) recs.push(`Aumentar engajamento — ${taxaResp}% de resposta. Reenviar convite aos pendentes.`);
+    if (dims[0]?.val < 60) recs.push(`Priorizar ações de ${dims[0].nome} — dimensão mais crítica (${dims[0].val}/100).`);
+    if (scoreGeral < 65) recs.push('Score abaixo de 65 — considerar rodada de 1:1 com gestores esta semana.');
+    while (recs.length < 3) recs.push(recs.length === 1 ? 'Manter ciclos mensais de avaliação para acompanhar evolução.' : 'Compartilhar resultados agregados com a liderança.');
+  }
+  return recs.slice(0,3).map(r =>
+    `<div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;"><span style="color:var(--green);font-size:13px;">✓</span> ${r}</div>`
+  ).join('');
+}
+
+async function _gerarInsightTime(scoreGeral, emRisco, responderam, totalCols, isaB, isaE, isaS, isaSoc) {
+  const el = document.getElementById('status-team-content');
+  if (!el) return;
+
+  if (!scoreGeral || responderam === 0) {
+    el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
+      Disponível após o primeiro check-in ou ciclo de monitoramento.</div>`;
+    return;
+  }
+
+  // Fallback imediato
+  el.innerHTML = _insightTimeFallback(scoreGeral, emRisco, responderam, totalCols);
+
+  try {
+    const empresa = currentEmpresa?.nome || 'a empresa';
+    const dims = `Burnout: ${isaB??'?'}, Estresse: ${isaE??'?'}, Sono: ${isaS??'?'}, Social: ${isaSoc??'?'}`;
+    const prompt = `Analista de saúde organizacional. Escreva 2-3 frases (máx 40 palavras) sobre o estado atual do time de ${empresa}.
+Dados: Score ${scoreGeral}/100, ${emRisco} em risco de ${totalCols} total, Dimensões: ${dims}.
+Tom: direto, empático. Comece com o insight principal. Sem introduções genéricas.
+Retorne APENAS o texto, sem aspas nem markdown.`;
+
+    const res = await fetch('https://www.rannecare.com.br/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context: 'empresa', messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const texto = (data.reply || '').trim();
+    if (!texto || texto.length < 10) return;
+
+    const cor = scoreGeral >= 70 ? '#10B981' : scoreGeral >= 55 ? '#F59E0B' : '#EF4444';
+    const emoji = scoreGeral >= 70 ? '🟢' : scoreGeral >= 55 ? '🟡' : '🔴';
+
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="font-size:20px">${emoji}</span>
+        <span style="font-size:18px;font-weight:700;color:${cor}">${scoreGeral}<span style="font-size:11px;color:var(--muted);font-weight:400">/100</span></span>
+      </div>
+      <div style="font-size:12.5px;color:var(--card-text);line-height:1.6">${texto}</div>
+      ${emRisco > 0 ? `<div style="margin-top:10px;padding:8px 10px;background:#FEF2F2;border-radius:8px;border-left:3px solid #EF4444;font-size:12px;color:#991B1B;font-weight:600">⚠ ${emRisco} colaborador${emRisco>1?'es':''} em risco elevado</div>` : ''}`;
+  } catch { /* mantém fallback */ }
+}
+
+function _insightTimeFallback(scoreGeral, emRisco, responderam, totalCols) {
+  const cor = scoreGeral >= 70 ? '#10B981' : scoreGeral >= 55 ? '#F59E0B' : '#EF4444';
+  const emoji = scoreGeral >= 70 ? '🟢' : scoreGeral >= 55 ? '🟡' : '🔴';
+  const status = scoreGeral >= 70 ? 'Time em boa saúde organizacional.' : scoreGeral >= 55 ? 'Atenção a alguns indicadores do time.' : 'Situação de atenção — ação recomendada.';
+  return `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <span style="font-size:20px">${emoji}</span>
+      <span style="font-size:18px;font-weight:700;color:${cor}">${scoreGeral}<span style="font-size:11px;color:var(--muted);font-weight:400">/100</span></span>
+    </div>
+    <div style="font-size:12.5px;color:var(--card-text);line-height:1.6">${status} ${responderam} de ${totalCols} responderam este mês.</div>
+    ${emRisco > 0 ? `<div style="margin-top:10px;padding:8px 10px;background:#FEF2F2;border-radius:8px;border-left:3px solid #EF4444;font-size:12px;color:#991B1B;font-weight:600">⚠ ${emRisco} colaborador${emRisco>1?'es':''} em risco elevado</div>` : ''}`;
 }
 
 /* ─────────────────────────────────────
@@ -8886,7 +9089,7 @@ function _setMetricNum(attr, val) {
    ───────────────────────────────────── */
 async function loadDiagnosticos() {
   const lista = document.getElementById('diagnosticos-lista');
-  if (!lista) return;
+  const historico = document.getElementById('historico-ciclos-lista');
 
   try {
     const { data: diags } = await db
@@ -8905,7 +9108,7 @@ async function loadDiagnosticos() {
       return;
     }
 
-    lista.innerHTML = diags.map(d => {
+    if (lista) lista.innerHTML = diags.map(d => {
       const isAtivo = d.status === 'ativo';
       return `<div class="diag-item">
         <div class="diag-dot ${isAtivo ? 'dot-green' : 'dot-gray'}"></div>
@@ -8921,12 +9124,31 @@ async function loadDiagnosticos() {
         </div>
       </div>`;
     }).join('');
+
+    // Histórico de ciclos no relatório
+    if (historico) {
+      if (!diags || diags.length === 0) {
+        historico.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px;text-align:center;font-style:italic">Nenhum ciclo criado ainda.</div>';
+      } else {
+        historico.innerHTML = diags.map((d, i) => {
+          const isAtivo = d.status === 'ativo';
+          const border = i < diags.length - 1 ? 'border-bottom:1px solid var(--border);' : '';
+          return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;${border}">
+            <div>
+              <div style="font-size:12.5px;font-weight:600;">${d.nome}</div>
+              <div style="font-size:12.5px;color:var(--muted);margin-top:2px;">${d.taxa_resposta ? d.taxa_resposta + '% responderam' : '—'} · Score: ${d.score_geral || '—'}</div>
+            </div>
+            ${isAtivo
+              ? `<span class="chip chip-amber">Ativo</span>`
+              : `<button class="btn btn-outline btn-sm" onclick="verResultados('${d.id}')">Ver →</button>`}
+          </div>`;
+        }).join('');
+      }
+    }
+
   } catch {
-    // Demo fallback
-    lista.innerHTML = `
-      <div class="diag-item"><div class="diag-dot dot-gray"></div><div class="diag-info"><h3>Diagnóstico Q1 2026</h3><p>01 abr → 15 abr 2026 · 21 respondentes</p></div><div class="diag-stats"><div class="dstat"><div class="dv v-green">84%</div><div class="dl">Resposta</div></div><div class="dstat"><div class="dv v-amber">68</div><div class="dl">Score</div></div><span class="status-pill sp-gray">Encerrado</span><button class="btn btn-outline btn-sm" onclick="pg('resultados',null)">Ver Resultados</button></div></div>
-      <div class="diag-item"><div class="diag-dot dot-green"></div><div class="diag-info"><h3>Diagnóstico Lideranças</h3><p>20 abr → 30 abr 2026 · Ativo agora</p></div><div class="diag-stats"><div class="dstat"><div class="dv v-amber">48%</div><div class="dl">Resposta</div></div><div class="dstat"><div class="dv">—</div><div class="dl">Score</div></div><span class="status-pill sp-green">Ativo</span><button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-enc').classList.add('open')">Encerrar</button></div></div>
-    `;
+    if (lista) lista.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Erro ao carregar diagnósticos.</div>';
+    if (historico) historico.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px;text-align:center">Sem conexão.</div>';
   }
 }
 
