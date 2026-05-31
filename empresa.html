@@ -5765,7 +5765,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div style="display:flex;align-items:center;gap:12px;"><button class="mob-menu-btn" onclick="toggleSidebar()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="page-title" id="res-titulo">Resultados</div><div class="page-sub" id="res-sub">—</div></div>
           <div style="display:flex;gap:8px">
             <button class="btn btn-ghost btn-sm" onclick="pg('diagnosticos',null)">← Voltar</button>
-            <button class="btn btn-outline btn-sm" onclick="toast('Relatório enviado por e-mail!')">Exportar Relatório</button>
+            <button class="btn btn-outline btn-sm" onclick="toast('📄 Use o botão Exportar NR-1 na área de Relatórios para gerar o documento completo.')">Exportar Relatório</button>
           </div>
         </div>
         <div class="res-grid">
@@ -9670,13 +9670,14 @@ async function criarDiagnostico() {
     // Remove duplicatas
     const testesUnicos = [...new Set(todosTestes)];
 
-    // Registra todos na tabela testes_enviados_rh
+    // Registra todos na tabela testes_enviados_rh com o diagnostico_id
     if (testesUnicos.length > 0 && currentUser?.id) {
       const registros = testesUnicos.map(teste_id => ({
-        empresa_id: currentEmpresa.id,
+        empresa_id:    currentEmpresa.id,
         teste_id,
-        enviado_por: currentUser.id,
-        enviado_em: new Date().toISOString()
+        enviado_por:   currentUser.id,
+        enviado_em:    new Date().toISOString(),
+        diagnostico_id: diagId
       }));
       const { error: testeErr } = await db.from('testes_enviados_rh').insert(registros);
       if (testeErr) console.warn('[testes_enviados_rh]', testeErr);
@@ -10615,17 +10616,15 @@ async function _verificarEGerarPlano() {
 
     const [checkinsRes, testesRes] = await Promise.all([
       db.from('checkins').select('id').eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes).limit(1),
-      db.from('testes_realizados').select('id').eq('empresa_id', currentEmpresa.id).limit(1),
+      db.from('testes_realizados').select('id').eq('user_id', currentUser?.id || '').limit(1),
     ]);
 
     const temCheckins = (checkinsRes.data || []).length > 0;
     const temTestes   = (testesRes.data  || []).length > 0;
 
-    // Só gera se houver check-ins E testes respondidos
     if (temCheckins && temTestes) {
       gerarPlanoIA();
     }
-    // Sem dados: estado vazio permanece sem mensagem de loading
   } catch { /* sem dados, sem geração */ }
 }
 
@@ -14602,15 +14601,35 @@ const TESTES_RH_LABELS = {
 };
 
 async function carregarTestesRH() {
-  if (!currentUser?.id) return;
+  if (!currentUser?.id || !currentEmpresa?.id) return;
   try {
-    // Busca testes enviados pelo RH para todos os colaboradores
+    // Busca testes da empresa que tenham ciclo ativo associado
     const { data: enviados } = await db
       .from('testes_enviados_rh')
-      .select('id, teste_id, enviado_em, enviado_por')
+      .select('id, teste_id, enviado_em, enviado_por, diagnostico_id')
+      .eq('empresa_id', currentEmpresa.id)
       .order('enviado_em', { ascending: false });
 
     if (!enviados || enviados.length === 0) {
+      _renderTestesRH([], []);
+      return;
+    }
+
+    // Busca diagnósticos ativos da empresa para filtrar testes de ciclos encerrados
+    const { data: diagsAtivos } = await db
+      .from('diagnosticos')
+      .select('id')
+      .eq('empresa_id', currentEmpresa.id)
+      .eq('status', 'ativo');
+
+    const diagAtivosSet = new Set((diagsAtivos || []).map(d => d.id));
+
+    // Filtra apenas testes de ciclos ativos (ou sem diagnóstico vinculado)
+    const enviadosFiltrados = enviados.filter(e =>
+      !e.diagnostico_id || diagAtivosSet.has(e.diagnostico_id)
+    );
+
+    if (enviadosFiltrados.length === 0) {
       _renderTestesRH([], []);
       return;
     }
@@ -14620,12 +14639,12 @@ async function carregarTestesRH() {
       .from('testes_realizados')
       .select('teste_id, realizado_em')
       .eq('user_id', currentUser.id)
-      .in('teste_id', enviados.map(e => e.teste_id));
+      .in('teste_id', enviadosFiltrados.map(e => e.teste_id));
 
     const respondidosSet = new Set((respondidos || []).map(r => r.teste_id));
 
-    const pendentes   = enviados.filter(e => !respondidosSet.has(e.teste_id));
-    const concluidos  = enviados.filter(e => respondidosSet.has(e.teste_id));
+    const pendentes  = enviadosFiltrados.filter(e => !respondidosSet.has(e.teste_id));
+    const concluidos = enviadosFiltrados.filter(e => respondidosSet.has(e.teste_id));
 
     _renderTestesRH(pendentes, concluidos);
   } catch(e) {
