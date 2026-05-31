@@ -10367,9 +10367,16 @@ async function buscarProfissionais() {
       profCircle = L.circle([lat, lon], { radius:8000, color:'#4ECBA0', fillOpacity:.06, weight:1.5 }).addTo(profMap);
 
       const elementos = await buscarOverpass(lat, lon, tipo);
+      const vistos = new Set();
       profResultsCache = elementos
         .map(el => normalizarElemento(el, lat, lon))
         .filter(Boolean)
+        .filter(p => {
+          const key = p.nome + '|' + (p.endereco||'');
+          if (vistos.has(key)) return false;
+          vistos.add(key);
+          return true;
+        })
         .sort((a,b) => a.dist - b.dist)
         .slice(0, 40);
 
@@ -12232,9 +12239,9 @@ async function abrirFicha(colaboradorId) {
   fichaColaboradorId = colaboradorId;
   pg('ficha', null);
 
-  // Busca dados do colaborador
   try {
-    const { data: col } = await db.from('colaboradores')
+    // Busca dados do colaborador em membros_empresa
+    const { data: col } = await db.from('membros_empresa')
       .select('*').eq('id', colaboradorId).single();
 
     if (!col) return;
@@ -12243,62 +12250,83 @@ async function abrirFicha(colaboradorId) {
     document.getElementById('ficha-avatar').textContent = initials;
     document.getElementById('ficha-nome').textContent = col.nome || '—';
     document.getElementById('ficha-nome-hdr').textContent = col.nome || '—';
-    document.getElementById('ficha-cargo').textContent = col.cargo || 'Colaborador';
+    document.getElementById('ficha-cargo').textContent = col.role || 'Colaborador';
     document.getElementById('ficha-info-hdr').textContent = `${col.email || '—'} · Cadastrado em ${formatDate(col.created_at)}`;
 
-// Nota ética visível no topo da ficha
-const notaEl = document.getElementById('ficha-nota-etica');
-if (notaEl) notaEl.style.display = 'flex';
-  
-    // Carrega respostas do colaborador
-    const { data: respostas } = await db.from('respostas')
-      .select('*')
-      .eq('colaborador_id', colaboradorId)
-      .order('enviado_em', { ascending: false });
+    const notaEl = document.getElementById('ficha-nota-etica');
+    if (notaEl) notaEl.style.display = 'flex';
 
-    const total = respostas?.length || 0;
+    if (!col.user_id) {
+      // Colaborador ainda não fez login
+      document.getElementById('ficha-score-atual').textContent = '—';
+      document.getElementById('ficha-total-diags').textContent = '0';
+      document.getElementById('ficha-ultima-resp').textContent = 'Sem acesso ainda';
+      document.getElementById('ficha-dimensoes').innerHTML = '<div style="color:var(--muted);font-size:12px;text-align:center;padding:16px">Colaborador ainda não acessou a plataforma.</div>';
+      await carregarIntervencoes(colaboradorId);
+      return;
+    }
+
+    // Busca checkins do colaborador
+    const { data: checkins } = await db.from('checkins')
+      .select('*')
+      .eq('user_id', col.user_id)
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    const total = checkins?.length || 0;
     document.getElementById('ficha-total-diags').textContent = total;
 
     if (total > 0) {
-      const ultima = respostas[0];
-      const scores = ultima.scores_json || {};
-      const scoreGeral = scores.total ?? Math.round(
-        ((scores.burnout||0)+(scores.estresse||0)+(scores.sono||0)+(scores.social||0)) / 4
+      const ultimo = checkins[0];
+      const scoreGeral = Math.round(
+        ((ultimo.humor??50) + (ultimo.energia??50) + (100-(ultimo.carga??50)) + (ultimo.foco??50)) / 4
       );
 
-      document.getElementById('ficha-score-atual').textContent = scoreGeral || '—';
-      document.getElementById('ficha-ultima-resp').textContent = formatDate(ultima.enviado_em);
+      document.getElementById('ficha-score-atual').textContent = scoreGeral;
+      document.getElementById('ficha-ultima-resp').textContent = formatDate(ultimo.created_at);
 
       // Badge de risco
       const badge = document.getElementById('ficha-risco-badge');
-      if (scoreGeral >= 60) {
-        badge.style.background = 'rgba(16,185,129,.15)';
-        badge.style.border = '1px solid rgba(16,185,129,.3)';
-        badge.style.color = '#10B981';
-        badge.textContent = '🟢 OK';
-      } else if (scoreGeral >= 40) {
-        badge.style.background = 'rgba(245,158,11,.15)';
-        badge.style.border = '1px solid rgba(245,158,11,.3)';
-        badge.style.color = '#F59E0B';
-        badge.textContent = '🟡 Atenção';
-      } else {
-        badge.style.background = 'rgba(239,68,68,.15)';
-        badge.style.border = '1px solid rgba(239,68,68,.3)';
-        badge.style.color = '#EF4444';
-        badge.textContent = '🔴 Crítico';
+      if (badge) {
+        if (scoreGeral >= 70) {
+          badge.style.background = 'rgba(16,185,129,.15)';
+          badge.style.border = '1px solid rgba(16,185,129,.3)';
+          badge.style.color = '#10B981';
+          badge.textContent = '🟢 OK';
+        } else if (scoreGeral >= 55) {
+          badge.style.background = 'rgba(245,158,11,.15)';
+          badge.style.border = '1px solid rgba(245,158,11,.3)';
+          badge.style.color = '#F59E0B';
+          badge.textContent = '🟡 Atenção';
+        } else {
+          badge.style.background = 'rgba(239,68,68,.15)';
+          badge.style.border = '1px solid rgba(239,68,68,.3)';
+          badge.style.color = '#EF4444';
+          badge.textContent = '🔴 Crítico';
+        }
       }
 
-      // Score por dimensão
+      // Score por dimensão baseado em check-ins
+      const avgCheckins = (arr, key) => {
+        const vals = arr.map(c => c[key]).filter(v => v !== null && v !== undefined);
+        return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : null;
+      };
+      const humAvg    = avgCheckins(checkins, 'humor');
+      const enAvg     = avgCheckins(checkins, 'energia');
+      const cargaAvg  = checkins.length ? Math.round(checkins.map(c=>100-(c.carga??50)).reduce((a,b)=>a+b,0)/checkins.length) : null;
+      const focoAvg   = avgCheckins(checkins, 'foco');
+
       const dims = [
-        { nome:'Burnout', val: scores.burnout, cor:'#EF4444', fill:'fill-red' },
-        { nome:'Estresse', val: scores.estresse, cor:'#F59E0B', fill:'fill-amber' },
-        { nome:'Sono', val: scores.sono, cor:'#6366F1', fill:'fill-amber' },
-        { nome:'Social', val: scores.social, cor:'#10B981', fill:'fill-green' },
+        { nome:'Humor',   val: humAvg,   cor:'#6366F1' },
+        { nome:'Energia', val: enAvg,    cor:'#10B981' },
+        { nome:'Carga',   val: cargaAvg, cor:'#F59E0B' },
+        { nome:'Foco',    val: focoAvg,  cor:'#2D5E4A' },
       ];
+
       document.getElementById('ficha-dimensoes').innerHTML = dims.map(d => {
         const v = d.val ?? '—';
-        const pct = typeof v === 'number' ? Math.round((v/20)*100) : 0;
-        const cor = pct >= 60 ? '#10B981' : pct >= 40 ? '#F59E0B' : '#EF4444';
+        const pct = typeof v === 'number' ? Math.min(v, 100) : 0;
+        const cor = pct >= 70 ? '#10B981' : pct >= 55 ? '#F59E0B' : '#EF4444';
         return `<div class="score-item">
           <div class="score-row">
             <span class="score-name">${d.nome}</span>
@@ -12311,39 +12339,59 @@ if (notaEl) notaEl.style.display = 'flex';
       }).join('');
 
       // Histórico de evolução
-      if (respostas.length >= 2) {
-        const historico = respostas.slice(0,6).reverse();
-        const max = Math.max(...historico.map(r => r.scores_json?.total || 0));
+      if (checkins.length >= 2) {
+        const historico = checkins.slice(0,6).reverse();
+        const scores = historico.map(c => Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4));
+        const max = Math.max(...scores, 1);
         document.getElementById('ficha-historico').innerHTML = `
           <div style="display:flex;align-items:flex-end;gap:8px;height:80px;padding:0 4px">
-            ${historico.map((r,i) => {
-              const s = r.scores_json?.total || 0;
-              const h = max ? Math.round((s/max)*70) : 10;
-              const isLast = i === historico.length-1;
-              return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
-                <div style="width:100%;height:${h}px;border-radius:6px 6px 0 0;background:${isLast?'#4ECBA0':'#4ECBA0'};opacity:${isLast?1:.5}"></div>
-                <span style="font-size:9px;color:var(--muted)">${formatDate(r.enviado_em).slice(0,5)}</span>
+            ${scores.map((s,i) => {
+              const h = Math.round((s/max)*70)+10;
+              const cor = s>=70?'#10B981':s>=55?'#F59E0B':'#EF4444';
+              return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+                <span style="font-size:9px;color:var(--muted)">${s}</span>
+                <div style="width:100%;height:${h}px;background:${cor};border-radius:4px;opacity:.85"></div>
               </div>`;
             }).join('')}
           </div>`;
+      } else {
+        document.getElementById('ficha-historico').innerHTML = '<div style="color:var(--muted);font-size:12px;text-align:center;padding:16px">Histórico aparece após 2+ check-ins.</div>';
       }
+
     } else {
       document.getElementById('ficha-score-atual').textContent = '—';
-      document.getElementById('ficha-ultima-resp').textContent = '—';
-      document.getElementById('ficha-risco-badge').textContent = '⚪ Sem dados';
+      document.getElementById('ficha-ultima-resp').textContent = 'data';
+      document.getElementById('ficha-dimensoes').innerHTML = '<div style="color:var(--muted);font-size:12px;text-align:center;padding:16px">Nenhum check-in respondido ainda.</div>';
     }
 
-    // Carrega intervenções
+    // Busca testes realizados
+    const { data: testes } = await db.from('testes_realizados')
+      .select('teste_id, score, nivel, realizado_em')
+      .eq('user_id', col.user_id)
+      .order('realizado_em', { ascending: false })
+      .limit(5);
+
+    if (testes?.length) {
+      const LABELS = { phq9:'PHQ-9', gad7:'GAD-7', burnout_ranne:'Burnout', ansiedade_ranne:'Ansiedade', estresse_ranne:'Estresse', sono_ranne:'Sono' };
+      const fichaTestesEl = document.getElementById('ficha-testes-lista');
+      if (fichaTestesEl) {
+        fichaTestesEl.innerHTML = testes.map(t => {
+          const cor = t.nivel==='critico'?'#EF4444':t.nivel==='alto'?'#F59E0B':'#10B981';
+          return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--surface);border-radius:8px;font-size:12px;">
+            <span style="font-weight:600;color:var(--card-text)">${LABELS[t.teste_id]||t.teste_id}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-weight:700;color:${cor}">${t.score??'—'}</span>
+              <span style="font-size:10px;color:${cor};text-transform:capitalize">${t.nivel||''}</span>
+            </div>
+          </div>`;
+        }).join('');
+      }
+    }
+
     await carregarIntervencoes(colaboradorId);
 
-    // Carrega observações
-    const { data: obs } = await db.from('fichas_rh')
-      .select('observacoes').eq('colaborador_id', colaboradorId).single().catch(() => ({ data: null }));
-    document.getElementById('ficha-obs').value = obs?.observacoes || '';
-
   } catch(e) {
-    console.warn('[Ficha]', e);
-    toast('⚠️ Erro ao carregar ficha.');
+    console.warn('[abrirFicha]', e);
   }
 }
 
@@ -15958,13 +16006,27 @@ async function enviarCheckin() {
     return;
   }
 
+  // Verifica se já fez check-in hoje
+  if (currentUser && db) {
+    const hoje = new Date().toISOString().split('T')[0];
+    const { data: jaFez } = await db.from('checkins')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .gte('created_at', hoje + 'T00:00:00')
+      .limit(1);
+    if (jaFez && jaFez.length > 0) {
+      toast('✅ Você já fez o check-in hoje! Volte amanhã.');
+      setTimeout(() => cpg('inicio'), 1500);
+      return;
+    }
+  }
+
   const toNum = (v, fb) => { const n = parseInt(v); return isNaN(n) ? fb : n; };
   const humor   = toNum(state.humor,   50);
   const energia = toNum(state.energia, 50);
   const carga   = toNum(state.carga,   50);
   const foco    = toNum(state.foco,    Math.round(humor * 0.7 + energia * 0.3));
 
-  // Atualiza dashboard imediatamente com valores locais
   window._ultimoCheckinLocal = Date.now();
   atualizarDashboardLocal({ humor, energia, carga, foco });
 
@@ -15978,7 +16040,6 @@ async function enviarCheckin() {
         tipo:   'semanal'
       });
       if (error) console.warn('[enviarCheckin]', error.message);
-      // Recarrega do banco após 2s
       setTimeout(() => {
         window._lastDashLoad = 0;
         carregarDadosHomeColaborador();
@@ -15986,7 +16047,6 @@ async function enviarCheckin() {
     }
   } catch(e) { console.warn('[enviarCheckin]', e); }
 
-  // Mostra confirmação e volta para início
   document.querySelectorAll('#cp-checkin .ci-block').forEach(b => b.style.display = 'none');
   const btnSub = document.querySelector('#cp-checkin .btn-submit-ci');
   if (btnSub) btnSub.style.display = 'none';
