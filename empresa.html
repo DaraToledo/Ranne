@@ -11577,10 +11577,38 @@ function ndAtualizarPreview() {
 
 // Inicializa o preview ao abrir a página
 function initNovoDiagnostico() {
-  // Define data padrão (30 dias)
+  // Limpa todos os campos do form
+  const nome = document.getElementById('nd-nome');
+  const convidados = document.getElementById('nd-convidados');
+  const tipo = document.getElementById('nd-tipo');
+  const publico = document.getElementById('nd-publico');
+  const erro = document.getElementById('nd-error');
+
+  if (nome) nome.value = '';
+  if (convidados) convidados.value = '';
+  if (tipo) tipo.value = 'anonimas';
+  if (publico) publico.value = 'todos';
+  if (erro) { erro.style.display = 'none'; erro.textContent = ''; }
+
+  // Desmarca todos os checkboxes clínicos
+  document.querySelectorAll('input[name="nd-dim-clin"]').forEach(cb => cb.checked = false);
+
+  // Reseta dimensões organizacionais para o padrão
+  document.querySelectorAll('input[name="nd-dim"]').forEach((cb, i) => {
+    cb.checked = i < 4; // burnout, estresse, sono, social marcados por padrão
+  });
+
+  // Data padrão (30 dias)
   const d = new Date(); d.setDate(d.getDate()+30);
   const el = document.getElementById('nd-data');
   if (el) el.valueAsDate = d;
+
+  // Fecha o preview
+  const previewBody = document.getElementById('nd-preview-body');
+  const previewToggle = document.getElementById('nd-preview-toggle');
+  if (previewBody) previewBody.style.display = 'none';
+  if (previewToggle) previewToggle.style.transform = '';
+
   ndAtualizarPreview();
 }
 
