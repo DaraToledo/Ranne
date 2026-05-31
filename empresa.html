@@ -10664,7 +10664,7 @@ async function gerarPlanoIA() {
         .eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes),
       db.from('testes_realizados').select('teste_id, score')
         .eq('empresa_id', currentEmpresa.id).gte('realizado_em', inicioMes),
-      db.from('diagnosticos').select('nome, scores')
+      db.from('diagnosticos').select('nome, score_geral, testes_clinicos')
         .eq('empresa_id', currentEmpresa.id).eq('status', 'encerrado')
         .order('created_at', { ascending: false }).limit(1),
     ]);
@@ -10699,8 +10699,8 @@ async function gerarPlanoIA() {
       });
     }
 
-    if (diag?.scores) {
-      contextoScores += '\n\nÚltimo ciclo encerrado: ' + Object.entries(diag.scores).map(([k,v]) => `${k}: ${v}`).join(', ');
+    if (diag?.score_geral) {
+      contextoScores += `\n\nÚltimo ciclo encerrado: score geral ${diag.score_geral}/100`;
     }
   } catch { return; /* sem dados, não gera */ }
 
