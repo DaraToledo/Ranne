@@ -11819,24 +11819,34 @@ async function _carregarRelTestes(desde) {
   el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Carregando...</div>';
 
   try {
-    const [membrosRes, testesRes] = await Promise.all([
-      db.from('membros_empresa').select('user_id, nome').eq('empresa_id', currentEmpresa.id),
-      (() => {
-        let q = db.from('testes_realizados')
-          .select('user_id, teste_id, score, nivel, realizado_em')
-          .eq('empresa_id', currentEmpresa.id)
-          .order('realizado_em', { ascending: false })
-          .limit(200);
-        if (desde) q = q.gte('realizado_em', desde);
-        return q;
-      })()
-    ]);
+    // Busca membros da empresa
+    const { data: membros } = await db.from('membros_empresa')
+      .select('user_id, nome').eq('empresa_id', currentEmpresa.id);
 
     const nomeMap = {};
-    (membrosRes.data || []).forEach(m => { nomeMap[m.user_id] = m.nome; });
-    const rows = testesRes.data || [];
+    const userIds = [];
+    (membros || []).forEach(m => {
+      if (m.user_id) {
+        nomeMap[m.user_id] = m.nome;
+        userIds.push(m.user_id);
+      }
+    });
 
-    if (rows.length === 0) {
+    if (userIds.length === 0) {
+      el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
+      return;
+    }
+
+    // Busca testes dos membros da empresa (por user_id, não empresa_id)
+    let q = db.from('testes_realizados')
+      .select('user_id, teste_id, score, nivel, realizado_em')
+      .in('user_id', userIds)
+      .order('realizado_em', { ascending: false })
+      .limit(200);
+    if (desde) q = q.gte('realizado_em', desde);
+    const { data: rows } = await q;
+
+    if (!rows || rows.length === 0) {
       el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
       return;
     }
@@ -11852,14 +11862,10 @@ async function _carregarRelTestes(desde) {
 
     el.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 120px 55px 80px 85px;gap:4px;padding:8px 10px;background:var(--surface);border-radius:8px;margin-bottom:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em">
-        <span>Colaborador</span>
-        <span>Teste</span>
-        <span style="text-align:center">Score</span>
-        <span>Nível</span>
-        <span style="text-align:right">Data</span>
+        <span>Colaborador</span><span>Teste</span><span style="text-align:center">Score</span><span>Nível</span><span style="text-align:right">Data</span>
       </div>
       ${rows.map(r => {
-        const nome  = nomeMap[r.user_id] || 'Anônimo';
+        const nome = nomeMap[r.user_id] || 'Anônimo';
         const teste = TESTES_LABELS[r.teste_id] || r.teste_id;
         const dataStr = r.realizado_em ? new Date(r.realizado_em + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
         const nivelCor = r.nivel === 'critico' ? '#EF4444' : r.nivel === 'alto' ? '#F59E0B' : '#10B981';
@@ -11876,7 +11882,6 @@ async function _carregarRelTestes(desde) {
     el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:20px;text-align:center">Sem dados</div>';
   }
 }
-
 /* ══════════════════════════════════════════════
    PROGRESSO HISTÓRICO — GRÁFICO DINÂMICO
    ══════════════════════════════════════════════ */
@@ -16232,14 +16237,38 @@ function salvarConfigAlerta() {
 async function escutaRhExportar() {
   try {
     const { data: relatos } = await db.from('canal_escuta')
-      .select('tipo, descricao, created_at, status')
+      .select('tipo, mensagem, criado_em')
       .eq('empresa_id', currentEmpresa.id)
-      .order('created_at', { ascending: false });
+      .order('criado_em', { ascending: false });
 
     if (!relatos || relatos.length === 0) {
       toast('Nenhum relato para exportar.');
       return;
     }
+
+    const linhas = [
+      ['Tipo', 'Mensagem', 'Data'],
+      ...relatos.map(r => [
+        r.tipo || '—',
+        (r.mensagem || '').replace(/"/g, '""'),
+        r.criado_em ? new Date(r.criado_em).toLocaleDateString('pt-BR') : '—',
+      ])
+    ];
+
+    const csv = linhas.map(l => l.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `canal-escuta-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('✅ Exportado com sucesso!');
+  } catch(e) {
+    console.warn('[escutaRhExportar]', e);
+    toast('Erro ao exportar. Tente novamente.');
+  }
+}
 
     const linhas = [
       ['Tipo', 'Descrição', 'Data', 'Status'],
