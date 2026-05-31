@@ -9761,20 +9761,108 @@ async function verResultados(id) {
       document.getElementById('res-titulo').textContent = d.nome;
       document.getElementById('res-sub').textContent = `${formatDate(d.created_at)} · ${d.respondentes || 0} respondentes`;
     }
-    // Carrega respostas abertas
+
+    // Carrega respostas reais do banco
     const { data: respostas } = await db
       .from('respostas')
-      .select('resposta_aberta')
-      .eq('diagnostico_id', id)
-      .not('resposta_aberta', 'is', null);
+      .select('scores_json, resposta_aberta')
+      .eq('diagnostico_id', id);
 
     if (respostas?.length) {
-      document.getElementById('respostas-abertas').innerHTML = respostas
-        .filter(r => r.resposta_aberta?.trim())
-        .map(r => `<div class="quote-card">"${r.resposta_aberta}"</div>`)
-        .join('');
+      // Agrega scores por dimensão
+      const dims = { cultura:[], lideranca:[], carga:[], clima:[] };
+      respostas.forEach(r => {
+        if (r.scores_json) {
+          Object.entries(r.scores_json).forEach(([k, v]) => {
+            if (dims[k]) dims[k].push(v);
+          });
+        }
+      });
+
+      const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : null;
+
+      // Atualiza cards de dimensão se existirem
+      const scoreEls = {
+        cultura: document.getElementById('res-score-cultura'),
+        lideranca: document.getElementById('res-score-lideranca'),
+        carga: document.getElementById('res-score-carga'),
+        clima: document.getElementById('res-score-clima'),
+      };
+      Object.entries(scoreEls).forEach(([dim, el]) => {
+        if (el && dims[dim].length > 0) el.textContent = avg(dims[dim]);
+      });
+
+      // Score geral
+      const allScores = respostas.map(r => r.scores_json?.geral).filter(Boolean);
+      const scoreGeralEl = document.getElementById('res-score-geral');
+      if (scoreGeralEl && allScores.length) scoreGeralEl.textContent = avg(allScores);
+
+      // Taxa resposta
+      const taxaEl = document.getElementById('res-taxa');
+      if (taxaEl && d?.total_convidados > 0) {
+        taxaEl.textContent = Math.round((respostas.length / d.total_convidados) * 100) + '%';
+      }
+
+      // Respostas abertas reais
+      const abertas = respostas.filter(r => r.resposta_aberta?.trim());
+      const abertasEl = document.getElementById('respostas-abertas');
+      if (abertasEl) {
+        abertasEl.innerHTML = abertas.length
+          ? abertas.map(r => `<div class="quote-card">"${r.resposta_aberta}"</div>`).join('')
+          : '<div style="color:var(--muted);font-size:13px;padding:12px">Nenhuma resposta aberta ainda.</div>';
+      }
+    } else {
+      // Sem respostas ainda — limpa dados mockados
+      ['res-score-geral','res-taxa','res-score-cultura','res-score-lideranca','res-score-carga','res-score-clima'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '—';
+      });
+      const abertasEl = document.getElementById('respostas-abertas');
+      if (abertasEl) abertasEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px">Nenhuma resposta ainda.</div>';
     }
-  } catch {}
+  } catch(e) {
+    console.warn('[verResultados]', e);
+  }
+}
+
+/* ── Canal de Escuta Colaborador ── */
+async function escutaEnviar() {
+  const categoria = document.getElementById('escuta-categoria')?.value;
+  const texto     = document.getElementById('escuta-texto')?.value.trim();
+
+  if (!categoria) { toast('Selecione uma categoria.'); return; }
+  if (!texto || texto.length < 10) { toast('Descreva a situação com pelo menos 10 caracteres.'); return; }
+
+  const btn = document.querySelector('#cp-escuta .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+
+  try {
+    const { error } = await db.from('canal_escuta').insert({
+      empresa_id:  currentEmpresa?.id,
+      tipo:        categoria,
+      mensagem:    texto,
+      lido:        false,
+      criado_em:   new Date().toISOString(),
+    });
+
+    if (error) throw error;
+
+    // Mostra confirmação
+    document.getElementById('escuta-form-wrap').style.display  = 'none';
+    document.getElementById('escuta-confirmacao').style.display = 'block';
+
+  } catch(e) {
+    console.warn('[escutaEnviar]', e);
+    toast('Erro ao enviar relato. Tente novamente.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Enviar relato anonimamente'; }
+  }
+}
+
+function escutaNovo() {
+  document.getElementById('escuta-categoria').value = '';
+  document.getElementById('escuta-texto').value     = '';
+  document.getElementById('escuta-form-wrap').style.display   = 'block';
+  document.getElementById('escuta-confirmacao').style.display = 'none';
 }
 
 /* ─────────────────────────────────────
@@ -14836,15 +14924,30 @@ function clin_calcular() {
 async function _salvarTesteRealizado(testeId, score, nivel, tipo) {
   if (!currentUser?.id || !currentEmpresa?.id) return;
   try {
-    await db.from('testes_realizados').upsert({
-      user_id:      currentUser.id,
-      empresa_id:   currentEmpresa.id,
-      teste_id:     testeId,
-      score,
-      nivel,
-      tipo,
-      realizado_em: new Date().toISOString().split('T')[0]
-    }, { onConflict: 'user_id,teste_id' });
+    // Verifica se já existe para evitar duplicata
+    const { data: existente } = await db.from('testes_realizados')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .eq('teste_id', testeId)
+      .maybeSingle();
+
+    if (existente) {
+      // Atualiza o existente
+      await db.from('testes_realizados')
+        .update({ score, nivel, tipo, realizado_em: new Date().toISOString().split('T')[0] })
+        .eq('id', existente.id);
+    } else {
+      // Insere novo
+      await db.from('testes_realizados').insert({
+        user_id:      currentUser.id,
+        empresa_id:   currentEmpresa.id,
+        teste_id:     testeId,
+        score,
+        nivel,
+        tipo,
+        realizado_em: new Date().toISOString().split('T')[0]
+      });
+    }
   } catch(e) {
     console.warn('[salvarTesteRealizado]', e);
   }
