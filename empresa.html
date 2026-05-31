@@ -9630,7 +9630,6 @@ async function criarDiagnostico() {
   const link = `${baseUrl}/empresa.html?diag=${diagId}`;
 
   try {
-    // Tentativa 1: inserção completa
     const { error } = await db.from('diagnosticos').insert({
       id: diagId,
       empresa_id: currentEmpresa.id,
@@ -9643,15 +9642,13 @@ async function criarDiagnostico() {
       link,
       testes_clinicos: testesClinicos.length > 0 ? testesClinicos : null
     });
+
     if (error) {
-      // Tentativa 2: inserção mínima (menos colunas)
-      await db.from('diagnosticos').insert({
-        id: diagId,
-        empresa_id: currentEmpresa.id,
-        nome,
-        status: 'ativo',
-        link
-      }).catch(() => {});
+      console.error('[criarDiagnostico] Erro insert:', error);
+      toast('⚠️ Erro ao salvar ciclo: ' + error.message);
+      btn.disabled = false;
+      btn.textContent = 'Criar Diagnóstico →';
+      return;
     }
 
     // Registra os testes clínicos na tabela testes_enviados_rh
@@ -9662,12 +9659,16 @@ async function criarDiagnostico() {
         enviado_por: currentUser.id,
         enviado_em: new Date().toISOString()
       }));
-      await db.from('testes_enviados_rh').insert(registros).catch(e => {
-        console.warn('[Ranne] testes_enviados_rh não inserido:', e);
-      });
+      const { error: testeErr } = await db.from('testes_enviados_rh').insert(registros);
+      if (testeErr) console.warn('[testes_enviados_rh]', testeErr);
     }
-  } catch {
-    console.warn('[Ranne] Diagnóstico salvo apenas localmente.');
+
+  } catch(e) {
+    console.error('[criarDiagnostico] Exception:', e);
+    toast('⚠️ Erro ao salvar ciclo: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Criar Diagnóstico →';
+    return;
   }
 
   currentDiagId = diagId;
