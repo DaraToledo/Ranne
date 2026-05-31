@@ -10620,25 +10620,33 @@ async function carregarAcoesSupabase() {
 async function _verificarEGerarPlano() {
   if (!currentEmpresa?.id) return;
   try {
-    const [checkinsRes, testesRes] = await Promise.all([
-      db.from('checkins').select('id').eq('empresa_id', currentEmpresa.id).limit(1),
-      db.from('testes_realizados').select('id')
-        .in('user_id', 
-          (await db.from('membros_empresa').select('user_id').eq('empresa_id', currentEmpresa.id)
-          ).data?.map(m => m.user_id).filter(Boolean) || []
-        ).limit(1),
-    ]);
+    // Busca membros primeiro
+    const { data: membros } = await db.from('membros_empresa')
+      .select('user_id').eq('empresa_id', currentEmpresa.id);
+    const userIds = (membros || []).map(m => m.user_id).filter(Boolean);
 
-    const temCheckins = (checkinsRes.data || []).length > 0;
-    const temTestes   = (testesRes.data  || []).length > 0;
+    // Verifica checkins
+    const { data: checkins } = await db.from('checkins')
+      .select('id').eq('empresa_id', currentEmpresa.id).limit(1);
+
+    // Verifica testes
+    let temTestes = false;
+    if (userIds.length > 0) {
+      const { data: testes } = await db.from('testes_realizados')
+        .select('id').in('user_id', userIds).limit(1);
+      temTestes = (testes || []).length > 0;
+    }
+
+    const temCheckins = (checkins || []).length > 0;
+
+    console.log('[plano] checkins:', temCheckins, 'testes:', temTestes);
 
     if (temCheckins || temTestes) {
       gerarPlanoIA();
     }
   } catch(e) {
     console.warn('[_verificarEGerarPlano]', e);
-    // Tenta gerar mesmo assim se há empresa
-    gerarPlanoIA();
+    gerarPlanoIA(); // tenta gerar mesmo assim
   }
 }
 
