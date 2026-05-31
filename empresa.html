@@ -9651,9 +9651,28 @@ async function criarDiagnostico() {
       return;
     }
 
-    // Registra os testes clínicos na tabela testes_enviados_rh
-    if (testesClinicos.length > 0 && currentUser?.id) {
-      const registros = testesClinicos.map(teste_id => ({
+    // Mapeia dimensões organizacionais para testes equivalentes no app
+    const DIM_PARA_TESTE = {
+      burnout:   'burnout_ranne',
+      estresse:  'estresse_ranne',
+      sono:      'sono_ranne',
+      social:    'psych_safety',
+      lideranca: 'lider_ranne',
+      cultura:   'equipe_ranne',
+    };
+
+    // Une testes clínicos + dimensões organizacionais mapeadas
+    const todosTestes = [
+      ...testesClinicos,
+      ...dimensoes.map(d => DIM_PARA_TESTE[d]).filter(Boolean)
+    ];
+
+    // Remove duplicatas
+    const testesUnicos = [...new Set(todosTestes)];
+
+    // Registra todos na tabela testes_enviados_rh
+    if (testesUnicos.length > 0 && currentUser?.id) {
+      const registros = testesUnicos.map(teste_id => ({
         empresa_id: currentEmpresa.id,
         teste_id,
         enviado_por: currentUser.id,
@@ -14806,9 +14825,32 @@ function clin_calcular() {
   const profEl = document.getElementById('clin-profissional');
   profEl.innerHTML = _prof_html(t.id, nivel.tipo);
 
+  // Salvar resultado no banco e remover dos pendentes
+  _salvarTesteRealizado(t.id, total, nivel.nivel, nivel.tipo);
+
   cpg('clin-resultado');
   const telaR = document.getElementById('cp-clin-resultado');
   if (telaR) telaR.scrollTop = 0;
+}
+
+async function _salvarTesteRealizado(testeId, score, nivel, tipo) {
+  if (!currentUser?.id || !currentEmpresa?.id) return;
+  try {
+    await db.from('testes_realizados').upsert({
+      user_id:      currentUser.id,
+      empresa_id:   currentEmpresa.id,
+      teste_id:     testeId,
+      score,
+      nivel,
+      tipo,
+      realizado_em: new Date().toISOString().split('T')[0]
+    }, { onConflict: 'user_id,teste_id' });
+  } catch(e) {
+    console.warn('[salvarTesteRealizado]', e);
+  }
+
+  // Atualiza a lista de testes pendentes
+  if (typeof carregarTestesRH === 'function') carregarTestesRH();
 }
 
 function _enc_html(tipo, cor) {
@@ -14824,11 +14866,11 @@ function _enc_html(tipo, cor) {
     alto:    { cls:'enc-alto',   icon:'🆘', titulo:'Apoio profissional recomendado',
       desc:'Seus resultados indicam que você pode se beneficiar significativamente de suporte profissional. Buscar ajuda é um ato de coragem, não de fraqueza.',
       btn1_cls:'enc-btn enc-btn-pri', btn1_fn:"toast('CVV 188 — gratuito 24h')", btn1_lbl:'CVV — 188 (gratuito)',
-      btn2_cls:'enc-btn enc-btn-sec enc-btn-sec-r', btn2_fn:"toast('Em breve!')", btn2_lbl:'Falar com RH' },
+      btn2_cls:'enc-btn enc-btn-sec enc-btn-sec-r', btn2_fn:"cpg('escuta')", btn2_lbl:'Falar com RH' },
     critico: { cls:'enc-alto',   icon:'!', titulo:'Busque ajuda agora',
       desc:'Seus resultados indicam necessidade de apoio imediato. Por favor, não enfrente isso sozinho(a).',
       btn1_cls:'enc-btn enc-btn-pri', btn1_fn:"toast('CVV: ligue 188 agora — gratuito, 24h, confidencial')", btn1_lbl:'CVV — Ligue 188 agora',
-      btn2_cls:'', btn2_fn:'', btn2_lbl:'' }
+      btn2_cls:'enc-btn enc-btn-sec enc-btn-sec-r', btn2_fn:"cpg('escuta')", btn2_lbl:'Falar com RH' }
   };
   const c = B[tipo] || B.medio;
   const b2 = c.btn2_cls ? `<button class="${c.btn2_cls}" onclick="${c.btn2_fn}">${c.btn2_lbl}</button>` : '';
