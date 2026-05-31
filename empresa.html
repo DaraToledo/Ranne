@@ -10590,42 +10590,56 @@ function initPlano() {
 }
 
 async function carregarAcoesSupabase() {
-  if (!currentEmpresa?.id) return;
+  if (!currentEmpresa?.id) {
+    console.warn('[plano] currentEmpresa não definido, aguardando...');
+    setTimeout(carregarAcoesSupabase, 1000);
+    return;
+  }
   try {
-    const { data } = await db.from('acoes_plano')
+    const { data, error } = await db.from('acoes_plano')
       .select('*')
       .eq('empresa_id', currentEmpresa.id)
       .order('criado_em', { ascending: false });
+    if (error) console.warn('[acoes_plano] erro:', error);
     acoesData = data || [];
-  } catch {
+    console.log('[plano] ações carregadas:', acoesData.length);
+  } catch(e) {
+    console.warn('[acoes_plano] exception:', e);
     const saved = localStorage.getItem('ranne-acoes-v2');
     acoesData = saved ? JSON.parse(saved) : [];
   }
   renderAcoes();
 
-  // Gera automaticamente apenas se não há ações E há dados reais (check-ins e testes)
   if (acoesData.length === 0) {
+    console.log('[plano] sem ações, verificando dados para gerar...');
     _verificarEGerarPlano();
   }
 }
 
+
 async function _verificarEGerarPlano() {
   if (!currentEmpresa?.id) return;
   try {
-    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
-
     const [checkinsRes, testesRes] = await Promise.all([
-      db.from('checkins').select('id').eq('empresa_id', currentEmpresa.id).gte('created_at', inicioMes).limit(1),
-      db.from('testes_realizados').select('id').eq('user_id', currentUser?.id || '').limit(1),
+      db.from('checkins').select('id').eq('empresa_id', currentEmpresa.id).limit(1),
+      db.from('testes_realizados').select('id')
+        .in('user_id', 
+          (await db.from('membros_empresa').select('user_id').eq('empresa_id', currentEmpresa.id)
+          ).data?.map(m => m.user_id).filter(Boolean) || []
+        ).limit(1),
     ]);
 
     const temCheckins = (checkinsRes.data || []).length > 0;
     const temTestes   = (testesRes.data  || []).length > 0;
 
-    if (temCheckins && temTestes) {
+    if (temCheckins || temTestes) {
       gerarPlanoIA();
     }
-  } catch { /* sem dados, sem geração */ }
+  } catch(e) {
+    console.warn('[_verificarEGerarPlano]', e);
+    // Tenta gerar mesmo assim se há empresa
+    gerarPlanoIA();
+  }
 }
 
 async function gerarPlanoIA() {
