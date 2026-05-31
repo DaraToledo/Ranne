@@ -9185,7 +9185,7 @@ function _renderHeatmapSetores(membros, userMap) {
 
   const entradas = Object.entries(setores);
 
-  el.innerHTML = entradas.map(([setor, cols]) => {
+  const html = entradas.map(([setor, cols]) => {
     const scores = cols.map(c => {
       const ci = userMap[c.user_id];
       if (!ci) return null;
@@ -9201,11 +9201,7 @@ function _renderHeatmapSetores(membros, userMap) {
     }
 
     if (scores.length < 3 && entradas.length > 1) {
-      return `<div class="heatmap-cell h-empty">
-        <div class="hc-name">${setor}</div>
-        <div class="hc-score" style="color:var(--muted);font-size:16px">—</div>
-        <div class="hc-meta">${cols.length} pessoa${cols.length>1?'s':''} · privado (LGPD)</div>
-      </div>`;
+      return ''; // omite célula — LGPD
     }
 
     const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
@@ -9218,6 +9214,15 @@ function _renderHeatmapSetores(membros, userMap) {
       <div class="hc-meta">${cols.length} pessoa${cols.length>1?'s':''} · ${status}</div>
     </div>`;
   }).join('');
+
+  // Esconde o heatmap inteiro se nada visível
+  const heatmapSection = el.closest('[style*="border-radius:16px"]') || el.parentElement?.parentElement;
+  if (!html.trim()) {
+    if (heatmapSection) heatmapSection.style.display = 'none';
+    return;
+  }
+  if (heatmapSection) heatmapSection.style.display = '';
+  el.innerHTML = html;
 }
 
 function _atualizarRelatorioMensal(scoreGeral, taxaResp, diags, isaB, isaE, isaS, isaSoc) {
