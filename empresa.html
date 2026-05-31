@@ -13613,33 +13613,7 @@ function renderTourStep() {
   }, 300); // fim setTimeout
 }
 
-function tourProximo() {
-  _tourStep++;
-  if (_tourStep >= TOUR_STEPS.length) {
-    encerrarTour();
-    return;
-  }
-  renderTourStep();
-}
 
-function encerrarTour() {
-  localStorage.setItem(TOUR_KEY, '1');
-  const els = ['tour-card','tour-spotlight','tour-arrow'];
-  els.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
-  const back = document.getElementById('tour-backdrop');
-  if (back) back.classList.add('hidden');
-}
-
-// Disparo: depois de fechar as boas-vindas ou após login direto
-function dispararTourSeNecessario() {
-  if (localStorage.getItem(TOUR_KEY)) return;
-  // Tour só para perfil empresa (painel RH)
-  if (currentRole !== 'empresa') return;
-  // Garante que o app-empresa está visível
-  const appEmp = document.getElementById('app-empresa');
-  if (!appEmp || appEmp.style.display === 'none') return;
-  setTimeout(iniciarTour, 800);
-}
 
 
 function mostrarBoasVindas(nome) {
@@ -16227,72 +16201,6 @@ function salvarConfigAlerta() {
   localStorage.setItem('ranne_limiar_alerta', limiar);
   localStorage.setItem('ranne_canal_alerta', canal);
   toast('✅ Configuração de alertas salva!');
-}
-
-/* ══════════════════════════════════════════════════════════
-   RELATÓRIO DE CONFORMIDADE NR-1
-   Gera PDF completo para fiscalização do Ministério do Trabalho
-   ══════════════════════════════════════════════════════════ */
-
-async function escutaRhExportar() {
-  try {
-    const { data: relatos } = await db.from('canal_escuta')
-      .select('tipo, mensagem, criado_em')
-      .eq('empresa_id', currentEmpresa.id)
-      .order('criado_em', { ascending: false });
-
-    if (!relatos || relatos.length === 0) {
-      toast('Nenhum relato para exportar.');
-      return;
-    }
-
-    const linhas = [
-      ['Tipo', 'Mensagem', 'Data'],
-      ...relatos.map(r => [
-        r.tipo || '—',
-        (r.mensagem || '').replace(/"/g, '""'),
-        r.criado_em ? new Date(r.criado_em).toLocaleDateString('pt-BR') : '—',
-      ])
-    ];
-
-    const csv = linhas.map(l => l.map(c => `"${c}"`).join(',')).join('\n');
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = `canal-escuta-${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast('✅ Exportado com sucesso!');
-  } catch(e) {
-    console.warn('[escutaRhExportar]', e);
-    toast('Erro ao exportar. Tente novamente.');
-  }
-}
-
-    const linhas = [
-      ['Tipo', 'Descrição', 'Data', 'Status'],
-      ...relatos.map(r => [
-        r.tipo || '—',
-        (r.descricao || '').replace(/"/g, '""'),
-        r.created_at ? new Date(r.created_at).toLocaleDateString('pt-BR') : '—',
-        r.status || '—',
-      ])
-    ];
-
-    const csv = linhas.map(l => l.map(c => `"${c}"`).join(',')).join('\n');
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = `canal-escuta-${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast('✅ Exportado com sucesso!');
-  } catch(e) {
-    console.warn('[escutaRhExportar]', e);
-    toast('Erro ao exportar. Tente novamente.');
-  }
 }
 
 async function exportarHistoricoCiclos() {
