@@ -1754,6 +1754,31 @@ body.dark .pro-gate-overlay { background:rgba(7,26,34,.7); }
 
 /* ══ ISA (Índice de Saúde) ══ */
 .isa-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; margin-bottom:16px; }
+.isa-bar-row { display:flex; align-items:center; gap:10px; }
+.dash-kpi-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:12px; margin-bottom:14px; }
+.dash-two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.dash-heatmap-col { display:grid; grid-template-columns:1.2fr 1fr; gap:12px; margin-bottom:14px; }
+@media(max-width:900px) {
+  .dash-kpi-grid { grid-template-columns:1fr 1fr; }
+  .dash-two-col { grid-template-columns:1fr; }
+  .dash-heatmap-col { grid-template-columns:1fr; }
+}
+@media(max-width:500px) {
+  .dash-kpi-grid { grid-template-columns:1fr 1fr; }
+}
+.dash-card { background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:20px; }
+.dash-card-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px; }
+.heatmap-cell { border-radius:12px; padding:14px; text-align:center; }
+.heatmap-cell.h-ok { background:#ECFDF5; border:1.5px solid #A7F3D0; }
+.heatmap-cell.h-warn { background:#FFFBEB; border:1.5px solid #FDE68A; }
+.heatmap-cell.h-crit { background:#FEF2F2; border:1.5px solid #FECACA; }
+.heatmap-cell.h-empty { background:var(--surface); border:1.5px solid var(--border); }
+.heatmap-cell .hc-name { font-size:12px; font-weight:700; color:var(--card-text); margin-bottom:4px; }
+.heatmap-cell .hc-score { font-size:22px; font-weight:800; letter-spacing:-1px; }
+.heatmap-cell .hc-meta { font-size:10.5px; color:var(--muted); margin-top:2px; }
+.heatmap-cell.h-ok .hc-score { color:#059669; }
+.heatmap-cell.h-warn .hc-score { color:#D97706; }
+.heatmap-cell.h-crit .hc-score { color:#DC2626; }
 .isa-card {
   background:var(--white); border-radius:12px; padding:14px 10px; text-align:center;
   border:1px solid var(--border); box-shadow:0 1px 6px rgba(0,0,0,.04); transition:transform .2s;
@@ -5032,18 +5057,17 @@ body.dark .ob-btn { background: #2D5E4A; }
 
         <div id="realMetrics" style="display:none;">
 
-
-          <!-- Badges científicos -->
-          <div class="sci-strip">
-            <span class="sci-badge">CID-11 · OMS</span>
-            <span class="sci-badge">MBI · Maslach</span>
-            <span class="sci-badge">Tecnoestresse · Tarafdar</span>
-            <span class="sci-badge">Segurança Psicológica · Harvard</span>
-            <span class="sci-badge">Lei 14.831/2024</span>
-            <span class="sci-badge">Neurociência do Sono · Walker</span>
+          <!-- ── TOPBAR INFO ── -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+            <div id="dash-sub-info" style="font-size:12.5px;color:var(--muted)">Carregando...</div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;" id="sci-badges-mini">
+              <span style="font-size:10px;font-weight:600;color:var(--muted);background:var(--surface);padding:3px 8px;border-radius:99px;border:1px solid var(--border)">CID-11 · OMS</span>
+              <span style="font-size:10px;font-weight:600;color:var(--muted);background:var(--surface);padding:3px 8px;border-radius:99px;border:1px solid var(--border)">MBI · Maslach</span>
+              <span style="font-size:10px;font-weight:600;color:var(--muted);background:var(--surface);padding:3px 8px;border-radius:99px;border:1px solid var(--border)">NR-1 · 2025</span>
+            </div>
           </div>
 
-          <!-- ══ ALERTA INTELIGENTE (aparece só com dados reais) ══ -->
+          <!-- ── ALERTA INTELIGENTE ── -->
           <div id="alerta-inteligente" style="display:none;" class="alert alert-crit" style="margin-bottom:16px;border-radius:14px;padding:16px 18px;">
             <div class="alert-icon" style="font-size:14px;color:#D97706;font-weight:700">!</div>
             <div class="alert-body" style="flex:1">
@@ -5055,259 +5079,178 @@ body.dark .ob-btn { background: #2D5E4A; }
             </div>
           </div>
 
-          <!-- ══ MÉTRICAS PRINCIPAIS (Free) ══ -->
-          <div style="margin-bottom:6px;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);">Visão Geral</div>
-          <div class="metrics" style="margin-bottom:20px;">
-            <div class="metric m-amber">
-              <div class="metric-label">Score Geral</div>
-              <div class="metric-value v-amber" style="font-size:38px;letter-spacing:-2px"><span id="score-geral-val">—</span></div>
-              <div class="metric-sub">de 100 pontos</div>
-              <span class="chip chip-amber" id="chip-score-status">⚠ Atenção</span>
+          <!-- ── ROW 1: KPIs ── -->
+          <div class="dash-kpi-grid">
+
+            <!-- Score Geral — destaque -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;position:relative;overflow:hidden;">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Score Geral</div>
+              <div style="display:flex;align-items:flex-end;gap:8px;margin:6px 0;">
+                <span id="score-geral-val" style="font-size:52px;font-weight:800;letter-spacing:-3px;line-height:1;color:var(--card-text)">—</span>
+                <span style="font-size:13px;color:var(--muted);margin-bottom:8px">/100</span>
+              </div>
+              <span class="chip chip-amber" id="chip-score-status" style="align-self:flex-start">⚠ Atenção</span>
+              <div style="position:absolute;right:-10px;bottom:-10px;width:80px;height:80px;border-radius:50%;background:var(--surface);opacity:.5;"></div>
             </div>
-            <div class="metric m-blue">
-              <div class="metric-label">Colaboradores Ativos</div>
-              <div class="metric-value"><span id="cols-ativos-val">—</span></div>
-              <div class="metric-sub" id="taxa-sub">cadastrados</div>
+
+            <!-- Colaboradores -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px">Colaboradores</div>
+              <div id="cols-ativos-val" style="font-size:36px;font-weight:800;color:#6366F1;letter-spacing:-2px;line-height:1;margin-bottom:6px">—</div>
+              <div style="font-size:12px;color:var(--muted)">cadastrados</div>
             </div>
-            <div class="metric m-red">
-              <div class="metric-label">Em Risco Elevado</div>
-              <div class="metric-value v-red"><span id="em-risco-val">0</span></div>
-              <div class="metric-sub">intervenção imediata</div>
-              <span class="chip chip-red" id="chip-risco" style="display:none">Crítico</span>
+
+            <!-- Em Risco -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px">Em Risco</div>
+              <div id="em-risco-val" style="font-size:36px;font-weight:800;color:#EF4444;letter-spacing:-2px;line-height:1;margin-bottom:6px">0</div>
+              <div style="font-size:12px;color:var(--muted)">intervenção imediata</div>
             </div>
-            <div class="metric m-green">
-              <div class="metric-label">Taxa de Resposta</div>
-              <div class="metric-value v-green"><span id="taxa-resp-val">—</span></div>
-              <div class="metric-sub">este mês</div>
+
+            <!-- Taxa Resposta -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px">Taxa Resposta</div>
+              <div id="taxa-resp-val" style="font-size:36px;font-weight:800;color:#10B981;letter-spacing:-2px;line-height:1;margin-bottom:6px">—</div>
+              <div style="font-size:12px;color:var(--muted)">este mês</div>
             </div>
+
           </div>
 
-          <!-- ══ ISA — ÍNDICE DE SAÚDE ORGANIZACIONAL ══ -->
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <div>
-              <div style="font-size:13.5px;font-weight:700;color:var(--text)">Índice de Saúde Organizacional</div>
-              <div style="font-size:12.5px;color:var(--muted);margin-top:2px">Baseado no QUSP · última atualização: hoje</div>
-            </div>
-          </div>
-          <div class="isa-grid" style="margin-bottom:20px;" id="isa-grid">
-            <div class="isa-card">
-              <div class="isa-ring-wrap">
-                <svg viewBox="0 0 52 52">
-                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
-                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#EF4444" style="stroke-dashoffset:132"/>
-                </svg>
-                <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-burnout" style="color:#EF4444">—</span>
-                </div>
-              </div>
-              <div class="isa-card-lbl">Burnout</div>
-            </div>
-            <div class="isa-card">
-              <div class="isa-ring-wrap">
-                <svg viewBox="0 0 52 52">
-                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
-                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#F59E0B" style="stroke-dashoffset:132"/>
-                </svg>
-                <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-estresse" style="color:#F59E0B">—</span>
-                </div>
-              </div>
-              <div class="isa-card-lbl">Estresse</div>
-            </div>
-            <div class="isa-card">
-              <div class="isa-ring-wrap">
-                <svg viewBox="0 0 52 52">
-                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
-                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#6366F1" style="stroke-dashoffset:132"/>
-                </svg>
-                <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-sono" style="color:#6366F1">—</span>
-                </div>
-              </div>
-              <div class="isa-card-lbl">Sono</div>
-            </div>
-            <div class="isa-card">
-              <div class="isa-ring-wrap">
-                <svg viewBox="0 0 52 52">
-                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
-                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#10B981" style="stroke-dashoffset:132"/>
-                </svg>
-                <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-social" style="color:#10B981">—</span>
-                </div>
-              </div>
-              <div class="isa-card-lbl">Social</div>
-            </div>
-            <div class="isa-card" style="border:1.5px solid rgba(78,203,160,.25);background:linear-gradient(135deg,rgba(78,203,160,.04),rgba(45,106,79,.03))">
-              <div class="isa-ring-wrap">
-                <svg viewBox="0 0 52 52">
-                  <circle class="isa-ring-track" cx="26" cy="26" r="21"/>
-                  <circle class="isa-ring-fill" cx="26" cy="26" r="21" stroke="#2D5E4A" style="stroke-dashoffset:132"/>
-                </svg>
-                <div class="isa-ring-inner">
-                  <span class="isa-ring-val" id="isa-isa geral" style="color:#2D5E4A">—</span>
-                </div>
-              </div>
-              <div class="isa-card-lbl" style="color:var(--mint)">ISA Geral</div>
-            </div>
+          <!-- ── ROW 2: ISA + ANÁLISE IA ── -->
+          <div class="dash-two-col">
 
-          </div><!-- /isa-grid -->
-
-          <!-- ══ GRID PRINCIPAL ══ -->
-          <div class="dash-grid">
-
-            <!-- Score por Dimensão + Scores -->
-            <div class="card">
-              <div class="card-hdr">
-                <span class="card-title">Score por Dimensão</span>
-                <a class="card-link" onclick="pg('progresso',null)">Histórico →</a>
-              </div>
-              <div class="score-item"><div class="score-row"><span class="score-name">Burnout</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-red" style="width:0%"></div></div></div>
-              <div class="score-item"><div class="score-row"><span class="score-name">Estresse Físico</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:0%"></div></div></div>
-              <div class="score-item"><div class="score-row"><span class="score-name">Sono e Fadiga Digital</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-amber" style="width:0%"></div></div></div>
-              <div class="score-item"><div class="score-row"><span class="score-name">Ansiedade Social</span><span class="score-num" style="color:var(--muted)">—</span></div><div class="bar-track"><div class="bar-fill fill-green" style="width:0%"></div></div></div>
-              <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
-                <button class="btn btn-primary btn-sm" onclick="pg('plano',null)">Ver Plano de Ação →</button>
-              </div>
-            </div>
-
-            <!-- Painel Direito -->
-            <div style="display:flex;flex-direction:column;gap:14px;">
-
-              <!-- Status por setor (Free) -->
-              <div class="card card-sm">
-                <div class="card-hdr" style="margin-bottom:12px;">
-                  <span class="card-title">Como está o time</span>
-                </div>
-                <div id="status-team-content">
-                  <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
-                    Disponível após o primeiro ciclo de monitoramento respondido pelos colaboradores.
+            <!-- ISA Dimensões -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:14px">Índice de Saúde Organizacional</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div id="isa-bar-burnout" class="isa-bar-row">
+                  <span style="font-size:12px;color:var(--card-text);width:80px;flex-shrink:0">Burnout</span>
+                  <div style="flex:1;height:8px;background:var(--surface);border-radius:99px;overflow:hidden;">
+                    <div id="isa-bar-fill-burnout" style="height:100%;width:0%;background:#EF4444;border-radius:99px;transition:width .6s ease"></div>
                   </div>
+                  <span id="isa-burnout" style="font-size:12px;font-weight:700;color:#EF4444;width:28px;text-align:right;flex-shrink:0">—</span>
                 </div>
-              </div>
-
-              <!-- Acompanhamento -->
-              <div class="card card-sm">
-                <div class="card-hdr" style="margin-bottom:10px;">
-                  <span class="card-title">Acompanhamento</span>
-                  <a class="card-link" onclick="pg('colaboradores',null)">Ver todos</a>
+                <div class="isa-bar-row">
+                  <span style="font-size:12px;color:var(--card-text);width:80px;flex-shrink:0">Estresse</span>
+                  <div style="flex:1;height:8px;background:var(--surface);border-radius:99px;overflow:hidden;">
+                    <div id="isa-bar-fill-estresse" style="height:100%;width:0%;background:#F59E0B;border-radius:99px;transition:width .6s ease"></div>
+                  </div>
+                  <span id="isa-estresse" style="font-size:12px;font-weight:700;color:#F59E0B;width:28px;text-align:right;flex-shrink:0">—</span>
                 </div>
-                <div id="acomp-content" style="text-align:center;padding:20px;color:var(--muted);font-size:12px">
-                  Os colaboradores aparecerão aqui após responderem ao primeiro check-in ou ciclo de monitoramento.
+                <div class="isa-bar-row">
+                  <span style="font-size:12px;color:var(--card-text);width:80px;flex-shrink:0">Sono</span>
+                  <div style="flex:1;height:8px;background:var(--surface);border-radius:99px;overflow:hidden;">
+                    <div id="isa-bar-fill-sono" style="height:100%;width:0%;background:#6366F1;border-radius:99px;transition:width .6s ease"></div>
+                  </div>
+                  <span id="isa-sono" style="font-size:12px;font-weight:700;color:#6366F1;width:28px;text-align:right;flex-shrink:0">—</span>
+                </div>
+                <div class="isa-bar-row">
+                  <span style="font-size:12px;color:var(--card-text);width:80px;flex-shrink:0">Social</span>
+                  <div style="flex:1;height:8px;background:var(--surface);border-radius:99px;overflow:hidden;">
+                    <div id="isa-bar-fill-social" style="height:100%;width:0%;background:#10B981;border-radius:99px;transition:width .6s ease"></div>
+                  </div>
+                  <span id="isa-social" style="font-size:12px;font-weight:700;color:#10B981;width:28px;text-align:right;flex-shrink:0">—</span>
+                </div>
+                <div style="margin-top:4px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-size:12px;font-weight:700;color:var(--card-text)">ISA Geral</span>
+                  <span id="isa-geral" style="font-size:18px;font-weight:800;color:#2D5E4A">—</span>
                 </div>
               </div>
             </div>
+
+            <!-- Análise IA + Ação Sugerida -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Análise do Time</div>
+              <div id="status-team-content" style="flex:1;font-size:13px;color:var(--card-text);line-height:1.6;">
+                <div style="color:var(--muted);font-size:12px">Disponível após o primeiro ciclo de monitoramento.</div>
+              </div>
+              <div style="padding-top:10px;border-top:1px solid var(--border);display:flex;gap:8px;">
+                <button onclick="pg('plano',null)" style="flex:1;padding:9px;background:var(--mint);color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">Ver Plano →</button>
+                <button onclick="pg('colaboradores',null)" style="flex:1;padding:9px;background:var(--surface);color:var(--card-text);border:1.5px solid var(--border);border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">Equipe</button>
+              </div>
+            </div>
+
           </div>
 
-          <!-- ══ HEATMAP POR SETOR ══ -->
-          <div style="margin-bottom:20px;">
-            <div class="card">
-              <div class="card-hdr">
-                <span class="card-title">Heatmap por Setor</span>
-                <button class="btn btn-outline btn-sm" onclick="pg('colaboradores',null)">Ver equipe →</button>
+          <!-- ── ROW 3: HEATMAP + SCORE DIMENSÃO ── -->
+          <div class="dash-heatmap-col">
+
+            <!-- Heatmap por Setor -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Heatmap por Setor</div>
+                <button onclick="pg('colaboradores',null)" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:Inter,sans-serif">Ver equipe →</button>
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="heatmap-setores">
-                <div class="sector-card sector-crit">
-                  <div class="sector-name">Comercial</div>
-                  <div class="sector-score s-crit">54</div>
-                  <div class="sector-meta">12 pessoas · Crítico</div>
-                </div>
-                <div class="sector-card sector-ok">
-                  <div class="sector-name">TI</div>
-                  <div class="sector-score s-ok">83</div>
-                  <div class="sector-meta">9 pessoas · Saudável</div>
-                </div>
-                <div class="sector-card sector-warn">
-                  <div class="sector-name">Financeiro</div>
-                  <div class="sector-score s-warn">67</div>
-                  <div class="sector-meta">8 pessoas · Atenção</div>
-                </div>
-                <div class="sector-card sector-ok">
-                  <div class="sector-name">Operações</div>
-                  <div class="sector-score s-ok">79</div>
-                  <div class="sector-meta">18 pessoas · Saudável</div>
-                </div>
+                <div style="color:var(--muted);font-size:12px;padding:16px;text-align:center;grid-column:1/-1">Carregando...</div>
               </div>
-
-              <div style="margin-top:10px;padding:8px 10px;background:rgba(111,158,147,.07);border:1px solid rgba(111,158,147,.2);border-radius:8px;font-size:12.5px;color:var(--muted);">
-                Setores com menos de 3 colaboradores não exibem score individual — LGPD compliant
+              <div style="margin-top:10px;font-size:11px;color:var(--muted);padding:6px 10px;background:var(--surface);border-radius:8px;">
+                🔒 Setores com menos de 3 colaboradores não exibem score — LGPD
               </div>
             </div>
+
+            <!-- Score por Dimensão -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Score por Dimensão</div>
+                <a onclick="pg('progresso',null)" style="font-size:11px;color:var(--muted);cursor:pointer;">Histórico →</a>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border-radius:10px;">
+                  <span style="font-size:12.5px;color:var(--card-text)">Burnout</span>
+                  <span class="score-num" style="color:var(--muted);font-weight:700">—</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border-radius:10px;">
+                  <span style="font-size:12.5px;color:var(--card-text)">Estresse Físico</span>
+                  <span class="score-num" style="color:var(--muted);font-weight:700">—</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border-radius:10px;">
+                  <span style="font-size:12.5px;color:var(--card-text)">Sono e Fadiga</span>
+                  <span class="score-num" style="color:var(--muted);font-weight:700">—</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border-radius:10px;">
+                  <span style="font-size:12.5px;color:var(--card-text)">Ansiedade Social</span>
+                  <span class="score-num" style="color:var(--muted);font-weight:700">—</span>
+                </div>
+              </div>
+              <button onclick="pg('plano',null)" style="width:100%;margin-top:14px;padding:10px;background:linear-gradient(135deg,#1A2B14,#2D5E4A);color:#fff;border:none;border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">Ver Plano de Ação →</button>
+            </div>
+
           </div>
 
-          <!-- ══ RELATÓRIO RH ══ -->
-          <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,#1A2B14,#112230);">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-              <div>
-                <div style="font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.35);margin-bottom:6px">Relatório Mensal</div>
-                <div style="font-size:15px;font-weight:700;color:var(--card-text);margin-bottom:6px">Relatório disponível</div>
-                <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Engajamento: <strong style="color:#4ECBA0" id="rel-engajamento">—</strong></span>
-                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Evolução: <strong style="color:#4ECBA0">positiva</strong></span>
-                  <span style="font-size:12px;color:rgba(255,255,255,.55)">Atenção: <strong style="color:#F59E0B">equipe comercial</strong></span>
-                </div>
+          <!-- ── ROW 4: ACOMPANHAMENTO + ACESSO RÁPIDO ── -->
+          <div class="dash-two-col">
+
+            <!-- Acompanhamento -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Acompanhamento</div>
+                <a onclick="pg('colaboradores',null)" style="font-size:11px;color:var(--muted);cursor:pointer;">Ver todos</a>
               </div>
-              <div style="display:flex;gap:8px;">
-                <button class="btn btn-sm" style="background:rgba(78,203,160,.15);color:#4ECBA0;border:1px solid rgba(78,203,160,.25)" onclick="pg('relatorios',null)">⬇ Baixar</button>
-                <button class="btn btn-sm" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)" onclick="toast('📤 Compartilhando com liderança...')">↗ Compartilhar</button>
+              <div id="acomp-content" style="font-size:12px;color:var(--muted);text-align:center;padding:16px 0;">
+                Os colaboradores aparecerão aqui após o primeiro check-in.
               </div>
             </div>
-            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px;color:rgba(255,255,255,.3);font-style:italic">
-              Dados emocionais transformados em decisões estratégicas.
-            </div>
-          </div>
 
-
-
-          <!-- ══ PAINEL DE SOLUÇÕES RH ══ -->
-          <div class="card" style="margin-bottom:16px">
-            <div class="card-hdr">
-              <span class="card-title">Soluções por Nível de Risco</span>
-              <span class="chip chip-green">Guia RH</span>
-            </div>
-            <div id="rh-solucoes"></div>
-          </div>
-
-          <!-- ══ BASE CIENTÍFICA ══ -->
-          <div class="sci-footer">
-            <div class="sci-footer-title">Fundamentação Científica — Ranne Care</div>
-            <div class="sci-refs">
-              <div class="sci-ref">
-                <div class="sci-ref-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v8l3 7H6l3-7V3z"/><line x1="9" y1="9" x2="15" y2="9"/></svg></div>
-                <div class="sci-ref-body">
-                  <div class="sci-ref-fonte">OMS · CID-11 · código QD85</div>
-                  <div class="sci-ref-desc">Burnout classificado como fenômeno ocupacional pela OMS. Nossas avaliações seguem os critérios da CID-11 para identificação de riscos ocupacionais.</div>
-                </div>
-              </div>
-              <div class="sci-ref">
-                <div class="sci-ref-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg></div>
-                <div class="sci-ref-body">
-                  <div class="sci-ref-fonte">Maslach & Jackson (1981) · MBI</div>
-                  <div class="sci-ref-desc">O QUSP é baseado no Inventário de Maslach — padrão-ouro mundial para medição de esgotamento profissional em três dimensões.</div>
-                </div>
-              </div>
-              <div class="sci-ref">
-                <div class="sci-ref-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="18" x2="12" y2="21"/></svg></div>
-                <div class="sci-ref-body">
-                  <div class="sci-ref-fonte">Tarafdar et al. (2007) · JMIS</div>
-                  <div class="sci-ref-desc">Módulo de Fadiga Digital fundamentado em pesquisa de tecnoestresse: impacto da transformação digital na saúde mental ocupacional.</div>
-                </div>
-              </div>
-              <div class="sci-ref">
-                <div class="sci-ref-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5"/></svg></div>
-                <div class="sci-ref-body">
-                  <div class="sci-ref-fonte">Edmondson, Harvard (1999) · Projeto Aristóteles, Google</div>
-                  <div class="sci-ref-desc">Intervenções de RH baseadas em segurança psicológica — o fator número 1 para equipes de alta performance, segundo Harvard e Google.</div>
-                </div>
-              </div>
-              <div class="sci-ref">
-                <div class="sci-ref-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-                <div class="sci-ref-body">
-                  <div class="sci-ref-fonte">Deloitte UK (2020) · ROI em Saúde Mental</div>
-                  <div class="sci-ref-desc">Para cada £1 investido em saúde mental dos funcionários, retorno médio de £5. Harvard Business Review: US$125–190bi/ano em custos de burnout nos EUA.</div>
-                </div>
+            <!-- Acesso Rápido -->
+            <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:14px">Acesso Rápido</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <button onclick="pg('novo-diagnostico',null)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--card-text);cursor:pointer;font-family:Inter,sans-serif;text-align:left;">
+                  <span style="font-size:16px">📊</span> Novo Ciclo de Avaliação
+                </button>
+                <button onclick="pg('colaboradores',null)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--card-text);cursor:pointer;font-family:Inter,sans-serif;text-align:left;">
+                  <span style="font-size:16px">👥</span> Adicionar Colaborador
+                </button>
+                <button onclick="pg('plano',null)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--card-text);cursor:pointer;font-family:Inter,sans-serif;text-align:left;">
+                  <span style="font-size:16px">📋</span> Plano de Ação
+                </button>
+                <button onclick="pg('relatorios',null)" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;font-size:12.5px;font-weight:600;color:var(--card-text);cursor:pointer;font-family:Inter,sans-serif;text-align:left;">
+                  <span style="font-size:16px">📄</span> Relatórios & NR-1
+                </button>
               </div>
             </div>
+
           </div>
 
         </div><!-- /realMetrics -->
@@ -9196,10 +9139,10 @@ async function loadDashboardData() {
     _atualizarChipScore(scoreGeral);
 
     // Sub-texto
-    const sub = document.getElementById('dash-sub');
+    const sub = document.getElementById('dash-sub-info');
     if (sub) {
       if (responderam > 0) sub.textContent = `${responderam} de ${totalCols} colaboradores fizeram check-in este mês`;
-      else if (diags[0]) sub.textContent = `Último ciclo: ${diags[0].nome}`;
+      else if (diags?.[0]) sub.textContent = `Último ciclo: ${diags[0].nome}`;
       else sub.textContent = 'Nenhum check-in este mês — convide os colaboradores';
     }
 
@@ -9234,8 +9177,16 @@ function _setIsaVal(id, val) {
   const el = document.getElementById(id);
   if (!el) return;
   el.textContent = val ?? '—';
-  if (val !== null) {
-    el.style.color = val >= 70 ? '#10B981' : val >= 55 ? '#F59E0B' : '#EF4444';
+  if (val !== null && val !== undefined) {
+    const color = val >= 70 ? '#10B981' : val >= 55 ? '#F59E0B' : '#EF4444';
+    el.style.color = color;
+    // Update bar fill if exists (for burnout, estresse, sono, social)
+    const barKey = id.replace('isa-', '');
+    const barEl = document.getElementById('isa-bar-fill-' + barKey);
+    if (barEl) {
+      barEl.style.width = Math.min(val, 100) + '%';
+      barEl.style.background = color;
+    }
   }
 }
 
@@ -9256,7 +9207,6 @@ function _renderHeatmapSetores(membros, userMap) {
     return;
   }
 
-  // Agrupa por setor se disponível, senão mostra score geral do time
   const setores = {};
   membros.forEach(m => {
     const s = m.setor || 'Time';
@@ -9274,30 +9224,29 @@ function _renderHeatmapSetores(membros, userMap) {
     }).filter(s => s !== null);
 
     if (scores.length === 0) {
-      return `<div class="sector-card" style="opacity:.55">
-        <div class="sector-name">${setor}</div>
-        <div class="sector-score" style="font-size:13px;color:var(--muted)">—</div>
-        <div class="sector-meta">${cols.length} pessoa${cols.length>1?'s':''} · sem check-in</div>
+      return `<div class="heatmap-cell h-empty">
+        <div class="hc-name">${setor}</div>
+        <div class="hc-score" style="color:var(--muted);font-size:16px">—</div>
+        <div class="hc-meta">${cols.length} pessoa${cols.length>1?'s':''} · sem check-in</div>
       </div>`;
     }
 
     if (scores.length < 3 && entradas.length > 1) {
-      return `<div class="sector-card" style="opacity:.55">
-        <div class="sector-name">${setor}</div>
-        <div class="sector-score" style="font-size:13px;color:var(--muted)">—</div>
-        <div class="sector-meta">${cols.length} pessoa${cols.length>1?'s':''} · privado (LGPD)</div>
+      return `<div class="heatmap-cell h-empty">
+        <div class="hc-name">${setor}</div>
+        <div class="hc-score" style="color:var(--muted);font-size:16px">—</div>
+        <div class="hc-meta">${cols.length} pessoa${cols.length>1?'s':''} · privado (LGPD)</div>
       </div>`;
     }
 
     const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
-    const cardClass  = avg >= 70 ? 'sector-ok'   : avg >= 55 ? 'sector-warn'  : 'sector-crit';
-    const scoreClass = avg >= 70 ? 's-ok'        : avg >= 55 ? 's-warn'       : 's-crit';
-    const status     = avg >= 70 ? 'Saudável'    : avg >= 55 ? 'Atenção'      : 'Crítico';
+    const cls    = avg >= 70 ? 'h-ok'   : avg >= 55 ? 'h-warn'  : 'h-crit';
+    const status = avg >= 70 ? 'Saudável' : avg >= 55 ? 'Atenção' : 'Crítico';
 
-    return `<div class="sector-card ${cardClass}">
-      <div class="sector-name">${setor}</div>
-      <div class="sector-score ${scoreClass}">${avg}</div>
-      <div class="sector-meta">${cols.length} pessoa${cols.length>1?'s':''} · ${status}</div>
+    return `<div class="heatmap-cell ${cls}">
+      <div class="hc-name">${setor}</div>
+      <div class="hc-score">${avg}</div>
+      <div class="hc-meta">${cols.length} pessoa${cols.length>1?'s':''} · ${status}</div>
     </div>`;
   }).join('');
 }
