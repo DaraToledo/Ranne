@@ -371,6 +371,31 @@ body.dark .btn-ghost { border-color: rgba(255,255,255,.15); color: rgba(255,255,
 #cp-feminina .fem-opt-btn.sel.fem-good,
 #cp-feminina .fem-opt-btn.selected.fem-good  { background: #22C55E !important; }
 #cp-feminina .fem-tag-btn.sel                { background: #2D5E4A !important; }
+
+/* ── Corpo / Dor (grid com emoji) ── */
+.fem-corpo-btn {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:12px 8px;border-radius:14px;border:1.5px solid var(--border);
+  background:var(--surface);cursor:pointer;transition:all .18s;
+  font-family:'Inter',sans-serif;color:var(--text);
+}
+.fem-corpo-btn:hover { border-color:var(--mint);background:rgba(74,122,110,.07);transform:translateY(-1px); }
+.fem-corpo-btn.sel { border-color:var(--teal);background:rgba(45,94,74,.1);box-shadow:0 0 0 2px rgba(45,94,74,.15); }
+
+/* ── Fase do ciclo (cards horizontais) ── */
+.fem-ciclo-btn {
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;border-radius:14px;border:1.5px solid var(--border);
+  background:var(--surface);cursor:pointer;transition:all .18s;
+  font-family:'Inter',sans-serif;
+}
+.fem-ciclo-btn:hover { transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.07); }
+.fem-ciclo-btn.sel { box-shadow:0 0 0 2px var(--teal) !important;border-color:var(--teal) !important; }
+
+/* dark mode */
+body.dark .fem-corpo-btn { background:var(--surface);border-color:var(--border); }
+body.dark .fem-corpo-btn.sel { background:rgba(74,122,110,.18); }
+body.dark .fem-ciclo-btn.sel { box-shadow:0 0 0 2px rgba(74,122,110,.6) !important; }
 #cp-feminina .fem-grupo-label { color: #1A2E20 !important; }
 #cp-feminina label { color: #1A2E20 !important; }
 #cp-feminina #fem-sinto { color: #1A2E20 !important; background: #F7F4EE !important; }
@@ -7052,9 +7077,16 @@ body.dark .ob-btn { background: #2D5E4A; }
               <div style="font-size:12px;color:var(--muted);font-style:italic">Disponível após o primeiro ciclo de avaliação.</div>
             </div>
           </div>
+          <!-- Narrativa IA -->
+          <div id="narrativa-ia-card" style="display:none;margin-top:14px;padding:14px;background:linear-gradient(135deg,rgba(45,94,74,.06),rgba(45,94,74,.02));border:1.5px solid rgba(45,94,74,.18);border-radius:12px">
+            <div style="font-size:11px;font-weight:700;color:var(--mint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Narrativa do período</div>
+            <div id="narrativa-ia-texto" style="font-size:13px;color:var(--text);line-height:1.7"></div>
+            <button onclick="copiarNarrativa()" style="margin-top:10px;font-size:12.5px;color:var(--mint);font-weight:600;background:none;border:none;cursor:pointer;padding:0">Copiar texto →</button>
+          </div>
+
           <div style="display:flex;gap:8px;margin-top:14px;">
             <button class="btn btn-primary btn-sm" style="flex:1;" onclick="baixarRelatorioMensal()">⬇ Baixar PDF</button>
-            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="compartilharRelatorioMensal()">↗ Compartilhar</button>
+            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="gerarNarrativaIA()">✦ Gerar narrativa</button>
           </div>
         </div>
 
@@ -7286,12 +7318,24 @@ body.dark .ob-btn { background: #2D5E4A; }
 
       <!-- Pausa -->
       <div class="pausa-card" onclick="cpg('decomp')">
-        <div class="pausa-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22c0 0 4-2 8-8 4-6 12-8 12-8s-2 8-8 12c-6 4-12 4-12 4z"/><path d="M12 14c-2-4 0-10 0-10"/></svg></div>
+        <div class="pausa-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="5" x2="8" y2="19"/><line x1="16" y1="5" x2="16" y2="19"/></svg></div>
         <div class="pausa-card-body">
           <strong>Momento de pausa</strong>
           <span>Respiração guiada · 2 min para resetar</span>
         </div>
         <div class="pausa-card-arr">›</div>
+      </div>
+
+      <!-- Resumo semanal IA -->
+      <div id="resumo-semanal-card" style="display:none;padding:16px;background:linear-gradient(135deg,rgba(45,94,74,.07),rgba(45,94,74,.03));border-radius:16px;border:1.5px solid rgba(45,94,74,.2);margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <div style="width:32px;height:32px;border-radius:10px;background:rgba(45,94,74,.12);display:flex;align-items:center;justify-content:center;font-size:16px">🌿</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Seu resumo desta semana</div>
+            <div style="font-size:11px;color:var(--muted)">só para você</div>
+          </div>
+        </div>
+        <div id="resumo-semanal-texto" style="font-size:13px;color:var(--text);line-height:1.7;font-style:italic"></div>
       </div>
 
       <!-- Destaque Saúde Feminina -->
@@ -8052,7 +8096,7 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(201,168,124,.12);border-radius:50%"></div>
     <div style="position:absolute;bottom:-30px;right:30px;width:80px;height:80px;background:rgba(201,168,124,.08);border-radius:50%"></div>
     <div style="position:relative">
-      <div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(201,168,124,.3),rgba(201,168,124,.15));border:1px solid rgba(201,168,124,.4);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;color:#E8C99A">★ Diferencial Ranne Care</div>
+
       <div style="font-size:21px;font-weight:700;font-family:'Fraunces',serif;margin-bottom:6px;line-height:1.25">Saúde Feminina Completa</div>
       <div style="font-size:13px;opacity:.85;line-height:1.6;margin-bottom:14px">O único espaço corporativo com suporte à menopausa, ciclo menstrual e bem-estar feminino no trabalho — confidencial e nunca compartilhado com a empresa.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -8111,29 +8155,78 @@ body.dark .ob-btn { background: #2D5E4A; }
       </div>
     </div>
 
-    <!-- Dor / desconforto -->
-    <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:14px">
-      <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Dor física ou desconforto hormonal hoje?</label>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" id="fem-dor">
-        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Sem dor</button>
-        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Cólica</button>
-        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Enxaqueca</button>
-        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Tensão muscular</button>
-        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Inchaço</button>
-        <button onclick="femToggle('dor',this)" class="fem-tag-btn">Fadiga intensa</button>
+    <!-- Dor / desconforto — redesign -->
+    <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Como está seu corpo hoje?</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="fem-dor">
+        <button onclick="femToggle('dor',this)" class="fem-corpo-btn" data-label="Sem dor" data-emoji="✨">
+          <span style="font-size:20px;display:block;margin-bottom:4px">✨</span>
+          <span style="font-size:12px;font-weight:600">Sem dor</span>
+        </button>
+        <button onclick="femToggle('dor',this)" class="fem-corpo-btn" data-label="Cólica" data-emoji="🌊">
+          <span style="font-size:20px;display:block;margin-bottom:4px">🌊</span>
+          <span style="font-size:12px;font-weight:600">Cólica</span>
+        </button>
+        <button onclick="femToggle('dor',this)" class="fem-corpo-btn" data-label="Enxaqueca" data-emoji="⚡">
+          <span style="font-size:20px;display:block;margin-bottom:4px">⚡</span>
+          <span style="font-size:12px;font-weight:600">Enxaqueca</span>
+        </button>
+        <button onclick="femToggle('dor',this)" class="fem-corpo-btn" data-label="Tensão muscular" data-emoji="💢">
+          <span style="font-size:20px;display:block;margin-bottom:4px">💢</span>
+          <span style="font-size:12px;font-weight:600">Tensão</span>
+        </button>
+        <button onclick="femToggle('dor',this)" class="fem-corpo-btn" data-label="Inchaço" data-emoji="💧">
+          <span style="font-size:20px;display:block;margin-bottom:4px">💧</span>
+          <span style="font-size:12px;font-weight:600">Inchaço</span>
+        </button>
+        <button onclick="femToggle('dor',this)" class="fem-corpo-btn" data-label="Fadiga intensa" data-emoji="🌫️">
+          <span style="font-size:20px;display:block;margin-bottom:4px">🌫️</span>
+          <span style="font-size:12px;font-weight:600">Fadiga</span>
+        </button>
       </div>
     </div>
 
-    <!-- Fase do ciclo -->
-    <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:14px">
-      <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Fase do ciclo menstrual <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
-      <div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Esta informação é 100% privada e nunca compartilhada.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" id="fem-ciclo">
-        <button onclick="femSelect('ciclo',1,this)" class="fem-tag-btn">Menstruação</button>
-        <button onclick="femSelect('ciclo',2,this)" class="fem-tag-btn">Fase folicular</button>
-        <button onclick="femSelect('ciclo',3,this)" class="fem-tag-btn">Ovulação</button>
-        <button onclick="femSelect('ciclo',4,this)" class="fem-tag-btn">Fase lútea</button>
-        <button onclick="femSelect('ciclo',5,this)" class="fem-tag-btn">Prefiro não informar</button>
+    <!-- Fase do ciclo — redesign -->
+    <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Fase do ciclo</div>
+        <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">🔒 100% privado</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px" id="fem-ciclo">
+        <button onclick="femSelect('ciclo',1,this)" class="fem-ciclo-btn" style="background:linear-gradient(135deg,rgba(239,68,68,.07),rgba(239,68,68,.03));border-color:rgba(239,68,68,.18)">
+          <span style="font-size:18px">🌑</span>
+          <div style="text-align:left;flex:1">
+            <div style="font-size:12.5px;font-weight:700;color:var(--text)">Menstruação</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:1px">Dias 1–5</div>
+          </div>
+        </button>
+        <button onclick="femSelect('ciclo',2,this)" class="fem-ciclo-btn" style="background:linear-gradient(135deg,rgba(34,197,94,.07),rgba(34,197,94,.03));border-color:rgba(34,197,94,.18)">
+          <span style="font-size:18px">🌱</span>
+          <div style="text-align:left;flex:1">
+            <div style="font-size:12.5px;font-weight:700;color:var(--text)">Fase folicular</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:1px">Dias 6–13</div>
+          </div>
+        </button>
+        <button onclick="femSelect('ciclo',3,this)" class="fem-ciclo-btn" style="background:linear-gradient(135deg,rgba(251,191,36,.07),rgba(251,191,36,.03));border-color:rgba(251,191,36,.18)">
+          <span style="font-size:18px">🌕</span>
+          <div style="text-align:left;flex:1">
+            <div style="font-size:12.5px;font-weight:700;color:var(--text)">Ovulação</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:1px">Dias 14–16</div>
+          </div>
+        </button>
+        <button onclick="femSelect('ciclo',4,this)" class="fem-ciclo-btn" style="background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(139,92,246,.03));border-color:rgba(139,92,246,.18)">
+          <span style="font-size:18px">🌘</span>
+          <div style="text-align:left;flex:1">
+            <div style="font-size:12.5px;font-weight:700;color:var(--text)">Fase lútea</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:1px">Dias 17–28</div>
+          </div>
+        </button>
+        <button onclick="femSelect('ciclo',5,this)" class="fem-ciclo-btn" style="grid-column:span 2;background:transparent;border-color:var(--border)">
+          <span style="font-size:16px">🤍</span>
+          <div style="text-align:left;flex:1">
+            <div style="font-size:12.5px;font-weight:600;color:var(--muted)">Prefiro não informar</div>
+          </div>
+        </button>
       </div>
     </div>
 
@@ -8152,6 +8245,15 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div style="border-top:1px solid var(--border);padding-top:14px;margin-bottom:16px">
       <label style="font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Como me sinto hoje</label>
       <textarea id="fem-sinto" placeholder="Um registro rápido e pessoal… como você chegou hoje?" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);background:var(--surface);resize:none;min-height:72px;box-sizing:border-box;outline:none" onfocus="this.style.borderColor='var(--mint)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    </div>
+
+    <!-- Dica personalizada IA -->
+    <div id="dica-ia-feminina-card" style="display:none;margin-bottom:14px;padding:14px;background:linear-gradient(135deg,rgba(201,168,124,.1),rgba(201,168,124,.04));border:1.5px solid rgba(201,168,124,.3);border-radius:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-size:16px">🌸</span>
+        <span style="font-size:12px;font-weight:700;color:#C9A87C;text-transform:uppercase;letter-spacing:.06em">Para você hoje</span>
+      </div>
+      <div id="dica-ia-feminina-texto" style="font-size:13px;color:var(--text);line-height:1.7"></div>
     </div>
 
     <button onclick="salvarCheckinFeminino()" class="btn btn-primary" style="width:100%">Salvar meu check-in</button>
@@ -8304,6 +8406,15 @@ body.dark .ob-btn { background: #2D5E4A; }
       <span class="card-title">Entradas anteriores</span>
       <button onclick="diarioLimparTudo()" style="font-size:12.5px;color:var(--muted);background:none;border:none;cursor:pointer">Limpar tudo</button>
     </div>
+    <!-- Coach IA -->
+    <div id="coach-diario-card" style="display:none;margin-bottom:16px;padding:16px;background:linear-gradient(135deg,rgba(45,94,74,.07),rgba(45,94,74,.02));border-radius:14px;border:1.5px solid rgba(45,94,74,.18)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:30px;height:30px;border-radius:9px;background:rgba(45,94,74,.12);display:flex;align-items:center;justify-content:center;font-size:15px">💬</div>
+        <div style="font-size:12.5px;font-weight:700;color:var(--mint)">Ranne leu sua entrada</div>
+      </div>
+      <div id="coach-diario-texto" style="font-size:13px;color:var(--text);line-height:1.7"></div>
+    </div>
+
     <div id="diario-historico">
       <div style="text-align:center;padding:24px 0;color:var(--muted);font-size:13px">Nenhuma entrada ainda.<br>Comece escrevendo sobre o seu dia!</div>
     </div>
@@ -10494,6 +10605,8 @@ async function salvarCheckin() {
   document.querySelectorAll('#p-checkin .em-btn.sel, #cp-checkin .em-btn.sel')
     .forEach(b => b.classList.remove('sel'));
   toast('✅ Check-in enviado! Obrigado.');
+  // Gera resumo semanal com IA (silencioso, sem bloquear UI)
+  _gerarResumoSemanal({ humor, energia, carga, foco: focoVal });
   // Navega para início para mostrar dashboard atualizado
   setTimeout(() => cpg('inicio'), 600);
 }
@@ -12875,6 +12988,14 @@ function cpg(id) {
   // Inicializa o diário
   if (id === 'diario') {
     if (typeof diarioInit === 'function') diarioInit();
+    // Oculta coach ao abrir diário novo
+    const coachCard = document.getElementById('coach-diario-card');
+    if (coachCard) coachCard.style.display = 'none';
+  }
+
+  // Carrega resumo semanal salvo ao abrir início
+  if (id === 'inicio') {
+    if (typeof carregarResumoSalvo === 'function') carregarResumoSalvo();
   }
 }
 
@@ -17085,7 +17206,7 @@ let femDicaIdx = 0;
 
 function femSelect(campo, val, btn) {
   const container = btn.closest('[id^="fem-"]') || btn.parentElement;
-  container.querySelectorAll('.fem-opt-btn,.fem-tag-btn').forEach(b => b.classList.remove('sel'));
+  container.querySelectorAll('.fem-opt-btn,.fem-tag-btn,.fem-ciclo-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
   femState[campo] = val;
 }
@@ -17093,11 +17214,11 @@ function femSelect(campo, val, btn) {
 function femToggle(campo, btn) {
   btn.classList.toggle('sel');
   if (!femState[campo]) femState[campo] = [];
-  const txt = btn.textContent.trim();
+  const label = btn.dataset.label || btn.textContent.trim();
   if (btn.classList.contains('sel')) {
-    femState[campo].push(txt);
+    femState[campo].push(label);
   } else {
-    femState[campo] = femState[campo].filter(v => v !== txt);
+    femState[campo] = femState[campo].filter(v => v !== label);
   }
 }
 
@@ -17267,6 +17388,8 @@ async function salvarCheckinFeminino() {
     await carregarDadosHomeColaborador();
 
     toast('✅ Check-in salvo! Cuide-se bem hoje.');
+    // Gera dica personalizada com IA baseada nos dados do check-in feminino
+    _gerarDicaFeminina({ ...femState, sinto });
     setTimeout(() => cpg('inicio'), 1500);
 
   } catch(e) {
@@ -17363,6 +17486,10 @@ function diarioSalvar() {
 
   toast('✅ Entrada salva no seu diário!');
   diarioRenderHistorico();
+  // Coach IA responde ao que foi escrito (silencioso)
+  if (texto || diarioHumorSel !== null) {
+    _gerarCoachDiario(texto, diarioHumorSel);
+  }
 }
 
 function diarioRenderHistorico() {
@@ -17799,6 +17926,171 @@ body.dark .chat-welcome-sugg:hover { background: #2D5E4A; color: #fff; }
 
 
 <script>
+
+/* ════════════════════════════════════════
+   RANNE IA — Recursos inteligentes
+   1. Resumo semanal (pós check-in)
+   2. Coach do diário
+   3. Dica personalizada feminina
+   4. Narrativa de relatório (RH)
+   ════════════════════════════════════════ */
+
+async function _ranneAI(prompt, contexto) {
+  try {
+    const res = await fetch('https://www.rannecare.com.br/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ context: contexto || 'colaborador', messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    return (data.reply || '').trim();
+  } catch { return null; }
+}
+
+// 1. Resumo semanal personalizado (pós check-in)
+async function _gerarResumoSemanal({ humor, energia, carga, foco }) {
+  const nome = currentColaborador?.nome?.split(' ')[0] || 'você';
+  const prompt = `Você é a Ranne, apoio amigável de bem-estar. Escreva 2 frases calorosas e pessoais para ${nome} sobre como foi a semana delas/deles.
+Dados do check-in: Humor ${humor}/100, Energia ${energia}/100, Carga de trabalho ${carga}/100, Foco ${foco}/100.
+Tom: acolhedor, sem jargão, como uma amiga que sabe como foi a semana. Se a carga estiver alta (>70) ou humor baixo (<40), reconheça isso com empatia. Se estiver bem, celebre.
+Não mencione números. Não use "check-in". Fale direto para a pessoa, na segunda pessoa.
+Retorne APENAS o texto, sem aspas.`;
+
+  const texto = await _ranneAI(prompt, 'colaborador');
+  if (!texto) return;
+
+  const card = document.getElementById('resumo-semanal-card');
+  const el = document.getElementById('resumo-semanal-texto');
+  if (card && el) {
+    el.textContent = texto;
+    card.style.display = 'block';
+    // Salva para mostrar na próxima vez que abrir o início
+    try { localStorage.setItem('ranne_resumo_semanal', JSON.stringify({ texto, data: new Date().toISOString() })); } catch {}
+  }
+}
+
+// 2. Coach do diário — responde ao que foi escrito
+async function _gerarCoachDiario(texto, humor) {
+  const nivelHumor = humor === 1 ? 'muito difícil' : humor === 2 ? 'neutro' : humor === 3 ? 'ok' : humor === 4 ? 'bom' : humor === 5 ? 'ótimo' : 'não informado';
+  const prompt = `Você é a Ranne, apoio de bem-estar. A pessoa escreveu no diário:
+
+"${texto || '(sem texto)'}"
+
+Humor do dia: ${nivelHumor}.
+
+Escreva 2-3 frases de resposta: primeiro acolha o que foi compartilhado, depois ofereça uma observação gentil ou um pequeníssimo convite de autocuidado — nada prescritivo, nada clínico.
+Se o humor for difícil ou o texto mostrar peso, priorize acolhimento. Se for positivo, celebre junto.
+Não repita o que foi escrito palavra por palavra. Não use "eu entendo como você se sente".
+Retorne APENAS o texto, sem aspas nem introdução.`;
+
+  const resposta = await _ranneAI(prompt, 'colaborador');
+  if (!resposta) return;
+
+  const card = document.getElementById('coach-diario-card');
+  const el = document.getElementById('coach-diario-texto');
+  if (card && el) {
+    el.textContent = resposta;
+    card.style.display = 'block';
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// 3. Dica personalizada feminina
+async function _gerarDicaFeminina(state) {
+  const faseMap = { 1: 'menstruação (dias 1-5)', 2: 'fase folicular (dias 6-13)', 3: 'ovulação (dias 14-16)', 4: 'fase lútea (dias 17-28)', 5: null };
+  const fase = faseMap[state.ciclo] || null;
+  const dores = Array.isArray(state.dor) ? state.dor.filter(d => d !== 'Sem dor').join(', ') : '';
+  const sonoMap = { 1: 'ruim', 2: 'ok', 3: 'boa' };
+  const sono = sonoMap[state.sono] || null;
+  const humorMap = { 1: 'difícil', 2: 'ok', 3: 'bom' };
+  const humor = humorMap[state.humor] || null;
+
+  const contexto = [
+    fase ? `Fase do ciclo: ${fase}` : '',
+    dores ? `Desconfortos físicos: ${dores}` : '',
+    sono ? `Qualidade do sono: ${sono}` : '',
+    humor ? `Humor: ${humor}` : '',
+    state.sinto ? `Como ela se sente: "${state.sinto}"` : ''
+  ].filter(Boolean).join('. ');
+
+  if (!contexto) return;
+
+  const prompt = `Você é a Ranne, apoio especialista em saúde feminina. Com base nos dados abaixo, gere uma dica prática e acolhedora para hoje.
+${contexto}.
+A dica deve ser: específica para os dados (não genérica), prática (algo que ela pode fazer hoje), máximo 3 frases, sem tom médico ou prescritivo.
+Se houver fase do ciclo informada, considere o que é natural para essa fase.
+Retorne APENAS o texto da dica, sem título nem aspas.`;
+
+  const dica = await _ranneAI(prompt, 'colaborador');
+  if (!dica) return;
+
+  const card = document.getElementById('dica-ia-feminina-card');
+  const el = document.getElementById('dica-ia-feminina-texto');
+  if (card && el) {
+    el.textContent = dica;
+    card.style.display = 'block';
+  }
+}
+
+// 4. Narrativa de relatório para o RH
+async function gerarNarrativaIA() {
+  const btn = document.querySelector('#p-relatorios .btn-outline.btn-sm');
+  if (btn) { btn.disabled = true; btn.textContent = '✦ Gerando…'; }
+
+  const scoreEl = document.getElementById('rel-score-geral');
+  const taxaEl = document.getElementById('rel-taxa');
+  const dimEl = document.getElementById('rel-dim-critica');
+  const setorEl = document.getElementById('rel-setor-risco');
+  const empresa = currentEmpresa?.nome || 'a empresa';
+
+  const score = scoreEl?.textContent?.replace('—','') || '?';
+  const taxa = taxaEl?.textContent?.replace('—','') || '?';
+  const dim = dimEl?.textContent?.replace('—','') || '?';
+  const setor = setorEl?.textContent?.replace('—','') || '?';
+
+  const periodo = document.getElementById('rel-completo-periodo')?.value || 'mes';
+  const periodoStr = periodo === 'mes' ? 'neste mês' : periodo === '3m' ? 'nos últimos 3 meses' : periodo === '6m' ? 'nos últimos 6 meses' : 'no histórico disponível';
+
+  const prompt = `Você é especialista em saúde organizacional. Escreva um parágrafo executivo (4-6 frases) sobre o estado do bem-estar em ${empresa} ${periodoStr}.
+Dados: Score geral ${score}/100, Taxa de resposta ${taxa}, Dimensão mais crítica: ${dim}, Setor em atenção: ${setor}.
+Tom: profissional mas humano, direto, adequado para apresentar à diretoria ou incluir em um e-mail de RH.
+Interprete os dados com contexto — não apenas descreva os números. Finalize com uma frase sobre o caminho a seguir.
+Retorne APENAS o texto, sem título nem aspas.`;
+
+  const narrativa = await _ranneAI(prompt, 'empresa');
+
+  if (btn) { btn.disabled = false; btn.textContent = '✦ Gerar narrativa'; }
+
+  if (!narrativa) { toast('Não foi possível gerar a narrativa agora.'); return; }
+
+  const card = document.getElementById('narrativa-ia-card');
+  const el = document.getElementById('narrativa-ia-texto');
+  if (card && el) {
+    el.textContent = narrativa;
+    card.style.display = 'block';
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function copiarNarrativa() {
+  const texto = document.getElementById('narrativa-ia-texto')?.textContent;
+  if (!texto) return;
+  navigator.clipboard.writeText(texto).then(() => toast('✅ Narrativa copiada!')).catch(() => toast('Selecione o texto manualmente.'));
+}
+
+// Carrega resumo semanal salvo ao abrir o início
+function carregarResumoSalvo() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem('ranne_resumo_semanal') || 'null');
+    if (!salvo?.texto) return;
+    const dias = (Date.now() - new Date(salvo.data)) / 86400000;
+    if (dias > 7) return; // expira em 7 dias
+    const card = document.getElementById('resumo-semanal-card');
+    const el = document.getElementById('resumo-semanal-texto');
+    if (card && el) { el.textContent = salvo.texto; card.style.display = 'block'; }
+  } catch {}
+}
+
 const ranneChat = (() => {
   let history = [];
   let isOpen = false;
