@@ -4,282 +4,610 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranne Care — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root {
-  --bg: #0F1A17;
-  --surface: #162420;
-  --surface2: #1E302B;
-  --border: #2A3F38;
+  --bg: #0A1410;
+  --surface: #111C18;
+  --surface2: #172220;
+  --surface3: #1E2E29;
+  --border: #243530;
+  --border2: #2E4038;
   --verde: #4ECBA0;
   --verde-dim: #2D5E4A;
+  --verde-glow: rgba(78,203,160,.08);
   --dourado: #C9A84C;
-  --text: #E8F0EC;
-  --muted: #7A9E8E;
-  --red: #EF4444;
-  --yellow: #F59E0B;
-  --sidebar-w: 220px;
+  --dourado-dim: rgba(201,168,76,.15);
+  --text: #E2EDE8;
+  --text2: #A8C4B8;
+  --muted: #5C8070;
+  --red: #F87171;
+  --red-dim: rgba(248,113,113,.12);
+  --yellow: #FBB040;
+  --yellow-dim: rgba(251,176,64,.12);
+  --blue: #60A5FA;
+  --blue-dim: rgba(96,165,250,.12);
+  --sidebar-w: 232px;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: 'SF Pro Display', -apple-system, sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; }
+body { font-family:var(--sans); background:var(--bg); color:var(--text); min-height:100vh; display:flex; font-size:14px; }
 
 /* ── LOGIN ── */
 #login-screen { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:999; }
-.login-box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:40px; width:360px; }
-.login-logo { font-size:13px; font-weight:700; letter-spacing:3px; color:var(--verde); margin-bottom:8px; }
-.login-title { font-size:22px; font-weight:600; margin-bottom:4px; }
-.login-sub { font-size:13px; color:var(--muted); margin-bottom:28px; }
-.login-label { font-size:11px; font-weight:600; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-bottom:6px; display:block; }
-.login-input { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--text); font-size:14px; outline:none; margin-bottom:14px; transition:border .2s; }
-.login-input:focus { border-color:var(--verde); }
-.login-btn { width:100%; background:var(--verde); color:#0F1A17; border:none; border-radius:8px; padding:12px; font-size:14px; font-weight:700; cursor:pointer; transition:all .2s; }
-.login-btn:hover { background:#3db88e; }
-.login-err { font-size:12px; color:var(--red); margin-top:10px; display:none; }
+.login-wrap { width:380px; }
+.login-eyebrow { font-family:var(--mono); font-size:11px; color:var(--verde); letter-spacing:.12em; text-transform:uppercase; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+.login-eyebrow::before { content:''; width:24px; height:1px; background:var(--verde); }
+.login-title { font-size:28px; font-weight:700; line-height:1.2; margin-bottom:6px; }
+.login-sub { font-size:13px; color:var(--muted); margin-bottom:32px; }
+.login-box { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px; }
+.lf-label { font-family:var(--mono); font-size:10px; font-weight:600; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:7px; }
+.lf-input { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--text); font-size:13px; font-family:var(--sans); outline:none; margin-bottom:16px; transition:border .2s; }
+.lf-input:focus { border-color:var(--verde); }
+.lf-btn { width:100%; background:var(--verde); color:#0A1410; border:none; border-radius:8px; padding:12px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--sans); letter-spacing:.02em; transition:all .2s; }
+.lf-btn:hover { background:#3db88e; }
+.lf-err { font-size:12px; color:var(--red); margin-top:10px; display:none; }
 
 /* ── LAYOUT ── */
 #app { display:none; width:100%; }
-.sidebar { width:var(--sidebar-w); background:var(--surface); border-right:1px solid var(--border); height:100vh; position:fixed; left:0; top:0; display:flex; flex-direction:column; padding:20px 0; }
-.sb-logo { padding:0 20px 20px; border-bottom:1px solid var(--border); margin-bottom:16px; }
-.sb-logo-name { font-size:13px; font-weight:800; letter-spacing:2px; color:var(--verde); }
-.sb-logo-tag { font-size:10px; color:var(--muted); margin-top:2px; }
-.sb-section { font-size:10px; font-weight:700; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; padding:0 20px; margin:12px 0 6px; }
-.sb-item { display:flex; align-items:center; gap:10px; padding:9px 20px; font-size:13px; cursor:pointer; color:var(--muted); border-radius:0; transition:all .15s; }
-.sb-item:hover { color:var(--text); background:rgba(78,203,160,.06); }
-.sb-item.active { color:var(--verde); background:rgba(78,203,160,.1); border-right:2px solid var(--verde); }
-.sb-item svg { flex-shrink:0; }
-.sb-bottom { margin-top:auto; padding:16px 20px; border-top:1px solid var(--border); }
-.sb-user { font-size:12px; color:var(--muted); }
-.sb-logout { font-size:12px; color:var(--red); cursor:pointer; margin-top:6px; }
+.sidebar { width:var(--sidebar-w); background:var(--surface); border-right:1px solid var(--border); height:100vh; position:fixed; left:0; top:0; display:flex; flex-direction:column; }
+.sb-head { padding:20px 20px 16px; border-bottom:1px solid var(--border); }
+.sb-logo { font-family:var(--mono); font-size:12px; font-weight:600; color:var(--verde); letter-spacing:.15em; }
+.sb-tag { font-size:10px; color:var(--muted); margin-top:3px; font-family:var(--mono); }
+.sb-nav { flex:1; overflow-y:auto; padding:12px 0; }
+.sb-section { font-family:var(--mono); font-size:9px; font-weight:600; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; padding:12px 20px 5px; }
+.sb-item { display:flex; align-items:center; gap:10px; padding:8px 20px; font-size:13px; cursor:pointer; color:var(--text2); transition:all .15s; border-left:2px solid transparent; }
+.sb-item:hover { color:var(--text); background:var(--verde-glow); }
+.sb-item.active { color:var(--verde); background:rgba(78,203,160,.07); border-left-color:var(--verde); }
+.sb-item svg { flex-shrink:0; opacity:.7; }
+.sb-item.active svg { opacity:1; }
+.sb-badge { margin-left:auto; background:var(--red-dim); color:var(--red); font-size:10px; font-weight:700; font-family:var(--mono); padding:2px 7px; border-radius:99px; }
+.sb-badge.yellow { background:var(--yellow-dim); color:var(--yellow); }
+.sb-foot { padding:16px 20px; border-top:1px solid var(--border); }
+.sb-user { font-size:11px; color:var(--muted); font-family:var(--mono); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sb-logout { font-size:12px; color:var(--red); cursor:pointer; margin-top:8px; opacity:.7; transition:opacity .15s; }
+.sb-logout:hover { opacity:1; }
 
 .main { margin-left:var(--sidebar-w); flex:1; padding:28px 32px; min-height:100vh; overflow-y:auto; }
 .page { display:none; }
-.page.active { display:block; }
+.page.active { display:block; animation:fadeIn .2s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── TOPBAR ── */
-.topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
-.page-title { font-size:20px; font-weight:700; }
-.page-sub { font-size:13px; color:var(--muted); margin-top:2px; }
+.topbar { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px; gap:12px; }
+.page-title { font-size:22px; font-weight:700; }
+.page-sub { font-size:12px; color:var(--muted); margin-top:3px; font-family:var(--mono); }
+.topbar-actions { display:flex; gap:8px; flex-shrink:0; }
 
 /* ── MÉTRICAS ── */
-.metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
-.metric { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
-.metric-label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px; }
-.metric-value { font-size:26px; font-weight:700; color:var(--text); line-height:1; }
-.metric-sub { font-size:11px; color:var(--muted); margin-top:4px; }
-.metric-green .metric-value { color:var(--verde); }
-.metric-yellow .metric-value { color:var(--yellow); }
-.metric-red .metric-value { color:var(--red); }
+.metrics { display:grid; gap:14px; margin-bottom:24px; }
+.metrics-4 { grid-template-columns:repeat(4,1fr); }
+.metrics-3 { grid-template-columns:repeat(3,1fr); }
+.metric { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; position:relative; overflow:hidden; }
+.metric::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--border2); }
+.metric.green::after { background:var(--verde); }
+.metric.yellow::after { background:var(--yellow); }
+.metric.red::after { background:var(--red); }
+.metric.blue::after { background:var(--blue); }
+.metric-label { font-family:var(--mono); font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; }
+.metric-value { font-size:28px; font-weight:700; line-height:1; font-family:var(--mono); }
+.metric.green .metric-value { color:var(--verde); }
+.metric.yellow .metric-value { color:var(--yellow); }
+.metric.red .metric-value { color:var(--red); }
+.metric.blue .metric-value { color:var(--blue); }
+.metric-sub { font-size:11px; color:var(--muted); margin-top:6px; }
+.metric-delta { font-size:11px; margin-top:4px; font-family:var(--mono); }
+.metric-delta.up { color:var(--verde); }
+.metric-delta.down { color:var(--red); }
 
 /* ── CARDS ── */
 .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; }
-.card-title { font-size:14px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+.card-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.card-title { font-size:13px; font-weight:700; letter-spacing:.01em; }
+.card-sub { font-size:11px; color:var(--muted); font-family:var(--mono); margin-top:2px; }
 .card-link { font-size:12px; color:var(--verde); cursor:pointer; font-weight:500; }
 
+/* ── GRID ── */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+
 /* ── TABELA ── */
-.tbl { width:100%; border-collapse:collapse; font-size:13px; }
-.tbl th { text-align:left; font-size:10px; font-weight:700; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; padding:8px 12px; border-bottom:1px solid var(--border); }
-.tbl td { padding:10px 12px; border-bottom:1px solid rgba(42,63,56,.5); vertical-align:middle; }
-.tbl tr:hover td { background:rgba(78,203,160,.03); }
+.tbl-wrap { overflow-x:auto; }
+.tbl { width:100%; border-collapse:collapse; font-size:12.5px; }
+.tbl th { text-align:left; font-family:var(--mono); font-size:9.5px; font-weight:600; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; padding:8px 14px; border-bottom:1px solid var(--border); white-space:nowrap; }
+.tbl td { padding:11px 14px; border-bottom:1px solid rgba(36,53,48,.6); vertical-align:middle; }
+.tbl tr:hover td { background:var(--verde-glow); }
 .tbl tr:last-child td { border-bottom:none; }
+.tbl-name { font-weight:600; }
+.tbl-sub { font-size:11px; color:var(--muted); margin-top:2px; font-family:var(--mono); }
 
 /* ── BADGES ── */
-.badge { display:inline-block; font-size:10px; font-weight:700; padding:3px 8px; border-radius:99px; }
-.badge-green { background:rgba(78,203,160,.15); color:var(--verde); }
-.badge-yellow { background:rgba(245,158,11,.15); color:var(--yellow); }
-.badge-red { background:rgba(239,68,68,.15); color:var(--red); }
-.badge-gray { background:rgba(122,158,142,.12); color:var(--muted); }
+.badge { display:inline-flex; align-items:center; gap:4px; font-family:var(--mono); font-size:10px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+.badge::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.b-green { background:rgba(78,203,160,.12); color:var(--verde); border:1px solid rgba(78,203,160,.2); }
+.b-green::before { background:var(--verde); }
+.b-yellow { background:var(--yellow-dim); color:var(--yellow); border:1px solid rgba(251,176,64,.2); }
+.b-yellow::before { background:var(--yellow); }
+.b-red { background:var(--red-dim); color:var(--red); border:1px solid rgba(248,113,113,.2); }
+.b-red::before { background:var(--red); }
+.b-blue { background:var(--blue-dim); color:var(--blue); border:1px solid rgba(96,165,250,.2); }
+.b-blue::before { background:var(--blue); }
+.b-gray { background:rgba(92,128,112,.1); color:var(--muted); border:1px solid rgba(92,128,112,.2); }
+.b-gray::before { background:var(--muted); }
 
 /* ── BOTÕES ── */
-.btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .2s; }
-.btn-primary { background:var(--verde); color:#0F1A17; }
+.btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .2s; font-family:var(--sans); white-space:nowrap; }
+.btn-primary { background:var(--verde); color:#0A1410; }
 .btn-primary:hover { background:#3db88e; }
-.btn-ghost { background:transparent; border:1px solid var(--border); color:var(--muted); }
+.btn-ghost { background:transparent; border:1px solid var(--border2); color:var(--text2); }
 .btn-ghost:hover { color:var(--text); border-color:var(--muted); }
-.btn-red { background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.3); color:var(--red); }
+.btn-red { background:var(--red-dim); border:1px solid rgba(248,113,113,.25); color:var(--red); }
+.btn-red:hover { background:rgba(248,113,113,.2); }
+.btn-yellow { background:var(--yellow-dim); border:1px solid rgba(251,176,64,.25); color:var(--yellow); }
+.btn-sm { padding:4px 10px; font-size:11px; }
+.btn:disabled { opacity:.4; cursor:not-allowed; }
 
 /* ── FORM ── */
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
-.form-group label { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:6px; }
-.form-control { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; color:var(--text); font-size:13px; outline:none; }
-.form-control:focus { border-color:var(--verde); }
+.form-row.cols-3 { grid-template-columns:1fr 1fr 1fr; }
+.form-row.cols-1 { grid-template-columns:1fr; }
+.fg label { font-family:var(--mono); font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; display:block; margin-bottom:7px; }
+.fc { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; color:var(--text); font-size:13px; font-family:var(--sans); outline:none; transition:border .2s; }
+.fc:focus { border-color:var(--verde); }
 
 /* ── MODAL ── */
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; z-index:100; align-items:center; justify-content:center; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; z-index:200; align-items:center; justify-content:center; backdrop-filter:blur(3px); }
 .modal-overlay.open { display:flex; }
-.modal { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; width:480px; max-width:90vw; }
+.modal { background:var(--surface); border:1px solid var(--border2); border-radius:16px; padding:28px; width:520px; max-width:92vw; max-height:90vh; overflow-y:auto; }
 .modal-title { font-size:16px; font-weight:700; margin-bottom:4px; }
-.modal-sub { font-size:13px; color:var(--muted); margin-bottom:20px; }
-.modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+.modal-sub { font-size:12px; color:var(--muted); margin-bottom:22px; font-family:var(--mono); }
+.modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; padding-top:18px; border-top:1px solid var(--border); }
+.modal-divider { border:none; border-top:1px solid var(--border); margin:18px 0; }
 
-/* ── LOADING ── */
-.loading { text-align:center; padding:40px; color:var(--muted); font-size:14px; }
+/* ── LOG ── */
+.log-row { display:flex; gap:12px; align-items:flex-start; padding:10px 14px; border-bottom:1px solid rgba(36,53,48,.5); font-size:12px; }
+.log-row:last-child { border-bottom:none; }
+.log-row:hover { background:var(--verde-glow); }
+.log-time { font-family:var(--mono); font-size:10px; color:var(--muted); white-space:nowrap; padding-top:2px; min-width:130px; }
+.log-level { font-family:var(--mono); font-size:10px; font-weight:600; width:50px; flex-shrink:0; }
+.log-level.err { color:var(--red); }
+.log-level.warn { color:var(--yellow); }
+.log-level.info { color:var(--verde); }
+.log-msg { color:var(--text2); line-height:1.5; }
+.log-ctx { font-family:var(--mono); font-size:10px; color:var(--muted); margin-top:2px; }
 
-/* ── EMPTY ── */
-.empty { text-align:center; padding:48px 20px; color:var(--muted); }
-.empty-icon { font-size:32px; margin-bottom:12px; }
-.empty-title { font-size:15px; font-weight:600; color:var(--text); margin-bottom:4px; }
+/* ── USO ── */
+.uso-bar { height:6px; background:var(--surface3); border-radius:99px; margin-top:8px; overflow:hidden; }
+.uso-fill { height:100%; border-radius:99px; background:var(--verde); transition:width .5s; }
+.uso-fill.yellow { background:var(--yellow); }
+.uso-fill.red { background:var(--red); }
+
+/* ── MISC ── */
+.loading { text-align:center; padding:40px; color:var(--muted); font-size:13px; font-family:var(--mono); }
+.empty { text-align:center; padding:48px 20px; }
+.empty-icon { font-size:28px; margin-bottom:10px; opacity:.5; }
+.empty-title { font-size:14px; font-weight:600; color:var(--text2); margin-bottom:4px; }
+.empty-sub { font-size:12px; color:var(--muted); }
+.mono { font-family:var(--mono); }
+.tag { display:inline-block; font-family:var(--mono); font-size:10px; padding:2px 8px; border-radius:4px; background:var(--surface3); color:var(--text2); }
+.search-bar { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 12px; color:var(--text); font-size:13px; font-family:var(--sans); outline:none; width:220px; }
+.search-bar:focus { border-color:var(--verde); }
+.alert-bar { background:rgba(248,113,113,.08); border:1px solid rgba(248,113,113,.2); border-radius:10px; padding:12px 16px; font-size:12.5px; color:var(--red); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+
+/* ── SWITCH ── */
+.switch { position:relative; width:36px; height:20px; flex-shrink:0; }
+.switch input { opacity:0; width:0; height:0; }
+.switch-track { position:absolute; inset:0; background:var(--surface3); border-radius:99px; cursor:pointer; transition:.2s; border:1px solid var(--border2); }
+.switch input:checked + .switch-track { background:var(--verde); border-color:var(--verde); }
+.switch-track::after { content:''; position:absolute; width:14px; height:14px; background:#fff; border-radius:50%; top:2px; left:2px; transition:.2s; }
+.switch input:checked + .switch-track::after { transform:translateX(16px); }
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">RANNE CARE</div>
-    <div class="login-title">Área Administrativa</div>
-    <div class="login-sub">Acesso restrito à equipe Ranne</div>
-    <label class="login-label">E-mail</label>
-    <input class="login-input" type="email" id="adm-email" placeholder="admin@rannecare.com.br">
-    <label class="login-label">Senha</label>
-    <input class="login-input" type="password" id="adm-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')admLogin()">
-    <button class="login-btn" onclick="admLogin()">Entrar</button>
-    <div class="login-err" id="adm-err">E-mail ou senha incorretos.</div>
+  <div class="login-wrap">
+    <div class="login-eyebrow">Ranne Care</div>
+    <div class="login-title">Painel<br>Administrativo</div>
+    <div class="login-sub">Acesso restrito à equipe interna</div>
+    <div class="login-box">
+      <label class="lf-label">E-mail</label>
+      <input class="lf-input" type="email" id="adm-email" placeholder="admin@rannecare.com.br" autocomplete="email">
+      <label class="lf-label">Senha</label>
+      <input class="lf-input" type="password" id="adm-senha" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')admLogin()">
+      <button class="lf-btn" onclick="admLogin()">Entrar →</button>
+      <div class="lf-err" id="adm-err">E-mail ou senha incorretos.</div>
+    </div>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app">
-  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logo-name">RANNE</div>
-      <div class="sb-logo-tag">Painel Administrativo</div>
+    <div class="sb-head">
+      <div class="sb-logo">RANNE</div>
+      <div class="sb-tag">admin panel</div>
     </div>
-    <nav>
+    <nav class="sb-nav">
       <div class="sb-section">Visão Geral</div>
       <div class="sb-item active" onclick="pg('dashboard',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </div>
       <div class="sb-section">Clientes</div>
       <div class="sb-item" onclick="pg('empresas',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
         Empresas
       </div>
       <div class="sb-item" onclick="pg('colaboradores',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Colaboradores
       </div>
+      <div class="sb-section">Financeiro</div>
+      <div class="sb-item" onclick="pg('pagamentos',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        Pagamentos
+        <span class="sb-badge yellow" id="badge-pag-pendentes" style="display:none">0</span>
+      </div>
       <div class="sb-section">Plataforma</div>
+      <div class="sb-item" onclick="pg('uso',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Uso & Engajamento
+      </div>
       <div class="sb-item" onclick="pg('checkins',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
         Check-ins
       </div>
       <div class="sb-item" onclick="pg('escuta',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         Canal de Escuta
+        <span class="sb-badge" id="badge-escuta" style="display:none">0</span>
+      </div>
+      <div class="sb-item" onclick="pg('logs',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+        Logs do Sistema
+        <span class="sb-badge" id="badge-logs" style="display:none">0</span>
       </div>
       <div class="sb-item" onclick="pg('profissionais',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Profissionais
       </div>
     </nav>
-    <div class="sb-bottom">
+      <div class="sb-section">Sistema</div>
+      <div class="sb-item" onclick="pg('config',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Configurações
+      </div>
+    <div class="sb-foot">
       <div class="sb-user" id="sb-user-email">—</div>
       <div class="sb-logout" onclick="admLogout()">← Sair</div>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
 
-    <!-- DASHBOARD -->
+    <!-- ── DASHBOARD ── -->
     <div id="p-dashboard" class="page active">
       <div class="topbar">
-        <div><div class="page-title">Dashboard</div><div class="page-sub" id="dash-updated">Carregando...</div></div>
-        <button class="btn btn-ghost" onclick="carregarDashboard()">↻ Atualizar</button>
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub" id="dash-updated">atualizando...</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-ghost" onclick="carregarDashboard()">↻ Atualizar</button>
+        </div>
       </div>
-      <div class="metrics">
-        <div class="metric metric-green"><div class="metric-label">Empresas ativas</div><div class="metric-value" id="m-empresas">—</div><div class="metric-sub">cadastradas</div></div>
-        <div class="metric"><div class="metric-label">Colaboradores</div><div class="metric-value" id="m-colabs">—</div><div class="metric-sub">membros cadastrados</div></div>
+      <div class="metrics metrics-4">
+        <div class="metric green"><div class="metric-label">Empresas ativas</div><div class="metric-value" id="m-empresas">—</div><div class="metric-sub">cadastradas na plataforma</div></div>
+        <div class="metric blue"><div class="metric-label">Colaboradores</div><div class="metric-value" id="m-colabs">—</div><div class="metric-sub">membros cadastrados</div></div>
         <div class="metric"><div class="metric-label">Check-ins</div><div class="metric-value" id="m-checkins">—</div><div class="metric-sub">total histórico</div></div>
-        <div class="metric metric-yellow"><div class="metric-label">Escuta</div><div class="metric-value" id="m-escuta">—</div><div class="metric-sub">relatos não lidos</div></div>
+        <div class="metric yellow"><div class="metric-label">Pagamentos pendentes</div><div class="metric-value" id="m-pag-pend">—</div><div class="metric-sub">aguardando confirmação</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="grid-2">
         <div class="card">
-          <div class="card-title">Empresas recentes <span class="card-link" onclick="pg('empresas',document.querySelector('[onclick*=empresas]'))">Ver todas →</span></div>
+          <div class="card-hdr">
+            <div><div class="card-title">Empresas recentes</div></div>
+            <span class="card-link" onclick="pg('empresas',document.querySelector('[onclick*=empresas]'))">Ver todas →</span>
+          </div>
           <div id="dash-empresas-list"><div class="loading">Carregando...</div></div>
         </div>
         <div class="card">
-          <div class="card-title">Check-ins recentes</div>
-          <div id="dash-checkins-list"><div class="loading">Carregando...</div></div>
+          <div class="card-hdr">
+            <div><div class="card-title">Últimos pagamentos</div></div>
+            <span class="card-link" onclick="pg('pagamentos',document.querySelector('[onclick*=pagamentos]'))">Ver todos →</span>
+          </div>
+          <div id="dash-pag-list"><div class="loading">Carregando...</div></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Alertas recentes</div></div>
+          <div id="dash-alertas"><div class="loading">Carregando...</div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Engajamento semanal</div></div>
+          <div id="dash-engajamento"><div class="loading">Carregando...</div></div>
         </div>
       </div>
     </div>
 
-    <!-- EMPRESAS -->
+    <!-- ── EMPRESAS ── -->
     <div id="p-empresas" class="page">
       <div class="topbar">
-        <div><div class="page-title">Empresas</div><div class="page-sub" id="empresas-sub">Carregando...</div></div>
-        <button class="btn btn-primary" onclick="abrirModalEmpresa()">+ Nova empresa</button>
+        <div>
+          <div class="page-title">Empresas</div>
+          <div class="page-sub" id="empresas-sub">—</div>
+        </div>
+        <div class="topbar-actions">
+          <input class="search-bar" placeholder="Buscar empresa..." oninput="filtrarEmpresas(this.value)">
+          <button class="btn btn-primary" onclick="abrirModal('modal-empresa')">+ Nova empresa</button>
+        </div>
       </div>
       <div class="card" style="padding:0">
-        <table class="tbl">
-          <thead><tr>
-            <th>Empresa</th><th>CNPJ</th><th>Setor</th><th>Plano</th><th>Membros</th><th>Criada em</th><th>Ações</th>
-          </tr></thead>
-          <tbody id="tbl-empresas"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
-        </table>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Empresa</th><th>CNPJ</th><th>Setor</th><th>Plano</th><th>Status</th><th>Membros</th><th>Criada em</th><th>Ações</th>
+            </tr></thead>
+            <tbody id="tbl-empresas"><tr><td colspan="8" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- COLABORADORES -->
+    <!-- ── COLABORADORES ── -->
     <div id="p-colaboradores" class="page">
       <div class="topbar">
-        <div><div class="page-title">Colaboradores</div><div class="page-sub" id="colabs-sub">Carregando...</div></div>
+        <div>
+          <div class="page-title">Colaboradores</div>
+          <div class="page-sub" id="colabs-sub">—</div>
+        </div>
+        <input class="search-bar" placeholder="Buscar colaborador...">
       </div>
       <div class="card" style="padding:0">
-        <table class="tbl">
-          <thead><tr>
-            <th>Nome</th><th>E-mail</th><th>Empresa</th><th>Tipo</th><th>Criado em</th>
-          </tr></thead>
-          <tbody id="tbl-colabs"><tr><td colspan="5" class="loading">Carregando...</td></tr></tbody>
-        </table>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Nome</th><th>E-mail</th><th>Empresa</th><th>Tipo</th><th>Cadastrado em</th>
+            </tr></thead>
+            <tbody id="tbl-colabs"><tr><td colspan="5" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- CHECK-INS -->
+    <!-- ── PAGAMENTOS ── -->
+    <div id="p-pagamentos" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Pagamentos</div>
+          <div class="page-sub" id="pag-sub">Boletos e faturamento</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary" onclick="abrirModal('modal-pagamento')">+ Registrar boleto</button>
+        </div>
+      </div>
+      <div class="metrics metrics-3" style="margin-bottom:20px">
+        <div class="metric green"><div class="metric-label">Recebido no mês</div><div class="metric-value mono" id="pag-recebido">R$ —</div><div class="metric-sub">boletos pagos</div></div>
+        <div class="metric yellow"><div class="metric-label">Pendente</div><div class="metric-value mono" id="pag-pendente">R$ —</div><div class="metric-sub">aguardando pagamento</div></div>
+        <div class="metric red"><div class="metric-label">Vencido</div><div class="metric-value mono" id="pag-vencido">R$ —</div><div class="metric-sub">boletos vencidos</div></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Empresa</th><th>Plano</th><th>Valor</th><th>Vencimento</th><th>Status</th><th>NF</th><th>Referência</th><th>Ações</th>
+            </tr></thead>
+            <tbody id="tbl-pagamentos"><tr><td colspan="8" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── USO & ENGAJAMENTO ── -->
+    <div id="p-uso" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Uso & Engajamento</div>
+          <div class="page-sub">métricas de uso da plataforma por empresa</div>
+        </div>
+        <button class="btn btn-ghost" onclick="carregarUso()">↻ Atualizar</button>
+      </div>
+      <div class="metrics metrics-4" style="margin-bottom:20px">
+        <div class="metric green"><div class="metric-label">Check-ins esta semana</div><div class="metric-value" id="uso-ci-semana">—</div><div class="metric-sub">colaboradores ativos</div></div>
+        <div class="metric blue"><div class="metric-label">Check-ins este mês</div><div class="metric-value" id="uso-ci-mes">—</div><div class="metric-sub">total do mês</div></div>
+        <div class="metric yellow"><div class="metric-label">Taxa de engajamento</div><div class="metric-value" id="uso-taxa">—</div><div class="metric-sub">colabs com check-in/mês</div></div>
+        <div class="metric"><div class="metric-label">Check-ins femininos</div><div class="metric-value" id="uso-fem">—</div><div class="metric-sub">área da mulher</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Engajamento por empresa</div></div>
+        <div id="uso-por-empresa"><div class="loading">Carregando...</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Check-ins por tipo</div></div>
+          <div id="uso-por-tipo"><div class="loading">Carregando...</div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Empresas sem engajamento</div></div>
+          <div id="uso-sem-engajamento"><div class="loading">Carregando...</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CHECK-INS ── -->
     <div id="p-checkins" class="page">
       <div class="topbar">
-        <div><div class="page-title">Check-ins</div><div class="page-sub" id="checkins-sub">Últimos 100</div></div>
+        <div><div class="page-title">Check-ins</div><div class="page-sub" id="checkins-sub">últimos 100</div></div>
       </div>
       <div class="card" style="padding:0">
-        <table class="tbl">
-          <thead><tr>
-            <th>Usuário</th><th>Humor</th><th>Energia</th><th>Carga</th><th>Foco</th><th>Score</th><th>Tipo</th><th>Data</th>
-          </tr></thead>
-          <tbody id="tbl-checkins"><tr><td colspan="8" class="loading">Carregando...</td></tr></tbody>
-        </table>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Usuário</th><th>Empresa</th><th>Humor</th><th>Energia</th><th>Carga</th><th>Foco</th><th>Score</th><th>Tipo</th><th>Data</th>
+            </tr></thead>
+            <tbody id="tbl-checkins"><tr><td colspan="9" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- CANAL DE ESCUTA -->
+    <!-- ── CANAL DE ESCUTA ── -->
     <div id="p-escuta" class="page">
       <div class="topbar">
-        <div><div class="page-title">Canal de Escuta</div><div class="page-sub" id="escuta-sub">Todos os relatos</div></div>
+        <div><div class="page-title">Canal de Escuta</div><div class="page-sub" id="escuta-sub">todos os relatos</div></div>
       </div>
       <div class="card" style="padding:0">
-        <table class="tbl">
-          <thead><tr>
-            <th>Tipo</th><th>Empresa</th><th>Mensagem</th><th>Voluntário</th><th>Lido</th><th>Data</th>
-          </tr></thead>
-          <tbody id="tbl-escuta"><tr><td colspan="6" class="loading">Carregando...</td></tr></tbody>
-        </table>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Tipo</th><th>Empresa</th><th>Mensagem</th><th>Voluntário</th><th>Status</th><th>Data</th><th>Ação</th>
+            </tr></thead>
+            <tbody id="tbl-escuta"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- PROFISSIONAIS -->
-    <div id="p-profissionais" class="page">
+    <!-- ── LOGS ── -->
+    <div id="p-logs" class="page">
       <div class="topbar">
-        <div><div class="page-title">Profissionais Parceiros</div><div class="page-sub" id="prof-sub">Pré-cadastros recebidos</div></div>
+        <div><div class="page-title">Logs do Sistema</div><div class="page-sub">erros, alertas e eventos registrados</div></div>
+        <div class="topbar-actions">
+          <select class="fc" style="width:auto;padding:7px 12px;font-size:12px" id="log-filtro" onchange="filtrarLogs()">
+            <option value="">Todos</option>
+            <option value="error">Erros</option>
+            <option value="warn">Alertas</option>
+            <option value="info">Informações</option>
+          </select>
+          <button class="btn btn-ghost" onclick="carregarLogs()">↻ Atualizar</button>
+        </div>
       </div>
       <div class="card" style="padding:0">
-        <table class="tbl">
-          <thead><tr>
-            <th>Nome</th><th>Especialidade</th><th>Registro</th><th>Estado</th><th>Status</th><th>PIX</th><th>Ações</th>
-          </tr></thead>
-          <tbody id="tbl-prof"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
-        </table>
+        <div id="logs-container"><div class="loading">Carregando logs...</div></div>
+      </div>
+      <div style="margin-top:16px">
+        <div class="card-hdr" style="margin-bottom:12px"><div class="card-title">Registrar evento manual</div></div>
+        <div class="card">
+          <div class="form-row">
+            <div class="fg"><label>Nível</label>
+              <select class="fc" id="log-nivel"><option value="info">Info</option><option value="warn">Alerta</option><option value="error">Erro</option></select>
+            </div>
+            <div class="fg"><label>Contexto</label><input class="fc" id="log-ctx" placeholder="ex: pagamento, empresa, api"></div>
+          </div>
+          <div class="form-row cols-1">
+            <div class="fg"><label>Mensagem</label><input class="fc" id="log-msg" placeholder="Descreva o evento..."></div>
+          </div>
+          <button class="btn btn-primary" onclick="registrarLog()">Registrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFISSIONAIS ── -->
+    <div id="p-profissionais" class="page">
+      <div class="topbar">
+        <div><div class="page-title">Profissionais Parceiros</div><div class="page-sub" id="prof-sub">pré-cadastros recebidos</div></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Nome</th><th>Especialidade</th><th>Registro</th><th>Estado</th><th>Status</th><th>PIX</th><th>Ações</th>
+            </tr></thead>
+            <tbody id="tbl-prof"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONFIGURAÇÕES ── -->
+    <div id="p-config" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Configurações</div>
+          <div class="page-sub">dados da Ranne usados nos documentos gerados</div>
+        </div>
+        <button class="btn btn-primary" onclick="salvarConfig()">Salvar configurações</button>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card">
+            <div class="card-hdr"><div><div class="card-title">Dados do emitente</div><div class="card-sub">aparecem na fatura, recibo e NFS-e</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="fg"><label>Razão Social *</label><input class="fc" id="cfg-razao" placeholder="Ranne Tecnologia em Saúde Ltda."></div>
+              <div class="fg"><label>CNPJ *</label><input class="fc" id="cfg-cnpj" placeholder="00.000.000/0001-00"></div>
+              <div class="fg"><label>Endereço completo</label><input class="fc" id="cfg-endereco" placeholder="Rua, número — São Paulo, SP"></div>
+              <div class="fg"><label>E-mail financeiro</label><input class="fc" id="cfg-email" placeholder="financeiro@rannecare.com.br" type="email"></div>
+              <div class="fg"><label>Site</label><input class="fc" id="cfg-site" placeholder="rannecare.com.br"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr"><div><div class="card-title">Dados fiscais (NFS-e)</div><div class="card-sub">São Paulo · ISS municipal</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="form-row">
+                <div class="fg"><label>Código do serviço</label><input class="fc" id="cfg-cod-servico" placeholder="10.02"></div>
+                <div class="fg"><label>Alíquota ISS (%)</label><input class="fc" id="cfg-iss" placeholder="2" type="number" step="0.1" min="0" max="5"></div>
+              </div>
+              <div class="fg"><label>Inscrição municipal (CCM)</label><input class="fc" id="cfg-ccm" placeholder="CCM São Paulo"></div>
+              <div class="fg"><label>Regime tributário</label>
+                <select class="fc" id="cfg-regime">
+                  <option value="simples">Simples Nacional</option>
+                  <option value="lucro_presumido">Lucro Presumido</option>
+                  <option value="lucro_real">Lucro Real</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-hdr"><div><div class="card-title">Dados bancários</div><div class="card-sub">para boleto e recibo</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="fg"><label>Banco</label><input class="fc" id="cfg-banco" placeholder="Ex: Itaú, Bradesco, Nubank..."></div>
+              <div class="form-row">
+                <div class="fg"><label>Agência</label><input class="fc" id="cfg-agencia" placeholder="0000"></div>
+                <div class="fg"><label>Conta</label><input class="fc" id="cfg-conta" placeholder="00000-0"></div>
+              </div>
+              <div class="fg"><label>PIX (CNPJ ou e-mail)</label><input class="fc" id="cfg-pix" placeholder="CNPJ ou e-mail PIX"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hdr"><div><div class="card-title">Planos e valores</div><div class="card-sub">valores padrão para novos boletos</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="form-row">
+                <div class="fg"><label>Plano Básico (R$)</label><input class="fc" id="cfg-valor-basico" placeholder="0,00" type="number" step="0.01"></div>
+                <div class="fg"><label>Plano Pro (R$)</label><input class="fc" id="cfg-valor-pro" placeholder="0,00" type="number" step="0.01"></div>
+              </div>
+              <div class="fg"><label>Dia de vencimento padrão</label>
+                <select class="fc" id="cfg-venc-dia">
+                  <option value="5">Dia 5</option>
+                  <option value="10">Dia 10</option>
+                  <option value="15">Dia 15</option>
+                  <option value="20">Dia 20</option>
+                  <option value="25">Dia 25</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="background:rgba(78,203,160,.04);border-color:rgba(78,203,160,.15)">
+            <div class="card-hdr"><div class="card-title" style="color:var(--verde)">Preview — cabeçalho dos documentos</div></div>
+            <div style="background:var(--bg);border-radius:8px;padding:14px;font-size:12px;line-height:1.8">
+              <div style="color:var(--verde);font-weight:700;font-size:14px" id="prev-razao">Ranne Tecnologia em Saúde Ltda.</div>
+              <div style="color:var(--text2)" id="prev-cnpj">CNPJ: 00.000.000/0001-00</div>
+              <div style="color:var(--muted)" id="prev-endereco">Endereço não configurado</div>
+              <div style="color:var(--muted)" id="prev-email">financeiro@rannecare.com.br</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -290,31 +618,39 @@ body { font-family: 'SF Pro Display', -apple-system, sans-serif; background:var(
 <div class="modal-overlay" id="modal-empresa">
   <div class="modal">
     <div class="modal-title">Nova Empresa</div>
-    <div class="modal-sub">Cadastrar empresa manualmente</div>
+    <div class="modal-sub">cadastrar e liberar acesso à plataforma</div>
     <div class="form-row">
-      <div class="form-group"><label>Nome *</label><input class="form-control" id="ne-nome" placeholder="Nome da empresa"></div>
-      <div class="form-group"><label>CNPJ</label><input class="form-control" id="ne-cnpj" placeholder="00.000.000/0001-00"></div>
+      <div class="fg"><label>Nome *</label><input class="fc" id="ne-nome" placeholder="Nome da empresa"></div>
+      <div class="fg"><label>CNPJ</label><input class="fc" id="ne-cnpj" placeholder="00.000.000/0001-00"></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Setor</label><input class="form-control" id="ne-setor" placeholder="Tecnologia, Saúde..."></div>
-      <div class="form-group"><label>Porte</label>
-        <select class="form-control" id="ne-size">
+      <div class="fg"><label>Setor</label><input class="fc" id="ne-setor" placeholder="Tecnologia, Saúde..."></div>
+      <div class="fg"><label>Porte</label>
+        <select class="fc" id="ne-size">
           <option value="">Selecione</option>
           <option value="micro">Micro (até 9)</option>
-          <option value="pequena">Pequena (10-49)</option>
-          <option value="media">Média (50-249)</option>
+          <option value="pequena">Pequena (10–49)</option>
+          <option value="media">Média (50–249)</option>
           <option value="grande">Grande (250+)</option>
         </select>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>Responsável RH</label><input class="form-control" id="ne-resp" placeholder="Nome do responsável"></div>
-      <div class="form-group"><label>Plano</label>
-        <select class="form-control" id="ne-plano">
-          <option value="free">Free</option>
-          <option value="starter">Starter</option>
-          <option value="growth">Growth</option>
-          <option value="enterprise">Enterprise</option>
+      <div class="fg"><label>Responsável RH</label><input class="fc" id="ne-resp" placeholder="Nome"></div>
+      <div class="fg"><label>E-mail RH</label><input class="fc" id="ne-email" placeholder="rh@empresa.com.br" type="email"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Plano</label>
+        <select class="fc" id="ne-plano">
+          <option value="basico">Básico</option>
+          <option value="pro">Pro</option>
+        </select>
+      </div>
+      <div class="fg"><label>Status inicial</label>
+        <select class="fc" id="ne-status">
+          <option value="ativo">Ativo</option>
+          <option value="piloto">Piloto (90 dias)</option>
+          <option value="suspenso">Suspenso</option>
         </select>
       </div>
     </div>
@@ -325,35 +661,103 @@ body { font-family: 'SF Pro Display', -apple-system, sans-serif; background:var(
   </div>
 </div>
 
+<!-- MODAL EDITAR EMPRESA -->
+<div class="modal-overlay" id="modal-editar-empresa">
+  <div class="modal">
+    <div class="modal-title">Editar Empresa</div>
+    <div class="modal-sub" id="edit-empresa-sub">—</div>
+    <input type="hidden" id="edit-empresa-id">
+    <div class="form-row">
+      <div class="fg"><label>Plano</label>
+        <select class="fc" id="edit-plano">
+          <option value="basico">Básico</option>
+          <option value="pro">Pro</option>
+        </select>
+      </div>
+      <div class="fg"><label>Status de acesso</label>
+        <select class="fc" id="edit-status">
+          <option value="ativo">Ativo</option>
+          <option value="piloto">Piloto</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row cols-1">
+      <div class="fg"><label>Observação interna</label>
+        <input class="fc" id="edit-obs" placeholder="Nota interna (não visível para o cliente)">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-editar-empresa')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-edicao" onclick="salvarEdicaoEmpresa()">Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRAR PAGAMENTO -->
+<div class="modal-overlay" id="modal-pagamento">
+  <div class="modal">
+    <div class="modal-title">Registrar Boleto</div>
+    <div class="modal-sub">novo boleto emitido para cliente</div>
+    <div class="form-row">
+      <div class="fg"><label>Empresa *</label>
+        <select class="fc" id="pag-empresa-id"><option value="">Selecione...</option></select>
+      </div>
+      <div class="fg"><label>Plano</label>
+        <select class="fc" id="pag-plano">
+          <option value="basico">Básico</option>
+          <option value="pro">Pro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Valor (R$) *</label><input class="fc" id="pag-valor" type="number" placeholder="0,00" step="0.01"></div>
+      <div class="fg"><label>Vencimento *</label><input class="fc" id="pag-venc" type="date"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Referência</label><input class="fc" id="pag-ref" placeholder="Ex: Fev/2026 — Pro"></div>
+      <div class="fg"><label>Status</label>
+        <select class="fc" id="pag-status">
+          <option value="pendente">Pendente</option>
+          <option value="pago">Pago</option>
+          <option value="vencido">Vencido</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row cols-1">
+      <div class="fg"><label>Link da NF / observação</label><input class="fc" id="pag-nf" placeholder="URL da nota fiscal ou observação"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-pagamento')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar-pag" onclick="salvarPagamento()">Registrar boleto</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL = 'https://htpmmkkuwmotdgocqpqf.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0cG1ta2t1d21vdGRnb2NxcHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MDQ4NDUsImV4cCI6MjA5Mjk4MDg0NX0.lgn0ze2Qk4p57elTYvUYYjhBgRwWABmDHxHMvJ3w39o';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ── ADMIN EMAILS PERMITIDOS ──────────────────────────────────────────
 const ADMIN_EMAILS = ['atendimento@rannecare.com.br', 'admin@rannecare.com.br'];
 let currentAdmin = null;
+let _empresasCache = [];
+let _logsCache = [];
 
-// ── LOGIN ─────────────────────────────────────────────────────────────
+// ── AUTH ──────────────────────────────────────────────────────────────
 async function admLogin() {
   const email = document.getElementById('adm-email').value.trim();
   const senha = document.getElementById('adm-senha').value;
-  const err   = document.getElementById('adm-err');
+  const err = document.getElementById('adm-err');
   err.style.display = 'none';
-
   if (!email || !senha) { err.textContent = 'Preencha e-mail e senha.'; err.style.display = 'block'; return; }
-
   const { data, error } = await db.auth.signInWithPassword({ email, password: senha });
   if (error || !data.user) { err.textContent = 'E-mail ou senha incorretos.'; err.style.display = 'block'; return; }
-
   if (!ADMIN_EMAILS.includes(data.user.email)) {
-    err.textContent = 'Acesso não autorizado para este e-mail.';
-    err.style.display = 'block';
-    await db.auth.signOut();
-    return;
+    err.textContent = 'Acesso não autorizado.'; err.style.display = 'block';
+    await db.auth.signOut(); return;
   }
-
   currentAdmin = data.user;
   iniciarApp();
 }
@@ -363,14 +767,11 @@ function iniciarApp() {
   document.getElementById('app').style.display = 'flex';
   document.getElementById('sb-user-email').textContent = currentAdmin?.email || '';
   carregarDashboard();
+  carregarBadges();
 }
 
-async function admLogout() {
-  await db.auth.signOut();
-  location.reload();
-}
+async function admLogout() { await db.auth.signOut(); location.reload(); }
 
-// Verifica sessão ao carregar
 db.auth.getSession().then(({ data }) => {
   if (data?.session?.user && ADMIN_EMAILS.includes(data.session.user.email)) {
     currentAdmin = data.session.user;
@@ -384,119 +785,180 @@ function pg(id, el) {
   document.getElementById('p-' + id)?.classList.add('active');
   document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
-
   const loaders = {
     empresas: carregarEmpresas,
     colaboradores: carregarColaboradores,
     checkins: carregarCheckins,
     escuta: carregarEscuta,
     profissionais: carregarProfissionais,
+    pagamentos: carregarPagamentos,
+    uso: carregarUso,
+    logs: carregarLogs,
+    config: carregarConfig,
   };
   loaders[id]?.();
 }
 
 // ── UTILS ──────────────────────────────────────────────────────────────
-function fmt(dt) {
-  if (!dt) return '—';
-  return new Date(dt).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
-}
+function fmt(dt) { if (!dt) return '—'; return new Date(dt).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' }); }
+function fmtMoney(v) { if (!v && v !== 0) return '—'; return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits:2 }); }
 function scoreChip(s) {
-  if (!s) return '<span class="badge badge-gray">—</span>';
-  const cls = s>=70?'badge-green':s>=50?'badge-yellow':'badge-red';
+  if (!s && s !== 0) return '<span class="badge b-gray">—</span>';
+  const cls = s>=70?'b-green':s>=50?'b-yellow':'b-red';
   return `<span class="badge ${cls}">${s}</span>`;
 }
+function statusBadge(s) {
+  const map = { ativo:'b-green', piloto:'b-blue', suspenso:'b-yellow', cancelado:'b-red' };
+  return `<span class="badge ${map[s]||'b-gray'}">${s||'—'}</span>`;
+}
+function planoBadge(p) {
+  const map = { pro:'b-green', basico:'b-blue', free:'b-gray' };
+  return `<span class="badge ${map[p]||'b-gray'}">${p||'free'}</span>`;
+}
+function pagStatusBadge(s) {
+  const map = { pago:'b-green', pendente:'b-yellow', vencido:'b-red' };
+  return `<span class="badge ${map[s]||'b-gray'}">${s||'—'}</span>`;
+}
 function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
-function abrirModalEmpresa() { document.getElementById('modal-empresa').classList.add('open'); }
+function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+
+// ── BADGES SIDEBAR ─────────────────────────────────────────────────────
+async function carregarBadges() {
+  try {
+    const [escRes, logRes, pagRes] = await Promise.all([
+      db.from('canal_escuta').select('id', { count:'exact', head:true }).eq('lido', false),
+      db.from('admin_logs').select('id', { count:'exact', head:true }).eq('nivel', 'error').eq('resolvido', false).catch(() => ({ count: 0 })),
+      db.from('pagamentos').select('id', { count:'exact', head:true }).eq('status', 'pendente').catch(() => ({ count: 0 })),
+    ]);
+    const escN = escRes.count || 0;
+    const logN = logRes.count || 0;
+    const pagN = pagRes.count || 0;
+    const bEsc = document.getElementById('badge-escuta');
+    const bLog = document.getElementById('badge-logs');
+    const bPag = document.getElementById('badge-pag-pendentes');
+    if (escN > 0 && bEsc) { bEsc.textContent = escN; bEsc.style.display = ''; }
+    if (logN > 0 && bLog) { bLog.textContent = logN; bLog.style.display = ''; }
+    if (pagN > 0 && bPag) { bPag.textContent = pagN; bPag.style.display = ''; }
+  } catch {}
+}
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────
 async function carregarDashboard() {
-  document.getElementById('dash-updated').textContent = 'Atualizando...';
+  document.getElementById('dash-updated').textContent = 'atualizando...';
   try {
-    const [empRes, colRes, ciRes, escRes] = await Promise.all([
-      db.from('empresas').select('id, nome, created_at, plano').order('created_at', { ascending: false }),
-      db.from('membros_empresa').select('id', { count: 'exact', head: true }),
-      db.from('checkins').select('id', { count: 'exact', head: true }),
-      db.from('canal_escuta').select('id', { count: 'exact', head: false }).eq('lido', false),
+    const [empRes, colRes, ciRes, pagRes] = await Promise.all([
+      db.from('empresas').select('id, nome, created_at, plan, status').order('created_at', { ascending: false }),
+      db.from('membros_empresa').select('id', { count:'exact', head:true }),
+      db.from('checkins').select('id', { count:'exact', head:true }),
+      db.from('pagamentos').select('id, status, valor').catch(() => ({ data: [] })),
     ]);
 
     const empresas = empRes.data || [];
-    document.getElementById('m-empresas').textContent = empresas.length;
+    _empresasCache = empresas;
+    document.getElementById('m-empresas').textContent = empresas.filter(e => e.status === 'ativo').length;
     document.getElementById('m-colabs').textContent = colRes.count ?? '—';
     document.getElementById('m-checkins').textContent = ciRes.count ?? '—';
-    document.getElementById('m-escuta').textContent = escRes.data?.length ?? '—';
+
+    const pags = pagRes.data || [];
+    const pendentes = pags.filter(p => p.status === 'pendente').length;
+    document.getElementById('m-pag-pend').textContent = pendentes;
 
     // Empresas recentes
     const elEmp = document.getElementById('dash-empresas-list');
-    if (empresas.length === 0) {
-      elEmp.innerHTML = '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Nenhuma empresa</div></div>';
-    } else {
-      elEmp.innerHTML = `<table class="tbl"><tbody>${
-        empresas.slice(0,5).map(e => `<tr>
-          <td><strong>${e.nome}</strong></td>
-          <td><span class="badge badge-gray">${e.plano || 'free'}</span></td>
+    elEmp.innerHTML = empresas.length === 0
+      ? '<div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Nenhuma empresa</div></div>'
+      : `<table class="tbl"><tbody>${empresas.slice(0,5).map(e => `<tr>
+          <td><div class="tbl-name">${e.nome}</div></td>
+          <td>${planoBadge(e.plan)}</td>
+          <td>${statusBadge(e.status)}</td>
           <td style="color:var(--muted)">${fmt(e.created_at)}</td>
-        </tr>`).join('')
-      }</tbody></table>`;
-    }
+        </tr>`).join('')}</tbody></table>`;
 
-    // Check-ins recentes
-    const ciRecRes = await db.from('checkins')
-      .select('user_id, humor, energia, carga, foco, tipo, created_at')
-      .order('created_at', { ascending: false }).limit(5);
-    const elCI = document.getElementById('dash-checkins-list');
-    const cis = ciRecRes.data || [];
-    if (cis.length === 0) {
-      elCI.innerHTML = '<div class="empty"><div class="empty-icon">✓</div><div class="empty-title">Nenhum check-in</div></div>';
-    } else {
-      elCI.innerHTML = `<table class="tbl"><tbody>${
-        cis.map(c => {
-          const score = Math.round(((c.humor||50)+(c.energia||50)+(100-(c.carga||50))+(c.foco||50))/4);
-          return `<tr>
-            <td style="color:var(--muted);font-size:11px">${c.user_id?.slice(0,8)}...</td>
-            <td>${scoreChip(score)}</td>
-            <td><span class="badge ${c.tipo==='feminino'?'badge-yellow':'badge-gray'}">${c.tipo||'semanal'}</span></td>
-            <td style="color:var(--muted)">${fmt(c.created_at)}</td>
-          </tr>`;
-        }).join('')
-      }</tbody></table>`;
-    }
+    // Últimos pagamentos
+    const pagRecRes = await db.from('pagamentos').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(5).catch(() => ({ data: [] }));
+    const elPag = document.getElementById('dash-pag-list');
+    const pagsRec = pagRecRes.data || [];
+    elPag.innerHTML = pagsRec.length === 0
+      ? '<div class="empty"><div class="empty-icon">💳</div><div class="empty-title">Nenhum pagamento</div><div class="empty-sub">Registre o primeiro boleto</div></div>'
+      : `<table class="tbl"><tbody>${pagsRec.map(p => `<tr>
+          <td><div class="tbl-name">${p.empresas?.nome||'—'}</div></td>
+          <td>${fmtMoney(p.valor)}</td>
+          <td>${pagStatusBadge(p.status)}</td>
+          <td style="color:var(--muted)">${fmt(p.vencimento)}</td>
+        </tr>`).join('')}</tbody></table>`;
 
-    document.getElementById('dash-updated').textContent = 'Atualizado em ' + new Date().toLocaleTimeString('pt-BR');
+    // Alertas
+    const logRes = await db.from('admin_logs').select('*').eq('nivel', 'error').order('created_at', { ascending: false }).limit(3).catch(() => ({ data: [] }));
+    const elAlerta = document.getElementById('dash-alertas');
+    const logs = logRes.data || [];
+    elAlerta.innerHTML = logs.length === 0
+      ? '<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">Nenhum erro recente</div><div class="empty-sub">Sistema funcionando normalmente</div></div>'
+      : logs.map(l => `<div class="log-row"><div class="log-time">${fmt(l.created_at)}</div><div class="log-level err">ERR</div><div class="log-msg">${l.mensagem||'—'}<div class="log-ctx">${l.contexto||''}</div></div></div>`).join('');
+
+    // Engajamento
+    const semana = new Date(); semana.setDate(semana.getDate() - 7);
+    const ciSemRes = await db.from('checkins').select('id', { count:'exact', head:true }).gte('created_at', semana.toISOString());
+    const elEng = document.getElementById('dash-engajamento');
+    const ciSem = ciSemRes.count || 0;
+    const total = colRes.count || 1;
+    const taxa = Math.min(100, Math.round((ciSem / total) * 100));
+    const corFill = taxa >= 60 ? '' : taxa >= 30 ? 'yellow' : 'red';
+    elEng.innerHTML = `
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--text2)">Check-ins últimos 7 dias</span>
+          <span class="mono" style="font-size:20px;font-weight:700;color:var(--verde)">${ciSem}</span>
+        </div>
+        <div class="uso-bar"><div class="uso-fill ${corFill}" style="width:${taxa}%"></div></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:5px">${taxa}% dos colaboradores fizeram check-in</div>
+      </div>`;
+
+    document.getElementById('dash-updated').textContent = 'atualizado às ' + new Date().toLocaleTimeString('pt-BR');
   } catch(e) {
-    console.error('[dashboard]', e);
-    document.getElementById('dash-updated').textContent = 'Erro ao carregar';
+    document.getElementById('dash-updated').textContent = 'erro ao carregar';
+    console.error(e);
   }
 }
 
 // ── EMPRESAS ──────────────────────────────────────────────────────────
+let _todasEmpresas = [];
 async function carregarEmpresas() {
   const tbody = document.getElementById('tbl-empresas');
-  tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="loading">Carregando...</td></tr>';
   try {
     const { data: emps } = await db.from('empresas').select('*').order('created_at', { ascending: false });
-    const empresas = emps || [];
-    document.getElementById('empresas-sub').textContent = empresas.length + ' empresa(s) cadastrada(s)';
-
-    if (empresas.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Nenhuma empresa cadastrada</div></div></td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = empresas.map(e => `
-      <tr>
-        <td><strong>${e.nome || '—'}</strong><div style="font-size:11px;color:var(--muted)">${e.resp_nome||''}</div></td>
-        <td style="color:var(--muted);font-size:12px">${e.cnpj||'—'}</td>
-        <td style="color:var(--muted)">${e.setor||'—'}</td>
-        <td><span class="badge badge-gray">${e.plan||'free'}</span></td>
-        <td style="color:var(--muted)">${e.size||'—'}</td>
-        <td style="color:var(--muted)">${fmt(e.created_at)}</td>
-        <td>
-          <button class="btn btn-ghost" style="font-size:11px" onclick="verEmpresa('${e.id}')">Ver</button>
-        </td>
-      </tr>`).join('');
+    _todasEmpresas = emps || [];
+    _empresasCache = _todasEmpresas;
+    document.getElementById('empresas-sub').textContent = _todasEmpresas.length + ' empresa(s)';
+    renderEmpresas(_todasEmpresas);
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`;
   }
+}
+
+function renderEmpresas(lista) {
+  const tbody = document.getElementById('tbl-empresas');
+  if (!lista.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Nenhuma empresa</div></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = lista.map(e => `<tr>
+    <td><div class="tbl-name">${e.nome||'—'}</div><div class="tbl-sub">${e.resp_nome||''} ${e.resp_email ? '· '+e.resp_email : ''}</div></td>
+    <td class="mono" style="font-size:11px;color:var(--muted)">${e.cnpj||'—'}</td>
+    <td style="color:var(--muted)">${e.setor||'—'}</td>
+    <td>${planoBadge(e.plan||e.plano)}</td>
+    <td>${statusBadge(e.status||'ativo')}</td>
+    <td style="color:var(--muted)">${e.size||'—'}</td>
+    <td style="color:var(--muted)">${fmt(e.created_at)}</td>
+    <td style="display:flex;gap:6px">
+      <button class="btn btn-ghost btn-sm" onclick="abrirEdicaoEmpresa('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}','${e.plan||'basico'}','${e.status||'ativo'}')">Editar</button>
+    </td>
+  </tr>`).join('');
+}
+
+function filtrarEmpresas(q) {
+  const f = q.toLowerCase();
+  renderEmpresas(_todasEmpresas.filter(e => (e.nome||'').toLowerCase().includes(f) || (e.cnpj||'').includes(f) || (e.setor||'').toLowerCase().includes(f)));
 }
 
 async function salvarEmpresa() {
@@ -506,30 +968,48 @@ async function salvarEmpresa() {
   btn.disabled = true; btn.textContent = 'Salvando...';
   try {
     const { error } = await db.from('empresas').insert({
-      nome,
-      cnpj: document.getElementById('ne-cnpj').value.trim() || null,
-      setor: document.getElementById('ne-setor').value.trim() || null,
-      size: document.getElementById('ne-size').value || null,
-      resp_nome: document.getElementById('ne-resp').value.trim() || null,
-      plan: document.getElementById('ne-plano').value || 'free',
+      nome, cnpj: document.getElementById('ne-cnpj').value.trim()||null,
+      setor: document.getElementById('ne-setor').value.trim()||null,
+      size: document.getElementById('ne-size').value||null,
+      resp_nome: document.getElementById('ne-resp').value.trim()||null,
+      resp_email: document.getElementById('ne-email').value.trim()||null,
+      plan: document.getElementById('ne-plano').value||'basico',
+      status: document.getElementById('ne-status').value||'ativo',
     });
     if (error) throw error;
     fecharModal('modal-empresa');
     await carregarEmpresas();
     await carregarDashboard();
-  } catch(e) {
-    alert('Erro: ' + e.message);
-  } finally {
-    btn.disabled = false; btn.textContent = 'Salvar empresa';
-  }
+  } catch(e) { alert('Erro: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Salvar empresa'; }
 }
 
-async function verEmpresa(id) {
-  const { data: e } = await db.from('empresas').select('*').eq('id', id).single();
-  if (!e) return;
-  const info = Object.entries(e).filter(([k,v]) => v && !k.includes('id'))
-    .map(([k,v]) => `${k}: ${v}`).join('\n');
-  alert(info);
+function abrirEdicaoEmpresa(id, nome, plano, status) {
+  document.getElementById('edit-empresa-id').value = id;
+  document.getElementById('edit-empresa-sub').textContent = nome;
+  document.getElementById('edit-plano').value = plano;
+  document.getElementById('edit-status').value = status;
+  document.getElementById('edit-obs').value = '';
+  abrirModal('modal-editar-empresa');
+}
+
+async function salvarEdicaoEmpresa() {
+  const id = document.getElementById('edit-empresa-id').value;
+  const plano = document.getElementById('edit-plano').value;
+  const status = document.getElementById('edit-status').value;
+  const obs = document.getElementById('edit-obs').value.trim();
+  const btn = document.getElementById('btn-salvar-edicao');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    const { error } = await db.from('empresas').update({
+      plan: plano, status, obs_interna: obs || undefined, updated_at: new Date().toISOString()
+    }).eq('id', id);
+    if (error) throw error;
+    fecharModal('modal-editar-empresa');
+    await carregarEmpresas();
+    await registrarLogAuto('info', 'empresa', `Empresa ${id} atualizada: plano=${plano}, status=${status}`);
+  } catch(e) { alert('Erro: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Salvar alterações'; }
 }
 
 // ── COLABORADORES ─────────────────────────────────────────────────────
@@ -537,136 +1017,688 @@ async function carregarColaboradores() {
   const tbody = document.getElementById('tbl-colabs');
   tbody.innerHTML = '<tr><td colspan="5" class="loading">Carregando...</td></tr>';
   try {
-    const [memRes, empRes] = await Promise.all([
-      db.from('membros_empresa').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(100),
-      db.from('empresas').select('id, nome'),
-    ]);
-    const mems = memRes.data || [];
-    document.getElementById('colabs-sub').textContent = mems.length + ' membro(s) cadastrado(s)';
+    const { data: mems } = await db.from('membros_empresa').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(200);
+    const lista = mems || [];
+    document.getElementById('colabs-sub').textContent = lista.length + ' membro(s)';
+    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Nenhum colaborador</div></div></td></tr>'; return; }
+    tbody.innerHTML = lista.map(m => `<tr>
+      <td><div class="tbl-name">${m.nome||'—'}</div></td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${m.email||'—'}</td>
+      <td style="color:var(--muted)">${m.empresas?.nome||'—'}</td>
+      <td><span class="badge b-gray">${m.role||'colaborador'}</span></td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(m.created_at)}</td>
+    </tr>`).join('');
+  } catch(e) { tbody.innerHTML = `<tr><td colspan="5" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
+}
 
-    if (mems.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Nenhum colaborador</div></div></td></tr>';
-      return;
+// ── PAGAMENTOS ────────────────────────────────────────────────────────
+async function carregarPagamentos() {
+  const tbody = document.getElementById('tbl-pagamentos');
+  tbody.innerHTML = '<tr><td colspan="8" class="loading">Carregando...</td></tr>';
+
+  // Popula select de empresas no modal
+  const sel = document.getElementById('pag-empresa-id');
+  if (sel.options.length <= 1 && _empresasCache.length > 0) {
+    _empresasCache.forEach(e => { const o = document.createElement('option'); o.value = e.id; o.textContent = e.nome; sel.appendChild(o); });
+  } else if (sel.options.length <= 1) {
+    const { data: emps } = await db.from('empresas').select('id, nome').order('nome');
+    (emps||[]).forEach(e => { const o = document.createElement('option'); o.value = e.id; o.textContent = e.nome; sel.appendChild(o); });
+  }
+
+  try {
+    const { data: pags } = await db.from('pagamentos').select('*, empresas(nome)').order('created_at', { ascending: false }).throwOnError();
+    const lista = pags || [];
+    document.getElementById('pag-sub').textContent = lista.length + ' registros';
+
+    const mes = new Date(); mes.setDate(1); mes.setHours(0,0,0,0);
+    const pagos = lista.filter(p => p.status === 'pago' && new Date(p.created_at) >= mes);
+    const pend = lista.filter(p => p.status === 'pendente');
+    const venc = lista.filter(p => p.status === 'vencido');
+    document.getElementById('pag-recebido').textContent = fmtMoney(pagos.reduce((a,p) => a + Number(p.valor||0), 0));
+    document.getElementById('pag-pendente').textContent = fmtMoney(pend.reduce((a,p) => a + Number(p.valor||0), 0));
+    document.getElementById('pag-vencido').textContent = fmtMoney(venc.reduce((a,p) => a + Number(p.valor||0), 0));
+
+    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-icon">💳</div><div class="empty-title">Nenhum boleto registrado</div><div class="empty-sub">Clique em "+ Registrar boleto" para começar</div></div></td></tr>'; return; }
+
+    tbody.innerHTML = lista.map(p => `<tr>
+      <td><div class="tbl-name">${p.empresas?.nome||'—'}</div></td>
+      <td>${planoBadge(p.plano)}</td>
+      <td class="mono">${fmtMoney(p.valor)}</td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(p.vencimento)}</td>
+      <td>${pagStatusBadge(p.status)}</td>
+      <td>${p.nf_url ? `<a href="${p.nf_url}" target="_blank" style="color:var(--verde);font-size:12px">Ver NF →</a>` : '<span style="color:var(--muted)">—</span>'}</td>
+      <td style="color:var(--muted);font-size:11px">${p.referencia||'—'}</td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-ghost btn-sm" onclick="gerarFatura(${JSON.stringify(p)})">📄 Fatura</button>
+        ${p.status === 'pago' ? `<button class="btn btn-ghost btn-sm" onclick="gerarRecibo(${JSON.stringify(p)})">🧾 Recibo</button>` : ''}
+        ${p.status !== 'pago' ? `<button class="btn btn-primary btn-sm" onclick="marcarPago('${p.id}')">Pago ✓</button>` : ''}
+        ${p.status === 'pendente' ? `<button class="btn btn-red btn-sm" onclick="marcarVencido('${p.id}')">Vencido</button>` : ''}
+        <button class="btn btn-yellow btn-sm" onclick="abrirNFSe(${JSON.stringify(p)})">NFS-e</button>
+      </td>
+    </tr>`).join('');
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="8" style="color:var(--muted);padding:30px;text-align:center;font-size:13px">Tabela "pagamentos" ainda não criada no Supabase.<br><span style="font-size:11px;font-family:var(--mono)">Crie com: id, empresa_id, plano, valor, vencimento, status, referencia, nf_url, created_at</span></td></tr>`;
+  }
+}
+
+async function salvarPagamento() {
+  const empId = document.getElementById('pag-empresa-id').value;
+  const valor = document.getElementById('pag-valor').value;
+  if (!empId || !valor) { alert('Empresa e valor são obrigatórios'); return; }
+  const btn = document.getElementById('btn-salvar-pag');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  try {
+    const { error } = await db.from('pagamentos').insert({
+      empresa_id: empId, plano: document.getElementById('pag-plano').value,
+      valor: Number(valor), vencimento: document.getElementById('pag-venc').value || null,
+      status: document.getElementById('pag-status').value,
+      referencia: document.getElementById('pag-ref').value.trim() || null,
+      nf_url: document.getElementById('pag-nf').value.trim() || null,
+    });
+    if (error) throw error;
+    fecharModal('modal-pagamento');
+    carregarPagamentos();
+  } catch(e) { alert('Erro ao salvar: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Registrar boleto'; }
+}
+
+async function marcarPago(id) {
+  await db.from('pagamentos').update({ status: 'pago', pago_em: new Date().toISOString() }).eq('id', id);
+  carregarPagamentos(); carregarBadges();
+}
+async function marcarVencido(id) {
+  await db.from('pagamentos').update({ status: 'vencido' }).eq('id', id);
+  carregarPagamentos();
+}
+
+// ── USO & ENGAJAMENTO ─────────────────────────────────────────────────
+async function carregarUso() {
+  try {
+    const agora = new Date();
+    const inicioSemana = new Date(agora); inicioSemana.setDate(agora.getDate() - 7);
+    const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+
+    const [ciSemRes, ciMesRes, ciFemRes, empRes, colRes] = await Promise.all([
+      db.from('checkins').select('id', { count:'exact', head:true }).gte('created_at', inicioSemana.toISOString()),
+      db.from('checkins').select('id', { count:'exact', head:true }).gte('created_at', inicioMes.toISOString()),
+      db.from('checkins').select('id', { count:'exact', head:true }).eq('tipo', 'feminino').gte('created_at', inicioMes.toISOString()),
+      db.from('empresas').select('id, nome, status'),
+      db.from('membros_empresa').select('id', { count:'exact', head:true }),
+    ]);
+
+    const ciSem = ciSemRes.count || 0;
+    const ciMes = ciMesRes.count || 0;
+    const ciFem = ciFemRes.count || 0;
+    const totalColabs = colRes.count || 1;
+    const taxa = Math.min(100, Math.round((ciMes / totalColabs) * 100));
+
+    document.getElementById('uso-ci-semana').textContent = ciSem;
+    document.getElementById('uso-ci-mes').textContent = ciMes;
+    document.getElementById('uso-taxa').textContent = taxa + '%';
+    document.getElementById('uso-fem').textContent = ciFem;
+
+    // Engajamento por empresa
+    const { data: ciEmp } = await db.from('checkins').select('empresa_id').gte('created_at', inicioMes.toISOString());
+    const contagem = {};
+    (ciEmp || []).forEach(c => { contagem[c.empresa_id] = (contagem[c.empresa_id] || 0) + 1; });
+    const empresas = empRes.data || [];
+    const elEmpUso = document.getElementById('uso-por-empresa');
+    if (!empresas.length) { elEmpUso.innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Sem dados</div></div>'; }
+    else {
+      const sorted = [...empresas].sort((a, b) => (contagem[b.id]||0) - (contagem[a.id]||0));
+      const max = Math.max(1, ...sorted.map(e => contagem[e.id]||0));
+      elEmpUso.innerHTML = sorted.map(e => {
+        const n = contagem[e.id] || 0;
+        const pct = Math.round((n / max) * 100);
+        const cor = pct >= 60 ? '' : pct >= 30 ? 'yellow' : 'red';
+        return `<div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:12.5px">${e.nome}</span>
+            <span class="mono" style="font-size:12px;color:var(--verde)">${n} check-ins</span>
+          </div>
+          <div class="uso-bar"><div class="uso-fill ${cor}" style="width:${pct}%"></div></div>
+        </div>`;
+      }).join('');
     }
 
-    tbody.innerHTML = mems.map(m => `
-      <tr>
-        <td><strong>${m.nome||'—'}</strong></td>
-        <td style="color:var(--muted)">${m.email||'—'}</td>
-        <td style="color:var(--muted)">${m.empresas?.nome||'—'}</td>
-        <td><span class="badge badge-gray">${m.role||'colaborador'}</span></td>
-        <td style="color:var(--muted)">${fmt(m.created_at)}</td>
-      </tr>`).join('');
-  } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`;
-  }
+    // Por tipo
+    const { data: ciTipo } = await db.from('checkins').select('tipo').gte('created_at', inicioMes.toISOString());
+    const tipoCount = {};
+    (ciTipo||[]).forEach(c => { const t = c.tipo||'semanal'; tipoCount[t] = (tipoCount[t]||0)+1; });
+    const elTipo = document.getElementById('uso-por-tipo');
+    elTipo.innerHTML = Object.entries(tipoCount).length === 0
+      ? '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Sem dados este mês</div></div>'
+      : Object.entries(tipoCount).map(([t,n]) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">${t}</span>
+          <span class="mono" style="font-size:14px;font-weight:600;color:var(--verde)">${n}</span>
+        </div>`).join('');
+
+    // Sem engajamento
+    const ativas = empresas.filter(e => e.status === 'ativo');
+    const semEng = ativas.filter(e => !(contagem[e.id] > 0));
+    const elSemEng = document.getElementById('uso-sem-engajamento');
+    elSemEng.innerHTML = semEng.length === 0
+      ? '<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">Todas as empresas engajadas!</div></div>'
+      : semEng.map(e => `<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;align-items:center;justify-content:space-between"><span>${e.nome}</span><span class="badge b-red">sem check-in</span></div>`).join('');
+
+  } catch(e) { console.error('[uso]', e); }
 }
 
 // ── CHECK-INS ─────────────────────────────────────────────────────────
 async function carregarCheckins() {
   const tbody = document.getElementById('tbl-checkins');
-  tbody.innerHTML = '<tr><td colspan="8" class="loading">Carregando...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9" class="loading">Carregando...</td></tr>';
   try {
-    const { data: cis } = await db.from('checkins')
-      .select('*').order('created_at', { ascending: false }).limit(100);
-    const checkins = cis || [];
-    document.getElementById('checkins-sub').textContent = checkins.length + ' check-ins (últimos 100)';
-
-    if (checkins.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-icon">✓</div><div class="empty-title">Nenhum check-in</div></div></td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = checkins.map(c => {
+    const { data: cis } = await db.from('checkins').select('*, membros_empresa(nome, empresas(nome))').order('created_at', { ascending: false }).limit(100);
+    const lista = cis || [];
+    document.getElementById('checkins-sub').textContent = lista.length + ' check-ins (últimos 100)';
+    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty"><div class="empty-icon">✓</div><div class="empty-title">Nenhum check-in</div></div></td></tr>'; return; }
+    tbody.innerHTML = lista.map(c => {
       const score = Math.round(((c.humor||50)+(c.energia||50)+(100-(c.carga||50))+(c.foco||50))/4);
       return `<tr>
-        <td style="font-size:11px;color:var(--muted)">${c.user_id?.slice(0,12)}...</td>
-        <td>${c.humor??'—'}</td>
-        <td>${c.energia??'—'}</td>
-        <td>${c.carga??'—'}</td>
-        <td>${c.foco??'—'}</td>
+        <td class="mono" style="font-size:10px;color:var(--muted)">${c.user_id?.slice(0,10)}…</td>
+        <td style="color:var(--muted);font-size:12px">${c.membros_empresa?.empresas?.nome||'—'}</td>
+        <td>${c.humor??'—'}</td><td>${c.energia??'—'}</td><td>${c.carga??'—'}</td><td>${c.foco??'—'}</td>
         <td>${scoreChip(score)}</td>
-        <td><span class="badge ${c.tipo==='feminino'?'badge-yellow':'badge-gray'}">${c.tipo||'semanal'}</span></td>
-        <td style="color:var(--muted);font-size:12px">${fmt(c.created_at)}</td>
+        <td><span class="badge ${c.tipo==='feminino'?'b-blue':'b-gray'}">${c.tipo||'semanal'}</span></td>
+        <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(c.created_at)}</td>
       </tr>`;
     }).join('');
-  } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="8" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`;
-  }
+  } catch(e) { tbody.innerHTML = `<tr><td colspan="9" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
 }
 
 // ── CANAL DE ESCUTA ───────────────────────────────────────────────────
 async function carregarEscuta() {
   const tbody = document.getElementById('tbl-escuta');
-  tbody.innerHTML = '<tr><td colspan="6" class="loading">Carregando...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
   try {
-    const { data: relatos } = await db.from('canal_escuta')
-      .select('*, empresas(nome)').order('criado_em', { ascending: false }).limit(100);
+    const { data: relatos } = await db.from('canal_escuta').select('*, empresas(nome)').order('criado_em', { ascending: false }).limit(100);
     const lista = relatos || [];
     document.getElementById('escuta-sub').textContent = lista.length + ' relato(s)';
+    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">Nenhum relato</div></div></td></tr>'; return; }
+    tbody.innerHTML = lista.map(r => `<tr>
+      <td><span class="badge b-gray">${r.tipo||'—'}</span></td>
+      <td style="color:var(--muted)">${r.empresas?.nome||'—'}</td>
+      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${r.mensagem||'—'}</td>
+      <td style="color:var(--muted);font-size:12px">${r.nome_voluntario||'Anônimo'}</td>
+      <td>${r.lido ? '<span class="badge b-green">Lido</span>' : '<span class="badge b-yellow">Novo</span>'}</td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(r.criado_em)}</td>
+      <td>${!r.lido ? `<button class="btn btn-ghost btn-sm" onclick="marcarLido('${r.id}')">Marcar lido</button>` : ''}</td>
+    </tr>`).join('');
+  } catch(e) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
+}
 
-    if (lista.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">Nenhum relato</div></div></td></tr>';
-      return;
-    }
+async function marcarLido(id) {
+  await db.from('canal_escuta').update({ lido: true }).eq('id', id);
+  carregarEscuta(); carregarBadges();
+}
 
-    tbody.innerHTML = lista.map(r => `
-      <tr>
-        <td><span class="badge badge-gray">${r.tipo||'—'}</span></td>
-        <td style="color:var(--muted)">${r.empresas?.nome||'—'}</td>
-        <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.mensagem||'—'}</td>
-        <td style="color:var(--muted)">${r.nome_voluntario||'Anônimo'}</td>
-        <td><span class="badge ${r.lido?'badge-green':'badge-yellow'}">${r.lido?'Lido':'Novo'}</span></td>
-        <td style="color:var(--muted)">${fmt(r.criado_em)}</td>
-      </tr>`).join('');
+// ── LOGS ──────────────────────────────────────────────────────────────
+async function carregarLogs() {
+  const el = document.getElementById('logs-container');
+  el.innerHTML = '<div class="loading">Carregando logs...</div>';
+  try {
+    const { data: logs } = await db.from('admin_logs').select('*').order('created_at', { ascending: false }).limit(200).throwOnError();
+    _logsCache = logs || [];
+    renderLogs(_logsCache);
+    const erros = _logsCache.filter(l => l.nivel === 'error' && !l.resolvido).length;
+    const bLog = document.getElementById('badge-logs');
+    if (erros > 0 && bLog) { bLog.textContent = erros; bLog.style.display = ''; }
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="6" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`;
+    el.innerHTML = `<div style="padding:28px;text-align:center;color:var(--muted);font-size:13px">
+      Tabela "admin_logs" não encontrada.<br>
+      <span style="font-size:11px;font-family:var(--mono)">Crie com: id, nivel, contexto, mensagem, resolvido (bool), created_at</span>
+    </div>`;
   }
 }
 
-// ── PROFISSIONAIS PARCEIROS ───────────────────────────────────────────
+function renderLogs(lista) {
+  const el = document.getElementById('logs-container');
+  if (!lista.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Nenhum log registrado</div></div>'; return; }
+  el.innerHTML = lista.map(l => `
+    <div class="log-row">
+      <div class="log-time">${new Date(l.created_at).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' })}</div>
+      <div class="log-level ${l.nivel==='error'?'err':l.nivel==='warn'?'warn':'info'}">${(l.nivel||'info').toUpperCase()}</div>
+      <div><div class="log-msg">${l.mensagem||'—'}</div>${l.contexto?`<div class="log-ctx">${l.contexto}</div>`:''}</div>
+      ${l.nivel==='error' && !l.resolvido ? `<button class="btn btn-ghost btn-sm" style="margin-left:auto;flex-shrink:0" onclick="resolverLog('${l.id}')">Resolver</button>` : ''}
+    </div>`).join('');
+}
+
+function filtrarLogs() {
+  const nivel = document.getElementById('log-filtro').value;
+  renderLogs(nivel ? _logsCache.filter(l => l.nivel === nivel) : _logsCache);
+}
+
+async function resolverLog(id) {
+  await db.from('admin_logs').update({ resolvido: true }).eq('id', id).catch(() => {});
+  carregarLogs();
+}
+
+async function registrarLog() {
+  const nivel = document.getElementById('log-nivel').value;
+  const ctx = document.getElementById('log-ctx').value.trim();
+  const msg = document.getElementById('log-msg').value.trim();
+  if (!msg) { alert('Informe a mensagem'); return; }
+  await registrarLogAuto(nivel, ctx, msg);
+  document.getElementById('log-msg').value = '';
+  carregarLogs();
+}
+
+async function registrarLogAuto(nivel, contexto, mensagem) {
+  try {
+    await db.from('admin_logs').insert({ nivel, contexto, mensagem, resolvido: false });
+  } catch {}
+}
+
+// ── PROFISSIONAIS ─────────────────────────────────────────────────────
 async function carregarProfissionais() {
   const tbody = document.getElementById('tbl-prof');
   tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
   try {
-    const { data: profs } = await db.from('profissionais_parceiros')
-      .select('*').order('enviado_em', { ascending: false });
+    const { data: profs } = await db.from('profissionais_parceiros').select('*').order('enviado_em', { ascending: false });
     const lista = profs || [];
     document.getElementById('prof-sub').textContent = lista.length + ' pré-cadastro(s)';
-
-    if (lista.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">👩‍⚕️</div><div class="empty-title">Nenhum pré-cadastro</div></div></td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = lista.map(p => `
-      <tr>
-        <td><strong>${p.nome||'—'}</strong><div style="font-size:11px;color:var(--muted)">${p.email||''}</div></td>
-        <td style="color:var(--muted)">${p.especialidade||'—'}</td>
-        <td style="color:var(--muted)">${p.registro||'—'}</td>
-        <td style="color:var(--muted)">${p.estado||'—'}</td>
-        <td><span class="badge ${p.status==='aprovado'?'badge-green':p.status==='recusado'?'badge-red':'badge-yellow'}">${p.status||'pendente'}</span></td>
-        <td style="color:var(--muted);font-size:11px">${p.pix||'—'}</td>
-        <td style="display:flex;gap:6px">
-          ${p.status!=='aprovado'?`<button class="btn btn-primary" style="font-size:11px;padding:4px 10px" onclick="aprovarProf('${p.id}')">Aprovar</button>`:''}
-          ${p.status!=='recusado'?`<button class="btn btn-red" style="font-size:11px;padding:4px 10px" onclick="recusarProf('${p.id}')">Recusar</button>`:''}
-        </td>
-      </tr>`).join('');
-  } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`;
-  }
+    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">👩‍⚕️</div><div class="empty-title">Nenhum pré-cadastro</div></div></td></tr>'; return; }
+    tbody.innerHTML = lista.map(p => `<tr>
+      <td><div class="tbl-name">${p.nome||'—'}</div><div class="tbl-sub">${p.email||''}</div></td>
+      <td style="color:var(--muted)">${p.especialidade||'—'}</td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${p.registro||'—'}</td>
+      <td style="color:var(--muted)">${p.estado||'—'}</td>
+      <td><span class="badge ${p.status==='aprovado'?'b-green':p.status==='recusado'?'b-red':'b-yellow'}">${p.status||'pendente'}</span></td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${p.pix||'—'}</td>
+      <td style="display:flex;gap:6px">
+        ${p.status!=='aprovado'?`<button class="btn btn-primary btn-sm" onclick="aprovarProf('${p.id}')">Aprovar</button>`:''}
+        ${p.status!=='recusado'?`<button class="btn btn-red btn-sm" onclick="recusarProf('${p.id}')">Recusar</button>`:''}
+      </td>
+    </tr>`).join('');
+  } catch(e) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
 }
 
-async function aprovarProf(id) {
-  await db.from('profissionais_parceiros').update({ status: 'aprovado', aprovado_em: new Date().toISOString() }).eq('id', id);
-  carregarProfissionais();
+async function aprovarProf(id) { await db.from('profissionais_parceiros').update({ status:'aprovado', aprovado_em:new Date().toISOString() }).eq('id',id); carregarProfissionais(); }
+async function recusarProf(id) { if(!confirm('Recusar este profissional?')) return; await db.from('profissionais_parceiros').update({ status:'recusado' }).eq('id',id); carregarProfissionais(); }
+
+
+// ── DADOS DA RANNE (emitente) — carregados do localStorage ──────────
+function getRanne() {
+  const cfg = JSON.parse(localStorage.getItem('ranne_admin_config') || '{}');
+  return {
+    razao:           cfg.razao      || 'Ranne Tecnologia em Saúde Ltda.',
+    cnpj:            cfg.cnpj       || '00.000.000/0001-00',
+    endereco:        cfg.endereco   || '—',
+    email:           cfg.email      || 'financeiro@rannecare.com.br',
+    site:            cfg.site       || 'rannecare.com.br',
+    iss:             (cfg.iss       || '2') + '%',
+    issNum:          Number(cfg.iss || 2) / 100,
+    codigo_servico:  cfg.cod_servico || '10.02',
+    banco:           cfg.banco      || '',
+    agencia:         cfg.agencia    || '',
+    conta:           cfg.conta      || '',
+    pix:             cfg.pix        || '',
+    ccm:             cfg.ccm        || '',
+    regime:          cfg.regime     || 'simples',
+    valor_basico:    Number(cfg.valor_basico || 0),
+    valor_pro:       Number(cfg.valor_pro    || 0),
+    venc_dia:        cfg.venc_dia   || '10',
+  };
+}
+// alias para compatibilidade com funções existentes
+let RANNE = getRanne();
+
+// ── CONFIG ────────────────────────────────────────────────────────────
+function carregarConfig() {
+  const cfg = JSON.parse(localStorage.getItem('ranne_admin_config') || '{}');
+  const campos = ['razao','cnpj','endereco','email','site','ccm','banco','agencia','conta','pix','valor-basico','valor-pro'];
+  campos.forEach(c => {
+    const el = document.getElementById('cfg-' + c);
+    if (el) el.value = cfg[c.replace('-','_')] || '';
+  });
+  if (document.getElementById('cfg-iss')) document.getElementById('cfg-iss').value = cfg.iss || '2';
+  if (document.getElementById('cfg-cod-servico')) document.getElementById('cfg-cod-servico').value = cfg.cod_servico || '10.02';
+  if (document.getElementById('cfg-regime')) document.getElementById('cfg-regime').value = cfg.regime || 'simples';
+  if (document.getElementById('cfg-venc-dia')) document.getElementById('cfg-venc-dia').value = cfg.venc_dia || '10';
+  atualizarPreviewConfig();
 }
 
-async function recusarProf(id) {
-  if (!confirm('Recusar este profissional?')) return;
-  await db.from('profissionais_parceiros').update({ status: 'recusado' }).eq('id', id);
-  carregarProfissionais();
+function atualizarPreviewConfig() {
+  const razao = document.getElementById('cfg-razao')?.value || 'Ranne Tecnologia em Saúde Ltda.';
+  const cnpj = document.getElementById('cfg-cnpj')?.value || '—';
+  const end = document.getElementById('cfg-endereco')?.value || 'Endereço não configurado';
+  const email = document.getElementById('cfg-email')?.value || '—';
+  if (document.getElementById('prev-razao')) document.getElementById('prev-razao').textContent = razao;
+  if (document.getElementById('prev-cnpj')) document.getElementById('prev-cnpj').textContent = 'CNPJ: ' + cnpj;
+  if (document.getElementById('prev-endereco')) document.getElementById('prev-endereco').textContent = end;
+  if (document.getElementById('prev-email')) document.getElementById('prev-email').textContent = email;
 }
+
+// Atualiza preview em tempo real
+document.addEventListener('input', e => {
+  if (e.target.id?.startsWith('cfg-')) atualizarPreviewConfig();
+});
+
+function salvarConfig() {
+  const cfg = {
+    razao:       document.getElementById('cfg-razao')?.value.trim(),
+    cnpj:        document.getElementById('cfg-cnpj')?.value.trim(),
+    endereco:    document.getElementById('cfg-endereco')?.value.trim(),
+    email:       document.getElementById('cfg-email')?.value.trim(),
+    site:        document.getElementById('cfg-site')?.value.trim(),
+    iss:         document.getElementById('cfg-iss')?.value,
+    cod_servico: document.getElementById('cfg-cod-servico')?.value.trim(),
+    ccm:         document.getElementById('cfg-ccm')?.value.trim(),
+    regime:      document.getElementById('cfg-regime')?.value,
+    banco:       document.getElementById('cfg-banco')?.value.trim(),
+    agencia:     document.getElementById('cfg-agencia')?.value.trim(),
+    conta:       document.getElementById('cfg-conta')?.value.trim(),
+    pix:         document.getElementById('cfg-pix')?.value.trim(),
+    valor_basico: document.getElementById('cfg-valor-basico')?.value,
+    valor_pro:   document.getElementById('cfg-valor-pro')?.value,
+    venc_dia:    document.getElementById('cfg-venc-dia')?.value,
+  };
+  if (!cfg.cnpj) { alert('CNPJ é obrigatório'); return; }
+  localStorage.setItem('ranne_admin_config', JSON.stringify(cfg));
+  RANNE = getRanne(); // atualiza objeto global
+  alert('✅ Configurações salvas! Os documentos usarão os novos dados.');
+  atualizarPreviewConfig();
+}
+
+let _nfseData = null;
+
+// ── FATURA PDF ────────────────────────────────────────────────────────
+async function gerarFatura(p) {
+  const RANNE = getRanne();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const emp = p.empresas?.nome || 'Cliente';
+  const num = String(p.id).slice(-6).toUpperCase();
+  const valor = Number(p.valor || 0);
+  const venc = p.vencimento ? new Date(p.vencimento + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+  const emissao = new Date().toLocaleDateString('pt-BR');
+
+  // Fundo do header
+  doc.setFillColor(10, 20, 16);
+  doc.rect(0, 0, 210, 42, 'F');
+
+  // Logo / nome
+  doc.setTextColor(78, 203, 160);
+  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+  doc.text('RANNE CARE', 14, 16);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(160, 200, 180);
+  doc.text('Tecnologia em Saúde Organizacional', 14, 22);
+  doc.text(RANNE.cnpj + ' · ' + RANNE.email, 14, 28);
+  doc.text(RANNE.endereco, 14, 33);
+
+  // Número da fatura
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(10); doc.setFont('helvetica', 'bold');
+  doc.text('FATURA', 196, 16, { align: 'right' });
+  doc.setFontSize(18);
+  doc.setTextColor(78, 203, 160);
+  doc.text('#' + num, 196, 26, { align: 'right' });
+
+  // Linha separadora
+  doc.setDrawColor(36, 53, 48);
+  doc.setLineWidth(0.3);
+  doc.line(14, 48, 196, 48);
+
+  // Para / dados cliente
+  doc.setTextColor(90, 120, 105);
+  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+  doc.text('PARA', 14, 58);
+  doc.setTextColor(30, 30, 30);
+  doc.setFontSize(13); doc.setFont('helvetica', 'bold');
+  doc.text(emp, 14, 66);
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 100, 90);
+  doc.text(p.cnpj_cliente || '—', 14, 72);
+
+  // Datas
+  doc.setTextColor(90, 120, 105);
+  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+  doc.text('EMISSÃO', 140, 58);
+  doc.text('VENCIMENTO', 140, 68);
+  doc.text('REFERÊNCIA', 140, 78);
+  doc.setTextColor(30, 30, 30);
+  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+  doc.text(emissao, 196, 58, { align: 'right' });
+  doc.text(venc, 196, 68, { align: 'right' });
+  doc.text(p.referencia || '—', 196, 78, { align: 'right' });
+
+  // Tabela de serviços
+  doc.setFillColor(240, 245, 242);
+  doc.rect(14, 92, 182, 9, 'F');
+  doc.setTextColor(60, 90, 75);
+  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+  doc.text('DESCRIÇÃO DO SERVIÇO', 18, 98);
+  doc.text('PLANO', 130, 98);
+  doc.text('VALOR', 196, 98, { align: 'right' });
+
+  doc.setDrawColor(200, 220, 210);
+  doc.setLineWidth(0.2);
+  doc.line(14, 101, 196, 101);
+
+  doc.setTextColor(20, 20, 20);
+  doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+  doc.text('Plataforma Ranne Care — Saúde Mental Corporativa', 18, 110);
+  doc.text('Monitoramento contínuo de bem-estar organizacional', 18, 116);
+  doc.setTextColor(60, 90, 75);
+  doc.setFontSize(9);
+  doc.text((p.plano || 'Pro').toUpperCase(), 130, 110);
+  doc.setTextColor(20, 20, 20);
+  doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+  doc.text('R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 196, 110, { align: 'right' });
+
+  // Linha
+  doc.setLineWidth(0.3); doc.setDrawColor(200, 220, 210);
+  doc.line(14, 124, 196, 124);
+
+  // Total
+  doc.setFillColor(10, 20, 16);
+  doc.rect(130, 128, 66, 16, 'F');
+  doc.setTextColor(160, 200, 180);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.text('TOTAL A PAGAR', 134, 134);
+  doc.setTextColor(78, 203, 160);
+  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+  doc.text('R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 194, 141, { align: 'right' });
+
+  // Forma de pagamento
+  doc.setTextColor(90, 120, 105);
+  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+  doc.text('PAGAMENTO VIA BOLETO BANCÁRIO', 14, 136);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(120, 140, 130);
+  doc.text('O boleto será enviado por e-mail. Em caso de dúvidas: ' + RANNE.email, 14, 142);
+
+  // Rodapé
+  doc.setFillColor(240, 245, 242);
+  doc.rect(0, 272, 210, 25, 'F');
+  doc.setTextColor(100, 130, 115);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.text(RANNE.razao + ' · CNPJ: ' + RANNE.cnpj, 105, 280, { align: 'center' });
+  doc.text(RANNE.site + ' · ' + RANNE.email, 105, 286, { align: 'center' });
+  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR'), 105, 292, { align: 'center' });
+
+  doc.save('Fatura_Ranne_' + num + '_' + emp.replace(/\s/g,'_') + '.pdf');
+}
+
+// ── RECIBO PDF ────────────────────────────────────────────────────────
+async function gerarRecibo(p) {
+  const RANNE = getRanne();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const emp = p.empresas?.nome || 'Cliente';
+  const num = String(p.id).slice(-6).toUpperCase();
+  const valor = Number(p.valor || 0);
+  const pagoEm = p.pago_em ? new Date(p.pago_em).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR');
+
+  // Header
+  doc.setFillColor(10, 20, 16);
+  doc.rect(0, 0, 210, 42, 'F');
+  doc.setTextColor(78, 203, 160);
+  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+  doc.text('RANNE CARE', 14, 16);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(160, 200, 180);
+  doc.text('Tecnologia em Saúde Organizacional', 14, 22);
+  doc.text(RANNE.cnpj, 14, 28);
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+  doc.text('RECIBO DE PAGAMENTO', 196, 16, { align: 'right' });
+  doc.setFontSize(11);
+  doc.setTextColor(78, 203, 160);
+  doc.text('Nº ' + num, 196, 26, { align: 'right' });
+
+  // Selo PAGO
+  doc.setFillColor(22, 160, 110);
+  doc.roundedRect(74, 58, 62, 20, 4, 4, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+  doc.text('✓ PAGO', 105, 71, { align: 'center' });
+
+  // Dados
+  doc.setTextColor(30, 30, 30);
+  doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+  doc.text('Recebemos de:', 14, 96);
+  doc.setFontSize(13);
+  doc.setTextColor(10, 20, 16);
+  doc.text(emp, 14, 104);
+  doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(80, 100, 90);
+  doc.text('a importância de:', 14, 116);
+  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+  doc.setTextColor(10, 20, 16);
+  doc.text('R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 14, 128);
+
+  // Linha
+  doc.setDrawColor(200, 220, 210); doc.setLineWidth(0.3);
+  doc.line(14, 136, 196, 136);
+
+  // Detalhes
+  const detalhes = [
+    ['Referência', p.referencia || '—'],
+    ['Plano', (p.plano || 'Pro').toUpperCase()],
+    ['Data do pagamento', pagoEm],
+    ['Forma de pagamento', 'Boleto bancário'],
+  ];
+  let y = 148;
+  detalhes.forEach(([k, v]) => {
+    doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(90, 120, 105);
+    doc.text(k.toUpperCase(), 14, y);
+    doc.setFontSize(10); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
+    doc.text(v, 196, y, { align: 'right' });
+    y += 12;
+  });
+
+  // Assinatura
+  doc.setLineWidth(0.3); doc.setDrawColor(150, 180, 165);
+  doc.line(110, 230, 196, 230);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 130, 115);
+  doc.text('Ranne Tecnologia em Saúde Ltda.', 153, 236, { align: 'center' });
+  doc.text('CNPJ: ' + RANNE.cnpj, 153, 241, { align: 'center' });
+
+  // Rodapé
+  doc.setFillColor(240, 245, 242);
+  doc.rect(0, 272, 210, 25, 'F');
+  doc.setTextColor(100, 130, 115); doc.setFontSize(8);
+  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR') + ' · ' + RANNE.site, 105, 283, { align: 'center' });
+
+  doc.save('Recibo_Ranne_' + num + '_' + emp.replace(/\s/g,'_') + '.pdf');
+}
+
+// ── NFS-e ─────────────────────────────────────────────────────────────
+function abrirNFSe(p) {
+  const RANNE = getRanne();
+  _nfseData = p;
+  const emp = p.empresas?.nome || '';
+  const valor = Number(p.valor || 0);
+  const iss = valor * 0.02;
+  const liq = valor - iss;
+
+  document.getElementById('nfse-empresa').textContent = emp;
+  document.getElementById('nfse-ref').textContent = p.referencia || '—';
+  document.getElementById('nfse-valor').textContent = 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  document.getElementById('nfse-iss').textContent = 'R$ ' + iss.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + ' (2% ISS SP)';
+  document.getElementById('nfse-liquido').textContent = 'R$ ' + liq.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  document.getElementById('nfse-desc').value = 'Serviço de tecnologia em saúde organizacional — Plataforma Ranne Care (' + (p.plano||'Pro').toUpperCase() + '). Referência: ' + (p.referencia || '') + '. Monitoramento contínuo de bem-estar corporativo via software SaaS.';
+
+  abrirModal('modal-nfse');
+}
+
+function abrirPortalNFSe() {
+  // Portal NFS-e São Paulo
+  window.open('https://nfe.prefeitura.sp.gov.br/login.aspx', '_blank');
+}
+
+function copiarDadosNFSe() {
+  const RANNE = getRanne();
+  if (!_nfseData) return;
+  const p = _nfseData;
+  const valor = Number(p.valor || 0);
+  const texto = [
+    '=== DADOS PARA EMISSÃO NFS-e ===',
+    '',
+    'PRESTADOR (Ranne):',
+    'Razão Social: ' + RANNE.razao,
+    'CNPJ: ' + RANNE.cnpj,
+    'Endereço: ' + RANNE.endereco,
+    'Código do serviço: ' + RANNE.codigo_servico,
+    'Alíquota ISS: ' + RANNE.iss,
+    '',
+    'TOMADOR (Cliente):',
+    'Nome/Razão Social: ' + (p.empresas?.nome || '—'),
+    'CNPJ: ' + (p.cnpj_cliente || 'Preencher'),
+    '',
+    'SERVIÇO:',
+    'Descrição: ' + document.getElementById('nfse-desc').value,
+    'Valor bruto: R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+    'ISS retido: R$ ' + (valor * 0.02).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+    'Valor líquido: R$ ' + (valor * 0.98).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+    'Referência: ' + (p.referencia || '—'),
+  ].join('
+');
+  navigator.clipboard.writeText(texto).then(() => alert('✅ Dados copiados! Cole no portal da prefeitura.'));
+}
+
 </script>
+<!-- MODAL NFS-e -->
+<div class="modal-overlay" id="modal-nfse">
+  <div class="modal" style="width:580px">
+    <div class="modal-title">Emissão NFS-e — São Paulo</div>
+    <div class="modal-sub">nota fiscal de serviço eletrônica · portal ISS.SP</div>
+
+    <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:18px">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px">Resumo do documento</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">TOMADOR</div><div style="font-size:13px;font-weight:600" id="nfse-empresa">—</div></div>
+        <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">REFERÊNCIA</div><div style="font-size:13px" id="nfse-ref">—</div></div>
+        <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">VALOR BRUTO</div><div style="font-size:14px;font-weight:700;color:var(--verde);font-family:var(--mono)" id="nfse-valor">—</div></div>
+        <div><div style="font-size:10px;color:var(--muted);margin-bottom:3px">ISS RETIDO</div><div style="font-size:13px;color:var(--yellow);font-family:var(--mono)" id="nfse-iss">—</div></div>
+        <div style="grid-column:span 2"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">VALOR LÍQUIDO</div><div style="font-size:15px;font-weight:700;color:var(--verde);font-family:var(--mono)" id="nfse-liquido">—</div></div>
+      </div>
+    </div>
+
+    <div class="fg" style="margin-bottom:16px">
+      <label>Descrição do serviço (edite se necessário)</label>
+      <textarea class="fc" id="nfse-desc" rows="4" style="resize:vertical;line-height:1.5"></textarea>
+    </div>
+
+    <div style="background:rgba(251,176,64,.06);border:1px solid rgba(251,176,64,.2);border-radius:10px;padding:14px;margin-bottom:18px;font-size:12.5px;color:var(--text2);line-height:1.6">
+      <strong style="color:var(--yellow)">⚠ Como emitir:</strong><br>
+      1. Copie os dados abaixo<br>
+      2. Acesse o portal da prefeitura de SP<br>
+      3. Cole as informações nos campos correspondentes<br>
+      Código do serviço: <span style="font-family:var(--mono);color:var(--verde)">10.02</span> · Alíquota ISS: <span style="font-family:var(--mono);color:var(--verde)">2%</span>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-nfse')">Fechar</button>
+      <button class="btn btn-ghost" onclick="copiarDadosNFSe()">📋 Copiar dados</button>
+      <button class="btn btn-primary" onclick="abrirPortalNFSe()">Abrir portal ISS-SP →</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
