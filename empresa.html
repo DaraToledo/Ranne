@@ -6965,7 +6965,7 @@ body.dark .ob-btn { background: #2D5E4A; }
           <div class="ajuda-mod-body">
             <div><div class="ajuda-item-title">Adicionar colaboradores</div><div class="ajuda-item-desc">Vá em <b>Equipe → + Convidar Membro</b>. Informe nome, e-mail e setor. A plataforma gera automaticamente um convite de acesso enviado por e-mail.</div></div>
             <div><div class="ajuda-item-title">Setores e heatmap</div><div class="ajuda-item-desc">Definir o setor de cada colaborador ativa o heatmap por área no dashboard — você vê quais departamentos estão em risco sem expor identidades individuais.</div></div>
-            <div><div class="ajuda-item-title">Importação em lote</div><div class="ajuda-item-desc">Para equipes maiores, é possível importar colaboradores via planilha CSV. Contate comercial@rannecare.com.br para ativar essa funcionalidade.</div></div>
+            <div><div class="ajuda-item-title">Importação em lote</div><div class="ajuda-item-desc">Para equipes maiores, é possível importar colaboradores via planilha CSV. Contate suporte@rannecare.com.br para ativar essa funcionalidade.</div></div>
           </div>
         </div>
 
@@ -7052,6 +7052,59 @@ body.dark .ob-btn { background: #2D5E4A; }
           </div>
         </div>
 
+        <!-- LGPD -->
+        <div style="font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin:18px 0 10px;">LGPD e privacidade dos colaboradores</div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">O que o RH pode e não pode acessar?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc"><strong>Pode acessar:</strong> scores numéricos individuais e por dimensão, histórico de evolução entre ciclos, registro de intervenções, taxa de resposta por setor e heatmap de risco.<br><br><strong>Não pode acessar:</strong> respostas de texto aberto do QUSP, conteúdo do diário pessoal, dados da área de saúde feminina (ciclo, sintomas, menopausa) e relatos anônimos do Canal de Escuta vinculados a um colaborador específico.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Como a Ranne protege os dados dos colaboradores?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">A plataforma usa três camadas de proteção: <strong>anonimização por design</strong> (o RH só vê scores, nunca texto aberto), <strong>Row Level Security no banco de dados</strong> (cada usuário acessa apenas seus próprios dados — garantido no nível do banco, não só na aplicação) e <strong>proteção por inferência</strong> (setores com menos de 3 colaboradores não exibem score individual). Dados em trânsito são criptografados via HTTPS.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">A empresa é responsável pelos dados dos colaboradores?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">Sim. Conforme a LGPD, a empresa contratante é co-responsável pelo tratamento dos dados dos seus colaboradores na plataforma. Isso significa que a empresa deve: informar os colaboradores sobre o uso da Ranne, obter consentimento para coleta de dados de saúde e garantir que os dados sejam usados apenas para fins de saúde ocupacional. A Ranne fornece o Termo de Consentimento padrão disponível no <strong>Kit Formulários</strong>.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Como atender uma solicitação de exclusão de dados de um colaborador?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">Se um colaborador solicitar a exclusão dos seus dados (direito garantido pela LGPD), encaminhe a solicitação para <strong>privacidade@rannecare.com.br</strong> com o nome e e-mail do colaborador. A Ranne realizará a exclusão em até 15 dias úteis e enviará confirmação. O colaborador também pode fazer a solicitação diretamente pela aba <strong>Ajuda</strong> no app dele.</p>
+          </div>
+        </div>
+
+        <div class="card ajuda-modulo" style="margin-bottom:8px;">
+          <div class="ajuda-mod-header" onclick="toggleAjudaMod(this)">
+            <div style="font-size:13px;font-weight:600;color:var(--text);">Os dados são compartilhados com terceiros?</div>
+            <span class="ajuda-chevron">▾</span>
+          </div>
+          <div class="ajuda-mod-body">
+            <p class="ajuda-item-desc">Não. A Ranne nunca vende, aluga ou compartilha dados com terceiros para fins comerciais. A única exceção é o processamento de mensagens de chat pela API da Anthropic (Claude), conforme descrito na nossa política de privacidade. Os dados dos colaboradores são usados exclusivamente para geração dos scores e relatórios da plataforma.</p>
+          </div>
+        </div>
+
         <!-- Rodapé -->
         <div style="margin-top:20px;padding:14px 16px;background:var(--bg);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
           <div>
@@ -7063,7 +7116,7 @@ body.dark .ob-btn { background: #2D5E4A; }
 
         <div style="text-align:center;margin:20px 0 8px;font-size:12.5px;color:var(--muted);line-height:1.7;">
           Ranne Care<br>
-          <a href="mailto:comercial@rannecare.com.br" style="color:var(--mint);text-decoration:none;">comercial@rannecare.com.br</a><br>
+          <a href="mailto:suporte@rannecare.com.br" style="color:var(--mint);text-decoration:none;">suporte@rannecare.com.br</a><br>
           Revisado por Viviani Alexandre Rufino — Psicóloga Clínica CRP 06/215926
         </div>
 
@@ -8677,7 +8730,7 @@ body.dark .ob-btn { background: #2D5E4A; }
         <span class="ajuda-chevron">▾</span>
       </div>
       <div class="ajuda-mod-body">
-        <p class="ajuda-item-desc">Envie um e-mail para <strong>comercial@rannecare.com.br</strong> com o assunto <em>"Solicitação de Exclusão de Dados"</em> informando seu nome e e-mail cadastrado. O prazo de atendimento é de até <strong>15 dias úteis</strong>. Após a exclusão, você receberá uma confirmação por e-mail.</p>
+        <p class="ajuda-item-desc">Envie um e-mail para <strong>privacidade@rannecare.com.br</strong> com o assunto <em>"Solicitação de Exclusão de Dados"</em> informando seu nome e e-mail cadastrado. O prazo de atendimento é de até <strong>15 dias úteis</strong>. Após a exclusão, você receberá uma confirmação por e-mail.</p>
       </div>
     </div>
 
@@ -8705,9 +8758,9 @@ body.dark .ob-btn { background: #2D5E4A; }
     <div style="margin-top:20px;padding:16px;background:var(--bg);border-radius:14px;border:1px solid var(--border);text-align:center">
       <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Ainda tem dúvidas?</div>
       <div style="font-size:12.5px;color:var(--muted);margin-bottom:12px">Nossa equipe responde em até 1 dia útil</div>
-      <a href="mailto:comercial@rannecare.com.br" style="display:inline-flex;align-items:center;gap:6px;background:var(--teal);color:#fff;border-radius:99px;padding:8px 18px;font-size:13px;font-weight:600;text-decoration:none">
+      <a href="mailto:suporte@rannecare.com.br" style="display:inline-flex;align-items:center;gap:6px;background:var(--teal);color:#fff;border-radius:99px;padding:8px 18px;font-size:13px;font-weight:600;text-decoration:none">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        comercial@rannecare.com.br
+        suporte@rannecare.com.br
       </a>
       <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">privacidade@rannecare.com.br · para solicitações LGPD</div>
     </div>
