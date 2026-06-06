@@ -245,6 +245,10 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
         Empresas
       </div>
+      <div class="sb-item" onclick="pg('contratos',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h4m-4 4h8"/></svg>
+        Contratos
+      </div>
       <div class="sb-item" onclick="pg('colaboradores',this)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         Colaboradores
@@ -256,6 +260,11 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
         <span class="sb-badge yellow" id="badge-pag-pendentes" style="display:none">0</span>
       </div>
       <div class="sb-section">Plataforma</div>
+      <div class="sb-item" onclick="pg('alertas',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Alertas
+        <span class="sb-badge" id="badge-alertas" style="display:none">0</span>
+      </div>
       <div class="sb-item" onclick="pg('uso',this)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Uso & Engajamento
@@ -355,6 +364,47 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
           </table>
         </div>
       </div>
+    </div>
+
+    <!-- ── CONTRATOS ── -->
+    <div id="p-contratos" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Contratos</div>
+          <div class="page-sub" id="contratos-sub">ciclo de vida das empresas clientes</div>
+        </div>
+        <div class="topbar-actions">
+          <input class="search-bar" placeholder="Buscar empresa..." oninput="filtrarContratos(this.value)">
+        </div>
+      </div>
+      <div class="metrics metrics-4" style="margin-bottom:20px">
+        <div class="metric green"><div class="metric-label">Ativos</div><div class="metric-value" id="ct-ativos">—</div><div class="metric-sub">contratos vigentes</div></div>
+        <div class="metric blue"><div class="metric-label">Piloto</div><div class="metric-value" id="ct-pilotos">—</div><div class="metric-sub">em período de teste</div></div>
+        <div class="metric yellow"><div class="metric-label">Renovar em 30d</div><div class="metric-value" id="ct-renovar">—</div><div class="metric-sub">atenção necessária</div></div>
+        <div class="metric red"><div class="metric-label">Suspensos</div><div class="metric-value" id="ct-suspensos">—</div><div class="metric-sub">acesso bloqueado</div></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th>Empresa</th><th>Plano</th><th>Status</th><th>Início</th><th>Término</th><th>Dias restantes</th><th>Ações</th>
+            </tr></thead>
+            <tbody id="tbl-contratos"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALERTAS ── -->
+    <div id="p-alertas" class="page">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Alertas</div>
+          <div class="page-sub">avisos automáticos que precisam da sua atenção</div>
+        </div>
+        <button class="btn btn-ghost" onclick="carregarAlertas()">↻ Atualizar</button>
+      </div>
+      <div id="alertas-container"><div class="loading">Verificando alertas...</div></div>
     </div>
 
     <!-- ── COLABORADORES ── -->
@@ -653,6 +703,69 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
   </div>
 </div>
 
+<!-- MODAL EDITAR CONTRATO -->
+<div class="modal-overlay" id="modal-contrato">
+  <div class="modal">
+    <div class="modal-title">Editar Contrato</div>
+    <div class="modal-sub" id="contrato-empresa-nome">—</div>
+    <input type="hidden" id="contrato-empresa-id">
+    <div class="form-row">
+      <div class="fg"><label>Status</label>
+        <select class="fc" id="contrato-status">
+          <option value="piloto">Piloto (teste gratuito)</option>
+          <option value="ativo">Ativo</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+      <div class="fg"><label>Plano</label>
+        <select class="fc" id="contrato-plano">
+          <option value="basico">Básico</option>
+          <option value="pro">Pro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Início do contrato</label><input class="fc" type="date" id="contrato-inicio"></div>
+      <div class="fg"><label>Término / renovação</label><input class="fc" type="date" id="contrato-termino"></div>
+    </div>
+    <div class="form-row cols-1">
+      <div class="fg"><label>Observação interna</label><input class="fc" id="contrato-obs" placeholder="Nota sobre o contrato..."></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-contrato')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarContrato()">Salvar contrato</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ENVIAR CONVITE -->
+<div class="modal-overlay" id="modal-convite">
+  <div class="modal">
+    <div class="modal-title">Enviar convite de acesso</div>
+    <div class="modal-sub" id="convite-empresa-nome">—</div>
+    <input type="hidden" id="convite-empresa-id">
+    <div class="form-row cols-1">
+      <div class="fg"><label>E-mail do responsável RH *</label><input class="fc" type="email" id="convite-email" placeholder="rh@empresa.com.br"></div>
+    </div>
+    <div class="form-row cols-1">
+      <div class="fg"><label>Nome do responsável</label><input class="fc" id="convite-nome" placeholder="Nome completo"></div>
+    </div>
+    <div class="form-row cols-1">
+      <div class="fg"><label>Mensagem personalizada (opcional)</label>
+        <textarea class="fc" id="convite-msg" rows="3" placeholder="Olá! Sua empresa foi cadastrada na Ranne Care..."></textarea>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:8px;padding:12px;font-size:12px;color:var(--muted);margin-bottom:4px">
+      O e-mail enviado incluirá o link de acesso e as instruções de primeiro login.
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-convite')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-enviar-convite" onclick="enviarConvite()">Enviar convite ✉</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL REGISTRAR PAGAMENTO -->
 <div class="modal-overlay" id="modal-pagamento">
   <div class="modal">
@@ -744,7 +857,10 @@ function pg(id, el) {
   document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   const loaders = {
+  const loaders = {
     empresas: carregarEmpresas,
+    contratos: carregarContratos,
+    alertas: carregarAlertas,
     colaboradores: carregarColaboradores,
     checkins: carregarCheckins,
     profissionais: carregarProfissionais,
@@ -752,8 +868,6 @@ function pg(id, el) {
     uso: carregarUso,
     logs: carregarLogs,
     config: carregarConfig,
-  };
-  loaders[id]?.();
 }
 
 // ── UTILS ──────────────────────────────────────────────────────────────
@@ -792,6 +906,8 @@ async function carregarBadges() {
     const bPag = document.getElementById('badge-pag-pendentes');
     if (logN > 0 && bLog) { bLog.textContent = logN; bLog.style.display = ''; }
     if (pagN > 0 && bPag) { bPag.textContent = pagN; bPag.style.display = ''; }
+    // Badge alertas
+    carregarAlertas().catch(()=>{});
   } catch {}
 }
 
@@ -873,6 +989,213 @@ async function carregarDashboard() {
   }
 }
 
+// ── CONTRATOS ─────────────────────────────────────────────────────────
+let _contratosCache = [];
+
+async function carregarContratos() {
+  const tbody = document.getElementById('tbl-contratos');
+  tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
+  try {
+    const { data: emps } = await db.from('empresas').select('*').order('created_at', { ascending: false });
+    _contratosCache = emps || [];
+    document.getElementById('contratos-sub').textContent = _contratosCache.length + ' empresa(s)';
+    renderContratos(_contratosCache);
+    // Métricas
+    const hoje = new Date();
+    const em30 = new Date(); em30.setDate(hoje.getDate() + 30);
+    const ativos = _contratosCache.filter(e => e.contrato_status === 'ativo').length;
+    const pilotos = _contratosCache.filter(e => !e.contrato_status || e.contrato_status === 'piloto').length;
+    const suspensos = _contratosCache.filter(e => e.contrato_status === 'suspenso').length;
+    const renovar = _contratosCache.filter(e => {
+      if (!e.contrato_termino) return false;
+      const t = new Date(e.contrato_termino);
+      return t >= hoje && t <= em30;
+    }).length;
+    document.getElementById('ct-ativos').textContent = ativos;
+    document.getElementById('ct-pilotos').textContent = pilotos;
+    document.getElementById('ct-suspensos').textContent = suspensos;
+    document.getElementById('ct-renovar').textContent = renovar;
+  } catch(e) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
+}
+
+function renderContratos(lista) {
+  const tbody = document.getElementById('tbl-contratos');
+  const hoje = new Date();
+  if (!lista.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Nenhuma empresa</div></div></td></tr>'; return; }
+  tbody.innerHTML = lista.map(e => {
+    const status = e.contrato_status || 'piloto';
+    const termino = e.contrato_termino ? new Date(e.contrato_termino) : null;
+    const diasRestantes = termino ? Math.ceil((termino - hoje) / 86400000) : null;
+    const corDias = diasRestantes === null ? 'var(--muted)' : diasRestantes <= 7 ? 'var(--red)' : diasRestantes <= 30 ? 'var(--yellow)' : 'var(--verde)';
+    const statusMap = { ativo:'b-green', piloto:'b-blue', suspenso:'b-yellow', cancelado:'b-red' };
+    return `<tr>
+      <td><div class="tbl-name">${e.nome||'—'}</div><div class="tbl-sub">${e.resp_nome||''}</div></td>
+      <td>${planoBadge(e.plan||'basico')}</td>
+      <td><span class="badge ${statusMap[status]||'b-gray'}">${status}</span></td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${e.contrato_inicio ? fmt(e.contrato_inicio) : '—'}</td>
+      <td class="mono" style="font-size:11px;color:var(--muted)">${termino ? fmt(e.contrato_termino) : '—'}</td>
+      <td style="font-weight:600;color:${corDias}">${diasRestantes !== null ? diasRestantes + 'd' : '—'}</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="abrirContrato('${e.id}','${(e.nome||'').replace(/'/g,"\'")}','${e.plan||'basico'}')">Editar</button>
+        <button class="btn btn-primary btn-sm" onclick="abrirConvite('${e.id}','${(e.nome||'').replace(/'/g,"\'")}')">✉ Convidar</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function filtrarContratos(q) {
+  const f = q.toLowerCase();
+  renderContratos(_contratosCache.filter(e => (e.nome||'').toLowerCase().includes(f)));
+}
+
+function abrirContrato(id, nome, plano) {
+  document.getElementById('contrato-empresa-id').value = id;
+  document.getElementById('contrato-empresa-nome').textContent = nome;
+  document.getElementById('contrato-plano').value = plano;
+  const emp = _contratosCache.find(e => e.id === id) || {};
+  document.getElementById('contrato-status').value = emp.contrato_status || 'piloto';
+  document.getElementById('contrato-inicio').value = emp.contrato_inicio?.slice(0,10) || '';
+  document.getElementById('contrato-termino').value = emp.contrato_termino?.slice(0,10) || '';
+  document.getElementById('contrato-obs').value = emp.contrato_obs || '';
+  abrirModal('modal-contrato');
+}
+
+async function salvarContrato() {
+  const id = document.getElementById('contrato-empresa-id').value;
+  const dados = {
+    plan: document.getElementById('contrato-plano').value,
+    contrato_status: document.getElementById('contrato-status').value,
+    contrato_inicio: document.getElementById('contrato-inicio').value || null,
+    contrato_termino: document.getElementById('contrato-termino').value || null,
+    contrato_obs: document.getElementById('contrato-obs').value.trim() || null,
+  };
+  try {
+    const { error } = await db.from('empresas').update(dados).eq('id', id);
+    if (error) throw error;
+    fecharModal('modal-contrato');
+    carregarContratos();
+    await registrarLogAuto('info', 'contrato', `Contrato atualizado: empresa ${id} → ${dados.contrato_status}`);
+  } catch(e) { alert('Erro ao salvar: ' + e.message); }
+}
+
+// ── CONVITES ───────────────────────────────────────────────────────────
+function abrirConvite(id, nome) {
+  document.getElementById('convite-empresa-id').value = id;
+  document.getElementById('convite-empresa-nome').textContent = nome;
+  document.getElementById('convite-email').value = '';
+  document.getElementById('convite-nome').value = '';
+  document.getElementById('convite-msg').value = `Olá! Sua empresa foi cadastrada na plataforma Ranne Care — saúde mental corporativa com inteligência artificial.
+
+Acesse agora em: https://rannecare.com.br
+
+Em caso de dúvidas, entre em contato: suporte@rannecare.com.br`;
+  abrirModal('modal-convite');
+}
+
+async function enviarConvite() {
+  const email = document.getElementById('convite-email').value.trim();
+  const nome = document.getElementById('convite-nome').value.trim();
+  const msg = document.getElementById('convite-msg').value.trim();
+  const empresaId = document.getElementById('convite-empresa-id').value;
+  const empresaNome = document.getElementById('convite-empresa-nome').textContent;
+  if (!email) { alert('Informe o e-mail do responsável'); return; }
+  const btn = document.getElementById('btn-enviar-convite');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+  try {
+    // Salva o log do convite
+    await registrarLogAuto('info', 'convite', `Convite enviado para ${email} — ${empresaNome}`);
+    // Abre cliente de e-mail com o convite pré-preenchido
+    const subject = encodeURIComponent(`Acesso à plataforma Ranne Care — ${empresaNome}`);
+    const body = encodeURIComponent(`${nome ? 'Olá, ' + nome + '!
+
+' : ''}${msg}`);
+    window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
+    fecharModal('modal-convite');
+    toast('✅ Cliente de e-mail aberto com o convite!');
+  } catch(e) { alert('Erro: ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Enviar convite ✉'; }
+}
+
+// ── ALERTAS ────────────────────────────────────────────────────────────
+async function carregarAlertas() {
+  const el = document.getElementById('alertas-container');
+  el.innerHTML = '<div class="loading">Verificando alertas...</div>';
+  const alertas = [];
+  const hoje = new Date();
+
+  try {
+    // Busca dados necessários em paralelo
+    const [empRes, ciMesRes, pagRes] = await Promise.allSettled([
+      db.from('empresas').select('id, nome, contrato_status, contrato_termino, plan'),
+      db.from('checkins').select('empresa_id').gte('created_at', new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString()),
+      db.from('pagamentos').select('id, empresa_id, status, vencimento, empresas(nome)'),
+    ]);
+
+    const empresas = empRes.status === 'fulfilled' ? empRes.value.data || [] : [];
+    const ciMes = ciMesRes.status === 'fulfilled' ? ciMesRes.value.data || [] : [];
+    const pags = pagRes.status === 'fulfilled' ? pagRes.value.data || [] : [];
+
+    // Empresas com check-in este mês
+    const comCI = new Set((ciMes).map(c => c.empresa_id));
+
+    empresas.forEach(e => {
+      const status = e.contrato_status || 'piloto';
+      if (status === 'cancelado') return;
+
+      // Sem engajamento no mês
+      if (!comCI.has(e.id)) {
+        alertas.push({ nivel: 'warn', icon: '📊', titulo: `${e.nome} — sem check-ins este mês`, desc: 'Nenhum colaborador fez check-in desde o início do mês. Considere entrar em contato.', acao: null });
+      }
+
+      // Contrato vencendo em 30 dias
+      if (e.contrato_termino) {
+        const dias = Math.ceil((new Date(e.contrato_termino) - hoje) / 86400000);
+        if (dias >= 0 && dias <= 30) {
+          alertas.push({ nivel: dias <= 7 ? 'error' : 'warn', icon: '📅', titulo: `${e.nome} — contrato vence em ${dias} dia${dias !== 1 ? 's' : ''}`, desc: `Plano ${e.plan||'basico'}. Verifique renovação ou envie proposta.`, acao: null });
+        }
+        if (dias < 0) {
+          alertas.push({ nivel: 'error', icon: '⚠️', titulo: `${e.nome} — contrato vencido há ${Math.abs(dias)} dias`, desc: 'Contrato expirado. Suspenda o acesso ou renove.', acao: null });
+        }
+      }
+    });
+
+    // Boletos vencendo em 3 dias
+    pags.forEach(p => {
+      if (p.status !== 'pendente') return;
+      if (!p.vencimento) return;
+      const dias = Math.ceil((new Date(p.vencimento) - hoje) / 86400000);
+      if (dias >= 0 && dias <= 3) {
+        alertas.push({ nivel: 'warn', icon: '💳', titulo: `Boleto vencendo em ${dias}d — ${p.empresas?.nome||'—'}`, desc: `Boleto pendente com vencimento próximo. Verifique pagamento.`, acao: null });
+      }
+      if (dias < 0) {
+        alertas.push({ nivel: 'error', icon: '💳', titulo: `Boleto vencido — ${p.empresas?.nome||'—'}`, desc: `Boleto em aberto vencido há ${Math.abs(dias)} dia${Math.abs(dias)!==1?'s':''}. Marque como pago ou vencido.`, acao: "pg('pagamentos',document.querySelector('[onclick*=pagamentos]'))" });
+      }
+    });
+
+    // Badge sidebar
+    const erros = alertas.filter(a => a.nivel === 'error').length;
+    const bA = document.getElementById('badge-alertas');
+    if (alertas.length > 0 && bA) { bA.textContent = alertas.length; bA.style.display = ''; }
+
+    // Render
+    if (!alertas.length) {
+      el.innerHTML = '<div class="empty" style="padding:60px 20px"><div class="empty-icon">✅</div><div class="empty-title">Nenhum alerta no momento</div><div class="empty-sub">Tudo em ordem com suas empresas e pagamentos.</div></div>';
+      return;
+    }
+
+    el.innerHTML = alertas.map(a => `
+      <div class="alert-item" style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border-bottom:1px solid var(--border);background:${a.nivel==='error'?'var(--red-dim)':a.nivel==='warn'?'var(--yellow-dim)':'var(--verde-glow)'}">
+        <div style="font-size:20px;flex-shrink:0">${a.icon}</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:${a.nivel==='error'?'var(--red)':a.nivel==='warn'?'var(--yellow)':'var(--verde)'};margin-bottom:3px">${a.titulo}</div>
+          <div style="font-size:12px;color:var(--text2)">${a.desc}</div>
+        </div>
+        ${a.acao ? `<button class="btn btn-ghost btn-sm" onclick="${a.acao}">Ver →</button>` : ''}
+      </div>`).join('');
+
+  } catch(e) { el.innerHTML = `<div class="alert-bar">Erro ao carregar alertas: ${e.message}</div>`; }
+}
+
 // ── EMPRESAS ──────────────────────────────────────────────────────────
 let _todasEmpresas = [];
 async function carregarEmpresas() {
@@ -905,6 +1228,8 @@ function renderEmpresas(lista) {
     <td style="color:var(--muted)">${fmt(e.created_at)}</td>
     <td style="display:flex;gap:6px">
       <button class="btn btn-ghost btn-sm" onclick="abrirEdicaoEmpresa('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}','${e.plan||'basico'}')">Editar</button>
+      <button class="btn btn-primary btn-sm" onclick="abrirConvite('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}')">✉ Convidar</button>
+      <button class="btn btn-ghost btn-sm" onclick="abrirContrato('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}','${e.plan||'basico'}')">📋 Contrato</button>
     </td>
   </tr>`).join('');
 }
@@ -931,6 +1256,7 @@ async function salvarEmpresa() {
     fecharModal('modal-empresa');
     await carregarEmpresas();
     await carregarDashboard();
+    toast('✅ Empresa criada! Agora defina o contrato e envie o convite.');
   } catch(e) { alert('Erro: ' + e.message); }
   finally { btn.disabled = false; btn.textContent = 'Salvar empresa'; }
 }
@@ -1073,7 +1399,7 @@ async function carregarUso() {
       db.from('checkins').select('id', { count:'exact', head:true }).eq('tipo', 'feminino').gte('created_at', inicioMes.toISOString()),
       db.from('empresas').select('id, nome, status'),
       db.from('colaboradores').select('id', { count:'exact', head:true }),
-    ]).catch(() => [{count:0},{count:0},{count:0},{data:[]},{count:0}]);
+    ]);
 
     const ciSem = ciSemRes.count || 0;
     const ciMes = ciMesRes.count || 0;
@@ -1087,7 +1413,11 @@ async function carregarUso() {
     document.getElementById('uso-fem').textContent = ciFem;
 
     // Engajamento por empresa
-    const { data: ciEmp } = await db.from('checkins').select('empresa_id').gte('data', inicioMes.toISOString()).catch(async()=>{ return await db.from('checkins').select('empresa_id').gte('created_at', inicioMes.toISOString()); });
+    let ciEmp = [];
+    try {
+      const ciEmpRes = await db.from('checkins').select('empresa_id').gte('created_at', inicioMes.toISOString());
+      ciEmp = ciEmpRes.data || [];
+    } catch {}
     const contagem = {};
     (ciEmp || []).forEach(c => { contagem[c.empresa_id] = (contagem[c.empresa_id] || 0) + 1; });
     const empresas = empRes.data || [];
