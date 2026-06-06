@@ -552,7 +552,7 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
     <!-- ── LOGS ── -->
     <div id="p-logs" class="page">
       <div class="topbar">
-        <div><div class="page-title">Logs do Sistema</div><div class="page-sub">erros, alertas e eventos registrados</div></div>
+        <div><div class="page-title">Logs do Sistema</div><div class="page-sub">erros e eventos da plataforma em tempo real</div></div>
         <div class="topbar-actions">
           <select class="fc" style="width:auto;padding:7px 12px;font-size:12px" id="log-filtro" onchange="filtrarLogs()">
             <option value="">Todos</option>
@@ -563,23 +563,16 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
           <button class="btn btn-ghost" onclick="carregarLogs()">↻ Atualizar</button>
         </div>
       </div>
+
+      <!-- Métricas de erros -->
+      <div class="metrics metrics-3" style="margin-bottom:16px">
+        <div class="metric red"><div class="metric-label">Erros hoje</div><div class="metric-value" id="log-m-erros">—</div><div class="metric-sub">não resolvidos</div></div>
+        <div class="metric yellow"><div class="metric-label">Alertas</div><div class="metric-value" id="log-m-alertas">—</div><div class="metric-sub">últimas 24h</div></div>
+        <div class="metric green"><div class="metric-label">Eventos</div><div class="metric-value" id="log-m-total">—</div><div class="metric-sub">registrados total</div></div>
+      </div>
+
       <div class="card" style="padding:0">
         <div id="logs-container"><div class="loading">Carregando logs...</div></div>
-      </div>
-      <div style="margin-top:16px">
-        <div class="card-hdr" style="margin-bottom:12px"><div class="card-title">Registrar evento manual</div></div>
-        <div class="card">
-          <div class="form-row">
-            <div class="fg"><label>Nível</label>
-              <select class="fc" id="log-nivel"><option value="info">Info</option><option value="warn">Alerta</option><option value="error">Erro</option></select>
-            </div>
-            <div class="fg"><label>Contexto</label><input class="fc" id="log-ctx" placeholder="ex: pagamento, empresa, api"></div>
-          </div>
-          <div class="form-row cols-1">
-            <div class="fg"><label>Mensagem</label><input class="fc" id="log-msg" placeholder="Descreva o evento..."></div>
-          </div>
-          <button class="btn btn-primary" onclick="registrarLog()">Registrar</button>
-        </div>
       </div>
     </div>
 
@@ -1460,19 +1453,20 @@ async function carregarUso() {
     const agora = new Date();
     const inicioSemana = new Date(agora); inicioSemana.setDate(agora.getDate() - 7);
     const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+    const mes30d = new Date(agora); mes30d.setDate(agora.getDate() - 30);
 
     const [ciSemRes, ciMesRes, ciFemRes, empRes, colRes] = await Promise.all([
       db.from('checkins').select('id', { count:'exact', head:true }).gte('created_at', inicioSemana.toISOString()),
       db.from('checkins').select('id', { count:'exact', head:true }).gte('created_at', inicioMes.toISOString()),
       db.from('checkins').select('id', { count:'exact', head:true }).eq('tipo', 'feminino').gte('created_at', inicioMes.toISOString()),
-      db.from('empresas').select('id, nome, status'),
+      db.from('empresas').select('id, nome, plan, contrato_status'),
       db.from('colaboradores').select('id', { count:'exact', head:true }),
     ]);
 
     const ciSem = ciSemRes.count || 0;
     const ciMes = ciMesRes.count || 0;
     const ciFem = ciFemRes.count || 0;
-    const totalColabs = colRes.count || colRes.data?.length || 1;
+    const totalColabs = colRes.count || 1;
     const taxa = Math.min(100, Math.round((ciMes / totalColabs) * 100));
 
     document.getElementById('uso-ci-semana').textContent = ciSem;
@@ -1480,54 +1474,82 @@ async function carregarUso() {
     document.getElementById('uso-taxa').textContent = taxa + '%';
     document.getElementById('uso-fem').textContent = ciFem;
 
-    // Engajamento por empresa
+    // Check-ins por empresa (últimos 30 dias)
     let ciEmp = [];
     try {
-      const ciEmpRes = await db.from('checkins').select('empresa_id').gte('created_at', inicioMes.toISOString());
-      ciEmp = ciEmpRes.data || [];
+      const r = await db.from('checkins').select('empresa_id, created_at').gte('created_at', mes30d.toISOString());
+      ciEmp = r.data || [];
     } catch {}
+
     const contagem = {};
-    (ciEmp || []).forEach(c => { contagem[c.empresa_id] = (contagem[c.empresa_id] || 0) + 1; });
+    const ultimoCI = {};
+    ciEmp.forEach(c => {
+      contagem[c.empresa_id] = (contagem[c.empresa_id] || 0) + 1;
+      if (!ultimoCI[c.empresa_id] || c.created_at > ultimoCI[c.empresa_id]) ultimoCI[c.empresa_id] = c.created_at;
+    });
+
     const empresas = empRes.data || [];
     const elEmpUso = document.getElementById('uso-por-empresa');
-    if (!empresas.length) { elEmpUso.innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Sem dados</div></div>'; }
-    else {
+    if (!empresas.length) {
+      elEmpUso.innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Sem empresas</div></div>';
+    } else {
       const sorted = [...empresas].sort((a, b) => (contagem[b.id]||0) - (contagem[a.id]||0));
       const max = Math.max(1, ...sorted.map(e => contagem[e.id]||0));
       elEmpUso.innerHTML = sorted.map(e => {
         const n = contagem[e.id] || 0;
-        const pct = Math.round((n / max) * 100);
-        const cor = pct >= 60 ? '' : pct >= 30 ? 'yellow' : 'red';
-        return `<div style="margin-bottom:14px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-            <span style="font-size:12.5px">${e.nome}</span>
-            <span class="mono" style="font-size:12px;color:var(--verde)">${n} check-ins</span>
+        const pct = max > 0 ? Math.round((n / max) * 100) : 0;
+        const cor = n === 0 ? 'red' : pct >= 50 ? '' : 'yellow';
+        const diasSemCI = ultimoCI[e.id]
+          ? Math.floor((agora - new Date(ultimoCI[e.id])) / 86400000)
+          : null;
+        const ultimoLabel = diasSemCI === null ? '<span style="color:var(--red);font-size:11px">nunca</span>'
+          : diasSemCI === 0 ? '<span style="color:var(--verde);font-size:11px">hoje</span>'
+          : `<span style="color:var(--muted);font-size:11px">há ${diasSemCI}d</span>`;
+        return `<div style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+            <div>
+              <span style="font-size:13px;font-weight:600">${e.nome}</span>
+              <span style="margin-left:8px">${planoBadge(e.plan||'basico')}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              ${ultimoLabel}
+              <span class="mono" style="font-size:12px;color:var(--verde);font-weight:700">${n} CI</span>
+            </div>
           </div>
-          <div class="uso-bar"><div class="uso-fill ${cor}" style="width:${pct}%"></div></div>
+          <div class="uso-bar"><div class="uso-fill ${cor}" style="width:${Math.max(pct,n>0?3:0)}%"></div></div>
         </div>`;
       }).join('');
     }
 
-    // Por tipo
-    const { data: ciTipo } = await db.from('checkins').select('tipo').gte('created_at', inicioMes.toISOString());
+    // Check-ins por tipo
+    const { data: ciTipo } = await db.from('checkins').select('tipo').gte('created_at', inicioMes.toISOString()).catch(()=>({data:[]}));
     const tipoCount = {};
     (ciTipo||[]).forEach(c => { const t = c.tipo||'semanal'; tipoCount[t] = (tipoCount[t]||0)+1; });
     const elTipo = document.getElementById('uso-por-tipo');
     elTipo.innerHTML = Object.entries(tipoCount).length === 0
-      ? '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Sem dados este mês</div></div>'
+      ? '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Sem check-ins este mês</div></div>'
       : Object.entries(tipoCount).map(([t,n]) => `
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
-          <span style="font-size:13px">${t}</span>
+          <span style="font-size:13px;text-transform:capitalize">${t}</span>
           <span class="mono" style="font-size:14px;font-weight:600;color:var(--verde)">${n}</span>
         </div>`).join('');
 
-    // Sem engajamento
-    const ativas = empresas;
-    const semEng = ativas.filter(e => !(contagem[e.id] > 0));
+    // Empresas sem engajamento
+    const semEng = empresas.filter(e => !(contagem[e.id] > 0));
     const elSemEng = document.getElementById('uso-sem-engajamento');
     elSemEng.innerHTML = semEng.length === 0
-      ? '<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">Todas as empresas engajadas!</div></div>'
-      : semEng.map(e => `<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;align-items:center;justify-content:space-between"><span>${e.nome}</span><span class="badge b-red">sem check-in</span></div>`).join('');
+      ? '<div class="empty"><div class="empty-icon">✅</div><div class="empty-title">Todas engajadas nos últimos 30d!</div></div>'
+      : semEng.map(e => `
+        <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <span style="font-size:13px">${e.nome}</span>
+            <span style="margin-left:8px">${planoBadge(e.plan||'basico')}</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="badge b-red">sem check-in</span>
+            <button class="btn btn-ghost btn-sm" onclick="abrirConvite('${e.id}','${(e.nome||'').replace(/'/g,"\'")}')">✉ Contatar</button>
+          </div>
+        </div>`).join('');
 
   } catch(e) { console.error('[uso]', e); }
 }
@@ -1563,14 +1585,22 @@ async function carregarLogs() {
     const { data: logs } = await db.from('admin_logs').select('*').order('created_at', { ascending: false }).limit(200).throwOnError();
     _logsCache = logs || [];
     renderLogs(_logsCache);
-    const erros = _logsCache.filter(l => l.nivel === 'error' && !l.resolvido).length;
+    // Métricas
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const h24 = new Date(Date.now() - 86400000);
+    const erros = _logsCache.filter(l => l.nivel === 'error' && !l.resolvido && new Date(l.created_at) >= hoje).length;
+    const alertas = _logsCache.filter(l => l.nivel === 'warn' && new Date(l.created_at) >= h24).length;
+    document.getElementById('log-m-erros').textContent = erros;
+    document.getElementById('log-m-alertas').textContent = alertas;
+    document.getElementById('log-m-total').textContent = _logsCache.length;
     const bLog = document.getElementById('badge-logs');
     if (erros > 0 && bLog) { bLog.textContent = erros; bLog.style.display = ''; }
   } catch(e) {
     el.innerHTML = `<div style="padding:28px;text-align:center;color:var(--muted);font-size:13px">
-      Tabela "admin_logs" não encontrada.<br>
-      <span style="font-size:11px;font-family:var(--mono)">Crie com: id, nivel, contexto, mensagem, resolvido (bool), created_at</span>
+      Tabela "admin_logs" ainda não criada.<br>
+      <span style="font-size:11px;font-family:var(--mono)">Execute o SQL em criar_tabelas_admin.sql no Supabase.</span>
     </div>`;
+    ['log-m-erros','log-m-alertas','log-m-total'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = '—'; });
   }
 }
 
