@@ -740,7 +740,7 @@ const SUPABASE_URL = 'https://htpmmkkuwmotdgocqpqf.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0cG1ta2t1d21vdGRnb2NxcHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MDQ4NDUsImV4cCI6MjA5Mjk4MDg0NX0.lgn0ze2Qk4p57elTYvUYYjhBgRwWABmDHxHMvJ3w39o';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-const ADMIN_EMAILS = ['atendimento@rannecare.com.br', 'admin@rannecare.com.br'];
+const ADMIN_EMAILS = ['atendimento@rannecare.com.br', 'admin@rannecare.com.br', 'admin@ranne.app'];
 let currentAdmin = null;
 let _empresasCache = [];
 let _logsCache = [];
@@ -1656,8 +1656,7 @@ function copiarDadosNFSe() {
     'ISS retido: R$ ' + (valor * 0.02).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
     'Valor líquido: R$ ' + (valor * 0.98).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
     'Referência: ' + (p.referencia || '—'),
-  ].join('
-');
+  ].join('\n');
   navigator.clipboard.writeText(texto).then(() => alert('✅ Dados copiados! Cole no portal da prefeitura.'));
 }
 
