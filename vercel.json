@@ -1,4 +1,10 @@
 {
+  "rewrites": [
+    { "source": "/app", "destination": "/empresa.html" },
+    { "source": "/app/:path*", "destination": "/empresa.html" },
+    { "source": "/painel", "destination": "/admin.html" },
+    { "source": "/painel/:path*", "destination": "/admin.html" }
+  ],
   "headers": [
     {
       "source": "/(.*).html",
@@ -12,6 +18,18 @@
       "source": "/sw.js",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/admin.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/painel",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     }
   ]
