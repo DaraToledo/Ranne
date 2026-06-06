@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranne Care — Admin</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/DaraToledo/Ranne/main/icons/launchericon-192x192.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/DaraToledo/Ranne/main/icons/launchericon-192x192.png">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -827,8 +829,8 @@ async function carregarBadges() {
   try {
     const [escRes, logRes, pagRes] = await Promise.all([
       db.from('canal_escuta').select('id', { count:'exact', head:true }).eq('lido', false),
-      db.from('admin_logs').select('id', { count:'exact', head:true }).eq('nivel', 'error').eq('resolvido', false).catch(() => ({ count: 0 })),
-      db.from('pagamentos').select('id', { count:'exact', head:true }).eq('status', 'pendente').catch(() => ({ count: 0 })),
+      (async()=>{try{return await db.from('admin_logs').select('id',{count:'exact',head:true}).eq('nivel','error').eq('resolvido',false);}catch{return{count:0};}})(),
+      (async()=>{try{return await db.from('pagamentos').select('id',{count:'exact',head:true}).eq('status','pendente');}catch{return{count:0};}})(),
     ]);
     const escN = escRes.count || 0;
     const logN = logRes.count || 0;
@@ -848,9 +850,9 @@ async function carregarDashboard() {
   try {
     const [empRes, colRes, ciRes, pagRes] = await Promise.all([
       db.from('empresas').select('id, nome, created_at, plan, status').order('created_at', { ascending: false }),
-      db.from('membros_empresa').select('id', { count:'exact', head:true }),
+      db.from('colaboradores').select('id', { count:'exact', head:true }),
       db.from('checkins').select('id', { count:'exact', head:true }),
-      db.from('pagamentos').select('id, status, valor').catch(() => ({ data: [] })),
+      (async()=>{try{return await db.from('pagamentos').select('id, status, valor');}catch{return{data:[]};}})(),
     ]);
 
     const empresas = empRes.data || [];
@@ -875,7 +877,7 @@ async function carregarDashboard() {
         </tr>`).join('')}</tbody></table>`;
 
     // Últimos pagamentos
-    const pagRecRes = await db.from('pagamentos').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(5).catch(() => ({ data: [] }));
+    const pagRecRes = await (async()=>{try{return await db.from('pagamentos').select('*, empresas(nome)').order('created_at',{ascending:false}).limit(5);}catch{return{data:[]};}})();
     const elPag = document.getElementById('dash-pag-list');
     const pagsRec = pagRecRes.data || [];
     elPag.innerHTML = pagsRec.length === 0
@@ -888,7 +890,7 @@ async function carregarDashboard() {
         </tr>`).join('')}</tbody></table>`;
 
     // Alertas
-    const logRes = await db.from('admin_logs').select('*').eq('nivel', 'error').order('created_at', { ascending: false }).limit(3).catch(() => ({ data: [] }));
+    const logRes = await (async()=>{try{return await db.from('admin_logs').select('*').eq('nivel','error').order('created_at',{ascending:false}).limit(3);}catch{return{data:[]};}})();
     const elAlerta = document.getElementById('dash-alertas');
     const logs = logRes.data || [];
     elAlerta.innerHTML = logs.length === 0
@@ -1017,15 +1019,15 @@ async function carregarColaboradores() {
   const tbody = document.getElementById('tbl-colabs');
   tbody.innerHTML = '<tr><td colspan="5" class="loading">Carregando...</td></tr>';
   try {
-    const { data: mems } = await db.from('membros_empresa').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(200);
+    const { data: mems } = await db.from('colaboradores').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(200);
     const lista = mems || [];
-    document.getElementById('colabs-sub').textContent = lista.length + ' membro(s)';
+    document.getElementById('colabs-sub').textContent = lista.length + ' colaborador(es)';
     if (!lista.length) { tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Nenhum colaborador</div></div></td></tr>'; return; }
     tbody.innerHTML = lista.map(m => `<tr>
       <td><div class="tbl-name">${m.nome||'—'}</div></td>
       <td class="mono" style="font-size:11px;color:var(--muted)">${m.email||'—'}</td>
       <td style="color:var(--muted)">${m.empresas?.nome||'—'}</td>
-      <td><span class="badge b-gray">${m.role||'colaborador'}</span></td>
+      <td><span class="badge b-gray">${m.tipo||m.role||'colaborador'}</span></td>
       <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(m.created_at)}</td>
     </tr>`).join('');
   } catch(e) { tbody.innerHTML = `<tr><td colspan="5" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
@@ -1123,8 +1125,8 @@ async function carregarUso() {
       db.from('checkins').select('id', { count:'exact', head:true }).gte('created_at', inicioMes.toISOString()),
       db.from('checkins').select('id', { count:'exact', head:true }).eq('tipo', 'feminino').gte('created_at', inicioMes.toISOString()),
       db.from('empresas').select('id, nome, status'),
-      db.from('membros_empresa').select('id', { count:'exact', head:true }),
-    ]);
+      db.from('colaboradores').select('id', { count:'exact', head:true }),
+    ]).catch(() => [{count:0},{count:0},{count:0},{data:[]},{count:0}]);
 
     const ciSem = ciSemRes.count || 0;
     const ciMes = ciMesRes.count || 0;
@@ -1138,7 +1140,7 @@ async function carregarUso() {
     document.getElementById('uso-fem').textContent = ciFem;
 
     // Engajamento por empresa
-    const { data: ciEmp } = await db.from('checkins').select('empresa_id').gte('created_at', inicioMes.toISOString());
+    const { data: ciEmp } = await db.from('checkins').select('empresa_id').gte('data', inicioMes.toISOString()).catch(async()=>{ return await db.from('checkins').select('empresa_id').gte('created_at', inicioMes.toISOString()); });
     const contagem = {};
     (ciEmp || []).forEach(c => { contagem[c.empresa_id] = (contagem[c.empresa_id] || 0) + 1; });
     const empresas = empRes.data || [];
@@ -1190,15 +1192,15 @@ async function carregarCheckins() {
   const tbody = document.getElementById('tbl-checkins');
   tbody.innerHTML = '<tr><td colspan="9" class="loading">Carregando...</td></tr>';
   try {
-    const { data: cis } = await db.from('checkins').select('*, membros_empresa(nome, empresas(nome))').order('created_at', { ascending: false }).limit(100);
+    const { data: cis } = await db.from('checkins').select('*').order('created_at', { ascending: false }).limit(100);
     const lista = cis || [];
     document.getElementById('checkins-sub').textContent = lista.length + ' check-ins (últimos 100)';
     if (!lista.length) { tbody.innerHTML = '<tr><td colspan="9"><div class="empty"><div class="empty-icon">✓</div><div class="empty-title">Nenhum check-in</div></div></td></tr>'; return; }
     tbody.innerHTML = lista.map(c => {
       const score = Math.round(((c.humor||50)+(c.energia||50)+(100-(c.carga||50))+(c.foco||50))/4);
       return `<tr>
-        <td class="mono" style="font-size:10px;color:var(--muted)">${c.user_id?.slice(0,10)}…</td>
-        <td style="color:var(--muted);font-size:12px">${c.membros_empresa?.empresas?.nome||'—'}</td>
+        <td class="mono" style="font-size:10px;color:var(--muted)">${c.user_id?.slice(0,10)||c.colaborador_id?.slice(0,10)||'—'}…</td>
+        <td style="color:var(--muted);font-size:12px">${c.empresa_id?.slice(0,8)||'—'}</td>
         <td>${c.humor??'—'}</td><td>${c.energia??'—'}</td><td>${c.carga??'—'}</td><td>${c.foco??'—'}</td>
         <td>${scoreChip(score)}</td>
         <td><span class="badge ${c.tipo==='feminino'?'b-blue':'b-gray'}">${c.tipo||'semanal'}</span></td>
@@ -1213,13 +1215,13 @@ async function carregarEscuta() {
   const tbody = document.getElementById('tbl-escuta');
   tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
   try {
-    const { data: relatos } = await db.from('canal_escuta').select('*, empresas(nome)').order('criado_em', { ascending: false }).limit(100);
+    const { data: relatos } = await db.from('canal_escuta').select('*').order('criado_em', { ascending: false }).limit(100).catch(async()=>{ return await db.from('canal_escuta').select('*').order('created_at',{ascending:false}).limit(100); });
     const lista = relatos || [];
     document.getElementById('escuta-sub').textContent = lista.length + ' relato(s)';
     if (!lista.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">Nenhum relato</div></div></td></tr>'; return; }
     tbody.innerHTML = lista.map(r => `<tr>
       <td><span class="badge b-gray">${r.tipo||'—'}</span></td>
-      <td style="color:var(--muted)">${r.empresas?.nome||'—'}</td>
+      <td style="color:var(--muted)">${r.empresa_id?.slice?.(0,8)||'—'}</td>
       <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${r.mensagem||'—'}</td>
       <td style="color:var(--muted);font-size:12px">${r.nome_voluntario||'Anônimo'}</td>
       <td>${r.lido ? '<span class="badge b-green">Lido</span>' : '<span class="badge b-yellow">Novo</span>'}</td>
@@ -1271,7 +1273,7 @@ function filtrarLogs() {
 }
 
 async function resolverLog(id) {
-  await db.from('admin_logs').update({ resolvido: true }).eq('id', id).catch(() => {});
+  await (async()=>{try{return await db.from('admin_logs').update({resolvido:true}).eq('id',id);}catch{}})();
   carregarLogs();
 }
 
