@@ -920,7 +920,6 @@ function pg(id, el) {
   document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   const loaders = {
-  const loaders = {
     empresas: carregarEmpresas,
     contratos: carregarContratos,
     alertas: carregarAlertas,
@@ -931,6 +930,8 @@ function pg(id, el) {
     uso: carregarUso,
     logs: carregarLogs,
     config: carregarConfig,
+  };
+  loaders[id]?.();
 }
 
 // ── UTILS ──────────────────────────────────────────────────────────────
