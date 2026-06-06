@@ -1170,9 +1170,7 @@ async function enviarConvite() {
     await registrarLogAuto('info', 'convite', `Convite enviado para ${email} — ${empresaNome}`);
     // Abre cliente de e-mail com o convite pré-preenchido
     const subject = encodeURIComponent(`Acesso à plataforma Ranne Care — ${empresaNome}`);
-    const body = encodeURIComponent(`${nome ? 'Olá, ' + nome + '!
-
-' : ''}${msg}`);
+    const body = encodeURIComponent((nome ? 'Olá, ' + nome + '!\n\n' : '') + msg);
     window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
     fecharModal('modal-convite');
     toast('✅ Cliente de e-mail aberto com o convite!');
