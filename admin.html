@@ -34,7 +34,49 @@
   --sidebar-w: 232px;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'DM Sans', sans-serif;
+  --teal: #1D9E75;
 }
+
+/* ── TEMA CLARO ── */
+body.light {
+  --bg: #F4F6F4;
+  --surface: #FFFFFF;
+  --surface2: #F0F4F2;
+  --surface3: #E8EFEC;
+  --border: #D4E0DB;
+  --border2: #C0D4CC;
+  --verde: #1D9E75;
+  --verde-dim: #2D5E4A;
+  --verde-glow: rgba(29,158,117,.07);
+  --dourado: #A07820;
+  --dourado-dim: rgba(160,120,32,.12);
+  --text: #0F1E18;
+  --text2: #3A5C50;
+  --muted: #7A9E90;
+  --red: #DC2626;
+  --red-dim: rgba(220,38,38,.08);
+  --yellow: #B45309;
+  --yellow-dim: rgba(180,83,9,.08);
+  --blue: #1D4ED8;
+  --blue-dim: rgba(29,78,216,.08);
+}
+
+body.light .metric.green .metric-value { color: #0F6E56; }
+body.light .metric.yellow .metric-value { color: #854F0B; }
+body.light .metric.red .metric-value { color: #A32D2D; }
+body.light .metric.blue .metric-value { color: #185FA5; }
+body.light .metric.green::after { background: #1D9E75; }
+body.light .b-green { background:#E1F5EE; color:#0F6E56; border-color:rgba(29,158,117,.25); }
+body.light .b-yellow { background:#FAEEDA; color:#854F0B; border-color:rgba(180,83,9,.2); }
+body.light .b-red { background:#FCEBEB; color:#A32D2D; border-color:rgba(220,38,38,.2); }
+body.light .b-blue { background:#E6F1FB; color:#185FA5; border-color:rgba(29,78,216,.2); }
+body.light .b-gray { background:#F1EFE8; color:#5F5E5A; border-color:rgba(136,135,128,.2); }
+body.light .log-level.err { color:#A32D2D; }
+body.light .log-level.warn { color:#854F0B; }
+body.light .log-level.info { color:#0F6E56; }
+body.light .lf-btn { color:#fff; }
+body.light .sb-badge { background:rgba(220,38,38,.1); color:#A32D2D; }
+body.light .sb-badge.yellow { background:rgba(180,83,9,.1); color:#854F0B; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:var(--sans); background:var(--bg); color:var(--text); min-height:100vh; display:flex; font-size:14px; }
 
@@ -291,7 +333,10 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
       </div>
     <div class="sb-foot">
       <div class="sb-user" id="sb-user-email">—</div>
-      <div class="sb-logout" onclick="admLogout()">← Sair</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+        <div class="sb-logout" onclick="admLogout()">← Sair</div>
+        <button onclick="toggleTema()" id="btn-tema" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;color:var(--text2);font-family:var(--mono);transition:all .2s">☀ Claro</button>
+      </div>
     </div>
   </aside>
 
@@ -817,6 +862,24 @@ let _empresasCache = [];
 let _logsCache = [];
 
 // ── AUTH ──────────────────────────────────────────────────────────────
+function toggleTema() {
+  const isLight = document.body.classList.toggle('light');
+  const btn = document.getElementById('btn-tema');
+  btn.textContent = isLight ? '🌙 Escuro' : '☀ Claro';
+  localStorage.setItem('ranne_admin_tema', isLight ? 'light' : 'dark');
+}
+
+// Carrega tema salvo
+(function() {
+  if (localStorage.getItem('ranne_admin_tema') === 'light') {
+    document.body.classList.add('light');
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('btn-tema');
+      if (btn) btn.textContent = '🌙 Escuro';
+    });
+  }
+})();
+
 async function admLogin() {
   const email = document.getElementById('adm-email').value.trim();
   const senha = document.getElementById('adm-senha').value;
@@ -1292,15 +1355,21 @@ async function carregarColaboradores() {
   const tbody = document.getElementById('tbl-colabs');
   tbody.innerHTML = '<tr><td colspan="5" class="loading">Carregando...</td></tr>';
   try {
-    const { data: mems } = await db.from('colaboradores').select('*, empresas(nome)').order('created_at', { ascending: false }).limit(200);
-    const lista = mems || [];
+    // Busca colaboradores e empresas em paralelo para evitar join com RLS
+    const [colRes2, empRes2] = await Promise.allSettled([
+      db.from('colaboradores').select('id, nome, email, empresa_id, tipo, created_at').order('created_at', { ascending: false }).limit(200),
+      db.from('empresas').select('id, nome'),
+    ]);
+    const lista = colRes2.status === 'fulfilled' ? colRes2.value.data || [] : [];
+    const empMap = {};
+    if (empRes2.status === 'fulfilled') (empRes2.value.data||[]).forEach(e => empMap[e.id] = e.nome);
     document.getElementById('colabs-sub').textContent = lista.length + ' colaborador(es)';
-    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Nenhum colaborador</div></div></td></tr>'; return; }
+    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">👥</div><div class="empty-title">Nenhum colaborador cadastrado</div></div></td></tr>'; return; }
     tbody.innerHTML = lista.map(m => `<tr>
       <td><div class="tbl-name">${m.nome||'—'}</div></td>
       <td class="mono" style="font-size:11px;color:var(--muted)">${m.email||'—'}</td>
-      <td style="color:var(--muted)">${m.empresas?.nome||'—'}</td>
-      <td><span class="badge b-gray">${m.tipo||m.role||'colaborador'}</span></td>
+      <td style="color:var(--muted)">${empMap[m.empresa_id]||'—'}</td>
+      <td><span class="badge b-gray">${m.tipo||'colaborador'}</span></td>
       <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(m.created_at)}</td>
     </tr>`).join('');
   } catch(e) { tbody.innerHTML = `<tr><td colspan="5" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
