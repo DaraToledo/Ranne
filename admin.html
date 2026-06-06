@@ -1255,7 +1255,7 @@ async function carregarAlertas() {
 let _todasEmpresas = [];
 async function carregarEmpresas() {
   const tbody = document.getElementById('tbl-empresas');
-  tbody.innerHTML = '<tr><td colspan="8" class="loading">Carregando...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
   try {
     const { data: emps } = await db.from('empresas').select('*').order('created_at', { ascending: false });
     _todasEmpresas = emps || [];
@@ -1270,16 +1270,15 @@ async function carregarEmpresas() {
 function renderEmpresas(lista) {
   const tbody = document.getElementById('tbl-empresas');
   if (!lista.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Nenhuma empresa</div></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">🏢</div><div class="empty-title">Nenhuma empresa</div></div></td></tr>';
     return;
   }
   tbody.innerHTML = lista.map(e => `<tr>
     <td><div class="tbl-name">${e.nome||'—'}</div><div class="tbl-sub">${e.resp_nome||''} ${e.nome_fantasia ? '· '+e.nome_fantasia : ''}</div></td>
     <td class="mono" style="font-size:11px;color:var(--muted)">${e.cnpj||'—'}</td>
     <td style="color:var(--muted)">${e.setor||'—'}</td>
-    <td>${planoBadge(e.plan||e.plano)}</td>
     <td>${planoBadge(e.plan)}</td>
-    <td style="color:var(--muted)">${e.size||'—'}</td>
+    <td style="color:var(--muted)">${{'micro':'Micro','pequena':'Pequena','media':'Média','grande':'Grande'}[e.size]||e.size||'—'}</td>
     <td style="color:var(--muted)">${fmt(e.created_at)}</td>
     <td style="display:flex;gap:6px">
       <button class="btn btn-ghost btn-sm" onclick="abrirEdicaoEmpresa('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}','${e.plan||'basico'}')">Editar</button>
@@ -1370,7 +1369,7 @@ async function carregarColaboradores() {
 // ── PAGAMENTOS ────────────────────────────────────────────────────────
 async function carregarPagamentos() {
   const tbody = document.getElementById('tbl-pagamentos');
-  tbody.innerHTML = '<tr><td colspan="8" class="loading">Carregando...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
 
   // Popula select de empresas no modal
   const sel = document.getElementById('pag-empresa-id');
