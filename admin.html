@@ -264,11 +264,7 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
         Check-ins
       </div>
-      <div class="sb-item" onclick="pg('escuta',this)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        Canal de Escuta
-        <span class="sb-badge" id="badge-escuta" style="display:none">0</span>
-      </div>
+
       <div class="sb-item" onclick="pg('logs',this)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
         Logs do Sistema
@@ -353,7 +349,7 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
         <div class="tbl-wrap">
           <table class="tbl">
             <thead><tr>
-              <th>Empresa</th><th>CNPJ</th><th>Setor</th><th>Plano</th><th>Status</th><th>Membros</th><th>Criada em</th><th>Ações</th>
+              <th>Empresa</th><th>CNPJ</th><th>Setor</th><th>Plano</th><th>Porte</th><th>Criada em</th><th>Ações</th>
             </tr></thead>
             <tbody id="tbl-empresas"><tr><td colspan="8" class="loading">Carregando...</td></tr></tbody>
           </table>
@@ -453,23 +449,6 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
               <th>Usuário</th><th>Empresa</th><th>Humor</th><th>Energia</th><th>Carga</th><th>Foco</th><th>Score</th><th>Tipo</th><th>Data</th>
             </tr></thead>
             <tbody id="tbl-checkins"><tr><td colspan="9" class="loading">Carregando...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── CANAL DE ESCUTA ── -->
-    <div id="p-escuta" class="page">
-      <div class="topbar">
-        <div><div class="page-title">Canal de Escuta</div><div class="page-sub" id="escuta-sub">todos os relatos</div></div>
-      </div>
-      <div class="card" style="padding:0">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr>
-              <th>Tipo</th><th>Empresa</th><th>Mensagem</th><th>Voluntário</th><th>Status</th><th>Data</th><th>Ação</th>
-            </tr></thead>
-            <tbody id="tbl-escuta"><tr><td colspan="7" class="loading">Carregando...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -639,20 +618,10 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
     </div>
     <div class="form-row">
       <div class="fg"><label>Responsável RH</label><input class="fc" id="ne-resp" placeholder="Nome"></div>
-      <div class="fg"><label>E-mail RH</label><input class="fc" id="ne-email" placeholder="rh@empresa.com.br" type="email"></div>
-    </div>
-    <div class="form-row">
       <div class="fg"><label>Plano</label>
         <select class="fc" id="ne-plano">
           <option value="basico">Básico</option>
           <option value="pro">Pro</option>
-        </select>
-      </div>
-      <div class="fg"><label>Status inicial</label>
-        <select class="fc" id="ne-status">
-          <option value="ativo">Ativo</option>
-          <option value="piloto">Piloto (90 dias)</option>
-          <option value="suspenso">Suspenso</option>
         </select>
       </div>
     </div>
@@ -675,19 +644,6 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
           <option value="basico">Básico</option>
           <option value="pro">Pro</option>
         </select>
-      </div>
-      <div class="fg"><label>Status de acesso</label>
-        <select class="fc" id="edit-status">
-          <option value="ativo">Ativo</option>
-          <option value="piloto">Piloto</option>
-          <option value="suspenso">Suspenso</option>
-          <option value="cancelado">Cancelado</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-row cols-1">
-      <div class="fg"><label>Observação interna</label>
-        <input class="fc" id="edit-obs" placeholder="Nota interna (não visível para o cliente)">
       </div>
     </div>
     <div class="modal-footer">
@@ -791,7 +747,6 @@ function pg(id, el) {
     empresas: carregarEmpresas,
     colaboradores: carregarColaboradores,
     checkins: carregarCheckins,
-    escuta: carregarEscuta,
     profissionais: carregarProfissionais,
     pagamentos: carregarPagamentos,
     uso: carregarUso,
@@ -827,18 +782,14 @@ function abrirModal(id) { document.getElementById(id).classList.add('open'); }
 // ── BADGES SIDEBAR ─────────────────────────────────────────────────────
 async function carregarBadges() {
   try {
-    const [escRes, logRes, pagRes] = await Promise.all([
-      db.from('canal_escuta').select('id', { count:'exact', head:true }).eq('lido', false),
+    const [logRes, pagRes] = await Promise.all([
       (async()=>{try{return await db.from('admin_logs').select('id',{count:'exact',head:true}).eq('nivel','error').eq('resolvido',false);}catch{return{count:0};}})(),
       (async()=>{try{return await db.from('pagamentos').select('id',{count:'exact',head:true}).eq('status','pendente');}catch{return{count:0};}})(),
     ]);
-    const escN = escRes.count || 0;
     const logN = logRes.count || 0;
     const pagN = pagRes.count || 0;
-    const bEsc = document.getElementById('badge-escuta');
     const bLog = document.getElementById('badge-logs');
     const bPag = document.getElementById('badge-pag-pendentes');
-    if (escN > 0 && bEsc) { bEsc.textContent = escN; bEsc.style.display = ''; }
     if (logN > 0 && bLog) { bLog.textContent = logN; bLog.style.display = ''; }
     if (pagN > 0 && bPag) { bPag.textContent = pagN; bPag.style.display = ''; }
   } catch {}
@@ -849,7 +800,7 @@ async function carregarDashboard() {
   document.getElementById('dash-updated').textContent = 'atualizando...';
   try {
     const [empRes, colRes, ciRes, pagRes] = await Promise.all([
-      db.from('empresas').select('id, nome, created_at, plan, status').order('created_at', { ascending: false }),
+      db.from('empresas').select('id, nome, created_at, plan, size, setor, resp_nome').order('created_at', { ascending: false }),
       db.from('colaboradores').select('id', { count:'exact', head:true }),
       db.from('checkins').select('id', { count:'exact', head:true }),
       (async()=>{try{return await db.from('pagamentos').select('id, status, valor');}catch{return{data:[]};}})(),
@@ -857,7 +808,7 @@ async function carregarDashboard() {
 
     const empresas = empRes.data || [];
     _empresasCache = empresas;
-    document.getElementById('m-empresas').textContent = empresas.filter(e => e.status === 'ativo').length;
+    document.getElementById('m-empresas').textContent = empresas.length;
     document.getElementById('m-colabs').textContent = colRes.count ?? '—';
     document.getElementById('m-checkins').textContent = ciRes.count ?? '—';
 
@@ -872,7 +823,7 @@ async function carregarDashboard() {
       : `<table class="tbl"><tbody>${empresas.slice(0,5).map(e => `<tr>
           <td><div class="tbl-name">${e.nome}</div></td>
           <td>${planoBadge(e.plan)}</td>
-          <td>${statusBadge(e.status)}</td>
+          <td style="color:var(--muted)">${e.size||'—'}</td>
           <td style="color:var(--muted)">${fmt(e.created_at)}</td>
         </tr>`).join('')}</tbody></table>`;
 
@@ -945,15 +896,15 @@ function renderEmpresas(lista) {
     return;
   }
   tbody.innerHTML = lista.map(e => `<tr>
-    <td><div class="tbl-name">${e.nome||'—'}</div><div class="tbl-sub">${e.resp_nome||''} ${e.resp_email ? '· '+e.resp_email : ''}</div></td>
+    <td><div class="tbl-name">${e.nome||'—'}</div><div class="tbl-sub">${e.resp_nome||''} ${e.nome_fantasia ? '· '+e.nome_fantasia : ''}</div></td>
     <td class="mono" style="font-size:11px;color:var(--muted)">${e.cnpj||'—'}</td>
     <td style="color:var(--muted)">${e.setor||'—'}</td>
     <td>${planoBadge(e.plan||e.plano)}</td>
-    <td>${statusBadge(e.status||'ativo')}</td>
+    <td>${planoBadge(e.plan)}</td>
     <td style="color:var(--muted)">${e.size||'—'}</td>
     <td style="color:var(--muted)">${fmt(e.created_at)}</td>
     <td style="display:flex;gap:6px">
-      <button class="btn btn-ghost btn-sm" onclick="abrirEdicaoEmpresa('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}','${e.plan||'basico'}','${e.status||'ativo'}')">Editar</button>
+      <button class="btn btn-ghost btn-sm" onclick="abrirEdicaoEmpresa('${e.id}','${(e.nome||'').replace(/'/g,"\\'")}','${e.plan||'basico'}')">Editar</button>
     </td>
   </tr>`).join('');
 }
@@ -974,9 +925,7 @@ async function salvarEmpresa() {
       setor: document.getElementById('ne-setor').value.trim()||null,
       size: document.getElementById('ne-size').value||null,
       resp_nome: document.getElementById('ne-resp').value.trim()||null,
-      resp_email: document.getElementById('ne-email').value.trim()||null,
       plan: document.getElementById('ne-plano').value||'basico',
-      status: document.getElementById('ne-status').value||'ativo',
     });
     if (error) throw error;
     fecharModal('modal-empresa');
@@ -986,12 +935,10 @@ async function salvarEmpresa() {
   finally { btn.disabled = false; btn.textContent = 'Salvar empresa'; }
 }
 
-function abrirEdicaoEmpresa(id, nome, plano, status) {
+function abrirEdicaoEmpresa(id, nome, plano) {
   document.getElementById('edit-empresa-id').value = id;
   document.getElementById('edit-empresa-sub').textContent = nome;
   document.getElementById('edit-plano').value = plano;
-  document.getElementById('edit-status').value = status;
-  document.getElementById('edit-obs').value = '';
   abrirModal('modal-editar-empresa');
 }
 
@@ -1004,12 +951,12 @@ async function salvarEdicaoEmpresa() {
   btn.disabled = true; btn.textContent = 'Salvando...';
   try {
     const { error } = await db.from('empresas').update({
-      plan: plano, status, obs_interna: obs || undefined, updated_at: new Date().toISOString()
+      plan: plano,
     }).eq('id', id);
     if (error) throw error;
     fecharModal('modal-editar-empresa');
     await carregarEmpresas();
-    await registrarLogAuto('info', 'empresa', `Empresa ${id} atualizada: plano=${plano}, status=${status}`);
+    await registrarLogAuto('info', 'empresa', `Empresa ${id} atualizada: plano=${plano}`);
   } catch(e) { alert('Erro: ' + e.message); }
   finally { btn.disabled = false; btn.textContent = 'Salvar alterações'; }
 }
@@ -1131,7 +1078,7 @@ async function carregarUso() {
     const ciSem = ciSemRes.count || 0;
     const ciMes = ciMesRes.count || 0;
     const ciFem = ciFemRes.count || 0;
-    const totalColabs = colRes.count || 1;
+    const totalColabs = colRes.count || colRes.data?.length || 1;
     const taxa = Math.min(100, Math.round((ciMes / totalColabs) * 100));
 
     document.getElementById('uso-ci-semana').textContent = ciSem;
@@ -1177,7 +1124,7 @@ async function carregarUso() {
         </div>`).join('');
 
     // Sem engajamento
-    const ativas = empresas.filter(e => e.status === 'ativo');
+    const ativas = empresas;
     const semEng = ativas.filter(e => !(contagem[e.id] > 0));
     const elSemEng = document.getElementById('uso-sem-engajamento');
     elSemEng.innerHTML = semEng.length === 0
@@ -1208,32 +1155,6 @@ async function carregarCheckins() {
       </tr>`;
     }).join('');
   } catch(e) { tbody.innerHTML = `<tr><td colspan="9" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
-}
-
-// ── CANAL DE ESCUTA ───────────────────────────────────────────────────
-async function carregarEscuta() {
-  const tbody = document.getElementById('tbl-escuta');
-  tbody.innerHTML = '<tr><td colspan="7" class="loading">Carregando...</td></tr>';
-  try {
-    const { data: relatos } = await db.from('canal_escuta').select('*').order('criado_em', { ascending: false }).limit(100).catch(async()=>{ return await db.from('canal_escuta').select('*').order('created_at',{ascending:false}).limit(100); });
-    const lista = relatos || [];
-    document.getElementById('escuta-sub').textContent = lista.length + ' relato(s)';
-    if (!lista.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">Nenhum relato</div></div></td></tr>'; return; }
-    tbody.innerHTML = lista.map(r => `<tr>
-      <td><span class="badge b-gray">${r.tipo||'—'}</span></td>
-      <td style="color:var(--muted)">${r.empresa_id?.slice?.(0,8)||'—'}</td>
-      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px">${r.mensagem||'—'}</td>
-      <td style="color:var(--muted);font-size:12px">${r.nome_voluntario||'Anônimo'}</td>
-      <td>${r.lido ? '<span class="badge b-green">Lido</span>' : '<span class="badge b-yellow">Novo</span>'}</td>
-      <td class="mono" style="font-size:11px;color:var(--muted)">${fmt(r.criado_em)}</td>
-      <td>${!r.lido ? `<button class="btn btn-ghost btn-sm" onclick="marcarLido('${r.id}')">Marcar lido</button>` : ''}</td>
-    </tr>`).join('');
-  } catch(e) { tbody.innerHTML = `<tr><td colspan="7" style="color:var(--red);padding:20px">Erro: ${e.message}</td></tr>`; }
-}
-
-async function marcarLido(id) {
-  await db.from('canal_escuta').update({ lido: true }).eq('id', id);
-  carregarEscuta(); carregarBadges();
 }
 
 // ── LOGS ──────────────────────────────────────────────────────────────
