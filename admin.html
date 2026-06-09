@@ -248,6 +248,139 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
 .switch input:checked + .switch-track { background:var(--verde); border-color:var(--verde); }
 .switch-track::after { content:''; position:absolute; width:14px; height:14px; background:#fff; border-radius:50%; top:2px; left:2px; transition:.2s; }
 .switch input:checked + .switch-track::after { transform:translateX(16px); }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+
+  .sidebar { display:none; }
+  .main { margin-left:0; padding:14px 14px 80px; }
+
+  /* Top bar mobile */
+  .mobile-topbar {
+    display:flex; align-items:center; gap:12px;
+    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:44px 14px 12px;
+    position:sticky; top:0; z-index:50;
+  }
+  .mobile-topbar-title { flex:1; font-size:16px; font-weight:700; }
+  .mobile-topbar-actions { display:flex; gap:8px; align-items:center; }
+  .mob-menu-btn {
+    background:none; border:none; color:var(--text); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px; border-radius:8px;
+    transition:background .15s;
+  }
+  .mob-menu-btn:hover { background:var(--surface2); }
+
+  /* Bottom nav */
+  .mobile-bottom-nav {
+    position:fixed; bottom:0; left:0; right:0;
+    background:var(--surface); border-top:1px solid var(--border);
+    display:flex; justify-content:space-around;
+    padding:6px 0 max(16px, env(safe-area-inset-bottom));
+    z-index:50;
+  }
+  .mob-nav-item {
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    background:none; border:none; cursor:pointer;
+    padding:4px 10px; min-width:52px;
+    color:var(--muted); transition:color .15s;
+  }
+  .mob-nav-item svg { flex-shrink:0; }
+  .mob-nav-item span { font-size:10px; font-family:var(--sans); }
+  .mob-nav-item.active { color:var(--verde); }
+  .mob-nav-item.active span { font-weight:600; }
+  .mob-nav-dot { width:4px; height:4px; border-radius:50%; background:var(--verde); margin-top:1px; display:none; }
+  .mob-nav-item.active .mob-nav-dot { display:block; }
+
+  /* Drawer overlay */
+  .mob-drawer-overlay {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);
+    z-index:100; backdrop-filter:blur(2px);
+  }
+  .mob-drawer-overlay.open { display:block; }
+  .mob-drawer {
+    position:fixed; top:0; left:0; bottom:0; width:260px;
+    background:var(--surface); border-right:1px solid var(--border);
+    transform:translateX(-100%); transition:transform .25s ease;
+    z-index:101; display:flex; flex-direction:column; overflow:hidden;
+  }
+  .mob-drawer.open { transform:translateX(0); }
+  .mob-drawer-head {
+    padding:50px 18px 14px;
+    border-bottom:1px solid var(--border);
+  }
+  .mob-drawer-logo { font-family:var(--mono); font-size:13px; font-weight:600; color:var(--verde); letter-spacing:.15em; }
+  .mob-drawer-tag { font-size:10px; color:var(--muted); margin-top:3px; font-family:var(--mono); }
+  .mob-drawer-nav { flex:1; overflow-y:auto; padding:10px 0; }
+  .mob-drawer-section { font-family:var(--mono); font-size:9px; font-weight:600; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; padding:12px 18px 4px; }
+  .mob-drawer-item {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 18px; font-size:14px; cursor:pointer;
+    color:var(--text2); transition:all .15s;
+    border-left:2px solid transparent;
+    background:none; border-top:none; border-right:none; border-bottom:none;
+    width:100%; text-align:left; font-family:var(--sans);
+  }
+  .mob-drawer-item:hover { color:var(--text); background:var(--verde-glow); }
+  .mob-drawer-item.active { color:var(--verde); background:rgba(78,203,160,.07); border-left-color:var(--verde); }
+  .mob-drawer-item svg { flex-shrink:0; opacity:.7; }
+  .mob-drawer-item.active svg { opacity:1; }
+  .mob-drawer-badge { margin-left:auto; background:var(--red-dim); color:var(--red); font-size:10px; font-weight:700; font-family:var(--mono); padding:2px 7px; border-radius:99px; }
+  .mob-drawer-badge.yellow { background:var(--yellow-dim); color:var(--yellow); }
+  .mob-drawer-foot {
+    padding:14px 18px; border-top:1px solid var(--border);
+    font-size:11px; color:var(--muted); font-family:var(--mono);
+  }
+  .mob-drawer-foot-actions { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+
+  /* Badge no bell da topbar */
+  .mob-bell-wrap { position:relative; }
+  .mob-bell-badge {
+    position:absolute; top:-4px; right:-4px;
+    background:var(--red); color:#fff; font-size:9px;
+    border-radius:50%; width:15px; height:15px;
+    display:none; align-items:center; justify-content:center;
+    font-weight:700; font-family:var(--mono);
+  }
+  .mob-bell-badge.show { display:flex; }
+
+  /* Topbar de página (substitui o div.topbar na versão mobile) */
+  .topbar { flex-wrap:wrap; gap:10px; margin-bottom:16px; }
+  .topbar .page-title { font-size:18px; }
+  .topbar-actions { flex-wrap:wrap; }
+
+  /* Métricas empilhadas */
+  .metrics-4 { grid-template-columns:repeat(2,1fr); }
+  .metrics-3 { grid-template-columns:repeat(2,1fr); }
+
+  /* Grid vira coluna */
+  .grid-2, .grid-3 { grid-template-columns:1fr; }
+
+  /* Tabelas: scroll horizontal */
+  .tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .tbl { min-width:520px; }
+
+  /* Search bar full width */
+  .search-bar { width:100%; }
+
+  /* Form rows viram colunas */
+  .form-row { grid-template-columns:1fr; }
+  .form-row.cols-3 { grid-template-columns:1fr; }
+
+  /* Modal full width */
+  .modal { width:100% !important; max-width:100vw !important; border-radius:16px 16px 0 0 !important; position:fixed !important; bottom:0 !important; left:0 !important; right:0 !important; margin:0 !important; max-height:90vh !important; }
+  .modal-overlay { align-items:flex-end !important; }
+}
+
+/* Desktop: esconde elementos mobile */
+@media (min-width: 769px) {
+  .mobile-topbar { display:none !important; }
+  .mobile-bottom-nav { display:none !important; }
+  .mob-drawer-overlay { display:none !important; }
+  .mob-drawer { display:none !important; }
+}
 </style>
 </head>
 <body>
@@ -271,6 +404,124 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
 
 <!-- APP -->
 <div id="app">
+
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar" id="mob-topbar">
+  <button class="mob-menu-btn" onclick="mobDrawerOpen()" aria-label="Menu">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="mobile-topbar-title" id="mob-page-title">Dashboard</div>
+  <div class="mobile-topbar-actions">
+    <div class="mob-bell-wrap">
+      <button class="mob-menu-btn" onclick="pg('alertas', document.querySelector('.mob-drawer-item[data-page=alertas]'))" aria-label="Alertas">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </button>
+      <div class="mob-bell-badge" id="mob-badge-alertas"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div class="mob-drawer-overlay" id="mob-overlay" onclick="mobDrawerClose()"></div>
+
+<!-- DRAWER -->
+<div class="mob-drawer" id="mob-drawer">
+  <div class="mob-drawer-head">
+    <div class="mob-drawer-logo">RANNE</div>
+    <div class="mob-drawer-tag">admin panel</div>
+  </div>
+  <nav class="mob-drawer-nav">
+    <div class="mob-drawer-section">Visão Geral</div>
+    <button class="mob-drawer-item active" data-page="dashboard" onclick="mobNavTo('dashboard',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
+    <div class="mob-drawer-section">Clientes</div>
+    <button class="mob-drawer-item" data-page="empresas" onclick="mobNavTo('empresas',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Empresas
+    </button>
+    <button class="mob-drawer-item" data-page="contratos" onclick="mobNavTo('contratos',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h4m-4 4h8"/></svg>
+      Contratos
+    </button>
+    <button class="mob-drawer-item" data-page="colaboradores" onclick="mobNavTo('colaboradores',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Colaboradores
+    </button>
+    <div class="mob-drawer-section">Financeiro</div>
+    <button class="mob-drawer-item" data-page="pagamentos" onclick="mobNavTo('pagamentos',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      Pagamentos
+      <span class="mob-drawer-badge yellow" id="mob-badge-pag" style="display:none">0</span>
+    </button>
+    <div class="mob-drawer-section">Plataforma</div>
+    <button class="mob-drawer-item" data-page="alertas" onclick="mobNavTo('alertas',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Alertas
+      <span class="mob-drawer-badge" id="mob-badge-alertas2" style="display:none">0</span>
+    </button>
+    <button class="mob-drawer-item" data-page="uso" onclick="mobNavTo('uso',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Uso & Engajamento
+    </button>
+    <button class="mob-drawer-item" data-page="checkins" onclick="mobNavTo('checkins',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      Check-ins
+    </button>
+    <button class="mob-drawer-item" data-page="logs" onclick="mobNavTo('logs',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+      Logs do Sistema
+      <span class="mob-drawer-badge" id="mob-badge-logs" style="display:none">0</span>
+    </button>
+    <button class="mob-drawer-item" data-page="profissionais" onclick="mobNavTo('profissionais',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profissionais
+    </button>
+    <div class="mob-drawer-section">Sistema</div>
+    <button class="mob-drawer-item" data-page="config" onclick="mobNavTo('config',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      Configurações
+    </button>
+  </nav>
+  <div class="mob-drawer-foot">
+    <div id="mob-drawer-email">—</div>
+    <div class="mob-drawer-foot-actions">
+      <span onclick="admLogout()" style="color:var(--red);cursor:pointer;font-size:12px">← Sair</span>
+      <button onclick="toggleTema()" id="mob-btn-tema" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;color:var(--text2);font-family:var(--mono)">☀ Claro</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+  <button class="mob-nav-item active" data-page="dashboard" onclick="mobNavTo('dashboard',this)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <span>Dashboard</span>
+    <div class="mob-nav-dot"></div>
+  </button>
+  <button class="mob-nav-item" data-page="empresas" onclick="mobNavTo('empresas',this)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+    <span>Empresas</span>
+    <div class="mob-nav-dot"></div>
+  </button>
+  <button class="mob-nav-item" data-page="checkins" onclick="mobNavTo('checkins',this)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <span>Check-ins</span>
+    <div class="mob-nav-dot"></div>
+  </button>
+  <button class="mob-nav-item" data-page="pagamentos" onclick="mobNavTo('pagamentos',this)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    <span>Financeiro</span>
+    <div class="mob-nav-dot"></div>
+  </button>
+  <button class="mob-nav-item" onclick="mobDrawerOpen()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+    <span>Mais</span>
+    <div class="mob-nav-dot" style="display:none"></div>
+  </button>
+</nav>
+
   <aside class="sidebar">
     <div class="sb-head">
       <div class="sb-logo">RANNE</div>
@@ -1980,6 +2231,120 @@ function abrirPortalNFSe() {
   // Portal NFS-e São Paulo
   window.open('https://nfe.prefeitura.sp.gov.br/login.aspx', '_blank');
 }
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+function toast(msg, dur = 3000) {
+  let t = document.getElementById('_ranne_toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = '_ranne_toast';
+    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:10px 18px;border-radius:10px;font-size:13px;z-index:999;transition:opacity .3s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.3);pointer-events:none';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._to);
+  t._to = setTimeout(() => { t.style.opacity = '0'; }, dur);
+}
+
+// ── MOBILE NAV ────────────────────────────────────────────────────────
+const MOB_TITLES = {
+  dashboard:'Dashboard', empresas:'Empresas', contratos:'Contratos',
+  colaboradores:'Colaboradores', pagamentos:'Pagamentos', alertas:'Alertas',
+  uso:'Uso & Engajamento', checkins:'Check-ins', logs:'Logs do Sistema',
+  profissionais:'Profissionais', config:'Configurações',
+};
+
+function mobNavTo(id, elClicked) {
+  // Fecha o drawer se estiver aberto
+  mobDrawerClose();
+
+  // Usa a função pg() original para trocar de página + carregar dados
+  // Precisa passar o .sb-item correspondente para o active funcionar
+  const sbItem = document.querySelector(`.sb-item[onclick*="${id}"]`);
+  pg(id, sbItem);
+
+  // Atualiza título da topbar mobile
+  const titleEl = document.getElementById('mob-page-title');
+  if (titleEl) titleEl.textContent = MOB_TITLES[id] || id;
+
+  // Marca active no bottom nav
+  document.querySelectorAll('.mob-nav-item[data-page]').forEach(b => b.classList.remove('active'));
+  const botBtn = document.querySelector(`.mobile-bottom-nav .mob-nav-item[data-page="${id}"]`);
+  if (botBtn) botBtn.classList.add('active');
+
+  // Marca active no drawer
+  document.querySelectorAll('.mob-drawer-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`.mob-drawer-item[data-page="${id}"]`).forEach(b => b.classList.add('active'));
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+}
+
+function mobDrawerOpen() {
+  document.getElementById('mob-drawer').classList.add('open');
+  document.getElementById('mob-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function mobDrawerClose() {
+  document.getElementById('mob-drawer').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Sincroniza email no drawer mobile quando iniciarApp() roda
+const _origIniciarApp = iniciarApp;
+function iniciarApp() {
+  _origIniciarApp();
+  const mobEmail = document.getElementById('mob-drawer-email');
+  if (mobEmail) mobEmail.textContent = currentAdmin?.email || '';
+  // Sync tema btn
+  const isLight = document.body.classList.contains('light');
+  const mobTema = document.getElementById('mob-btn-tema');
+  if (mobTema) mobTema.textContent = isLight ? '🌙 Escuro' : '☀ Claro';
+}
+
+// Sincroniza badges mobile com os badges da sidebar
+const _origCarregarBadges = carregarBadges;
+async function carregarBadges() {
+  await _origCarregarBadges();
+  // Copia badges para mobile
+  setTimeout(() => {
+    const sync = [
+      ['badge-alertas', 'mob-badge-alertas2', 'mob-badge-alertas'],
+      ['badge-pag-pendentes', 'mob-badge-pag'],
+      ['badge-logs', 'mob-badge-logs'],
+    ];
+    sync.forEach(([src, ...dsts]) => {
+      const srcEl = document.getElementById(src);
+      if (!srcEl) return;
+      const shown = srcEl.style.display !== 'none';
+      const val = srcEl.textContent;
+      dsts.forEach(dstId => {
+        const dstEl = document.getElementById(dstId);
+        if (!dstEl) return;
+        if (shown && val) {
+          dstEl.textContent = val;
+          dstEl.style.display = '';
+          if (dstId === 'mob-badge-alertas') dstEl.classList.add('show');
+        }
+      });
+    });
+  }, 500);
+}
+
+// Sync tema toggle para o botão mobile também
+const _origToggleTema = toggleTema;
+function toggleTema() {
+  _origToggleTema();
+  const isLight = document.body.classList.contains('light');
+  const mobTema = document.getElementById('mob-btn-tema');
+  if (mobTema) mobTema.textContent = isLight ? '🌙 Escuro' : '☀ Claro';
+}
+
+// Fecha drawer com ESC
+document.addEventListener('keydown', e => { if (e.key === 'Escape') mobDrawerClose(); });
 
 function copiarDadosNFSe() {
   const RANNE = getRanne();
