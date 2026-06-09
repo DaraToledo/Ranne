@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranne Care — Admin</title>
+<!-- Impede que o PWA do app RH capture esta URL -->
+<meta name="mobile-web-app-capable" content="no">
+<meta name="apple-mobile-web-app-capable" content="no">
+<!-- Manifest próprio do painel com scope restrito -->
+<link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Ranne Admin&quot;,&quot;short_name&quot;:&quot;Admin&quot;,&quot;scope&quot;:&quot;/painel&quot;,&quot;start_url&quot;:&quot;/painel&quot;,&quot;display&quot;:&quot;browser&quot;}">
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/DaraToledo/Ranne/main/icons/launchericon-192x192.png">
 <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/DaraToledo/Ranne/main/icons/launchericon-192x192.png">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1667,6 +1672,10 @@ async function carregarPagamentos() {
 
     if (!lista.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-icon">💳</div><div class="empty-title">Nenhum boleto registrado</div><div class="empty-sub">Clique em "+ Registrar boleto" para começar</div></div></td></tr>'; return; }
 
+    // Guarda mapa id→pagamento para os onclicks não usarem JSON inline
+    window._pagMap = {};
+    lista.forEach(p => { window._pagMap[p.id] = p; });
+
     tbody.innerHTML = lista.map(p => `<tr>
       <td><div class="tbl-name">${p.empresas?.nome||'—'}</div></td>
       <td>${planoBadge(p.plano)}</td>
@@ -1675,12 +1684,12 @@ async function carregarPagamentos() {
       <td>${pagStatusBadge(p.status)}</td>
       <td>${p.nf_url ? `<a href="${p.nf_url}" target="_blank" style="color:var(--verde);font-size:12px">Ver NF →</a>` : '<span style="color:var(--muted)">—</span>'}</td>
       <td style="color:var(--muted);font-size:11px">${p.referencia||'—'}</td>
-      <td style="display:flex;gap:4px">
-        <button class="btn btn-ghost btn-sm" onclick="gerarFatura(${JSON.stringify(p)})">📄 Fatura</button>
-        ${p.status === 'pago' ? `<button class="btn btn-ghost btn-sm" onclick="gerarRecibo(${JSON.stringify(p)})">🧾 Recibo</button>` : ''}
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="gerarFatura(window._pagMap['${p.id}'])">📄 Fatura</button>
+        ${p.status === 'pago' ? `<button class="btn btn-ghost btn-sm" onclick="gerarRecibo(window._pagMap['${p.id}'])">🧾 Recibo</button>` : ''}
         ${p.status !== 'pago' ? `<button class="btn btn-primary btn-sm" onclick="marcarPago('${p.id}')">Pago ✓</button>` : ''}
         ${p.status === 'pendente' ? `<button class="btn btn-red btn-sm" onclick="marcarVencido('${p.id}')">Vencido</button>` : ''}
-        <button class="btn btn-yellow btn-sm" onclick="abrirNFSe(${JSON.stringify(p)})">NFS-e</button>
+        <button class="btn btn-yellow btn-sm" onclick="abrirNFSe(window._pagMap['${p.id}'])">NFS-e</button>
       </td>
     </tr>`).join('');
   } catch(e) {
