@@ -1111,6 +1111,7 @@ function toggleTema() {
   const btn = document.getElementById('btn-tema');
   btn.textContent = isLight ? '🌙 Escuro' : '☀ Claro';
   localStorage.setItem('ranne_admin_tema', isLight ? 'light' : 'dark');
+  mobSyncTema();
 }
 
 // Carrega tema salvo
@@ -1146,6 +1147,7 @@ function iniciarApp() {
   document.getElementById('sb-user-email').textContent = currentAdmin?.email || '';
   carregarDashboard();
   carregarBadges();
+  mobSyncAposLogin();
 }
 
 async function admLogout() { await db.auth.signOut(); location.reload(); }
@@ -1216,6 +1218,7 @@ async function carregarBadges() {
     if (pagN > 0 && bPag) { bPag.textContent = pagN; bPag.style.display = ''; }
     // Badge alertas
     carregarAlertas().catch(()=>{});
+    mobSyncBadges();
   } catch {}
 }
 
@@ -2293,23 +2296,17 @@ function mobDrawerClose() {
   document.body.style.overflow = '';
 }
 
-// Sincroniza email no drawer mobile quando iniciarApp() roda
-const _origIniciarApp = iniciarApp;
-function iniciarApp() {
-  _origIniciarApp();
+// Sincroniza elementos mobile após o app iniciar
+function mobSyncAposLogin() {
   const mobEmail = document.getElementById('mob-drawer-email');
   if (mobEmail) mobEmail.textContent = currentAdmin?.email || '';
-  // Sync tema btn
   const isLight = document.body.classList.contains('light');
   const mobTema = document.getElementById('mob-btn-tema');
   if (mobTema) mobTema.textContent = isLight ? '🌙 Escuro' : '☀ Claro';
 }
 
 // Sincroniza badges mobile com os badges da sidebar
-const _origCarregarBadges = carregarBadges;
-async function carregarBadges() {
-  await _origCarregarBadges();
-  // Copia badges para mobile
+function mobSyncBadges() {
   setTimeout(() => {
     const sync = [
       ['badge-alertas', 'mob-badge-alertas2', 'mob-badge-alertas'],
@@ -2335,9 +2332,7 @@ async function carregarBadges() {
 }
 
 // Sync tema toggle para o botão mobile também
-const _origToggleTema = toggleTema;
-function toggleTema() {
-  _origToggleTema();
+function mobSyncTema() {
   const isLight = document.body.classList.contains('light');
   const mobTema = document.getElementById('mob-btn-tema');
   if (mobTema) mobTema.textContent = isLight ? '🌙 Escuro' : '☀ Claro';
