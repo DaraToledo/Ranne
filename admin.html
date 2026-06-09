@@ -251,10 +251,20 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  :root { --sidebar-w: 0px; }
+  body { display:block !important; }
 
-  .sidebar { display:none; }
-  .main { margin-left:0; padding:14px 14px 80px; }
+  #app { display:block !important; width:100% !important; overflow-x:hidden; }
+
+  .sidebar { display:none !important; width:0 !important; }
+
+  .main {
+    margin-left:0 !important;
+    padding:14px 14px 80px !important;
+    width:100% !important;
+    max-width:100vw !important;
+    overflow-x:hidden;
+    box-sizing:border-box;
+  }
 
   /* Top bar mobile */
   .mobile-topbar {
@@ -346,14 +356,22 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
   }
   .mob-bell-badge.show { display:flex; }
 
-  /* Topbar de página (substitui o div.topbar na versão mobile) */
-  .topbar { flex-wrap:wrap; gap:10px; margin-bottom:16px; }
-  .topbar .page-title { font-size:18px; }
-  .topbar-actions { flex-wrap:wrap; }
+  /* Topbar de página — oculta no mobile pois temos a mob-topbar */
+  .topbar .page-title { display:none; }
+  .topbar .page-sub { display:none; }
+  .topbar { margin-bottom:12px; justify-content:flex-end; }
+  .topbar-actions { flex-wrap:wrap; width:100%; }
+  .topbar-actions .btn { font-size:12px; padding:6px 12px; }
 
   /* Métricas empilhadas */
   .metrics-4 { grid-template-columns:repeat(2,1fr); }
   .metrics-3 { grid-template-columns:repeat(2,1fr); }
+
+  /* Impede texto de transbordar nos cards */
+  .metric { overflow:hidden; }
+  .metric-label { white-space:normal !important; word-break:break-word; font-size:9px; }
+  .metric-value { font-size:22px !important; }
+  .metric-sub { font-size:10px; white-space:normal; }
 
   /* Grid vira coluna */
   .grid-2, .grid-3 { grid-template-columns:1fr; }
