@@ -5274,6 +5274,53 @@ body.dark .ob-btn { background: #2D5E4A; }
 
           </div>
 
+          <!-- ── ALERTA DE NÃO USO ── -->
+          <div id="dash-alerta-nao-uso" style="display:none;background:#FFF8ED;border:1.5px solid #F59E0B;border-radius:16px;padding:18px 20px;margin-bottom:14px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-size:22px;flex-shrink:0;margin-top:1px">⚠️</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:4px">Colaboradores sem check-in este mês</div>
+                <div id="dash-nao-uso-texto" style="font-size:12.5px;color:#B45309;line-height:1.5;margin-bottom:10px"></div>
+                <div id="dash-nao-uso-lista" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+                <button onclick="pg('colaboradores',null)" style="font-size:12px;font-weight:600;color:#92400E;background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:6px 14px;cursor:pointer;font-family:Inter,sans-serif">Ver colaboradores →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── CHECK-INS RECENTES ── -->
+          <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Check-ins Recentes</div>
+              <span id="dash-checkins-count" style="font-size:11px;color:var(--muted);background:var(--surface);padding:3px 9px;border-radius:99px;border:1px solid var(--border)">—</span>
+            </div>
+            <div id="dash-checkins-lista" style="font-size:12px;color:var(--muted);text-align:center;padding:16px 0;">
+              Carregando...
+            </div>
+          </div>
+
+          <!-- ── TESTES: QUEM FEZ / QUEM NÃO FEZ ── -->
+          <div style="background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Adesão aos Testes</div>
+              <span id="dash-testes-pct" style="font-size:13px;font-weight:800;color:#10B981">—%</span>
+            </div>
+            <!-- Barra de progresso -->
+            <div style="height:10px;background:var(--surface);border-radius:99px;overflow:hidden;margin-bottom:12px;">
+              <div id="dash-testes-bar" style="height:100%;width:0%;background:#10B981;border-radius:99px;transition:width .6s ease;"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+              <div style="background:#F0FDF4;border-radius:10px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">✓ Responderam</div>
+                <div id="dash-testes-responderam" style="font-size:22px;font-weight:800;color:#16A34A;line-height:1">—</div>
+              </div>
+              <div style="background:#FFF7ED;border-radius:10px;padding:10px 12px;">
+                <div style="font-size:10px;font-weight:700;color:#9A3412;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">✗ Pendentes</div>
+                <div id="dash-testes-pendentes" style="font-size:22px;font-weight:800;color:#EA580C;line-height:1">—</div>
+              </div>
+            </div>
+            <div id="dash-testes-pendentes-lista" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+          </div>
+
         </div><!-- /realMetrics -->
 
       </div>
@@ -9542,6 +9589,89 @@ async function loadDashboardData() {
 
     // "Como está o time" — IA silenciosa
     _gerarInsightTime(scoreGeral, emRisco, responderam, totalCols, isaB, isaE, isaS, isaSoc);
+
+    // ── ALERTA DE NÃO USO ──────────────────────────────────────────
+    const semCheckin = membros.filter(m => !userMap[m.user_id]);
+    const alertaEl = document.getElementById('dash-alerta-nao-uso');
+    if (alertaEl) {
+      if (semCheckin.length > 0) {
+        alertaEl.style.display = 'block';
+        const textoEl = document.getElementById('dash-nao-uso-texto');
+        const listaEl = document.getElementById('dash-nao-uso-lista');
+        if (textoEl) textoEl.textContent = `${semCheckin.length} de ${totalCols} colaborador(es) ainda não fez check-in este mês.`;
+        if (listaEl) listaEl.innerHTML = semCheckin.map(m =>
+          `<span style="font-size:11px;background:#FEF3C7;border:1px solid #F59E0B;color:#92400E;border-radius:99px;padding:3px 10px;font-weight:600">${m.nome || m.email || 'Colaborador'}</span>`
+        ).join('');
+      } else {
+        alertaEl.style.display = 'none';
+      }
+    }
+
+    // ── CHECK-INS RECENTES ─────────────────────────────────────────
+    const { data: checkinsRecentes } = await db.from('checkins')
+      .select('user_id, humor, energia, carga, foco, score, created_at, membros_empresa(nome)')
+      .eq('empresa_id', currentEmpresa.id)
+      .neq('tipo', 'feminino')
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    const listaCI = document.getElementById('dash-checkins-lista');
+    const countCI = document.getElementById('dash-checkins-count');
+    if (listaCI) {
+      if (!checkinsRecentes || checkinsRecentes.length === 0) {
+        listaCI.innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px 0;font-size:12px">Nenhum check-in registrado ainda.</div>';
+      } else {
+        if (countCI) countCI.textContent = checkinsRecentes.length + ' recentes';
+        const fmtData = d => new Date(d).toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
+        const scoreColor = s => s >= 70 ? '#10B981' : s >= 55 ? '#F59E0B' : '#EF4444';
+        listaCI.innerHTML = `
+          <div style="display:grid;grid-template-columns:1fr auto auto;gap:0;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:0 4px 8px;border-bottom:1px solid var(--border);margin-bottom:6px;">
+            <span>Colaborador</span><span style="text-align:center">Score</span><span style="text-align:right">Data</span>
+          </div>
+          ${checkinsRecentes.map(c => {
+            const nome = c.membros_empresa?.nome || 'Colaborador';
+            const s = c.score ?? Math.round(((c.humor??50)+(c.energia??50)+(100-(c.carga??50))+(c.foco??50))/4);
+            return `<div style="display:grid;grid-template-columns:1fr auto auto;gap:0;align-items:center;padding:8px 4px;border-bottom:1px solid var(--surface);">
+              <span style="font-size:12.5px;color:var(--card-text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${nome}</span>
+              <span style="font-size:13px;font-weight:800;color:${scoreColor(s)};text-align:center;min-width:40px">${s}</span>
+              <span style="font-size:11px;color:var(--muted);text-align:right;white-space:nowrap">${fmtData(c.created_at)}</span>
+            </div>`;
+          }).join('')}`;
+      }
+    }
+
+    // ── ADESÃO AOS TESTES ──────────────────────────────────────────
+    const { data: respostas } = await db.from('diagnosticos')
+      .select('criado_por, status')
+      .eq('empresa_id', currentEmpresa.id)
+      .neq('status', 'encerrado')
+      .limit(200);
+
+    const respondTestes = new Set((respostas || []).map(r => r.criado_por).filter(Boolean));
+    const totalMembros = membros.length;
+    const qtdRespondeu = membros.filter(m => respondTestes.has(m.user_id)).length;
+    const qtdPendente = totalMembros - qtdRespondeu;
+    const pct = totalMembros > 0 ? Math.round((qtdRespondeu / totalMembros) * 100) : 0;
+    const barColor = pct >= 70 ? '#10B981' : pct >= 40 ? '#F59E0B' : '#EF4444';
+
+    const pctEl = document.getElementById('dash-testes-pct');
+    const barEl = document.getElementById('dash-testes-bar');
+    const respEl = document.getElementById('dash-testes-responderam');
+    const pendEl = document.getElementById('dash-testes-pendentes');
+    const pendListEl = document.getElementById('dash-testes-pendentes-lista');
+
+    if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = barColor; }
+    if (barEl) { barEl.style.width = pct + '%'; barEl.style.background = barColor; }
+    if (respEl) respEl.textContent = qtdRespondeu;
+    if (pendEl) pendEl.textContent = qtdPendente;
+    if (pendListEl) {
+      const naoResponderam = membros.filter(m => !respondTestes.has(m.user_id));
+      pendListEl.innerHTML = naoResponderam.length === 0
+        ? '<span style="font-size:12px;color:#16A34A;font-weight:600">✓ Todos responderam!</span>'
+        : naoResponderam.map(m =>
+            `<span style="font-size:11px;background:#FFF7ED;border:1px solid #FDBA74;color:#9A3412;border-radius:99px;padding:3px 10px;font-weight:600">${m.nome || m.email || 'Colaborador'}</span>`
+          ).join('');
+    }
 
   } catch(e) {
     const sub = document.getElementById('dash-sub');
