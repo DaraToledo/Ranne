@@ -659,6 +659,20 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
           <div id="dash-engajamento"><div class="loading">Carregando...</div></div>
         </div>
       </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr">
+            <div><div class="card-title">Check-ins por empresa</div><div class="card-sub">este mês</div></div>
+          </div>
+          <div id="dash-checkins-emp"><div class="loading">Carregando...</div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <div><div class="card-title">Adesão aos testes</div><div class="card-sub">por empresa</div></div>
+          </div>
+          <div id="dash-testes-emp"><div class="loading">Carregando...</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- ── EMPRESAS ── -->
@@ -1085,7 +1099,7 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
     <div class="modal-sub">novo boleto emitido para cliente</div>
     <div class="form-row">
       <div class="fg"><label>Empresa *</label>
-        <select class="fc" id="pag-empresa-id"><option value="">Selecione...</option></select>
+        <select class="fc" id="pag-empresa-id" onchange="pagAutoPreencherEmpresa(this.value)"><option value="">Selecione...</option></select>
       </div>
       <div class="fg"><label>Plano</label>
         <select class="fc" id="pag-plano">
@@ -1099,13 +1113,9 @@ body { font-family:var(--sans); background:var(--bg); color:var(--text); min-hei
       <div class="fg"><label>Vencimento *</label><input class="fc" id="pag-venc" type="date"></div>
     </div>
     <div class="form-row">
-      <div class="fg"><label>Referência</label><input class="fc" id="pag-ref" placeholder="Ex: Fev/2026 — Pro"></div>
-      <div class="fg"><label>Status</label>
-        <select class="fc" id="pag-status">
-          <option value="pendente">Pendente</option>
-          <option value="pago">Pago</option>
-          <option value="vencido">Vencido</option>
-        </select>
+      <div class="fg"><label>Referência</label><input class="fc" id="pag-ref" placeholder="Ex: Jun/2026 — Básico"></div>
+      <div class="fg" style="display:flex;align-items:flex-end">
+        <div id="pag-venc-info" style="font-size:11px;color:var(--muted);padding-bottom:6px;line-height:1.5"></div>
       </div>
     </div>
     <div class="form-row cols-1">
@@ -1317,6 +1327,87 @@ async function carregarDashboard() {
       </div>`;
 
     document.getElementById('dash-updated').textContent = 'atualizado às ' + new Date().toLocaleTimeString('pt-BR');
+
+    // ── CHECK-INS POR EMPRESA (este mês) ──────────────────────────
+    const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+    const [ciEmpRes, membrosRes, diagsEmpRes] = await Promise.all([
+      db.from('checkins').select('empresa_id').gte('created_at', inicioMes).neq('tipo','feminino'),
+      db.from('membros_empresa').select('empresa_id, user_id'),
+      db.from('diagnosticos').select('empresa_id, criado_por').neq('status','encerrado'),
+    ]);
+
+    const ciPorEmp = {};
+    (ciEmpRes.data || []).forEach(c => { ciPorEmp[c.empresa_id] = (ciPorEmp[c.empresa_id] || 0) + 1; });
+
+    const membrosPorEmp = {};
+    (membrosRes.data || []).forEach(m => {
+      if (!membrosPorEmp[m.empresa_id]) membrosPorEmp[m.empresa_id] = [];
+      membrosPorEmp[m.empresa_id].push(m.user_id);
+    });
+
+    const testesPorEmp = {};
+    (diagsEmpRes.data || []).forEach(d => {
+      if (!testesPorEmp[d.empresa_id]) testesPorEmp[d.empresa_id] = new Set();
+      if (d.criado_por) testesPorEmp[d.empresa_id].add(d.criado_por);
+    });
+
+    const scoreColor = s => s >= 70 ? 'var(--verde)' : s >= 40 ? 'var(--yellow)' : 'var(--red)';
+
+    // Card check-ins por empresa
+    const elCI = document.getElementById('dash-checkins-emp');
+    if (elCI) {
+      if (!empresas.length) {
+        elCI.innerHTML = '<div class="empty"><div class="empty-icon">✓</div><div class="empty-title">Nenhuma empresa</div></div>';
+      } else {
+        elCI.innerHTML = `<table class="tbl"><tbody>${empresas.map(e => {
+          const total = membrosPorEmp[e.id]?.length || 0;
+          const feitos = ciPorEmp[e.id] || 0;
+          const pct = total > 0 ? Math.round((feitos / total) * 100) : 0;
+          const alerta = total > 0 && feitos === 0;
+          return `<tr>
+            <td><div class="tbl-name">${e.nome}</div></td>
+            <td style="font-size:12px;color:var(--muted)">${total} colab.</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;min-width:100px">
+                <div style="flex:1;height:6px;background:var(--surface3);border-radius:99px;overflow:hidden">
+                  <div style="height:100%;width:${pct}%;background:${scoreColor(pct)};border-radius:99px;transition:width .4s"></div>
+                </div>
+                <span style="font-size:11px;font-weight:700;color:${scoreColor(pct)};min-width:28px;text-align:right">${pct}%</span>
+              </div>
+            </td>
+            <td>${alerta ? '<span class="badge b-red" style="font-size:10px">⚠ Sem uso</span>' : `<span style="font-size:12px;color:var(--muted)">${feitos} check-in${feitos!==1?'s':''}</span>`}</td>
+          </tr>`;
+        }).join('')}</tbody></table>`;
+      }
+    }
+
+    // Card adesão aos testes por empresa
+    const elTestes = document.getElementById('dash-testes-emp');
+    if (elTestes) {
+      if (!empresas.length) {
+        elTestes.innerHTML = '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">Nenhuma empresa</div></div>';
+      } else {
+        elTestes.innerHTML = `<table class="tbl"><tbody>${empresas.map(e => {
+          const membros = membrosPorEmp[e.id] || [];
+          const total = membros.length;
+          const responderam = total > 0 ? membros.filter(uid => testesPorEmp[e.id]?.has(uid)).length : 0;
+          const pct = total > 0 ? Math.round((responderam / total) * 100) : 0;
+          return `<tr>
+            <td><div class="tbl-name">${e.nome}</div></td>
+            <td style="font-size:12px;color:var(--muted)">${total} colab.</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;min-width:100px">
+                <div style="flex:1;height:6px;background:var(--surface3);border-radius:99px;overflow:hidden">
+                  <div style="height:100%;width:${pct}%;background:${scoreColor(pct)};border-radius:99px;transition:width .4s"></div>
+                </div>
+                <span style="font-size:11px;font-weight:700;color:${scoreColor(pct)};min-width:28px;text-align:right">${pct}%</span>
+              </div>
+            </td>
+            <td><span style="font-size:12px;color:var(--muted)">${responderam}/${total}</span></td>
+          </tr>`;
+        }).join('')}</tbody></table>`;
+      }
+    }
   } catch(e) {
     document.getElementById('dash-updated').textContent = 'erro ao carregar';
     console.error(e);
@@ -1672,6 +1763,18 @@ async function carregarPagamentos() {
 
     if (!lista.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><div class="empty-icon">💳</div><div class="empty-title">Nenhum boleto registrado</div><div class="empty-sub">Clique em "+ Registrar boleto" para começar</div></div></td></tr>'; return; }
 
+    // Auto-detecta vencidos: atualiza no Supabase qualquer pendente com vencimento < hoje
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const vencidos = lista.filter(p =>
+      p.status === 'pendente' && p.vencimento && new Date(p.vencimento + 'T00:00:00') < hoje
+    );
+    if (vencidos.length > 0) {
+      const ids = vencidos.map(p => p.id);
+      await db.from('pagamentos').update({ status: 'vencido' }).in('id', ids).catch(() => {});
+      // Atualiza localmente sem precisar rebuscar
+      vencidos.forEach(p => { p.status = 'vencido'; });
+    }
+
     // Guarda mapa id→pagamento para os onclicks não usarem JSON inline
     window._pagMap = {};
     lista.forEach(p => { window._pagMap[p.id] = p; });
@@ -1701,21 +1804,87 @@ async function salvarPagamento() {
   const empId = document.getElementById('pag-empresa-id').value;
   const valor = document.getElementById('pag-valor').value;
   if (!empId || !valor) { alert('Empresa e valor são obrigatórios'); return; }
+
+  const vencVal = document.getElementById('pag-venc').value;
+  if (!vencVal) { alert('Informe a data de vencimento'); return; }
+
+  // Garante que não aceita data anterior a hoje
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const vencDate = new Date(vencVal + 'T00:00:00');
+  if (vencDate < hoje) { alert('A data de vencimento não pode ser anterior a hoje.'); return; }
+
   const btn = document.getElementById('btn-salvar-pag');
   btn.disabled = true; btn.textContent = 'Salvando...';
   try {
     const { error } = await db.from('pagamentos').insert({
-      empresa_id: empId, plano: document.getElementById('pag-plano').value,
-      valor: Number(valor), vencimento: document.getElementById('pag-venc').value || null,
-      status: document.getElementById('pag-status').value,
+      empresa_id: empId,
+      plano: document.getElementById('pag-plano').value,
+      valor: Number(valor),
+      vencimento: vencVal,
+      status: 'pendente', // sempre começa pendente
       referencia: document.getElementById('pag-ref').value.trim() || null,
       nf_url: document.getElementById('pag-nf').value.trim() || null,
     });
     if (error) throw error;
     fecharModal('modal-pagamento');
     carregarPagamentos();
+    toast('✅ Boleto registrado!');
   } catch(e) { alert('Erro ao salvar: ' + e.message); }
   finally { btn.disabled = false; btn.textContent = 'Registrar boleto'; }
+}
+
+// Pré-preenche vencimento e referência ao selecionar empresa
+async function pagAutoPreencherEmpresa(empId) {
+  const infoEl = document.getElementById('pag-venc-info');
+  if (!empId) { if (infoEl) infoEl.textContent = ''; return; }
+
+  // Data mínima = hoje
+  const hojeStr = new Date().toISOString().slice(0, 10);
+  const vencInput = document.getElementById('pag-venc');
+  vencInput.min = hojeStr;
+
+  try {
+    // Busca contrato para saber dia de vencimento recorrente
+    const { data: contrato } = await db.from('contratos')
+      .select('inicio, plano, valor')
+      .eq('empresa_id', empId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const hoje = new Date();
+    let diaVenc = 10; // padrão dia 10
+    let plano = 'basico';
+    let valor = '';
+
+    if (contrato) {
+      // Usa o mesmo dia do mês do início do contrato como dia de vencimento
+      diaVenc = new Date(contrato.inicio + 'T12:00:00').getDate();
+      plano = contrato.plano || 'basico';
+      valor = contrato.valor || '';
+    }
+
+    // Calcula próximo vencimento (mês atual ou próximo se o dia já passou)
+    const proxVenc = new Date(hoje.getFullYear(), hoje.getMonth(), diaVenc);
+    if (proxVenc < hoje) proxVenc.setMonth(proxVenc.getMonth() + 1);
+    const proxVencStr = proxVenc.toISOString().slice(0, 10);
+
+    // Preenche campos
+    vencInput.value = proxVencStr;
+    if (plano) document.getElementById('pag-plano').value = plano;
+    if (valor) document.getElementById('pag-valor').value = valor;
+
+    // Referência automática: "Jun/2026 — Básico"
+    const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const refAuto = `${meses[proxVenc.getMonth()]}/${proxVenc.getFullYear()} — ${plano.charAt(0).toUpperCase() + plano.slice(1)}`;
+    document.getElementById('pag-ref').value = refAuto;
+
+    if (infoEl) infoEl.innerHTML = `📅 Vencimento calculado pelo contrato<br><span style="color:var(--verde)">Dia ${diaVenc} de cada mês</span>`;
+  } catch(e) {
+    // Se não achar contrato, só seta o mínimo
+    vencInput.min = hojeStr;
+    if (infoEl) infoEl.textContent = '';
+  }
 }
 
 async function marcarPago(id) {
@@ -2040,118 +2209,147 @@ async function gerarFatura(p) {
   const RANNE = getRanne();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const emp = p.empresas?.nome || 'Cliente';
-  const num = String(p.id).slice(-6).toUpperCase();
+  const W = 210, m = 14;
+  const emp  = p.empresas?.nome || 'Cliente';
+  const num  = String(p.id).slice(-6).toUpperCase();
   const valor = Number(p.valor || 0);
-  const venc = p.vencimento ? new Date(p.vencimento + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+  const venc  = p.vencimento ? new Date(p.vencimento + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
   const emissao = new Date().toLocaleDateString('pt-BR');
+  const fmtVal = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
-  // Fundo do header
-  doc.setFillColor(10, 20, 16);
-  doc.rect(0, 0, 210, 42, 'F');
+  // ── HEADER ESCURO ──────────────────────────────────────────
+  doc.setFillColor(15, 26, 22);
+  doc.rect(0, 0, W, 50, 'F');
 
-  // Logo / nome
+  // Barra acento verde no topo
+  doc.setFillColor(78, 203, 160);
+  doc.rect(0, 0, W, 2.5, 'F');
+
+  // Logo
   doc.setTextColor(78, 203, 160);
-  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
-  doc.text('RANNE CARE', 14, 16);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(160, 200, 180);
-  doc.text('Tecnologia em Saúde Organizacional', 14, 22);
-  doc.text(RANNE.cnpj + ' · ' + RANNE.email, 14, 28);
-  doc.text(RANNE.endereco, 14, 33);
+  doc.setFontSize(20); doc.setFont('helvetica', 'bold');
+  doc.text('RANNE', m, 18);
+  doc.setFontSize(7); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(140, 180, 160);
+  doc.text('TECNOLOGIA EM SAÚDE ORGANIZACIONAL', m, 24);
+  doc.text(RANNE.cnpj + '  ·  ' + RANNE.email, m, 30);
 
-  // Número da fatura
+  // Tipo + número
+  doc.setTextColor(120, 160, 140);
+  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
+  doc.text('FATURA', W - m, 16, { align: 'right' });
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(22); doc.setFont('helvetica', 'bold');
+  doc.text('#' + num, W - m, 28, { align: 'right' });
+
+  // Status badge
+  const statusTxt = p.status === 'pago' ? 'PAGO' : p.status === 'vencido' ? 'VENCIDO' : 'PENDENTE';
+  const statusClr = p.status === 'pago' ? [34,197,94] : p.status === 'vencido' ? [239,68,68] : [245,158,11];
+  doc.setFillColor(...statusClr);
+  doc.roundedRect(W - m - 28, 34, 28, 8, 2, 2, 'F');
   doc.setTextColor(255,255,255);
+  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
+  doc.text(statusTxt, W - m - 14, 39.5, { align: 'center' });
+
+  // ── SEÇÃO PARA + DATAS ─────────────────────────────────────
+  // Card cliente (esquerda)
+  doc.setFillColor(248, 250, 249);
+  doc.roundedRect(m, 58, 88, 30, 3, 3, 'F');
+  doc.setTextColor(100, 140, 120);
+  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
+  doc.text('FATURADO PARA', m + 5, 66);
+  doc.setTextColor(15, 26, 22);
+  doc.setFontSize(12); doc.setFont('helvetica', 'bold');
+  doc.text(doc.splitTextToSize(emp, 78)[0], m + 5, 74);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(100, 120, 110);
+  doc.text(p.cnpj_cliente || '—', m + 5, 81);
+
+  // Card datas (direita)
+  doc.setFillColor(248, 250, 249);
+  doc.roundedRect(108, 58, 88, 30, 3, 3, 'F');
+  const dataRows = [['EMISSÃO', emissao], ['VENCIMENTO', venc], ['REFERÊNCIA', p.referencia || '—']];
+  dataRows.forEach(([label, val], i) => {
+    const y = 65 + i * 8;
+    doc.setFontSize(7); doc.setFont('helvetica', 'bold'); doc.setTextColor(100, 140, 120);
+    doc.text(label, 113, y);
+    doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(15, 26, 22);
+    doc.text(val, 194, y, { align: 'right' });
+  });
+
+  // ── TABELA SERVIÇOS ────────────────────────────────────────
+  const tY = 98;
+  // Cabeçalho
+  doc.setFillColor(15, 26, 22);
+  doc.rect(m, tY, 182, 9, 'F');
+  doc.setTextColor(120, 180, 150);
+  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
+  doc.text('DESCRIÇÃO', m + 4, tY + 6);
+  doc.text('PLANO', 140, tY + 6);
+  doc.text('VALOR', W - m, tY + 6, { align: 'right' });
+
+  // Linha item
+  doc.setFillColor(255, 255, 255);
+  doc.rect(m, tY + 9, 182, 18, 'F');
+  doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.2);
+  doc.rect(m, tY + 9, 182, 18);
+  doc.setTextColor(15, 26, 22);
   doc.setFontSize(10); doc.setFont('helvetica', 'bold');
-  doc.text('FATURA', 196, 16, { align: 'right' });
-  doc.setFontSize(18);
+  doc.text('Plataforma Ranne Care — Saúde Mental Corporativa', m + 4, tY + 17);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(110, 130, 120);
+  doc.text('Monitoramento contínuo de bem-estar organizacional', m + 4, tY + 23);
+  doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(78, 160, 130);
+  doc.text((p.plano || 'Pro').toUpperCase(), 140, tY + 17);
+  doc.setFontSize(11); doc.setTextColor(15, 26, 22);
+  doc.text(fmtVal(valor), W - m, tY + 17, { align: 'right' });
+
+  // ── TOTAL ──────────────────────────────────────────────────
+  const totY = tY + 32;
+  doc.setFillColor(15, 26, 22);
+  doc.roundedRect(W - m - 72, totY, 72, 22, 3, 3, 'F');
+  doc.setFillColor(78, 203, 160);
+  doc.roundedRect(W - m - 72, totY, 72, 1.5, 0, 0, 'F');
+  doc.setTextColor(140, 180, 160);
+  doc.setFontSize(7); doc.setFont('helvetica', 'normal');
+  doc.text('TOTAL A PAGAR', W - m - 68, totY + 8);
   doc.setTextColor(78, 203, 160);
-  doc.text('#' + num, 196, 26, { align: 'right' });
+  doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+  doc.text(fmtVal(valor), W - m - 4, totY + 18, { align: 'right' });
 
-  // Linha separadora
-  doc.setDrawColor(36, 53, 48);
-  doc.setLineWidth(0.3);
-  doc.line(14, 48, 196, 48);
-
-  // Para / dados cliente
+  // Info pagamento
   doc.setTextColor(90, 120, 105);
   doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text('PARA', 14, 58);
-  doc.setTextColor(30, 30, 30);
-  doc.setFontSize(13); doc.setFont('helvetica', 'bold');
-  doc.text(emp, 14, 66);
-  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(80, 100, 90);
-  doc.text(p.cnpj_cliente || '—', 14, 72);
+  doc.text('PAGAMENTO VIA BOLETO BANCÁRIO', m, totY + 8);
+  doc.setFont('helvetica', 'normal'); doc.setTextColor(130, 155, 145); doc.setFontSize(8);
+  doc.text('O boleto será enviado por e-mail.', m, totY + 14);
+  doc.text('Dúvidas: ' + RANNE.email, m, totY + 20);
 
-  // Datas
-  doc.setTextColor(90, 120, 105);
+  // ── OBSERVAÇÕES (se houver) ────────────────────────────────
+  if (p.obs) {
+    const obsY = totY + 34;
+    doc.setFillColor(255, 251, 235);
+    doc.roundedRect(m, obsY, 182, 14, 2, 2, 'F');
+    doc.setTextColor(146, 100, 30);
+    doc.setFontSize(7); doc.setFont('helvetica', 'bold');
+    doc.text('OBSERVAÇÕES', m + 4, obsY + 6);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(100, 70, 20);
+    doc.text(doc.splitTextToSize(p.obs, 174)[0], m + 4, obsY + 11);
+  }
+
+  // ── RODAPÉ ─────────────────────────────────────────────────
+  doc.setFillColor(15, 26, 22);
+  doc.rect(0, 268, W, 29, 'F');
+  doc.setFillColor(78, 203, 160);
+  doc.rect(0, 268, W, 1.5, 'F');
+  doc.setTextColor(140, 180, 160);
   doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text('EMISSÃO', 140, 58);
-  doc.text('VENCIMENTO', 140, 68);
-  doc.text('REFERÊNCIA', 140, 78);
-  doc.setTextColor(30, 30, 30);
-  doc.setFontSize(9); doc.setFont('helvetica', 'normal');
-  doc.text(emissao, 196, 58, { align: 'right' });
-  doc.text(venc, 196, 68, { align: 'right' });
-  doc.text(p.referencia || '—', 196, 78, { align: 'right' });
+  doc.text(RANNE.razao, W / 2, 276, { align: 'center' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(100, 140, 120);
+  doc.text('CNPJ: ' + RANNE.cnpj + '  ·  ' + RANNE.site + '  ·  ' + RANNE.email, W / 2, 282, { align: 'center' });
+  doc.setTextColor(70, 100, 85);
+  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR'), W / 2, 289, { align: 'center' });
 
-  // Tabela de serviços
-  doc.setFillColor(240, 245, 242);
-  doc.rect(14, 92, 182, 9, 'F');
-  doc.setTextColor(60, 90, 75);
-  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text('DESCRIÇÃO DO SERVIÇO', 18, 98);
-  doc.text('PLANO', 130, 98);
-  doc.text('VALOR', 196, 98, { align: 'right' });
-
-  doc.setDrawColor(200, 220, 210);
-  doc.setLineWidth(0.2);
-  doc.line(14, 101, 196, 101);
-
-  doc.setTextColor(20, 20, 20);
-  doc.setFontSize(10); doc.setFont('helvetica', 'normal');
-  doc.text('Plataforma Ranne Care — Saúde Mental Corporativa', 18, 110);
-  doc.text('Monitoramento contínuo de bem-estar organizacional', 18, 116);
-  doc.setTextColor(60, 90, 75);
-  doc.setFontSize(9);
-  doc.text((p.plano || 'Pro').toUpperCase(), 130, 110);
-  doc.setTextColor(20, 20, 20);
-  doc.setFontSize(11); doc.setFont('helvetica', 'bold');
-  doc.text('R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 196, 110, { align: 'right' });
-
-  // Linha
-  doc.setLineWidth(0.3); doc.setDrawColor(200, 220, 210);
-  doc.line(14, 124, 196, 124);
-
-  // Total
-  doc.setFillColor(10, 20, 16);
-  doc.rect(130, 128, 66, 16, 'F');
-  doc.setTextColor(160, 200, 180);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.text('TOTAL A PAGAR', 134, 134);
-  doc.setTextColor(78, 203, 160);
-  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-  doc.text('R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 194, 141, { align: 'right' });
-
-  // Forma de pagamento
-  doc.setTextColor(90, 120, 105);
-  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text('PAGAMENTO VIA BOLETO BANCÁRIO', 14, 136);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(120, 140, 130);
-  doc.text('O boleto será enviado por e-mail. Em caso de dúvidas: ' + RANNE.email, 14, 142);
-
-  // Rodapé
-  doc.setFillColor(240, 245, 242);
-  doc.rect(0, 272, 210, 25, 'F');
-  doc.setTextColor(100, 130, 115);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.text(RANNE.razao + ' · CNPJ: ' + RANNE.cnpj, 105, 280, { align: 'center' });
-  doc.text(RANNE.site + ' · ' + RANNE.email, 105, 286, { align: 'center' });
-  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR'), 105, 292, { align: 'center' });
-
-  doc.save('Fatura_Ranne_' + num + '_' + emp.replace(/\s/g,'_') + '.pdf');
+  doc.save('Fatura_Ranne_' + num + '_' + emp.replace(/\s+/g,'_') + '.pdf');
 }
 
 // ── RECIBO PDF ────────────────────────────────────────────────────────
@@ -2159,83 +2357,118 @@ async function gerarRecibo(p) {
   const RANNE = getRanne();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const emp = p.empresas?.nome || 'Cliente';
-  const num = String(p.id).slice(-6).toUpperCase();
-  const valor = Number(p.valor || 0);
+  const W = 210, m = 14;
+  const emp    = p.empresas?.nome || 'Cliente';
+  const num    = String(p.id).slice(-6).toUpperCase();
+  const valor  = Number(p.valor || 0);
   const pagoEm = p.pago_em ? new Date(p.pago_em).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR');
+  const fmtVal = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
-  // Header
-  doc.setFillColor(10, 20, 16);
-  doc.rect(0, 0, 210, 42, 'F');
-  doc.setTextColor(78, 203, 160);
-  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
-  doc.text('RANNE CARE', 14, 16);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(160, 200, 180);
-  doc.text('Tecnologia em Saúde Organizacional', 14, 22);
-  doc.text(RANNE.cnpj, 14, 28);
-  doc.setTextColor(255,255,255);
-  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-  doc.text('RECIBO DE PAGAMENTO', 196, 16, { align: 'right' });
-  doc.setFontSize(11);
-  doc.setTextColor(78, 203, 160);
-  doc.text('Nº ' + num, 196, 26, { align: 'right' });
+  // ── HEADER ─────────────────────────────────────────────────
+  doc.setFillColor(15, 26, 22);
+  doc.rect(0, 0, W, 50, 'F');
+  doc.setFillColor(78, 203, 160);
+  doc.rect(0, 0, W, 2.5, 'F');
 
-  // Selo PAGO
-  doc.setFillColor(22, 160, 110);
-  doc.roundedRect(74, 58, 62, 20, 4, 4, 'F');
+  // Logo
+  doc.setTextColor(78, 203, 160);
+  doc.setFontSize(20); doc.setFont('helvetica', 'bold');
+  doc.text('RANNE', m, 18);
+  doc.setFontSize(7); doc.setFont('helvetica', 'normal');
+  doc.setTextColor(140, 180, 160);
+  doc.text('TECNOLOGIA EM SAÚDE ORGANIZACIONAL', m, 24);
+  doc.text(RANNE.cnpj, m, 30);
+
+  // Título direita
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(16); doc.setFont('helvetica', 'bold');
-  doc.text('✓ PAGO', 105, 71, { align: 'center' });
-
-  // Dados
-  doc.setTextColor(30, 30, 30);
-  doc.setFontSize(11); doc.setFont('helvetica', 'bold');
-  doc.text('Recebemos de:', 14, 96);
-  doc.setFontSize(13);
-  doc.setTextColor(10, 20, 16);
-  doc.text(emp, 14, 104);
+  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+  doc.text('RECIBO DE PAGAMENTO', W - m, 17, { align: 'right' });
   doc.setFontSize(10); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(80, 100, 90);
-  doc.text('a importância de:', 14, 116);
-  doc.setFontSize(18); doc.setFont('helvetica', 'bold');
-  doc.setTextColor(10, 20, 16);
-  doc.text('R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 }), 14, 128);
+  doc.setTextColor(120, 160, 140);
+  doc.text('Nº ' + num, W - m, 25, { align: 'right' });
 
-  // Linha
-  doc.setDrawColor(200, 220, 210); doc.setLineWidth(0.3);
-  doc.line(14, 136, 196, 136);
+  // ── SELO PAGO centralizado ─────────────────────────────────
+  doc.setFillColor(22, 160, 110);
+  doc.roundedRect(W/2 - 36, 58, 72, 20, 4, 4, 'F');
+  doc.setFillColor(255,255,255);
+  // Checkmark manual (círculo + texto)
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(15); doc.setFont('helvetica', 'bold');
+  doc.text('✓  PAGO', W/2, 71, { align: 'center' });
 
-  // Detalhes
+  // ── CARD PRINCIPAL ─────────────────────────────────────────
+  doc.setFillColor(248, 250, 249);
+  doc.roundedRect(m, 88, 182, 56, 3, 3, 'F');
+  doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.2);
+  doc.roundedRect(m, 88, 182, 56, 3, 3);
+
+  // Recebemos de
+  doc.setTextColor(100, 140, 120);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.text('Recebemos de', m + 6, 97);
+  doc.setTextColor(15, 26, 22);
+  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+  doc.text(emp, m + 6, 106);
+
+  // Separador
+  doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.3);
+  doc.line(m + 6, 112, W - m - 6, 112);
+
+  // Valor
+  doc.setTextColor(100, 140, 120);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.text('a importância de', m + 6, 121);
+  doc.setTextColor(15, 110, 70);
+  doc.setFontSize(24); doc.setFont('helvetica', 'bold');
+  doc.text(fmtVal(valor), m + 6, 134);
+
+  // ── TABELA DE DETALHES ─────────────────────────────────────
   const detalhes = [
-    ['Referência', p.referencia || '—'],
-    ['Plano', (p.plano || 'Pro').toUpperCase()],
-    ['Data do pagamento', pagoEm],
-    ['Forma de pagamento', 'Boleto bancário'],
+    ['REFERÊNCIA',        p.referencia || '—'],
+    ['PLANO',             (p.plano || 'Pro').toUpperCase()],
+    ['DATA DO PAGAMENTO', pagoEm],
+    ['FORMA DE PAGAMENTO','Boleto bancário'],
   ];
-  let y = 148;
-  detalhes.forEach(([k, v]) => {
-    doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(90, 120, 105);
-    doc.text(k.toUpperCase(), 14, y);
-    doc.setFontSize(10); doc.setFont('helvetica', 'bold'); doc.setTextColor(20, 20, 20);
-    doc.text(v, 196, y, { align: 'right' });
-    y += 12;
+  let y = 158;
+  detalhes.forEach(([k, v], i) => {
+    if (i % 2 === 0) {
+      doc.setFillColor(248, 250, 249);
+      doc.rect(m, y - 5, 182, 12, 'F');
+    }
+    doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 140, 120);
+    doc.text(k, m + 4, y + 1);
+    doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(15, 26, 22);
+    doc.text(v, W - m, y + 1, { align: 'right' });
+    // linha divisória
+    doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.15);
+    doc.line(m, y + 6, W - m, y + 6);
+    y += 13;
   });
 
-  // Assinatura
-  doc.setLineWidth(0.3); doc.setDrawColor(150, 180, 165);
-  doc.line(110, 230, 196, 230);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 130, 115);
-  doc.text('Ranne Tecnologia em Saúde Ltda.', 153, 236, { align: 'center' });
-  doc.text('CNPJ: ' + RANNE.cnpj, 153, 241, { align: 'center' });
+  // ── ASSINATURA ─────────────────────────────────────────────
+  const asY = y + 16;
+  doc.setDrawColor(78, 203, 160); doc.setLineWidth(0.5);
+  doc.line(W/2, asY, W - m, asY);
+  doc.setTextColor(100, 140, 120);
+  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+  doc.text(RANNE.razao, (W/2 + W - m) / 2, asY + 6, { align: 'center' });
+  doc.setFontSize(7); doc.setTextColor(130, 160, 145);
+  doc.text('CNPJ: ' + RANNE.cnpj, (W/2 + W - m) / 2, asY + 11, { align: 'center' });
 
-  // Rodapé
-  doc.setFillColor(240, 245, 242);
-  doc.rect(0, 272, 210, 25, 'F');
-  doc.setTextColor(100, 130, 115); doc.setFontSize(8);
-  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR') + ' · ' + RANNE.site, 105, 283, { align: 'center' });
+  // ── RODAPÉ ─────────────────────────────────────────────────
+  doc.setFillColor(15, 26, 22);
+  doc.rect(0, 268, W, 29, 'F');
+  doc.setFillColor(78, 203, 160);
+  doc.rect(0, 268, W, 1.5, 'F');
+  doc.setTextColor(140, 180, 160);
+  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
+  doc.text(RANNE.razao, W / 2, 276, { align: 'center' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(100, 140, 120);
+  doc.text('CNPJ: ' + RANNE.cnpj + '  ·  ' + RANNE.site, W / 2, 282, { align: 'center' });
+  doc.setTextColor(70, 100, 85);
+  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR'), W / 2, 289, { align: 'center' });
 
-  doc.save('Recibo_Ranne_' + num + '_' + emp.replace(/\s/g,'_') + '.pdf');
+  doc.save('Recibo_Ranne_' + num + '_' + emp.replace(/\s+/g,'_') + '.pdf');
 }
 
 // ── NFS-e ─────────────────────────────────────────────────────────────
