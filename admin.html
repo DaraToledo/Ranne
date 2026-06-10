@@ -2207,268 +2207,213 @@ let _nfseData = null;
 // ── FATURA PDF ────────────────────────────────────────────────────────
 async function gerarFatura(p) {
   const RANNE = getRanne();
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const W = 210, m = 14;
-  const emp  = p.empresas?.nome || 'Cliente';
-  const num  = String(p.id).slice(-6).toUpperCase();
-  const valor = Number(p.valor || 0);
-  const venc  = p.vencimento ? new Date(p.vencimento + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+  const emp    = p.empresas?.nome || 'Cliente';
+  const num    = '#' + String(p.id).slice(-6).toUpperCase();
+  const valor  = Number(p.valor || 0);
+  const venc   = p.vencimento ? new Date(p.vencimento + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
   const emissao = new Date().toLocaleDateString('pt-BR');
-  const fmtVal = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  const fmtVal = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const statusLabel = p.status === 'pago' ? '✓ Pago' : p.status === 'vencido' ? '✗ Vencido' : '⏳ Pendente';
+  const statusBg    = p.status === 'pago' ? '#2d5a27' : p.status === 'vencido' ? '#a32d2d' : '#b88000';
 
-  // ── HEADER ESCURO ──────────────────────────────────────────
-  doc.setFillColor(15, 26, 22);
-  doc.rect(0, 0, W, 50, 'F');
+  const logoUrl = 'https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png';
 
-  // Barra acento verde no topo
-  doc.setFillColor(78, 203, 160);
-  doc.rect(0, 0, W, 2.5, 'F');
+  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Fatura ${num} — ${emp}</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f2f4f3;display:flex;justify-content:center;padding:40px 20px;}
+  .doc{background:#fff;width:680px;border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+  .header{background:#fafaf8;padding:24px 40px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8e8e0;}
+  .logo img{height:56px;width:auto;display:block;}
+  .logo-text{font-size:22px;font-weight:800;color:#2d5a27;letter-spacing:.5px;}
+  .logo-sub{font-size:10px;color:#8a9e8a;margin-top:2px;letter-spacing:1px;text-transform:uppercase;}
+  .header-right{text-align:right;}
+  .doc-type{color:#b0a070;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;}
+  .doc-num{color:#1e293b;font-size:24px;font-weight:700;margin-top:4px;}
+  .badge{display:inline-block;color:#fff;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 14px;border-radius:20px;margin-top:10px;text-transform:uppercase;background:${statusBg};}
+  .accent-bar{height:3px;background:linear-gradient(to right,#2d5a27,#c9a84c);}
+  .body{padding:36px 40px;}
+  .section-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#b0b8c1;font-weight:600;margin-bottom:5px;}
+  .section-value{font-size:14px;color:#1e293b;font-weight:500;}
+  .client-box{background:#fafafa;border-radius:6px;padding:18px 22px;border-left:3px solid #2d5a27;margin-bottom:24px;}
+  .client-name{font-size:15px;font-weight:700;color:#1e293b;margin-top:4px;}
+  .meta-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;}
+  .meta-item{background:#fafafa;border-radius:6px;padding:14px 16px;border-bottom:2px solid rgba(201,168,76,.25);}
+  table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+  thead tr{background:#2d5a27;}
+  thead th{padding:11px 16px;text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;color:#fff;}
+  thead th:last-child{text-align:right;}
+  tbody tr{border-bottom:1px solid #f0f0f0;}
+  tbody td{padding:16px;font-size:13px;color:#374151;vertical-align:top;}
+  tbody td:last-child{text-align:right;font-weight:600;color:#1e293b;}
+  .item-desc{font-size:11px;color:#94a3b8;margin-top:4px;}
+  .plan-badge{display:inline-block;background:#f0fdf4;color:#2d5a27;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;border:1px solid #bbf7d0;}
+  .total-row{background:#f6fdf7;border:1px solid #c3e6cb;border-left:4px solid #2d5a27;border-radius:8px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+  .total-label{font-size:11px;font-weight:700;color:#2d5a27;letter-spacing:1.5px;text-transform:uppercase;}
+  .total-value{font-size:28px;font-weight:800;color:#2d5a27;}
+  .payment-box{background:#fffdf5;border:1px solid #e8d98a;border-radius:8px;padding:15px 20px;display:flex;align-items:flex-start;gap:12px;}
+  .payment-icon{font-size:18px;margin-top:1px;}
+  .payment-text{font-size:12px;color:#78580a;line-height:1.6;}
+  .payment-title{font-weight:700;font-size:13px;margin-bottom:2px;color:#5a4008;}
+  .footer{background:#fafaf8;border-top:1px solid #e8e4d8;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;}
+  .footer-brand{font-size:11px;color:#94a3b8;line-height:1.7;}
+  .footer-brand strong{color:#475569;font-weight:600;}
+  .footer-date{font-size:10px;color:#b0b8c1;text-align:right;line-height:1.7;}
+  @media print{body{padding:0;background:#fff;}.doc{box-shadow:none;border-radius:0;}}
+</style></head><body>
+<div class="doc">
+  <div class="header">
+    <div class="logo">
+      <img src="${logoUrl}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="Ranne Care">
+      <div style="display:none"><div class="logo-text">RANNE</div><div class="logo-sub">Saúde Organizacional</div></div>
+    </div>
+    <div class="header-right">
+      <div class="doc-type">Fatura</div>
+      <div class="doc-num">${num}</div>
+      <div class="badge">${statusLabel}</div>
+    </div>
+  </div>
+  <div class="accent-bar"></div>
+  <div class="body">
+    <div class="client-box">
+      <div class="section-label">Faturado para</div>
+      <div class="client-name">${emp}</div>
+      ${p.cnpj_cliente ? `<div style="font-size:12px;color:#64748b;margin-top:4px;">CNPJ: ${p.cnpj_cliente}</div>` : ''}
+    </div>
+    <div class="meta-grid">
+      <div class="meta-item"><div class="section-label">Emissão</div><div class="section-value">${emissao}</div></div>
+      <div class="meta-item"><div class="section-label">Vencimento</div><div class="section-value">${venc}</div></div>
+      <div class="meta-item"><div class="section-label">Referência</div><div class="section-value">${p.referencia || '—'}</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Descrição</th><th>Plano</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Plataforma Ranne Care — Saúde Mental Corporativa<div class="item-desc">Monitoramento contínuo de bem-estar organizacional</div></td>
+          <td><span class="plan-badge">${(p.plano || 'Pro').toUpperCase()}</span></td>
+          <td>${fmtVal(valor)}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="total-row">
+      <div class="total-label">Total a Pagar</div>
+      <div class="total-value">${fmtVal(valor)}</div>
+    </div>
+    <div class="payment-box">
+      <div class="payment-icon">🏦</div>
+      <div class="payment-text">
+        <div class="payment-title">Pagamento via Boleto Bancário</div>
+        O boleto será enviado por e-mail. Dúvidas: <strong>${RANNE.email}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><strong>${RANNE.razao}</strong><br>CNPJ: ${RANNE.cnpj} · ${RANNE.site} · ${RANNE.email}</div>
+    <div class="footer-date">Documento gerado em<br>${new Date().toLocaleString('pt-BR')}</div>
+  </div>
+</div>
+<script>window.onload=()=>{window.print();}<\/script>
+</body></html>`;
 
-  // Logo
-  doc.setTextColor(78, 203, 160);
-  doc.setFontSize(20); doc.setFont('helvetica', 'bold');
-  doc.text('RANNE', m, 18);
-  doc.setFontSize(7); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(140, 180, 160);
-  doc.text('TECNOLOGIA EM SAÚDE ORGANIZACIONAL', m, 24);
-  doc.text(RANNE.cnpj + '  ·  ' + RANNE.email, m, 30);
-
-  // Tipo + número
-  doc.setTextColor(120, 160, 140);
-  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
-  doc.text('FATURA', W - m, 16, { align: 'right' });
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(22); doc.setFont('helvetica', 'bold');
-  doc.text('#' + num, W - m, 28, { align: 'right' });
-
-  // Status badge
-  const statusTxt = p.status === 'pago' ? 'PAGO' : p.status === 'vencido' ? 'VENCIDO' : 'PENDENTE';
-  const statusClr = p.status === 'pago' ? [34,197,94] : p.status === 'vencido' ? [239,68,68] : [245,158,11];
-  doc.setFillColor(...statusClr);
-  doc.roundedRect(W - m - 28, 34, 28, 8, 2, 2, 'F');
-  doc.setTextColor(255,255,255);
-  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
-  doc.text(statusTxt, W - m - 14, 39.5, { align: 'center' });
-
-  // ── SEÇÃO PARA + DATAS ─────────────────────────────────────
-  // Card cliente (esquerda)
-  doc.setFillColor(248, 250, 249);
-  doc.roundedRect(m, 58, 88, 30, 3, 3, 'F');
-  doc.setTextColor(100, 140, 120);
-  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
-  doc.text('FATURADO PARA', m + 5, 66);
-  doc.setTextColor(15, 26, 22);
-  doc.setFontSize(12); doc.setFont('helvetica', 'bold');
-  doc.text(doc.splitTextToSize(emp, 78)[0], m + 5, 74);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(100, 120, 110);
-  doc.text(p.cnpj_cliente || '—', m + 5, 81);
-
-  // Card datas (direita)
-  doc.setFillColor(248, 250, 249);
-  doc.roundedRect(108, 58, 88, 30, 3, 3, 'F');
-  const dataRows = [['EMISSÃO', emissao], ['VENCIMENTO', venc], ['REFERÊNCIA', p.referencia || '—']];
-  dataRows.forEach(([label, val], i) => {
-    const y = 65 + i * 8;
-    doc.setFontSize(7); doc.setFont('helvetica', 'bold'); doc.setTextColor(100, 140, 120);
-    doc.text(label, 113, y);
-    doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(15, 26, 22);
-    doc.text(val, 194, y, { align: 'right' });
-  });
-
-  // ── TABELA SERVIÇOS ────────────────────────────────────────
-  const tY = 98;
-  // Cabeçalho
-  doc.setFillColor(15, 26, 22);
-  doc.rect(m, tY, 182, 9, 'F');
-  doc.setTextColor(120, 180, 150);
-  doc.setFontSize(7); doc.setFont('helvetica', 'bold');
-  doc.text('DESCRIÇÃO', m + 4, tY + 6);
-  doc.text('PLANO', 140, tY + 6);
-  doc.text('VALOR', W - m, tY + 6, { align: 'right' });
-
-  // Linha item
-  doc.setFillColor(255, 255, 255);
-  doc.rect(m, tY + 9, 182, 18, 'F');
-  doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.2);
-  doc.rect(m, tY + 9, 182, 18);
-  doc.setTextColor(15, 26, 22);
-  doc.setFontSize(10); doc.setFont('helvetica', 'bold');
-  doc.text('Plataforma Ranne Care — Saúde Mental Corporativa', m + 4, tY + 17);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(110, 130, 120);
-  doc.text('Monitoramento contínuo de bem-estar organizacional', m + 4, tY + 23);
-  doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(78, 160, 130);
-  doc.text((p.plano || 'Pro').toUpperCase(), 140, tY + 17);
-  doc.setFontSize(11); doc.setTextColor(15, 26, 22);
-  doc.text(fmtVal(valor), W - m, tY + 17, { align: 'right' });
-
-  // ── TOTAL ──────────────────────────────────────────────────
-  const totY = tY + 32;
-  doc.setFillColor(15, 26, 22);
-  doc.roundedRect(W - m - 72, totY, 72, 22, 3, 3, 'F');
-  doc.setFillColor(78, 203, 160);
-  doc.roundedRect(W - m - 72, totY, 72, 1.5, 0, 0, 'F');
-  doc.setTextColor(140, 180, 160);
-  doc.setFontSize(7); doc.setFont('helvetica', 'normal');
-  doc.text('TOTAL A PAGAR', W - m - 68, totY + 8);
-  doc.setTextColor(78, 203, 160);
-  doc.setFontSize(16); doc.setFont('helvetica', 'bold');
-  doc.text(fmtVal(valor), W - m - 4, totY + 18, { align: 'right' });
-
-  // Info pagamento
-  doc.setTextColor(90, 120, 105);
-  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text('PAGAMENTO VIA BOLETO BANCÁRIO', m, totY + 8);
-  doc.setFont('helvetica', 'normal'); doc.setTextColor(130, 155, 145); doc.setFontSize(8);
-  doc.text('O boleto será enviado por e-mail.', m, totY + 14);
-  doc.text('Dúvidas: ' + RANNE.email, m, totY + 20);
-
-  // ── OBSERVAÇÕES (se houver) ────────────────────────────────
-  if (p.obs) {
-    const obsY = totY + 34;
-    doc.setFillColor(255, 251, 235);
-    doc.roundedRect(m, obsY, 182, 14, 2, 2, 'F');
-    doc.setTextColor(146, 100, 30);
-    doc.setFontSize(7); doc.setFont('helvetica', 'bold');
-    doc.text('OBSERVAÇÕES', m + 4, obsY + 6);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(100, 70, 20);
-    doc.text(doc.splitTextToSize(p.obs, 174)[0], m + 4, obsY + 11);
-  }
-
-  // ── RODAPÉ ─────────────────────────────────────────────────
-  doc.setFillColor(15, 26, 22);
-  doc.rect(0, 268, W, 29, 'F');
-  doc.setFillColor(78, 203, 160);
-  doc.rect(0, 268, W, 1.5, 'F');
-  doc.setTextColor(140, 180, 160);
-  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text(RANNE.razao, W / 2, 276, { align: 'center' });
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(100, 140, 120);
-  doc.text('CNPJ: ' + RANNE.cnpj + '  ·  ' + RANNE.site + '  ·  ' + RANNE.email, W / 2, 282, { align: 'center' });
-  doc.setTextColor(70, 100, 85);
-  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR'), W / 2, 289, { align: 'center' });
-
-  doc.save('Fatura_Ranne_' + num + '_' + emp.replace(/\s+/g,'_') + '.pdf');
+  const win = window.open('', '_blank');
+  if (!win) { alert('Permita pop-ups para gerar a fatura.'); return; }
+  win.document.write(html);
+  win.document.close();
 }
 
 // ── RECIBO PDF ────────────────────────────────────────────────────────
 async function gerarRecibo(p) {
   const RANNE = getRanne();
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const W = 210, m = 14;
   const emp    = p.empresas?.nome || 'Cliente';
-  const num    = String(p.id).slice(-6).toUpperCase();
+  const num    = '#' + String(p.id).slice(-6).toUpperCase();
   const valor  = Number(p.valor || 0);
   const pagoEm = p.pago_em ? new Date(p.pago_em).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR');
-  const fmtVal = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  const fmtVal = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  // ── HEADER ─────────────────────────────────────────────────
-  doc.setFillColor(15, 26, 22);
-  doc.rect(0, 0, W, 50, 'F');
-  doc.setFillColor(78, 203, 160);
-  doc.rect(0, 0, W, 2.5, 'F');
+  const logoUrl = 'https://raw.githubusercontent.com/DaraToledo/Ranne/main/Ranne.png';
 
-  // Logo
-  doc.setTextColor(78, 203, 160);
-  doc.setFontSize(20); doc.setFont('helvetica', 'bold');
-  doc.text('RANNE', m, 18);
-  doc.setFontSize(7); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(140, 180, 160);
-  doc.text('TECNOLOGIA EM SAÚDE ORGANIZACIONAL', m, 24);
-  doc.text(RANNE.cnpj, m, 30);
+  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Recibo ${num} — ${emp}</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f2f4f3;display:flex;justify-content:center;padding:40px 20px;}
+  .doc{background:#fff;width:680px;border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+  .header{background:#fafaf8;padding:24px 40px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8e8e0;}
+  .logo img{height:56px;width:auto;display:block;}
+  .logo-text{font-size:22px;font-weight:800;color:#2d5a27;letter-spacing:.5px;}
+  .logo-sub{font-size:10px;color:#8a9e8a;margin-top:2px;letter-spacing:1px;text-transform:uppercase;}
+  .header-right{text-align:right;}
+  .doc-type{color:#b0a070;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;}
+  .doc-num{color:#1e293b;font-size:24px;font-weight:700;margin-top:4px;}
+  .badge{display:inline-block;background:#2d5a27;color:#fff;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 14px;border-radius:20px;margin-top:10px;text-transform:uppercase;}
+  .accent-bar{height:3px;background:linear-gradient(to right,#2d5a27,#c9a84c);}
+  .body{padding:36px 40px;}
+  .section-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#b0b8c1;font-weight:600;margin-bottom:5px;}
+  .section-value{font-size:14px;color:#1e293b;font-weight:500;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;}
+  .highlight-box{background:#f6fdf7;border:1px solid #c3e6cb;border-left:4px solid #2d5a27;border-radius:8px;padding:20px 28px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;}
+  .highlight-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#2d5a27;font-weight:600;}
+  .highlight-sub{font-size:11px;color:#5a8a5a;margin-top:3px;}
+  .highlight-value{font-size:32px;font-weight:800;color:#2d5a27;}
+  .detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px;}
+  .detail-item{background:#fafafa;border-radius:6px;padding:14px 16px;border-bottom:2px solid #e2e8f0;}
+  .divider{border:none;border-top:1px solid #eef0f3;margin:24px 0;}
+  .footer-note{font-size:11px;color:#b0b8c1;text-align:center;line-height:1.9;}
+  .footer{background:#fafaf8;border-top:1px solid #e8e4d8;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;}
+  .footer-brand{font-size:11px;color:#94a3b8;line-height:1.7;}
+  .footer-brand strong{color:#475569;font-weight:600;}
+  .footer-date{font-size:10px;color:#b0b8c1;text-align:right;line-height:1.7;}
+  @media print{body{padding:0;background:#fff;}.doc{box-shadow:none;border-radius:0;}}
+</style></head><body>
+<div class="doc">
+  <div class="header">
+    <div class="logo">
+      <img src="${logoUrl}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt="Ranne Care">
+      <div style="display:none"><div class="logo-text">RANNE</div><div class="logo-sub">Saúde Organizacional</div></div>
+    </div>
+    <div class="header-right">
+      <div class="doc-type">Recibo de Pagamento</div>
+      <div class="doc-num">${num}</div>
+      <div class="badge">✓ Pago</div>
+    </div>
+  </div>
+  <div class="accent-bar"></div>
+  <div class="body">
+    <div class="info-grid">
+      <div><div class="section-label">Recebemos de</div><div class="section-value">${emp}</div></div>
+      <div><div class="section-label">Referência</div><div class="section-value">${p.referencia || '—'}</div></div>
+    </div>
+    <div class="highlight-box">
+      <div>
+        <div class="highlight-label">Valor Recebido</div>
+        <div class="highlight-sub">Pagamento confirmado</div>
+      </div>
+      <div class="highlight-value">${fmtVal(valor)}</div>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="section-label">Data do Pagamento</div><div class="section-value">${pagoEm}</div></div>
+      <div class="detail-item"><div class="section-label">Forma de Pagamento</div><div class="section-value">Boleto bancário</div></div>
+      <div class="detail-item"><div class="section-label">Plano</div><div class="section-value">${(p.plano || 'Pro').charAt(0).toUpperCase() + (p.plano||'pro').slice(1)}</div></div>
+    </div>
+    <hr class="divider">
+    <div class="footer-note">
+      Este recibo confirma o recebimento do valor acima descrito.<br>
+      Dúvidas: <span style="color:#2d5a27;">${RANNE.email}</span> &nbsp;·&nbsp; <span style="color:#2d5a27;">${RANNE.site}</span>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><strong>${RANNE.razao}</strong><br>CNPJ: ${RANNE.cnpj}</div>
+    <div class="footer-date">Documento gerado em<br>${new Date().toLocaleString('pt-BR')}</div>
+  </div>
+</div>
+<script>window.onload=()=>{window.print();}<\/script>
+</body></html>`;
 
-  // Título direita
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-  doc.text('RECIBO DE PAGAMENTO', W - m, 17, { align: 'right' });
-  doc.setFontSize(10); doc.setFont('helvetica', 'normal');
-  doc.setTextColor(120, 160, 140);
-  doc.text('Nº ' + num, W - m, 25, { align: 'right' });
-
-  // ── SELO PAGO centralizado ─────────────────────────────────
-  doc.setFillColor(22, 160, 110);
-  doc.roundedRect(W/2 - 36, 58, 72, 20, 4, 4, 'F');
-  doc.setFillColor(255,255,255);
-  // Checkmark manual (círculo + texto)
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(15); doc.setFont('helvetica', 'bold');
-  doc.text('✓  PAGO', W/2, 71, { align: 'center' });
-
-  // ── CARD PRINCIPAL ─────────────────────────────────────────
-  doc.setFillColor(248, 250, 249);
-  doc.roundedRect(m, 88, 182, 56, 3, 3, 'F');
-  doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.2);
-  doc.roundedRect(m, 88, 182, 56, 3, 3);
-
-  // Recebemos de
-  doc.setTextColor(100, 140, 120);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.text('Recebemos de', m + 6, 97);
-  doc.setTextColor(15, 26, 22);
-  doc.setFontSize(14); doc.setFont('helvetica', 'bold');
-  doc.text(emp, m + 6, 106);
-
-  // Separador
-  doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.3);
-  doc.line(m + 6, 112, W - m - 6, 112);
-
-  // Valor
-  doc.setTextColor(100, 140, 120);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.text('a importância de', m + 6, 121);
-  doc.setTextColor(15, 110, 70);
-  doc.setFontSize(24); doc.setFont('helvetica', 'bold');
-  doc.text(fmtVal(valor), m + 6, 134);
-
-  // ── TABELA DE DETALHES ─────────────────────────────────────
-  const detalhes = [
-    ['REFERÊNCIA',        p.referencia || '—'],
-    ['PLANO',             (p.plano || 'Pro').toUpperCase()],
-    ['DATA DO PAGAMENTO', pagoEm],
-    ['FORMA DE PAGAMENTO','Boleto bancário'],
-  ];
-  let y = 158;
-  detalhes.forEach(([k, v], i) => {
-    if (i % 2 === 0) {
-      doc.setFillColor(248, 250, 249);
-      doc.rect(m, y - 5, 182, 12, 'F');
-    }
-    doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 140, 120);
-    doc.text(k, m + 4, y + 1);
-    doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(15, 26, 22);
-    doc.text(v, W - m, y + 1, { align: 'right' });
-    // linha divisória
-    doc.setDrawColor(220, 235, 228); doc.setLineWidth(0.15);
-    doc.line(m, y + 6, W - m, y + 6);
-    y += 13;
-  });
-
-  // ── ASSINATURA ─────────────────────────────────────────────
-  const asY = y + 16;
-  doc.setDrawColor(78, 203, 160); doc.setLineWidth(0.5);
-  doc.line(W/2, asY, W - m, asY);
-  doc.setTextColor(100, 140, 120);
-  doc.setFontSize(8); doc.setFont('helvetica', 'normal');
-  doc.text(RANNE.razao, (W/2 + W - m) / 2, asY + 6, { align: 'center' });
-  doc.setFontSize(7); doc.setTextColor(130, 160, 145);
-  doc.text('CNPJ: ' + RANNE.cnpj, (W/2 + W - m) / 2, asY + 11, { align: 'center' });
-
-  // ── RODAPÉ ─────────────────────────────────────────────────
-  doc.setFillColor(15, 26, 22);
-  doc.rect(0, 268, W, 29, 'F');
-  doc.setFillColor(78, 203, 160);
-  doc.rect(0, 268, W, 1.5, 'F');
-  doc.setTextColor(140, 180, 160);
-  doc.setFontSize(8); doc.setFont('helvetica', 'bold');
-  doc.text(RANNE.razao, W / 2, 276, { align: 'center' });
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(100, 140, 120);
-  doc.text('CNPJ: ' + RANNE.cnpj + '  ·  ' + RANNE.site, W / 2, 282, { align: 'center' });
-  doc.setTextColor(70, 100, 85);
-  doc.text('Documento gerado em ' + new Date().toLocaleString('pt-BR'), W / 2, 289, { align: 'center' });
-
-  doc.save('Recibo_Ranne_' + num + '_' + emp.replace(/\s+/g,'_') + '.pdf');
+  const win = window.open('', '_blank');
+  if (!win) { alert('Permita pop-ups para gerar o recibo.'); return; }
+  win.document.write(html);
+  win.document.close();
 }
 
 // ── NFS-e ─────────────────────────────────────────────────────────────
