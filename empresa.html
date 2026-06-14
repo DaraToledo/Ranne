@@ -15218,17 +15218,22 @@ async function carregarTestesRH() {
       return;
     }
 
-    // Busca quais o colaborador já respondeu
+    // Busca quais o colaborador já respondeu (considera diagnostico_id para evitar falso positivo)
     const { data: respondidos } = await db
       .from('testes_realizados')
-      .select('teste_id, realizado_em')
+      .select('teste_id, diagnostico_id, realizado_em')
       .eq('user_id', currentUser.id)
       .in('teste_id', enviadosFiltrados.map(e => e.teste_id));
 
-    const respondidosSet = new Set((respondidos || []).map(r => r.teste_id));
+    // Chave única: teste_id + diagnostico_id (null vira 'null' para comparação)
+    const respondidosSet = new Set(
+      (respondidos || []).map(r => r.teste_id + '|' + (r.diagnostico_id || 'null'))
+    );
 
-    const pendentes  = enviadosFiltrados.filter(e => !respondidosSet.has(e.teste_id));
-    const concluidos = enviadosFiltrados.filter(e => respondidosSet.has(e.teste_id));
+    const jaRespondeu = (e) => respondidosSet.has(e.teste_id + '|' + (e.diagnostico_id || 'null'));
+
+    const pendentes  = enviadosFiltrados.filter(e => !jaRespondeu(e));
+    const concluidos = enviadosFiltrados.filter(e => jaRespondeu(e));
 
     _renderTestesRH(pendentes, concluidos);
   } catch(e) {
@@ -15267,7 +15272,7 @@ function _renderTestesRH(pendentes, concluidos) {
       const label = TESTES_RH_LABELS[t.teste_id] || t.teste_id;
       const data  = t.enviado_em ? new Date(t.enviado_em).toLocaleDateString('pt-BR') : '';
       return `
-        <div class="test-card" onclick="iniciarTesteRH('${t.teste_id}')" style="border-left:3px solid var(--green);">
+        <div class="test-card" onclick="iniciarTesteRH('${t.teste_id}', '${t.diagnostico_id || ''}')" style="border-left:3px solid var(--green);">
           <div class="test-card-badge" style="background:var(--surface);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><path d="M9 12h6M9 16h4"/></svg>
           </div>
@@ -15296,9 +15301,11 @@ function _renderTestesRH(pendentes, concluidos) {
   }
 }
 
-function iniciarTesteRH(id) {
+function iniciarTesteRH(id, diagnosticoId) {
   // Registra que veio do fluxo RH para o botão voltar funcionar corretamente
   window._testeOrigemRH = true;
+  // Salva o diagnostico_id para vincular ao resultado
+  window._currentDiagnosticoId = diagnosticoId || null;
   iniciarTeste(id);
 }
 
@@ -15517,22 +15524,24 @@ function clin_calcular() {
   profEl.innerHTML = _prof_html(t.id, nivel.tipo);
 
   // Salvar resultado no banco e remover dos pendentes
-  _salvarTesteRealizado(t.id, total, nivel.nivel, nivel.tipo);
+  _salvarTesteRealizado(t.id, total, nivel.nivel, nivel.tipo, window._currentDiagnosticoId || null);
 
   cpg('clin-resultado');
   const telaR = document.getElementById('cp-clin-resultado');
   if (telaR) telaR.scrollTop = 0;
 }
 
-async function _salvarTesteRealizado(testeId, score, nivel, tipo) {
+async function _salvarTesteRealizado(testeId, score, nivel, tipo, diagnosticoId) {
   if (!currentUser?.id || !currentEmpresa?.id) return;
   try {
-    // Verifica se já existe para evitar duplicata
-    const { data: existente } = await db.from('testes_realizados')
+    // Verifica se já existe para evitar duplicata (considera diagnostico_id)
+    const existQuery = db.from('testes_realizados')
       .select('id')
       .eq('user_id', currentUser.id)
-      .eq('teste_id', testeId)
-      .maybeSingle();
+      .eq('teste_id', testeId);
+    if (diagnosticoId) existQuery.eq('diagnostico_id', diagnosticoId);
+    else existQuery.is('diagnostico_id', null);
+    const { data: existente } = await existQuery.maybeSingle();
 
     if (existente) {
       // Atualiza o existente
@@ -15548,6 +15557,7 @@ async function _salvarTesteRealizado(testeId, score, nivel, tipo) {
         score,
         nivel,
         tipo,
+        diagnostico_id: diagnosticoId || null,
         realizado_em: new Date().toISOString().split('T')[0]
       });
     }
