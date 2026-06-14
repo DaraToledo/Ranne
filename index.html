@@ -867,8 +867,14 @@ html, body {
   .h-card-row{padding:.6rem .8rem!important;}
   .hc-val{font-size:1.4rem!important;}
 }
+/* ── APP SLIDESHOW OUTER ── */
+.app-outer-wrap{display:flex;align-items:flex-end;justify-content:center;gap:0;position:relative;}
+.app-ranne-avatar{flex-shrink:0;width:180px;display:flex;align-items:flex-end;justify-content:flex-end;position:relative;z-index:2;}
+.ranne-avatar-img{width:180px;height:auto;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.12));}
+@media(max-width:900px){.app-ranne-avatar{display:none;}}
+
 /* ── APP SLIDESHOW ── */
-.app-slideshow{position:relative;max-width:900px;margin:0 auto;user-select:none;padding:0 52px;}
+.app-slideshow{position:relative;max-width:820px;width:100%;user-select:none;padding:0 52px;}
 .app-slide-viewport{overflow:hidden;position:relative;}
 .app-slide-viewport::before,.app-slide-viewport::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:3;pointer-events:none;}
 .app-slide-viewport::before{left:0;background:linear-gradient(to right,var(--creme) 0%,transparent 100%);}
@@ -1078,9 +1084,13 @@ html, body {
     <!-- SCREENS SLIDESHOW -->
     <div class="screens-showcase fade fd2">
       <div class="screens-label">Veja a plataforma em ação</div>
-      <div class="app-slideshow" id="appSlideshow">
-        <div class="app-slide-viewport">
-        <div class="app-slide-track" id="appTrack">
+      <div class="app-outer-wrap">
+        <div class="app-ranne-avatar">
+          <img src="images/Ilz7n.png" alt="Ranne" class="ranne-avatar-img">
+        </div>
+        <div class="app-slideshow" id="appSlideshow">
+          <div class="app-slide-viewport">
+          <div class="app-slide-track" id="appTrack">
           <img src="images/app1.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
           <img src="images/app2.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
           <img src="images/app3.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
@@ -1098,13 +1108,14 @@ html, body {
           <img src="images/app15.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
           <img src="images/app16.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
           <img src="images/app17.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          </div>
+          </div><!-- /viewport -->
+          <button class="app-slide-btn app-slide-prev" onclick="slideApp(-1)" aria-label="Anterior">&#8249;</button>
+          <button class="app-slide-btn app-slide-next" onclick="slideApp(1)" aria-label="Próximo">&#8250;</button>
+          <div class="app-slide-dots" id="appDots"></div>
         </div>
-        </div><!-- /viewport -->
-        <button class="app-slide-btn app-slide-prev" onclick="slideApp(-1)" aria-label="Anterior">&#8249;</button>
-        <button class="app-slide-btn app-slide-next" onclick="slideApp(1)" aria-label="Próximo">&#8250;</button>
-        <div class="app-slide-dots" id="appDots"></div>
-      </div>
-    </div>
+      </div><!-- /app-slideshow -->
+    </div><!-- /app-outer-wrap -->
 
   </div>
 </section>
