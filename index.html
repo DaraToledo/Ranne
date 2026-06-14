@@ -869,8 +869,8 @@ html, body {
 }
 /* ── APP SLIDESHOW OUTER ── */
 .app-outer-wrap{display:flex;align-items:flex-end;justify-content:center;gap:0;position:relative;}
-.app-ranne-avatar{flex-shrink:0;width:180px;display:flex;align-items:flex-end;justify-content:flex-end;position:relative;z-index:2;}
-.ranne-avatar-img{width:180px;height:auto;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.12));}
+.app-ranne-avatar{flex-shrink:0;width:260px;display:flex;align-items:flex-end;justify-content:flex-end;position:relative;z-index:2;margin-right:-20px;}
+.ranne-avatar-img{width:260px;height:auto;display:block;filter:drop-shadow(0 12px 32px rgba(0,0,0,.13));}
 @media(max-width:900px){.app-ranne-avatar{display:none;}}
 
 /* ── APP SLIDESHOW ── */
@@ -909,9 +909,12 @@ html, body {
 .app-dot{width:7px;height:7px;border-radius:50%;background:rgba(45,94,74,.2);cursor:pointer;transition:all .25s;border:none;padding:0;}
 .app-dot.active{background:var(--verde-ink);width:22px;border-radius:4px;}
 @media(max-width:700px){
-  .app-slideshow{padding:0 40px;max-width:100%;}
-  .app-slide-img{flex:0 0 100%;width:100%;margin-right:0;opacity:1;transform:scale(1);}
-  .app-slide-img.slide-center{transform:scale(1);box-shadow:0 8px 28px rgba(0,0,0,.12);}
+  .app-slideshow{padding:0 36px;max-width:100%;}
+  .app-slide-viewport{overflow:hidden;}
+  .app-slide-track{gap:0;}
+  .app-slide-img{flex:0 0 100% !important;width:100% !important;min-width:100%;margin-right:0 !important;opacity:1 !important;transform:scale(1) !important;}
+  .app-slide-img.slide-center{transform:scale(1) !important;box-shadow:0 8px 28px rgba(0,0,0,.12);}
+  .app-slide-viewport::before,.app-slide-viewport::after{display:none;}
 }
 </style>
 </head>
@@ -1794,10 +1797,17 @@ setTimeout(function(){ ranneChat.show(); }, 1200);
   }
 
   function setTrackPos(animated){
-    const offset = isMobile() ? 0 : 2; // clones pré
     const w = itemWidth();
     if(!animated) track.style.transition = 'none';
-    track.style.transform = 'translateX(-' + ((current + offset) * w) + 'px)';
+    if(isMobile()){
+      // Mobile: largura total do viewport, sem clones
+      const vp = track.parentElement;
+      const vpW = vp ? vp.offsetWidth : w;
+      track.style.transform = 'translateX(-' + (current * vpW) + 'px)';
+    } else {
+      const offset = 2; // clones pré
+      track.style.transform = 'translateX(-' + ((current + offset) * w) + 'px)';
+    }
     if(!animated) requestAnimationFrame(function(){
       track.style.transition = '';
     });
@@ -1806,7 +1816,7 @@ setTimeout(function(){ ranneChat.show(); }, 1200);
   function goTo(n, animated){
     current = ((n % total) + total) % total;
     setTrackPos(animated !== false);
-    updateCenter();
+    if(!isMobile()) updateCenter();
     updateDots();
   }
 
