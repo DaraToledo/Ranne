@@ -8920,7 +8920,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     showOnboarding(); // Mostra login em vez de demo
   }
   document.getElementById('loading-screen').style.display = 'none';
-  initPlano();
 
   db.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session?.user && !currentUser) {
@@ -9127,6 +9126,8 @@ function showColaborador(nome) {
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
   atualizarInicioColaborador(nome);
+  // Inicia plano após currentEmpresa estar definido
+  initPlano();
   // Registra push notifications
   registrarPush(currentUser?.id, currentEmpresa?.id);
   // Mostra boas-vindas depois da página estar pronta
