@@ -2636,12 +2636,12 @@ body.dark .qusp-opt { background: rgba(255,255,255,0.06); }
   border-radius:var(--radius-lg) var(--radius-lg) 0 0;
 }
 .lib-card[data-cat="burnout"]::before     { background:#EF4444; }
-.lib-card[data-cat="liderança"]::before   { background:#C9A84C; }
+.lib-card[data-cat="lideranca"]::before   { background:#C9A84C; }
 .lib-card[data-cat="cultura"]::before     { background:#7C3AED; }
 .lib-card[data-cat="bem-estar"]::before   { background:#4ECBA0; }
 .lib-card[data-cat="gestão"]::before      { background:#0EA5E9; }
 .lib-card[data-cat="burnout"] .lc-cat     { color:#DC2626; }
-.lib-card[data-cat="liderança"] .lc-cat   { color:#C9A84C; }
+.lib-card[data-cat="lideranca"] .lc-cat   { color:#C9A84C; }
 .lib-card[data-cat="cultura"] .lc-cat     { color:#7C3AED; }
 .lib-card[data-cat="bem-estar"] .lc-cat   { color:#059669; }
 .lib-card[data-cat="gestão"] .lc-cat      { color:#0EA5E9; }
@@ -8965,6 +8965,13 @@ async function rotearUsuario() {
   const col = colRes.status === 'fulfilled' ? colRes.value?.data : null;
   if (col && !colRes.value?.error) {
     currentRole = col.empresa_id ? 'colaborador' : 'pessoa';
+    // Garante que currentEmpresa está definido para exibir testes corretamente
+    if (col.empresa_id && !currentEmpresa) {
+      try {
+        const { data: empData } = await db.from('empresas').select('*').eq('id', col.empresa_id).maybeSingle();
+        if (empData) currentEmpresa = empData;
+      } catch {}
+    }
     showColaborador(col.nome);
     return;
   }
@@ -9120,6 +9127,8 @@ function showColaborador(nome) {
   if (nameEl) nameEl.textContent = nome;
   // Atualiza tela inicial
   atualizarInicioColaborador(nome);
+  // Registra push notifications
+  registrarPush(currentUser?.id, currentEmpresa?.id);
   // Mostra boas-vindas depois da página estar pronta
   setTimeout(() => mostrarBoasVindas(nome), 1200);
   // Tour: apenas se boas-vindas não for mostrada (já viu hoje)
@@ -18538,6 +18547,57 @@ function carregarResumoSalvo() {
     if (card && el) { el.textContent = salvo.texto; card.style.display = 'block'; }
   } catch {}
 }
+
+// ── PUSH NOTIFICATIONS ──────────────────────────────────────
+const VAPID_PUBLIC_KEY = 'BLzMplhD9i-K6mEQjHw6lcVT41TWKi5z9ZydapImty3_KPot0li7wYxka1BKnfmNGz7K-3qraYWbdwakbF4U_Gg';
+
+async function registrarPush(userId, empresaId) {
+  if (!userId || !empresaId) return;
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return;
+    const reg = await navigator.serviceWorker.register('/sw.js');
+    await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+    }
+    await fetch('/api/push-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subscription: sub.toJSON(), userId, empresaId })
+    });
+    // Atualiza badge com testes pendentes
+    atualizarAppBadge();
+  } catch (err) {
+    console.error('[push]', err);
+  }
+}
+
+async function atualizarAppBadge() {
+  if (!('setAppBadge' in navigator)) return;
+  try {
+    const badge = document.getElementById('badge-testes-rh');
+    const count = badge ? parseInt(badge.textContent) || 0 : 0;
+    if (count > 0) {
+      await navigator.setAppBadge(count);
+    } else {
+      await navigator.clearAppBadge();
+    }
+  } catch {}
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return new Uint8Array([...rawData].map(c => c.charCodeAt(0)));
+}
+// ────────────────────────────────────────────────────────────
 
 const ranneChat = (() => {
   let history = [];
