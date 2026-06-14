@@ -869,9 +869,16 @@ html, body {
 }
 /* ── APP SLIDESHOW OUTER ── */
 .app-outer-wrap{position:relative;width:100%;}
-.app-ranne-avatar{position:absolute;bottom:0;left:0;width:240px;z-index:2;pointer-events:none;}
-.ranne-avatar-img{width:240px;height:auto;display:block;filter:drop-shadow(0 12px 32px rgba(0,0,0,.13));}
-@media(max-width:1100px){.app-ranne-avatar{width:180px;}}
+.app-ranne-avatar{
+  position:absolute;
+  bottom:0;
+  left:calc(50% - 620px);
+  width:220px;
+  z-index:2;
+  pointer-events:none;
+}
+.ranne-avatar-img{width:220px;height:auto;display:block;filter:drop-shadow(0 12px 32px rgba(0,0,0,.13));}
+@media(max-width:1300px){.app-ranne-avatar{left:0;width:180px;}}
 @media(max-width:900px){.app-ranne-avatar{display:none;}}
 
 /* ── APP SLIDESHOW ── */
@@ -1064,7 +1071,7 @@ html, body {
 </section>
 
 <!-- PRODUTO -->
-<section class="section" id="produto">
+<section class="section" id="produto" style="position:relative;">
   <div style="max-width:960px;margin:0 auto">
     <div class="grid-2" style="margin-bottom:3.5rem;align-items:end">
       <div class="fade">
@@ -1086,12 +1093,12 @@ html, body {
     </div>
 
     <!-- SCREENS SLIDESHOW -->
+    <div class="app-ranne-avatar">
+      <img src="images/Ilz7n.png" alt="Ranne" class="ranne-avatar-img">
+    </div>
     <div class="screens-showcase fade fd2">
       <div class="screens-label">Veja a plataforma em ação</div>
       <div class="app-outer-wrap">
-        <div class="app-ranne-avatar">
-          <img src="images/Ilz7n.png" alt="Ranne" class="ranne-avatar-img">
-        </div>
         <div class="app-slideshow" id="appSlideshow">
           <div class="app-slide-viewport">
           <div class="app-slide-track" id="appTrack">
@@ -1118,8 +1125,8 @@ html, body {
           <button class="app-slide-btn app-slide-next" onclick="slideApp(1)" aria-label="Próximo">&#8250;</button>
           <div class="app-slide-dots" id="appDots"></div>
         </div>
-      </div><!-- /app-slideshow -->
-    </div><!-- /app-outer-wrap -->
+        </div><!-- /app-slideshow -->
+      </div><!-- /app-outer-wrap -->
 
   </div>
 </section>
