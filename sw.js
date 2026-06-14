@@ -80,3 +80,37 @@ self.addEventListener('fetch', event => {
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
+// ── PUSH NOTIFICATIONS ───────────────────────────────────
+self.addEventListener('push', function(event) {
+  if (!event.data) return;
+  const data = event.data.json();
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon || '/icons/launchericon-192x192.png',
+      badge: data.badge || '/icons/launchericon-192x192.png',
+      vibrate: [200, 100, 200],
+      data: data.data || {},
+      actions: [
+        { action: 'abrir', title: 'Abrir diagnóstico' },
+        { action: 'depois', title: 'Mais tarde' }
+      ]
+    })
+  );
+});
+
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  if (event.action === 'depois') return;
+
+  const url = event.notification.data?.url || '/app';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(list) {
+      for (const client of list) {
+        if (client.url.includes(url) && 'focus' in client) return client.focus();
+      }
+      if (clients.openWindow) return clients.openWindow(url);
+    })
+  );
+});
