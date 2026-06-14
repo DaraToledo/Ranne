@@ -869,7 +869,10 @@ html, body {
 }
 /* ── APP SLIDESHOW ── */
 .app-slideshow{position:relative;max-width:900px;margin:0 auto;user-select:none;padding:0 52px;}
-.app-slide-viewport{overflow:hidden;}
+.app-slide-viewport{overflow:hidden;position:relative;}
+.app-slide-viewport::before,.app-slide-viewport::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:3;pointer-events:none;}
+.app-slide-viewport::before{left:0;background:linear-gradient(to right,var(--creme) 0%,transparent 100%);}
+.app-slide-viewport::after{right:0;background:linear-gradient(to left,var(--creme) 0%,transparent 100%);}
 .app-slide-track{display:flex;align-items:center;transition:transform .5s cubic-bezier(.4,0,.2,1);will-change:transform;}
 .app-slide-img{
   flex:0 0 calc(33.333% - 14px);
