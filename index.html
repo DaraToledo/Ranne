@@ -867,6 +867,18 @@ html, body {
   .h-card-row{padding:.6rem .8rem!important;}
   .hc-val{font-size:1.4rem!important;}
 }
+/* ── APP SLIDESHOW ── */
+.app-slideshow{position:relative;max-width:340px;margin:0 auto;user-select:none;}
+.app-slide-track{position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(74,122,110,.18);box-shadow:0 12px 40px rgba(0,0,0,.12);}
+.app-slide-img{width:100%;height:auto;display:none;object-fit:cover;}
+.app-slide-img.active{display:block;}
+.app-slide-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(45,94,74,.85);border:none;color:#fff;font-size:1.8rem;line-height:1;width:40px;height:40px;border-radius:50%;cursor:pointer;z-index:2;transition:background .2s;}
+.app-slide-btn:hover{background:rgba(45,94,74,1);}
+.app-slide-prev{left:-18px;}
+.app-slide-next{right:-18px;}
+.app-slide-dots{display:flex;justify-content:center;gap:6px;margin-top:1rem;flex-wrap:wrap;}
+.app-dot{width:7px;height:7px;border-radius:50%;background:rgba(45,94,74,.25);cursor:pointer;transition:background .2s;border:none;padding:0;}
+.app-dot.active{background:var(--verde-ink);}
 </style>
 </head>
 <body>
@@ -1035,34 +1047,32 @@ html, body {
       <div class="pilar"><div class="pilar-num">04</div><div class="pilar-title">ROI Mensurável</div><div class="pilar-desc">Correlação entre saúde emocional e produtividade. Relatório executivo com dados concretos para o CEO.</div></div>
     </div>
 
-    <!-- SCREENS -->
+    <!-- SCREENS SLIDESHOW -->
     <div class="screens-showcase fade fd2">
       <div class="screens-label">Veja a plataforma em ação</div>
-      <div class="screens-grid">
-        <div class="screen-card">
-          <div class="screen-tag">Visão do Colaborador</div>
-          <div class="screen-frame">
-            <img src="images/screen-colaborador.jpg" alt="Tela do colaborador" loading="lazy">
-          </div>
-          <div class="screen-desc">Diagnóstico anônimo e acompanhamento individual de bem-estar</div>
+      <div class="app-slideshow" id="appSlideshow">
+        <div class="app-slide-track" id="appTrack">
+          <img src="images/app1.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app2.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app3.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app4.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app5.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app6.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app7.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app8.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app9.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app10.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app11.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app12.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app13.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app14.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app15.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app16.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
+          <img src="images/app17.jpeg" alt="Tela do app Ranne Care" class="app-slide-img">
         </div>
-        <div class="screen-card screen-card-featured">
-          <div class="screen-tag">Dashboard do RH</div>
-          <div class="screen-frame">
-            <img src="images/screen-dashboard.jpg" alt="Dashboard do RH" loading="lazy">
-          </div>
-          <div class="screen-desc">Scores por dimensão, alertas preventivos e histórico de evolução</div>
-        </div>
-        <div class="screen-card">
-          <div class="screen-tag">Plano de Ação</div>
-          <div class="screen-frame">
-            <img src="images/screen-plano.jpg" alt="Plano de ação" loading="lazy">
-          </div>
-          <div class="screen-desc">Plano gerado automaticamente com responsáveis e prazos</div>
-        </div>
-      </div>
-      <div style="text-align:center;margin-top:2.5rem">
-        <a href="empresa.html" target="_blank" class="btn-p">Experimentar grátis →</a>
+        <button class="app-slide-btn app-slide-prev" onclick="slideApp(-1)" aria-label="Anterior">&#8249;</button>
+        <button class="app-slide-btn app-slide-next" onclick="slideApp(1)" aria-label="Próximo">&#8250;</button>
+        <div class="app-slide-dots" id="appDots"></div>
       </div>
     </div>
 
@@ -1378,7 +1388,6 @@ html, body {
       <a href="https://wa.me/5511941918177" target="_blank" class="btn-o" style="color:white;border-color:rgba(255,255,255,.5)">📲 WhatsApp</a>
     </div>
     <div class="cta-middle-row fade fd4">
-      <a href="empresa.html" class="cta-soft-link">Explorar grátis →</a>
       <a href="#ciencia" class="cta-soft-link">Ver fundamentação científica →</a>
       <a href="#produto" class="cta-soft-link">Ver diagnóstico de exemplo →</a>
     </div>
@@ -1679,5 +1688,52 @@ const ranneChat = (() => {
 setTimeout(function(){ ranneChat.show(); }, 1200);
 </script>
 
+<script>
+// ── APP SLIDESHOW ────────────────────────────────
+(function(){
+  const imgs = document.querySelectorAll('.app-slide-img');
+  const dotsEl = document.getElementById('appDots');
+  let current = 0;
+  let timer;
+
+  // Cria dots
+  imgs.forEach(function(_, i){
+    const d = document.createElement('button');
+    d.className = 'app-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i+1));
+    d.onclick = function(){ goTo(i); resetTimer(); };
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n){
+    imgs[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = (n + imgs.length) % imgs.length;
+    imgs[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+  }
+
+  function resetTimer(){
+    clearInterval(timer);
+    timer = setInterval(function(){ goTo(current + 1); }, 3500);
+  }
+
+  // Inicializa
+  imgs[0].classList.add('active');
+  resetTimer();
+
+  // Expõe para botões prev/next
+  window.slideApp = function(dir){ goTo(current + dir); resetTimer(); };
+
+  // Swipe touch
+  var startX = 0;
+  var el = document.getElementById('appSlideshow');
+  el.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
+  el.addEventListener('touchend', function(e){
+    var diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40){ goTo(current + (diff > 0 ? 1 : -1)); resetTimer(); }
+  }, {passive:true});
+})();
+</script>
 </body>
 </html>
